@@ -7,27 +7,20 @@ import lombok.Data;
  * @since 16.05.2016.
  */
 @Data
-public class Player {
+public class PlayerInfo {
 
   private long id;
   private String name;
   private String image;
-  private int total;
-  private int pace;
-  private int shooting;
-  private int passing;
-  private int dribbling;
-  private int defending;
-  private int heading;
-  private int league;
+
   private String leagueName;
   private String teamName;
   private String position;
   private String url;
+  private PlayerStats stats;
 
   private Price price;
 
-  private byte skillMoves;
-  private byte weakFoot;
+
 
 }

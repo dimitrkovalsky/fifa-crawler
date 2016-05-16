@@ -2,8 +2,11 @@ package com.liberty.service;
 
 import com.liberty.common.Platform;
 import com.liberty.common.RequestHelper;
-import com.liberty.model.Player;
+import com.liberty.model.PlayerInfo;
+import com.liberty.model.PlayerProfile;
+import com.liberty.model.PlayerStats;
 import com.liberty.model.Price;
+import com.liberty.processors.FuthedPlayerProcessor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +15,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -19,50 +23,56 @@ import java.util.List;
  */
 public class CrawlerService {
 
+  private FuthedPlayerProcessor processor = new FuthedPlayerProcessor();
+
   private static final String URL = "http://www.futhead.com/16/players/?bin_platform=pc";
 
   public void execute() {
     String content = RequestHelper.executeRequestAndGetResult(URL);
     // System.out.println(content);
-    List<Player> players = parse(content);
-    players.forEach(System.out::println);
+    List<PlayerInfo> playerInfos = parse(content);
+//    playerInfos.forEach(System.out::println);
+    List<PlayerProfile> list = playerInfos.stream().map(p -> processor.parse(p.getId())).collect(Collectors.toList());
+    list.forEach(System.out::println);
   }
 
-  public List<Player> parse(String content) {
-    List<Player> players = new ArrayList<>();
+  public List<PlayerInfo> parse(String content) {
+    List<PlayerInfo> playerInfos = new ArrayList<>();
     Document document = Jsoup.parse(content);
     Elements playerRows = document.select(".player-row");
-    playerRows.forEach(e -> players.add(parseSingle(e)));
+    playerRows.forEach(e -> playerInfos.add(parseSingle(e)));
 //    System.out.println(playerRows);
-    return players;
+    return playerInfos;
   }
 
-  private Player parseSingle(Element element) {
+  private PlayerInfo parseSingle(Element element) {
 //    System.out.println(element);
-    Player player = new Player();
-    player.setId(Long.parseLong(element.attr("data-playerid")));
+    PlayerInfo playerInfo = new PlayerInfo();
+    playerInfo.setId(Long.parseLong(element.attr("data-playerid")));
     String[] splitted = element.select(".name").first().html().split("<br>");
     String name = splitted[0].trim();
     String[] team = removeTags(splitted[1]).split("\\|");
-    player.setName(name);
-    player.setTeamName(team[0].trim());
-    player.setLeagueName(team[1].trim());
+    playerInfo.setName(name);
+    playerInfo.setTeamName(team[0].trim());
+    playerInfo.setLeagueName(team[1].trim());
 
     int pace = Integer.parseInt(element.select(".shooting").first().text());
     int shot = Integer.parseInt(element.select(".shooting").last().text());
-    player.setPace(pace);
-    player.setShooting(shot);
-    player.setPassing(Integer.parseInt(element.select(".passing").first().text()));
-    player.setDribbling(Integer.parseInt(element.select(".dribbling").first().text()));
-    player.setDefending(Integer.parseInt(element.select(".defending").first().text()));
-    player.setHeading(Integer.parseInt(element.select(".heading").first().text()));
-    player.setTotal(Integer.parseInt(element.select(".sorted").first().text()));
-    player.setPosition(element.select(".position").text());
+    PlayerStats stats = new PlayerStats();
+    stats.setPace(pace);
+    stats.setShooting(shot);
+    stats.setPassing(Integer.parseInt(element.select(".passing").first().text()));
+    stats.setDribbling(Integer.parseInt(element.select(".dribbling").first().text()));
+    stats.setDefending(Integer.parseInt(element.select(".defending").first().text()));
+    stats.setHeading(Integer.parseInt(element.select(".heading").first().text()));
+    stats.setTotal(Integer.parseInt(element.select(".sorted").first().text()));
+    playerInfo.setStats(stats);
 
-    player.setImage(element.select(".headshot").attr("src"));
-    player.setUrl(element.select("a").first().attr("href"));
-    player.setPrice(getPrice(element));
-    return player;
+    playerInfo.setPosition(element.select(".position").text());
+    playerInfo.setImage(element.select(".headshot").attr("src"));
+    playerInfo.setUrl(element.select("a").first().attr("href"));
+    playerInfo.setPrice(getPrice(element));
+    return playerInfo;
   }
 
   private Price getPrice(Element element) {
