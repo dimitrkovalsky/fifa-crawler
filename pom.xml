@@ -15,6 +15,17 @@
         <commons.version>3.4</commons.version>
         <lombok.version>1.16.8</lombok.version>
         <compiler.version>3.5.1</compiler.version>
+        <jdk.version>1.8</jdk.version>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.security.version>4.0.4.RELEASE</spring.security.version>
+        <javax.servlet.version>3.1.0</javax.servlet.version>
+        <log4j.version>1.2.17</log4j.version>
+        <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
+        <spring-jpa.version>1.9.4.RELEASE</spring-jpa.version>
+        <jackson-provider.version>2.7.3</jackson-provider.version>
+        <jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
+        <commons.version>3.4</commons.version>
+        <spring-mongo.version>1.8.4.RELEASE</spring-mongo.version>
     </properties>
 
     <dependencies>
@@ -47,6 +58,31 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>${spring-mongo.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

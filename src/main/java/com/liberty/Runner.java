@@ -1,6 +1,9 @@
 package com.liberty;
 
+import com.liberty.common.Config;
 import com.liberty.service.CrawlerService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -8,8 +11,8 @@ import com.liberty.service.CrawlerService;
  */
 public class Runner {
 
-  public static void main(String[] args) {
-    CrawlerService service = new CrawlerService();
-    service.execute();
-  }
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        context.getBean(CrawlerService.class).execute();
+    }
 }

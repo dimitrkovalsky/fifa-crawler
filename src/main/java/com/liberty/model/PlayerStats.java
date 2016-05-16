@@ -8,15 +8,16 @@ import lombok.Data;
  */
 @Data
 public class PlayerStats {
-  private int total;
-  private int pace;
-  private int shooting;
-  private int passing;
-  private int dribbling;
-  private int defending;
-  private int heading;
-  private int league;
+    private int total;
+    private int pace;
+    private int shooting;
+    private int passing;
+    private int dribbling;
+    private int defending;
+    private int heading;
+    private int league;
 
-  private byte skillMoves;
-  private byte weakFoot;
+    private int skillMoves;
+    private int weakFoot;
+    private String strongFoot;
 }
