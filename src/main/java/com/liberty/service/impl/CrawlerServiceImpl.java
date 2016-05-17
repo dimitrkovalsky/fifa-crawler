@@ -8,7 +8,9 @@ import com.liberty.model.PlayerStats;
 import com.liberty.model.Price;
 import com.liberty.processors.FuthedPlayerProcessor;
 import com.liberty.repositories.PlayerInfoRepository;
+import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.service.CrawlerService;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,16 +30,21 @@ import static com.liberty.common.LoggingUtil.info;
  */
 @Component
 public class CrawlerServiceImpl implements CrawlerService {
+
   @Autowired
   private PlayerInfoRepository infoRepository;
+
+  @Autowired
+  private PlayerProfileRepository profileRepository;
+
   private FuthedPlayerProcessor processor = new FuthedPlayerProcessor();
 
   private static final String URL = "http://www.futhead.com/16/players/?bin_platform=pc";
 
   @Override
   public void execute() {
-//    fetchBaseData();
-    fetchDeep();
+  //  fetchBaseData();
+    fetchFullInfo();
   }
 
   private void fetchBaseData() {
@@ -47,10 +54,11 @@ public class CrawlerServiceImpl implements CrawlerService {
     info(this, "Fetched info for : " + playerInfos.size() + " players");
   }
 
-  public void fetchDeep(){
+  public void fetchFullInfo() {
     List<PlayerInfo> all = infoRepository.findAll();
     info(this, "Trying to fetch more information for : " + all.size() + " players");
     List<PlayerProfile> profiles = all.stream().map(p -> processor.parse(p)).collect(Collectors.toList());
+    profileRepository.save(profiles);
     info(this, "Fetched full information for : " + all.size() + " players");
   }
 

@@ -26,13 +26,15 @@
         <jackson-jaxrs.version>1.9.13</jackson-jaxrs.version>
         <commons.version>3.4</commons.version>
         <spring-mongo.version>1.8.4.RELEASE</spring-mongo.version>
+        <selenium-java.version>2.53.0</selenium-java.version>
+        <htmlunit-driver.version>2.52.0</htmlunit-driver.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.3.6</version>
+            <version>4.5.2</version>
         </dependency>
 
         <dependency>
@@ -84,6 +86,25 @@
             <version>${javax.servlet.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-htmlunit-driver</artifactId>
+            <version>2.52.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.detro.ghostdriver</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

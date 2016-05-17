@@ -7,6 +7,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,6 +30,8 @@ import static com.liberty.common.LoggingUtil.error;
  * Created by Dmytro_Kovalskyi on 17.02.2016.
  */
 public class RequestHelper {
+
+  public static final String PHANTOMJS_EXE_PATH = "D:\\programming\\frameworks\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe";
 
   public static InputStream executeRequest(String url) {
     try {
@@ -81,5 +87,25 @@ public class RequestHelper {
     }
     Files.copy(stream, targetPath, StandardCopyOption.REPLACE_EXISTING);
     stream.close();
+  }
+
+
+  public static String executeWithJs(String url){
+    WebDriver driver = new PhantomJSDriver(getDriverConfig());
+    driver.get(url);
+
+    String source = driver.getPageSource();
+    driver.quit();
+    return source;
+  }
+
+  private static DesiredCapabilities getDriverConfig(){
+    DesiredCapabilities caps = new DesiredCapabilities();
+    caps.setJavascriptEnabled(true);
+    caps.setCapability(
+        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
+        PHANTOMJS_EXE_PATH
+    );
+    return caps;
   }
 }
