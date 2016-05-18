@@ -1,8 +1,9 @@
 package com.liberty.model;
 
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.Data;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -22,6 +23,8 @@ public class PlayerInfo {
   private String position;
   private String url;
   private String playCardPicture;
+  private String nation;
+  private String source;
   private PlayerStats stats;
 
   private Price price;

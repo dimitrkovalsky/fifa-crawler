@@ -37,12 +37,12 @@ public class FutheadPlayerProcessor {
     Stats stats = new Stats();
     String url = String.format(URL_PATTERN, player.getId());
     info(this, "Trying to fetch info from : " + url);
-    String content = RequestHelper.executeRequestAndGetResult(url);
+    String content = RequestHelper.executeWithJs(url);
     Document document = Jsoup.parse(content);
 
     profile.setOverviewStats(parseOverview(document));
     profile.setStats(parseStats(document));
-    profile.setInfo(parseInfo(document, player, profile.getStats()));
+    profile.setInfo(parseInfo(document, profile.getStats(), player.getId()));
     profile.setId(player.getId());
     profile.setPrice(priceProcessor.process(document));
     info(this, "Parsed full info for : " + player.getName());
@@ -54,40 +54,22 @@ public class FutheadPlayerProcessor {
     Stats stats = new Stats();
     String url = String.format(URL_PATTERN, id);
     info(this, "Trying to fetch info from : " + url);
-    String content = RequestHelper.executeRequestAndGetResult(url);
+    String content = RequestHelper.executeWithJs(url);
     Document document = Jsoup.parse(content);
 
     profile.setOverviewStats(parseOverview(document));
     profile.setStats(parseStats(document));
-    profile.setInfo(parseInfo(document, profile.getStats()));
+    profile.setInfo(parseInfo(document, profile.getStats(), id));
     profile.setId(id);
     profile.setPrice(priceProcessor.process(document));
     info(this, "Parsed full info for : " + profile.getInfo().getName());
     return profile;
   }
 
-  private PlayerInfo parseInfo(Document document, PlayerInfo player, Stats fullStats) {
-    PlayerInfo info = new PlayerInfo();
-    Element infoNode = document.select(".player-stats-container").first();
-    info.setStats(parsePlayerStats(infoNode, fullStats));
-    info.setPosition(player.getPosition());
-    info.setImage(player.getImage());
-    info.setLeagueName(player.getLeagueName());
-    info.setName(player.getName());
-    info.setId(player.getId());
-    info.setTeamName(player.getTeamName());
-    info.setUrl(player.getUrl());
-    info.setPlayCardPicture(document.select(".playercard-picture").first().select("img").attr("src"));
-
-    info.setPrice(parsePrice(document));
-    return info;
-  }
-
-  private PlayerInfo parseInfo(Document document, Stats fullStats) {
-    PlayerInfo info = new PlayerInfo();
-    Element infoNode = document.select(".player-stats-container").first();
-    info.setStats(parsePlayerStats(infoNode, fullStats));
-    System.out.println(infoNode);
+//  private PlayerInfo parseInfo(Document document, PlayerInfo player, Stats fullStats) {
+//    PlayerInfo info = new PlayerInfo();
+//    Element infoNode = document.select(".player-stats-container").first();
+//    info.setStats(parsePlayerStats(infoNode, fullStats));
 //    info.setPosition(player.getPosition());
 //    info.setImage(player.getImage());
 //    info.setLeagueName(player.getLeagueName());
@@ -95,6 +77,26 @@ public class FutheadPlayerProcessor {
 //    info.setId(player.getId());
 //    info.setTeamName(player.getTeamName());
 //    info.setUrl(player.getUrl());
+//    info.setPlayCardPicture(document.select(".playercard-picture").first().select("img").attr("src"));
+//
+//    info.setPrice(parsePrice(document));
+//    return info;
+//  }
+
+  private PlayerInfo parseInfo(Document document, Stats fullStats, long id) {
+    PlayerInfo info = new PlayerInfo();
+    Element infoNode = document.select(".player-stats-container").first();
+    info.setStats(parsePlayerStats(infoNode, fullStats));
+    info.setPosition(document.select(".playercard-position").first().text());
+    info.setImage(document.select(".playercard-picture img").first().attr("src"));
+    Elements table = document.select(".content-box .table.table-striped.table-condensed.table-borderless").first().child(0).children();
+
+    info.setId(id);
+    info.setName(table.get(0).child(0).text());
+    info.setTeamName(table.get(1).child(1).text());
+    info.setLeagueName(table.get(2).child(1).text());
+    info.setNation(table.get(3).child(1).text());
+    info.setSource(table.get(4).child(1).text());
     info.setPlayCardPicture(document.select(".playercard-picture").first().select("img").attr("src"));
 
     info.setPrice(parsePrice(document));

@@ -50,8 +50,9 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   @Override
-  public void fetchData(long playerId) {
-    processor.fetchInfo(playerId);
+  public PlayerProfile fetchData(long playerId) {
+    PlayerProfile profile = processor.fetchInfo(playerId);
+    return profileRepository.save(profile);
   }
 
   private void fetchBaseData() {

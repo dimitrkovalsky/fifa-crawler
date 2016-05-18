@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -18,10 +19,22 @@ import lombok.Data;
 public class PriceHistory {
 
   @Id
-  private int id;
-  private Date created;
+  private long id;
+  private Date created = new Date();
 
   private Price currentPrice;
   private Price lastPrice;
-  private List<Price> history = new ArrayList<>();
+  private List<PriceRecord> history = new ArrayList<>();
+
+  public void addPrice(Price oldPrice) {
+    history.add(new PriceRecord(oldPrice, new Date()));
+  }
+
+  @Data
+  @AllArgsConstructor
+  public static class PriceRecord {
+
+    private Price price;
+    private Date recoded;
+  }
 }
