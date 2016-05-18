@@ -20,6 +20,7 @@
         <spring.security.version>4.0.4.RELEASE</spring.security.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <log4j.version>1.2.17</log4j.version>
+        <jcl-over-slf4j.version>1.7.21</jcl-over-slf4j.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <spring-jpa.version>1.9.4.RELEASE</spring-jpa.version>
         <jackson-provider.version>2.7.3</jackson-provider.version>
@@ -104,6 +105,30 @@
             <version>1.1.0</version>
         </dependency>
 
+        <!--Logging-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${jcl-over-slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${jcl-over-slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${jcl-over-slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
 
     </dependencies>
 

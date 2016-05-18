@@ -3,30 +3,34 @@ package com.liberty.common;
 
 import org.jsoup.select.Elements;
 
-import static com.liberty.common.LoggingUtil.error;
+import java.util.Optional;
 
-/**
- * @author Dmytro_Kovalskyi.
- * @since 16.05.2016.
- */
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ValueParser {
 
-    public static int parseInt(String toParse) {
-        try {
-            return Integer.parseInt(toParse);
-        } catch (Exception e) {
-            error(ValueParser.class, e);
-        }
-        return 0;
+  public static Optional<Integer> parseInt(String toParse) {
+    try {
+      if (toParse.equals("???"))
+        return Optional.empty();
+      return Optional.of(Integer.parseInt(toParse));
+    } catch (Exception e) {
+      log.error(e.getMessage());
     }
+    return Optional.empty();
+  }
 
-    public static int parseInt(Elements toParse) {
-        try {
-            if (toParse != null && toParse.first() != null)
-                return Integer.parseInt(toParse.first().text());
-        } catch (Exception e) {
-            error(ValueParser.class, e);
-        }
-        return 0;
+  public static Optional<Integer> parseInt(Elements toParse) {
+    try {
+      if (toParse != null && toParse.first() != null) {
+        String text = toParse.first().text();
+        if (!text.equals("???"))
+          return Optional.of(Integer.parseInt(text));
+      }
+    } catch (Exception e) {
+      log.error(e.getMessage());
     }
+    return Optional.empty();
+  }
 }

@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * Time: 21:54
  */
 @Repository
-public interface PlayerInfoRepository extends MongoRepository<PlayerInfo, Integer> {
+public interface PlayerInfoRepository extends MongoRepository<PlayerInfo, Long> {
 }

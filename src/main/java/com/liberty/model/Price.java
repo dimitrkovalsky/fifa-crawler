@@ -21,8 +21,10 @@ public class Price {
 
     Platform platform;
     String lastUpdate;
-    float price;
-    float minPrice;
-    float maxPrice;
+    int price;
+    int minPrice;
+    int maxPrice;
+
+
   }
 }

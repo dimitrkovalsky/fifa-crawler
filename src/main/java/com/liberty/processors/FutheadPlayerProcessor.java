@@ -27,9 +27,10 @@ import static com.liberty.common.ValueParser.parseInt;
  * @author Dmytro_Kovalskyi.
  * @since 16.05.2016.
  */
-public class FuthedPlayerProcessor {
+public class FutheadPlayerProcessor {
 
   private static final String URL_PATTERN = "http://www.futhead.com/16/players/%s";
+  private PriceProcessor priceProcessor = new PriceProcessor();
 
   public PlayerProfile parse(PlayerInfo player) {
     PlayerProfile profile = new PlayerProfile();
@@ -42,9 +43,26 @@ public class FuthedPlayerProcessor {
     profile.setOverviewStats(parseOverview(document));
     profile.setStats(parseStats(document));
     profile.setInfo(parseInfo(document, player, profile.getStats()));
-    //System.out.println(profile);
-    //  System.out.println(content);
+    profile.setId(player.getId());
+    profile.setPrice(priceProcessor.process(document));
     info(this, "Parsed full info for : " + player.getName());
+    return profile;
+  }
+
+  public PlayerProfile fetchInfo(long id) {
+    PlayerProfile profile = new PlayerProfile();
+    Stats stats = new Stats();
+    String url = String.format(URL_PATTERN, id);
+    info(this, "Trying to fetch info from : " + url);
+    String content = RequestHelper.executeRequestAndGetResult(url);
+    Document document = Jsoup.parse(content);
+
+    profile.setOverviewStats(parseOverview(document));
+    profile.setStats(parseStats(document));
+    profile.setInfo(parseInfo(document, profile.getStats()));
+    profile.setId(id);
+    profile.setPrice(priceProcessor.process(document));
+    info(this, "Parsed full info for : " + profile.getInfo().getName());
     return profile;
   }
 
@@ -54,7 +72,7 @@ public class FuthedPlayerProcessor {
     info.setStats(parsePlayerStats(infoNode, fullStats));
     info.setPosition(player.getPosition());
     info.setImage(player.getImage());
-    info.setLeagueName(info.getLeagueName());
+    info.setLeagueName(player.getLeagueName());
     info.setName(player.getName());
     info.setId(player.getId());
     info.setTeamName(player.getTeamName());
@@ -65,16 +83,34 @@ public class FuthedPlayerProcessor {
     return info;
   }
 
+  private PlayerInfo parseInfo(Document document, Stats fullStats) {
+    PlayerInfo info = new PlayerInfo();
+    Element infoNode = document.select(".player-stats-container").first();
+    info.setStats(parsePlayerStats(infoNode, fullStats));
+    System.out.println(infoNode);
+//    info.setPosition(player.getPosition());
+//    info.setImage(player.getImage());
+//    info.setLeagueName(player.getLeagueName());
+//    info.setName(player.getName());
+//    info.setId(player.getId());
+//    info.setTeamName(player.getTeamName());
+//    info.setUrl(player.getUrl());
+    info.setPlayCardPicture(document.select(".playercard-picture").first().select("img").attr("src"));
+
+    info.setPrice(parsePrice(document));
+    return info;
+  }
+
   private Price parsePrice(Document document) {
-   // System.out.println(document);  // TODO: use browser
-    return null;
+    return priceProcessor.process(document);
   }
 
   private PlayerStats parsePlayerStats(Element node, Stats fullStats) {
     PlayerStats stats = new PlayerStats();
 
-    int skillMoves = parseInt(node.getElementsContainingOwnText("Skill Moves").first().text().split(":")[1].trim());
-    int weakFoot = parseInt(node.getElementsContainingOwnText("Weak Foot").first().text().split(":")[1].trim());
+    int skillMoves = parseInt(node.getElementsContainingOwnText("Skill Moves").first().text()
+        .split(":")[1].trim()).orElse(0);
+    int weakFoot = parseInt(node.getElementsContainingOwnText("Weak Foot").first().text().split(":")[1].trim()).orElse(0);
     String strongFoot = node.getElementsContainingOwnText("Strong Foot").first().text().split(":")[1].trim();
     stats.setSkillMoves(skillMoves);
     stats.setWeakFoot(weakFoot);
@@ -186,7 +222,7 @@ public class FuthedPlayerProcessor {
 //      System.out.println(select);
 //
 //    }
-    return parseInt(select);
+    return parseInt(select).orElse(0);
   }
 
 }

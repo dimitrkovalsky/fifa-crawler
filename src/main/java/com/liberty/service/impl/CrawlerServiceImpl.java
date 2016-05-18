@@ -1,26 +1,26 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.Platform;
 import com.liberty.common.RequestHelper;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
-import com.liberty.model.PlayerStats;
-import com.liberty.model.Price;
-import com.liberty.processors.FuthedPlayerProcessor;
+import com.liberty.processors.FutheadPlayerProcessor;
+import com.liberty.processors.FutheadTableDataProcessor;
 import com.liberty.repositories.PlayerInfoRepository;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.service.CrawlerService;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import lombok.extern.slf4j.Slf4j;
 
 import static com.liberty.common.LoggingUtil.info;
 
@@ -29,104 +29,83 @@ import static com.liberty.common.LoggingUtil.info;
  * @since 16.05.2016.
  */
 @Component
+@Slf4j
 public class CrawlerServiceImpl implements CrawlerService {
 
+  public static final int DEFAULT_PAGE_SIZE = 20;
   @Autowired
   private PlayerInfoRepository infoRepository;
 
   @Autowired
   private PlayerProfileRepository profileRepository;
 
-  private FuthedPlayerProcessor processor = new FuthedPlayerProcessor();
+  private FutheadPlayerProcessor processor = new FutheadPlayerProcessor();
 
-  private static final String URL = "http://www.futhead.com/16/players/?bin_platform=pc";
+  private static final String PLAYERS_URL = "http://www.futhead.com/16/players/?page=%d&bin_platform=pc";
 
   @Override
   public void execute() {
-  //  fetchBaseData();
+    //fetchBaseData();
     fetchFullInfo();
   }
 
+  @Override
+  public void fetchData(long playerId) {
+    processor.fetchInfo(playerId);
+  }
+
   private void fetchBaseData() {
-    String content = RequestHelper.executeRequestAndGetResult(URL);
-    List<PlayerInfo> playerInfos = parse(content);
-    infoRepository.insert(playerInfos);
-    info(this, "Fetched info for : " + playerInfos.size() + " players");
+    int pages = getPages();
+    FutheadTableDataProcessor tableDataProcessor = new FutheadTableDataProcessor();
+    AtomicInteger counter = new AtomicInteger();
+    AtomicInteger pageCounter = new AtomicInteger();
+    IntStream.range(1, pages + 1).parallel().forEach(i -> {
+      try {
+        String url = String.format(PLAYERS_URL, i);
+        info(this, "Trying to fetch info for page #" + i + " from : " + url);
+        List<PlayerInfo> playerInfos = tableDataProcessor.process(url);
+
+        info(this, "Fetched info for : " + playerInfos.size() + " players for : " + url);
+        infoRepository.save(playerInfos);
+        info(this, "Stored info for : " + playerInfos.size() + " players for : " + url);
+        pageCounter.addAndGet(1);
+        counter.addAndGet(playerInfos.size());
+        log.info("[CRAWLER] processed " + pageCounter.get() + " pages from " + pages);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      }
+    });
+    log.info("[CRAWLER] fetched base info for " + counter.get() + " players");
   }
 
-  public void fetchFullInfo() {
-    List<PlayerInfo> all = infoRepository.findAll();
-    info(this, "Trying to fetch more information for : " + all.size() + " players");
-    List<PlayerProfile> profiles = all.stream().map(p -> processor.parse(p)).collect(Collectors.toList());
-    profileRepository.save(profiles);
-    info(this, "Fetched full information for : " + all.size() + " players");
+  private void fetchFullInfo() {
+    int pages = (int) infoRepository.count() / DEFAULT_PAGE_SIZE;
+    AtomicInteger counter = new AtomicInteger();
+    AtomicInteger pageCounter = new AtomicInteger();
+    IntStream.range(0, pages + 1).parallel().forEach(i -> {
+      try {
+        List<PlayerInfo> infos = infoRepository.findAll(new PageRequest(i,
+            DEFAULT_PAGE_SIZE)).getContent();
+        String url = String.format(PLAYERS_URL, i);
+        log.info("[DEEP CRAWLER] Trying to fetch full info for page #" + i + " from : " + url);
+        List<PlayerProfile> profiles = infos.parallelStream().map(p -> processor.parse(p)).collect
+            (Collectors.toList());
+        profileRepository.save(profiles);
+        pageCounter.addAndGet(1);
+        counter.addAndGet(profiles.size());
+        log.info("[DEEP CRAWLER] processed " + pageCounter.get() + " pages from " + pages);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      }
+    });
+    log.info("[DEEP CRAWLER] fetched base info for " + counter.get() + " players");
   }
 
-  public List<PlayerInfo> parse(String content) {
-    List<PlayerInfo> playerInfos = new ArrayList<>();
+
+  private int getPages() {
+    String content = RequestHelper.executeRequestAndGetResult(String.format(PLAYERS_URL, 1));
     Document document = Jsoup.parse(content);
-    Elements playerRows = document.select(".player-row");
-    playerRows.forEach(e -> playerInfos.add(parseSingle(e)));
-//    System.out.println(playerRows);
-    return playerInfos;
-  }
-
-  private PlayerInfo parseSingle(Element element) {
-//    System.out.println(element);
-    PlayerInfo playerInfo = new PlayerInfo();
-    playerInfo.setId(Long.parseLong(element.attr("data-playerid")));
-    String[] splitted = element.select(".name").first().html().split("<br>");
-    String name = splitted[0].trim();
-    String[] team = removeTags(splitted[1]).split("\\|");
-    playerInfo.setName(name);
-    playerInfo.setTeamName(team[0].trim());
-    playerInfo.setLeagueName(team[1].trim());
-
-    int pace = Integer.parseInt(element.select(".shooting").first().text());
-    int shot = Integer.parseInt(element.select(".shooting").last().text());
-    PlayerStats stats = new PlayerStats();
-    stats.setPace(pace);
-    stats.setShooting(shot);
-    stats.setPassing(Integer.parseInt(element.select(".passing").first().text()));
-    stats.setDribbling(Integer.parseInt(element.select(".dribbling").first().text()));
-    stats.setDefending(Integer.parseInt(element.select(".defending").first().text()));
-    stats.setHeading(Integer.parseInt(element.select(".heading").first().text()));
-    stats.setTotal(Integer.parseInt(element.select(".sorted").first().text()));
-    playerInfo.setStats(stats);
-
-    playerInfo.setPosition(element.select(".position").text());
-    playerInfo.setImage(element.select(".headshot").attr("src"));
-    playerInfo.setUrl(element.select("a").first().attr("href"));
-    playerInfo.setPrice(getPrice(element));
-    return playerInfo;
-  }
-
-  private Price getPrice(Element element) {
-    Price price = new Price();
-
-    price.setPc(parsePrice(element.select("[data-platform=pc]").text(), Platform.PC));
-    price.setPs(parsePrice(element.select("[data-platform=ps]").text(), Platform.PS));
-    price.setXbox(parsePrice(element.select("[data-platform=xb]").text(), Platform.XBOX));
-    return price;
-  }
-
-  private Price.SpecificPrice parsePrice(String text, Platform platform) {
-    float price = 0;
-    if (text.toLowerCase().contains("m"))
-      price = Float.parseFloat(text.toLowerCase().replace("m", "")) * 1000000;
-    else if (text.toLowerCase().contains("k"))
-      price = Float.parseFloat(text.toLowerCase().replace("k", "")) * 1000;
-    else
-      price = Float.parseFloat(text);
-    Price.SpecificPrice specificPrice = new Price.SpecificPrice();
-    specificPrice.setPrice(price);
-    specificPrice.setPlatform(platform);
-    return specificPrice;
-  }
-
-
-  private String removeTags(String string) {
-    String replaced = string.replaceFirst("<span>", "");
-    return replaced.replaceFirst("</span>", "");
+    String pages = document.select(".right-nav.pull-right").first().text();
+    return Integer.parseInt(pages.substring(pages.indexOf("of") + 3, pages.indexOf(")")).trim());
   }
 }

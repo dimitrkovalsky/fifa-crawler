@@ -21,7 +21,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 
 import static com.liberty.common.LoggingUtil.error;
 
@@ -29,6 +34,7 @@ import static com.liberty.common.LoggingUtil.error;
 /**
  * Created by Dmytro_Kovalskyi on 17.02.2016.
  */
+@Slf4j
 public class RequestHelper {
 
   public static final String PHANTOMJS_EXE_PATH = "D:\\programming\\frameworks\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe";
@@ -90,22 +96,32 @@ public class RequestHelper {
   }
 
 
-  public static String executeWithJs(String url){
-    WebDriver driver = new PhantomJSDriver(getDriverConfig());
-    driver.get(url);
+  public static String executeWithJs(String url) {
+    try {
+      WebDriver driver = new PhantomJSDriver(getDriverConfig());
+      log.info("Trying to get content from : " + url);
+      driver.get(url);
 
-    String source = driver.getPageSource();
-    driver.quit();
-    return source;
+      String source = driver.getPageSource();
+      driver.quit();
+      return source;
+    } catch (Exception e) {
+      log.error("Url is not valid : " + url);
+      return "";
+    }
   }
 
-  private static DesiredCapabilities getDriverConfig(){
+  static {
+    Logger.getLogger(PhantomJSDriverService.class.getName()).setLevel(Level.OFF);
+  }
+
+  private static DesiredCapabilities getDriverConfig() {
     DesiredCapabilities caps = new DesiredCapabilities();
     caps.setJavascriptEnabled(true);
-    caps.setCapability(
-        PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,
-        PHANTOMJS_EXE_PATH
-    );
+    ArrayList<String> cliArgsCap = new ArrayList<String>();
+    cliArgsCap.add("--webdriver-loglevel=NONE");
+    caps.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, PHANTOMJS_EXE_PATH);
+    caps.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cliArgsCap);
     return caps;
   }
 }

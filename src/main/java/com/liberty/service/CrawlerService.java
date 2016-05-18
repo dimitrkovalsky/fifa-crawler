@@ -7,4 +7,6 @@ package com.liberty.service;
  */
 public interface CrawlerService {
     void execute();
+
+  void fetchData(long playerId);
 }

@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * @since 17.05.2016.
  */
 @Repository
-public interface PlayerProfileRepository extends MongoRepository<PlayerProfile, Integer> {
+public interface PlayerProfileRepository extends MongoRepository<PlayerProfile, Long> {
 }
