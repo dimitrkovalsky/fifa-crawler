@@ -13,6 +13,6 @@ public class Runner {
 
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-        context.getBean(CrawlerService.class).execute();
+        context.getBean(CrawlerService.class).monitorTots();
     }
 }

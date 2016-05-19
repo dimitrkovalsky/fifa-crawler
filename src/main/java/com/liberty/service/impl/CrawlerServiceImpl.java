@@ -3,11 +3,15 @@ package com.liberty.service.impl;
 import com.liberty.common.RequestHelper;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.Price;
 import com.liberty.processors.FutheadPlayerProcessor;
 import com.liberty.processors.FutheadTableDataProcessor;
+import com.liberty.processors.PriceProcessor;
+import com.liberty.processors.TotsProcessor;
 import com.liberty.repositories.PlayerInfoRepository;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.service.CrawlerService;
+import com.liberty.service.MonitoringService;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,6 +43,14 @@ public class CrawlerServiceImpl implements CrawlerService {
   @Autowired
   private PlayerProfileRepository profileRepository;
 
+  @Autowired
+  private TotsProcessor totsProcessor;
+
+  @Autowired
+  private MonitoringService monitoringService;
+
+  private PriceProcessor priceProcessor = new PriceProcessor();
+
   private FutheadPlayerProcessor processor = new FutheadPlayerProcessor();
 
   private static final String PLAYERS_URL = "http://www.futhead.com/16/players/?page=%d&bin_platform=pc";
@@ -50,9 +62,19 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   @Override
+  public void monitorTots() {
+    totsProcessor.getTotsIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
+  }
+
+  @Override
   public PlayerProfile fetchData(long playerId) {
     PlayerProfile profile = processor.fetchInfo(playerId);
     return profileRepository.save(profile);
+  }
+
+  @Override
+  public Price getCurrentPrice(Long id) {
+    return priceProcessor.process(id);
   }
 
   private void fetchBaseData() {

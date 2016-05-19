@@ -9,6 +9,7 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -21,20 +22,27 @@ public class PriceHistory {
   @Id
   private long id;
   private Date created = new Date();
+  private PriceRecord firstPrice;
 
-  private Price currentPrice;
-  private Price lastPrice;
+  private PriceRecord currentPrice;
+  private PriceRecord lastPrice;
   private List<PriceRecord> history = new ArrayList<>();
 
-  public void addPrice(Price oldPrice) {
-    history.add(new PriceRecord(oldPrice, new Date()));
+  public void addPrice(PriceRecord oldPrice) {
+    history.add(oldPrice);
   }
 
   @Data
   @AllArgsConstructor
+  @NoArgsConstructor
   public static class PriceRecord {
 
     private Price price;
     private Date recoded;
+
+    public PriceRecord(Price price) {
+      this.price = price;
+      this.recoded = new Date();
+    }
   }
 }

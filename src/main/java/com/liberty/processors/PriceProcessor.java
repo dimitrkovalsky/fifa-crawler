@@ -34,7 +34,6 @@ public class PriceProcessor {
   }
 
   public Price process(Document document) {
-    System.out.println(document);
     Price price = new Price();
     fetchPriceForPlatform(document, Platform.PC).ifPresent(price::setPc);
     fetchPriceForPlatform(document, Platform.PS).ifPresent(price::setPs);

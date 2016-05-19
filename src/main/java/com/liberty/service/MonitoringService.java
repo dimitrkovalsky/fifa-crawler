@@ -7,4 +7,6 @@ package com.liberty.service;
 public interface MonitoringService {
 
   void monitor(long playerId);
+
+  void updatePrices();
 }
