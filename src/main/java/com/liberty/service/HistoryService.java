@@ -2,6 +2,7 @@ package com.liberty.service;
 
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.Price;
+import com.liberty.service.impl.HistoryServiceImpl;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -11,5 +12,5 @@ public interface HistoryService {
 
   void recordHistory(PlayerProfile profile);
 
-  void recordHistory(long playerId, Price price);
+  HistoryServiceImpl.RecordResult recordHistory(long playerId, Price price);
 }

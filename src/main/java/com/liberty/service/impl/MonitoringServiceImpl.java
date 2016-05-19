@@ -1,8 +1,11 @@
 package com.liberty.service.impl;
 
+import com.liberty.model.MonitoringResult;
 import com.liberty.model.PlayerMonitoring;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.Price;
+import com.liberty.model.PriceHistory;
+import com.liberty.repositories.MonitoringResultRepository;
 import com.liberty.repositories.PlayerInfoRepository;
 import com.liberty.repositories.PlayerMonitoringRepository;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -13,7 +16,12 @@ import com.liberty.service.MonitoringService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
+
+import static com.liberty.common.LoggingUtil.info;
+
 
 @Service
 @Slf4j
@@ -30,6 +38,9 @@ public class MonitoringServiceImpl implements MonitoringService {
 
   @Autowired
   private HistoryService historyService;
+
+  @Autowired
+  private MonitoringResultRepository monitoringResultRepository;
 
   @Autowired
   private PlayerMonitoringRepository monitoringRepository;
@@ -50,16 +61,31 @@ public class MonitoringServiceImpl implements MonitoringService {
   }
 
   private PlayerProfile updateInfo(long playerId) {
-//    if(!profileRepository.exists(playerId))
     return crawlerService.fetchData(playerId);
   }
 
   @Override
+  public List<MonitoringResult> getAllResults() {
+    return monitoringResultRepository.findAll();
+  }
+
+  @Override
   public void updatePrices() {
-    monitoringRepository.findAll().stream().forEach(p -> {
+    monitoringRepository.findAll().parallelStream().forEach(p -> {
       Price currentPrice = getCurrentPrice(p.getId());
-      historyService.recordHistory(p.getId(), currentPrice);
+      HistoryServiceImpl.RecordResult result = historyService.recordHistory(p.getId(), currentPrice);
+      if (result.isPriceChanged())
+        onPriceChanged(result.getHistory());
     });
+  }
+
+  private void onPriceChanged(PriceHistory history) {
+    // Toolkit.getDefaultToolkit().beep();
+    PlayerProfile one = profileRepository.findOne(history.getId());
+    info("PRICE CHANGE", "Price changed for : " + one.getInfo().getName());
+    info("PRICE CHANGE", "Start price : " + history.getFirstPrice().getPrice());
+    info("PRICE CHANGE", "Current price : " + history.getCurrentPrice().getPrice());
+    monitoringResultRepository.save(new MonitoringResult(history.getId(), one.getInfo().getName(), history));
   }
 
   private Price getCurrentPrice(Long id) {

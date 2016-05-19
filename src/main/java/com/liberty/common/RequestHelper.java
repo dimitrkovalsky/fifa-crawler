@@ -95,7 +95,6 @@ public class RequestHelper {
     stream.close();
   }
 
-
   public static String executeWithJs(String url) {
     try {
       WebDriver driver = new PhantomJSDriver(getDriverConfig());

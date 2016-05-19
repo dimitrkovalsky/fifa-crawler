@@ -44,5 +44,6 @@ public class PriceHistory {
       this.price = price;
       this.recoded = new Date();
     }
+
   }
 }

@@ -1,5 +1,9 @@
 package com.liberty.service;
 
+import com.liberty.model.MonitoringResult;
+
+import java.util.List;
+
 /**
  * @author Dmytro_Kovalskyi.
  * @since 18.05.2016.
@@ -7,6 +11,8 @@ package com.liberty.service;
 public interface MonitoringService {
 
   void monitor(long playerId);
+
+  List<MonitoringResult> getAllResults();
 
   void updatePrices();
 }
