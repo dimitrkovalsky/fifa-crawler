@@ -21,9 +21,12 @@ import static com.liberty.common.LoggingUtil.info;
  */
 @Component
 @Slf4j
-public class TotsProcessor {
+public class InformProcessor {
 
   private static final String TOTS_URL = "http://www.futhead.com/tots/?page=%d";
+  private static final String TOTW_URL = "http://www.futhead.com/16/totw/totw%d/";
+  private static final int TOTW_PAGES = 36;
+  private static final int FROM_TOTW_PAGES = 20;
 
   public void getTotsIds(Consumer<List<Long>> onPageLoaded) {
     int pages = getPages();
@@ -47,6 +50,26 @@ public class TotsProcessor {
     log.info("[TOTS] fetched ids for " + counter.get() + " TOTS players");
   }
 
+  public void getTotwIds(Consumer<List<Long>> onPageLoaded) {
+    AtomicInteger counter = new AtomicInteger();
+    AtomicInteger pageCounter = new AtomicInteger();
+    IntStream.range(FROM_TOTW_PAGES, TOTW_PAGES + 1).parallel().forEach(i -> {
+      try {
+        String url = String.format(TOTW_URL, i);
+        log.info("[TOWS] Trying to fetch ids for page #" + i + " from : " + url);
+        List<Long> ids = getIdsFromInformTeamPage(url);
+
+        log.info("[TOWS] Fetched ids for : " + ids.size() + " players for : " + url);
+        onPageLoaded.accept(ids);
+        pageCounter.addAndGet(1);
+        counter.addAndGet(ids.size());
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      }
+    });
+    log.info("[TOWS] fetched ids for " + counter.get() + " TOWS players");
+  }
+
   private List<Long> getIds(String url) {
     List<Long> ids = new ArrayList<>();
     String content = RequestHelper.executeRequestAndGetResult(url);
@@ -55,6 +78,38 @@ public class TotsProcessor {
       String playerRef = e.select("a").attr("href");
       ids.add(parseId(playerRef));
     });
+    return ids;
+  }
+
+  private List<Long> getIdsFromInformTeamPage(String url) {
+    List<Long> ids = new ArrayList<>();
+    try {
+      String content = RequestHelper.executeRequestAndGetResult(url);
+      String playersString = content.substring(content.indexOf("player_data = $.parseJSON"), content.indexOf("var players = [];")).trim();
+      boolean completed = false;
+      String restString = playersString;
+      String toSearch = "\"pk\"";
+      while (!completed) {
+        int startIndex = restString.indexOf(toSearch);
+        if (startIndex < 0) {
+          break;
+        }
+        restString = restString.substring(startIndex + toSearch.length());
+
+        int endIndex = restString.indexOf("\"name") - 2;
+        if (endIndex < 0) {
+          break;
+        }
+        String id = restString.substring(1, endIndex).trim();
+        try {
+          if (!id.isEmpty())
+            ids.add(Long.parseLong(id));
+        } catch (Exception e) {
+        }
+      }
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
     return ids;
   }
 

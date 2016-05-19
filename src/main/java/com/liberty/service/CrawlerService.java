@@ -10,7 +10,7 @@ public interface CrawlerService {
 
   void execute();
 
-  void monitorTots();
+  void monitorInforms();
 
   PlayerProfile fetchData(long playerId);
 

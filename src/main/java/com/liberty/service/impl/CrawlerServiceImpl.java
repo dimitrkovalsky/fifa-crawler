@@ -7,7 +7,7 @@ import com.liberty.model.Price;
 import com.liberty.processors.FutheadPlayerProcessor;
 import com.liberty.processors.FutheadTableDataProcessor;
 import com.liberty.processors.PriceProcessor;
-import com.liberty.processors.TotsProcessor;
+import com.liberty.processors.InformProcessor;
 import com.liberty.repositories.PlayerInfoRepository;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.service.CrawlerService;
@@ -44,7 +44,7 @@ public class CrawlerServiceImpl implements CrawlerService {
   private PlayerProfileRepository profileRepository;
 
   @Autowired
-  private TotsProcessor totsProcessor;
+  private InformProcessor informProcessor;
 
   @Autowired
   private MonitoringService monitoringService;
@@ -62,8 +62,9 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   @Override
-  public void monitorTots() {
-    totsProcessor.getTotsIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
+  public void monitorInforms() {
+//    informProcessor.getTotsIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
+    informProcessor.getTotwIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
   }
 
   @Override
