@@ -24,4 +24,12 @@ fifaApp.controller('PlayerController', function($scope, Monitoring, Players, Pla
     };
 
     $scope.getAllPlayers();
+
+    $scope.addToMonitoring = function(id) {
+       Monitoring.save(id);
+    };
+
+    $scope.removeFromMonitoring = function(id) {
+       Monitoring.remove(id);
+    };
 });

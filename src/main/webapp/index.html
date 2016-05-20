@@ -2,12 +2,12 @@
 <html lang="en-US" ng-app="fifaApp">
 <script src="app/lib/angular.js"></script>
 <script src="app/lib/jquery-2.2.3.js"></script>
-<script src="app/lib/bootstrap.js"></script>
+<script src="app/lib/bootstrap/js/bootstrap.js"></script>
 <script src="app/lib/angular-resource.js"></script>
 <script src="app/lib/angular-ui-router.min.js"></script>
 <script src="app/lib/ui-bootstrap-tpls-1.3.2.js"></script>
 
-<link rel="stylesheet" href="app/css/bootstrap.css">
+<link rel="stylesheet" href="app/lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="app/css/app.css">
 
 <script src="app/js/app.js"></script>
@@ -29,12 +29,13 @@
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav side-nav left-menu">
             <li>
-                <a href="#/monitor" class="top-level-menu"><i class="fa fa-archive fa-fw"></i>
-                    Monitor</a>
+                <a href="#/monitor" class="top-level-menu"><span
+                        class="glyphicon glyphicon-refresh"></span>
+                    Monitoring</a>
             <li>
 
             <li>
-                <a href="#/players" class="top-level-menu"><i class="fa fa-calendar fa-fw"></i>
+                <a href="#/players" class="top-level-menu"><span class="glyphicon glyphicon-user"></span>
                     Players</a>
             <li>
 

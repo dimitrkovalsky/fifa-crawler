@@ -1,5 +1,7 @@
-<h1>Players</h1>
-
+<div class="page-header">
+    <h1>Players</h1>
+</div>
+</div>
 <div class="container">
     <table class="table">
         <thead>
@@ -11,6 +13,7 @@
             <th>Source</th>
             <th>League</th>
             <th>Under monitoring</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody ng-repeat="player in players">
@@ -22,7 +25,7 @@
             <td>{{player.source}}</td>
             <td>{{player.league}}</td>
             <td>*</td>
-
+            <td><button ng-click="addToMonitoring({{player.id}})">Monitor</button></td>
         </tr>
         </tbody>
     </table>
