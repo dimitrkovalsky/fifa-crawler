@@ -1,7 +1,6 @@
 package com.liberty;
 
 import com.liberty.common.Config;
-import com.liberty.service.CrawlerService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +17,7 @@ public class ServerRunner {
     System.getProperties().put("server.port", 5555);
 
     ConfigurableApplicationContext context = SpringApplication.run(Config.class, args);
-    context.getBean(CrawlerService.class).monitorInforms();
+//    context.getBean(CrawlerService.class).execute();
     System.out.println("Application started...");
   }
 }

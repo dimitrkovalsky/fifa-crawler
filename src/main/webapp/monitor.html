@@ -1,0 +1,26 @@
+ <div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>First Price</th>
+            <th>Previous Price</th>
+            <th>Current Price</th>
+            <th>Last update</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="mon in monitoringResults">
+        <tr
+                ng-class="{ danger:mon.currentPrice < mon.lastPrice, success:mon.currentPrice > mon.lastPrice, default: mon.currentPrice == mon.lastPrice}">
+            <td>{{mon.Id}}</td>
+            <td>{{mon.name}}</td>
+            <td>{{mon.firstPrice}}</td>
+            <td>{{mon.lastPrice}}</td>
+            <td>{{mon.currentPrice}}</td>
+            <td>{{mon.lastUpdate}}</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

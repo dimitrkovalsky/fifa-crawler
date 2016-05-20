@@ -4,12 +4,14 @@ import com.liberty.common.RequestHelper;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.Price;
+import com.liberty.model.Source;
 import com.liberty.processors.FutheadPlayerProcessor;
 import com.liberty.processors.FutheadTableDataProcessor;
-import com.liberty.processors.PriceProcessor;
 import com.liberty.processors.InformProcessor;
+import com.liberty.processors.PriceProcessor;
 import com.liberty.repositories.PlayerInfoRepository;
 import com.liberty.repositories.PlayerProfileRepository;
+import com.liberty.repositories.SourceRepository;
 import com.liberty.service.CrawlerService;
 import com.liberty.service.MonitoringService;
 
@@ -20,6 +22,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -47,6 +51,9 @@ public class CrawlerServiceImpl implements CrawlerService {
   private InformProcessor informProcessor;
 
   @Autowired
+  private SourceRepository sourceRepository;
+
+  @Autowired
   private MonitoringService monitoringService;
 
   private PriceProcessor priceProcessor = new PriceProcessor();
@@ -58,7 +65,22 @@ public class CrawlerServiceImpl implements CrawlerService {
   @Override
   public void execute() {
     //fetchBaseData();
-    fetchFullInfo();
+    //fetchFullInfo();
+    updateSources();
+  }
+
+  @Override
+  public void updateSources() {
+    Set<String> sources = profileRepository.findAll().stream().map(p -> {
+      PlayerInfo info = p.getInfo();
+      if (info == null || info.getSource() == null)
+        return Optional.<String>empty();
+      return Optional.of(info.getSource());
+    }).filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(Collectors.toSet());
+    List<Source> toSave = sources.stream().map(Source::new).collect(Collectors.toList());
+    sourceRepository.save(toSave);
   }
 
   @Override

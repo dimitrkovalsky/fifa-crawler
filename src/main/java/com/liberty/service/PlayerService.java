@@ -1,6 +1,7 @@
 package com.liberty.service;
 
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.Source;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ public interface PlayerService {
 
   List<PlayerProfile> getAllPlayers(String source);
 
-  List<String> getAllSources();
+  List<Source> getAllSources();
 }

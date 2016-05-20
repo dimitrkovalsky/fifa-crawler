@@ -1,20 +1,23 @@
 package com.liberty.rest;
 
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.Source;
 import com.liberty.service.PlayerService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: Dimitr Date: 19.05.2016 Time: 23:18
  */
 @RestController
-@RequestMapping("/players")
+@RequestMapping("/api/players")
 public class PlayerProfileResource {
 
   @Autowired
@@ -27,11 +30,11 @@ public class PlayerProfileResource {
 
   @RequestMapping(path = "/sources", method = RequestMethod.GET)
   public List<String> listSourcesAll() {
-    return playerService.getAllSources();
+    return playerService.getAllSources().stream().map(Source::getSource).collect(Collectors.toList());
   }
 
-  @RequestMapping(method = RequestMethod.POST)
-  public List<PlayerProfile> getAllBySource(String source) {
+  @RequestMapping(path = "source/{source}", method = RequestMethod.GET)
+  public List<PlayerProfile> getAllBySource(@PathVariable("source") String source) {
     return playerService.getAllPlayers(source);
   }
 

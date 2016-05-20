@@ -16,7 +16,7 @@ import java.util.List;
  * @since 19.05.2016.
  */
 @RestController
-@RequestMapping("/monitoring")
+@RequestMapping("/api/monitoring")
 public class MonitoringResource {
 
   @Autowired
