@@ -14,5 +14,9 @@ public interface MonitoringService {
 
   List<MonitoringResult> getAllResults();
 
+  void deleteMonitor(long id);
+
+  Iterable<MonitoringResult> getAllByIds(List<Long> ids);
+
   void updatePrices();
 }

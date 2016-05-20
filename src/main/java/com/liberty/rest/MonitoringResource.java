@@ -1,6 +1,7 @@
 package com.liberty.rest;
 
 import com.liberty.model.MonitoringResult;
+import com.liberty.rest.request.LongList;
 import com.liberty.service.MonitoringService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,20 @@ public class MonitoringResource {
   @RequestMapping(method = RequestMethod.GET)
   public List<MonitoringResult> listAll() {
     return monitoringService.getAllResults();
+  }
+
+  @RequestMapping(method = RequestMethod.POST)
+  public void add(Long id) {
+    monitoringService.monitor(id);
+  }
+
+  @RequestMapping(method = RequestMethod.DELETE)
+  public void delete(Long id) {
+    monitoringService.deleteMonitor(id);
+  }
+
+  @RequestMapping(path = "/all", method = RequestMethod.POST)
+  public Iterable<MonitoringResult> getAll(LongList ids) {
+    return monitoringService.getAllByIds(ids.getIds());
   }
 }

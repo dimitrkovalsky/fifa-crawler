@@ -16,5 +16,7 @@ public class PlayerMonitoring {
   @Id
   private Long id;
 
+  private String source;
+
   private Price startPrice;
 }

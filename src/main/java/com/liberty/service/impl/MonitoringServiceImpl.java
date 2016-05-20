@@ -1,6 +1,7 @@
 package com.liberty.service.impl;
 
 import com.liberty.model.MonitoringResult;
+import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerMonitoring;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.Price;
@@ -47,17 +48,26 @@ public class MonitoringServiceImpl implements MonitoringService {
 
   @Override
   public void monitor(long playerId) {
-    PlayerMonitoring one = monitoringRepository.findOne(playerId);
-    if (one != null) {
-      log.error("[MONITORING]", "Player with id " + playerId + " under monitoring");
-      return;
+    try {
+
+      PlayerMonitoring one = monitoringRepository.findOne(playerId);
+      if (one != null) {
+        log.error("[MONITORING]", "Player with id " + playerId + " under monitoring");
+        return;
+      }
+      PlayerProfile profile = updateInfo(playerId);
+
+      PlayerMonitoring monitoring = new PlayerMonitoring();
+      monitoring.setId(playerId);
+      PlayerInfo info = profile.getInfo();
+      if (info != null)
+        monitoring.setSource(info.getSource());
+      monitoring.setStartPrice(profile.getPrice());
+      monitoringRepository.save(monitoring);
+      historyService.recordHistory(profile);
+    } catch (Exception e) {
+      log.error(e.getMessage());
     }
-    PlayerProfile profile = updateInfo(playerId);
-    PlayerMonitoring monitoring = new PlayerMonitoring();
-    monitoring.setId(playerId);
-    monitoring.setStartPrice(profile.getPrice());
-    monitoringRepository.save(monitoring);
-    historyService.recordHistory(profile);
   }
 
   private PlayerProfile updateInfo(long playerId) {
@@ -67,6 +77,16 @@ public class MonitoringServiceImpl implements MonitoringService {
   @Override
   public List<MonitoringResult> getAllResults() {
     return monitoringResultRepository.findAll();
+  }
+
+  @Override
+  public void deleteMonitor(long id) {
+    monitoringRepository.delete(id);
+  }
+
+  @Override
+  public Iterable<MonitoringResult> getAllByIds(List<Long> ids) {
+    return  monitoringResultRepository.findAll(ids);
   }
 
   @Override
