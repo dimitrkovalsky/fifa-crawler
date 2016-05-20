@@ -14,7 +14,7 @@ import java.util.List;
  * User: Dimitr Date: 19.05.2016 Time: 23:18
  */
 @RestController
-@RequestMapping("/monitoring")
+@RequestMapping("/players")
 public class PlayerProfileResource {
 
   @Autowired

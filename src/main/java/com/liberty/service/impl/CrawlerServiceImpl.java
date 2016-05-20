@@ -63,7 +63,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 
   @Override
   public void monitorInforms() {
-//    informProcessor.getTotsIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
+    informProcessor.getTotsIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
     informProcessor.getTotwIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
   }
 
