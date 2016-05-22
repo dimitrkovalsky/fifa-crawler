@@ -1,44 +1,48 @@
 var fifaApp = angular.module('fifaApp', ['ngResource', 'ui.router', 'ui.bootstrap',
-'fifa-directives']);
+    'fifa-directives']);
 
-fifaApp.factory('Monitoring', function($resource) {
+fifaApp.factory('Monitoring', function ($resource) {
     return $resource('/api/monitoring/:id');
 });
 
-fifaApp.factory('Players', function($resource) {
+fifaApp.factory('Players', function ($resource) {
     return $resource('/api/players/:id');
 });
 
-fifaApp.factory('PlayersFiltered', function($resource) {
+fifaApp.factory('PlayersFiltered', function ($resource) {
     return $resource('/api/players/source/:source');
 });
 
-fifaApp.factory('Sources', function($resource) {
+fifaApp.factory('Sources', function ($resource) {
     return $resource('/api/players/sources/');
 });
 
-fifaApp.factory('ManageResource', function($resource) {
+fifaApp.factory('ManageResource', function ($resource) {
     return $resource('/api/manage/fetch/:id');
 });
 
 
-
-fifaApp.config(function($stateProvider, $urlRouterProvider) {
+fifaApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/index");
 
-    $stateProvider.state('monitor',{
-        url: '/monitor',
-        templateUrl: 'monitor.html',
-        controller: 'MonitoringController'
-    })
-    .state('manage',{
-        url: '/manage',
-        templateUrl: 'manage.html',
-        controller: 'ManageController'
-    })
-    .state('players',{
-        url: '/players',
-        templateUrl: 'players.html',
-        controller: 'PlayerController'
-    });
+    $stateProvider.state('monitor', {
+            url: '/monitor',
+            templateUrl: 'monitor.html',
+            controller: 'MonitoringController'
+        })
+        .state('manage', {
+            url: '/manage',
+            templateUrl: 'manage.html',
+            controller: 'ManageController'
+        })
+        .state('live', {
+            url: '/live',
+            templateUrl: 'live.html',
+            controller: 'LiveController'
+        })
+        .state('players', {
+            url: '/players',
+            templateUrl: 'players.html',
+            controller: 'PlayerController'
+        });
 });
