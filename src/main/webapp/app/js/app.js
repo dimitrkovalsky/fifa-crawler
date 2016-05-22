@@ -2,7 +2,7 @@ var fifaApp = angular.module('fifaApp', ['ngResource', 'ui.router', 'ui.bootstra
 'fifa-directives']);
 
 fifaApp.factory('Monitoring', function($resource) {
-    return $resource('/api/monitoring/');
+    return $resource('/api/monitoring/:id');
 });
 
 fifaApp.factory('Players', function($resource) {
@@ -16,6 +16,11 @@ fifaApp.factory('PlayersFiltered', function($resource) {
 fifaApp.factory('Sources', function($resource) {
     return $resource('/api/players/sources/');
 });
+
+fifaApp.factory('ManageResource', function($resource) {
+    return $resource('/api/manage/fetch/:id');
+});
+
 
 
 fifaApp.config(function($stateProvider, $urlRouterProvider) {
@@ -35,5 +40,5 @@ fifaApp.config(function($stateProvider, $urlRouterProvider) {
         url: '/players',
         templateUrl: 'players.html',
         controller: 'PlayerController'
-    });;
+    });
 });

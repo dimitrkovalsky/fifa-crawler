@@ -24,7 +24,7 @@ fifaApp.controller('MonitoringController', function($scope, $interval, Monitorin
      };
 
     $scope.updateMonitor = function() {
-        console.log("Updating monitor...")
+        console.log("Updating monitor...");
        Monitoring.query({},$scope.onSuccess, $scope.onError);
     };
 

@@ -1,4 +1,4 @@
-package com.liberty.common;
+package com.liberty.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 /**
  * Created by Dmytro_Kovalskyi on 28.03.2016.
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @ComponentScan("com.liberty")
 @EnableScheduling
+@EnableWebSocket
 @EnableMongoRepositories("com.liberty.repositories")
 public class Config extends AbstractMongoConfiguration {
 

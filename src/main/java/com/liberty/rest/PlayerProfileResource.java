@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,12 +30,12 @@ public class PlayerProfileResource {
   }
 
   @RequestMapping(path = "/sources", method = RequestMethod.GET)
-  public List<String> listSourcesAll() {
-    return playerService.getAllSources().stream().map(Source::getSource).collect(Collectors.toList());
+  public Set<String> listSourcesAll() {
+    return playerService.getAllSources().stream().map(Source::getSource).collect(Collectors.toSet());
   }
 
   @RequestMapping(path = "source/{source}", method = RequestMethod.GET)
-  public List<PlayerProfile> getAllBySource(@PathVariable("source") String source) {
+  public List<PlayerProfile> getAllBySource(@PathVariable String source) {
     return playerService.getAllPlayers(source);
   }
 

@@ -39,6 +39,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>1.3.5.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>4.2.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>4.2.6.RELEASE</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

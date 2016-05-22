@@ -23,6 +23,7 @@ public class PlayerProfile {
   private PlayerInfo info;
   private Stats stats;
   private Price price;
+  private boolean underMonitoring;
   private OverviewStats overviewStats;
   private Date updated = new Date();
 }

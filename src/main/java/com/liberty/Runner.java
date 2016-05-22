@@ -1,6 +1,6 @@
 package com.liberty;
 
-import com.liberty.common.Config;
+import com.liberty.config.Config;
 import com.liberty.service.CrawlerService;
 
 import org.springframework.context.ApplicationContext;

@@ -1,6 +1,7 @@
 package com.liberty;
 
-import com.liberty.common.Config;
+import com.liberty.config.Config;
+import com.liberty.config.WebSocketConfig;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,11 +14,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class ServerRunner {
 
-  public static void main(String[] args) {
-    System.getProperties().put("server.port", 5555);
+  public static final int DEFAULT_PORT = 5555;
 
-    ConfigurableApplicationContext context = SpringApplication.run(Config.class, args);
-//    context.getBean(CrawlerService.class).execute();
+  public static void main(String[] args) {
+    System.getProperties().put("server.port", DEFAULT_PORT);
+    ConfigurableApplicationContext context =
+        SpringApplication.run(new Class<?>[]{Config.class, WebSocketConfig.class}, args);
+
     System.out.println("Application started...");
   }
 }

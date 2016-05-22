@@ -77,7 +77,7 @@ public class FutheadPlayerProcessor {
   private PlayerInfo parseInfo(Document document, Stats fullStats, long id) {
     PlayerInfo info = new PlayerInfo();
     Element infoNode = document.select(".player-stats-container").first();
-    info.setStats(parsePlayerStats(infoNode, fullStats));
+    info.setStats(parsePlayerStats(infoNode, fullStats, document));
     info.setPosition(document.select(".playercard-position").first().text());
     info.setImage(document.select(".playercard-picture img").first().attr("src"));
     Elements table = document.select(".content-box .table.table-striped.table-condensed.table-borderless").first().child(0).children();
@@ -98,7 +98,7 @@ public class FutheadPlayerProcessor {
     return priceProcessor.process(document);
   }
 
-  private PlayerStats parsePlayerStats(Element node, Stats fullStats) {
+  private PlayerStats parsePlayerStats(Element node, Stats fullStats, Document document) {
     PlayerStats stats = new PlayerStats();
 
     int skillMoves = parseInt(node.getElementsContainingOwnText("Skill Moves").first().text()
@@ -114,7 +114,8 @@ public class FutheadPlayerProcessor {
     stats.setPassing(fullStats.getPassing().getPassing());
     stats.setShooting(fullStats.getShooting().getShooting());
     stats.setHeading(fullStats.getPhysical().getPhysical());
-
+    stats.setTotal(Integer.parseInt(document.select(".player-detail-card-large .playercard-rating")
+        .first().text()));
     return stats;
   }
 
@@ -128,7 +129,7 @@ public class FutheadPlayerProcessor {
       stats.setPassing(parsePassing(statsNode));
       stats.setShooting(parseShooting(statsNode));
       stats.setPhysical(parsePhysical(statsNode));
-    }catch (Exception e){
+    } catch (Exception e) {
       log.error("Can not parse Stats");
     }
     return stats;
@@ -145,7 +146,7 @@ public class FutheadPlayerProcessor {
       shooting.setShooting(findByText(statsNode, "Shooting"));
       shooting.setShotPower(findByText(statsNode, "Shot Power"));
       shooting.setVolleys(findByText(statsNode, "Volleys"));
-    }catch (Exception e){
+    } catch (Exception e) {
       log.error("Can not parse Shooting");
     }
     return shooting;
@@ -162,7 +163,7 @@ public class FutheadPlayerProcessor {
       passing.setPassing(findByText(statsNode, "Passing"));
       passing.setShortPassing(findByText(statsNode, "Short Passing"));
       passing.setVision(findByText(statsNode, "Vision"));
-    }catch (Exception e){
+    } catch (Exception e) {
       log.error("Can not parse Passing");
     }
     return passing;

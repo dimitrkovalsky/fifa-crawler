@@ -66,11 +66,10 @@ public class CrawlerServiceImpl implements CrawlerService {
   public void execute() {
     //fetchBaseData();
     //fetchFullInfo();
-    updateSources();
   }
 
   @Override
-  public void updateSources() {
+  public void fetchSources() {
     Set<String> sources = profileRepository.findAll().stream().map(p -> {
       PlayerInfo info = p.getInfo();
       if (info == null || info.getSource() == null)
@@ -79,7 +78,8 @@ public class CrawlerServiceImpl implements CrawlerService {
     }).filter(Optional::isPresent)
         .map(Optional::get)
         .collect(Collectors.toSet());
-    List<Source> toSave = sources.stream().map(Source::new).collect(Collectors.toList());
+    Set<Source> toSave = sources.stream().map(Source::new).collect(Collectors.toSet());
+    sourceRepository.deleteAll();
     sourceRepository.save(toSave);
   }
 
@@ -90,14 +90,34 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   @Override
-  public PlayerProfile fetchData(long playerId) {
-    PlayerProfile profile = processor.fetchInfo(playerId);
+  public PlayerProfile fetchData(long playerId, boolean force) {
+    PlayerProfile profile;
+    if (!force) {
+      profile = profileRepository.findOne(playerId);
+      if (profile != null)
+        return profile;
+    }
+    profile = processor.fetchInfo(playerId);
     return profileRepository.save(profile);
+  }
+
+  private PlayerProfile fetchData(long playerId) {
+    return fetchData(playerId, false);
   }
 
   @Override
   public Price getCurrentPrice(Long id) {
     return priceProcessor.process(id);
+  }
+
+  @Override
+  public void fetchTots() {
+    informProcessor.getTotsIds(ids -> ids.parallelStream().forEach(this::fetchData));
+  }
+
+  @Override
+  public void fetchTows() {
+    informProcessor.getTotwIds(ids -> ids.parallelStream().forEach(this::fetchData));
   }
 
   private void fetchBaseData() {

@@ -71,7 +71,7 @@ public class MonitoringServiceImpl implements MonitoringService {
   }
 
   private PlayerProfile updateInfo(long playerId) {
-    return crawlerService.fetchData(playerId);
+    return crawlerService.fetchData(playerId, false);
   }
 
   @Override

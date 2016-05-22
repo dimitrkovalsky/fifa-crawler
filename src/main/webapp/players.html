@@ -1,8 +1,16 @@
 <div class="page-header">
     <h1>Players</h1>
 </div>
-</div>
+
 <div class="container">
+    <span ng-repeat="source in sources">
+        <span class="label label-default source-label" ng-if="source!=filterSource"
+              ng-click="filterBySource(source)">{{source}}
+        </span>
+        <span class="label label-success source-label" ng-if="source==filterSource"
+              ng-click="filterBySource(source)">{{source}}
+        </span>
+    </span>
     <table class="table">
         <thead>
         <tr>
@@ -17,15 +25,24 @@
         </tr>
         </thead>
         <tbody ng-repeat="player in players">
-        <tr>
-            <td>{{player.id}}</td>
-            <td>{{player.name}}</td>
-            <td>{{player.position}}</td>
-            <td>{{player.total}}</td>
-            <td>{{player.source}}</td>
-            <td>{{player.league}}</td>
-            <td>*</td>
-            <td><button ng-click="addToMonitoring({{player.id}})">Monitor</button></td>
+        <td>
+            <img class="table-image" src="{{player.image}}"> <br>
+            {{player.id}}
+        </td>
+        <td>{{player.name}}</td>
+        <td>{{player.position}}</td>
+        <td>{{player.total}}</td>
+        <td><a href="#" ng-click="filterBySource(player.source)">{{player.source}}</a></td>
+        <td>{{player.league}}</td>
+        <td>{{player.underMonitoring}}</td>
+        <td>
+            <button ng-if="!player.underMonitoring"
+                    ng-click="addToMonitoring(player.id)">Monitor
+            </button>
+            <button ng-if="player.underMonitoring"
+                    ng-click="removeFromMonitoring(player.id)">Remove Monitor
+            </button>
+        </td>
         </tr>
         </tbody>
     </table>
