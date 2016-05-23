@@ -21,16 +21,14 @@ fifaApp.factory('ManageResource', function ($resource) {
     return $resource('/api/manage/fetch/:id');
 });
 
+fifaApp.factory('StatisticResource', function ($resource) {
+    return $resource('/api/stats/');
+});
 
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/index");
 
-    $stateProvider.state('monitor', {
-            url: '/monitor',
-            templateUrl: 'monitor.html',
-            controller: 'MonitoringController'
-        })
-        .state('manage', {
+    $stateProvider.state('manage', {
             url: '/manage',
             templateUrl: 'manage.html',
             controller: 'ManageController'

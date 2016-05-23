@@ -26,7 +26,7 @@ public class MonitoringResource {
 
   @RequestMapping(method = RequestMethod.GET)
   public List<MonitoringResult> listAll() {
-    return monitoringService.getAllResults();
+    return monitoringService.getAllMonitored();
   }
 
   @RequestMapping(method = RequestMethod.POST)

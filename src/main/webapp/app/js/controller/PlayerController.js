@@ -1,4 +1,5 @@
-fifaApp.controller('PlayerController', function ($scope, Monitoring, Players, PlayersFiltered, Sources) {
+fifaApp.controller('PlayerController', function ($rootScope, $scope, Monitoring, Players,
+PlayersFiltered, Sources) {
     var ALL = "all";
     var BY_SOURCE = "by_source";
     var BY_LEAGUE = "by_league";
@@ -24,7 +25,6 @@ fifaApp.controller('PlayerController', function ($scope, Monitoring, Players, Pl
     $scope.onPlayersLoaded = function (result) {
         $scope.players = [];
         angular.forEach(result, function (value, key) {
-            console.log(value);
             $scope.players.push({
                 id: value.id,
                 name: value.info.name,
@@ -63,11 +63,13 @@ fifaApp.controller('PlayerController', function ($scope, Monitoring, Players, Pl
 
     $scope.addToMonitoring = function (id) {
         Monitoring.save(id);
+        $rootScope.updateStats();
         $scope.playerFilter();
     };
 
     $scope.removeFromMonitoring = function (id) {
         Monitoring.remove({id: id});
+        $rootScope.updateStats();
         $scope.playerFilter();
     };
 
@@ -75,6 +77,20 @@ fifaApp.controller('PlayerController', function ($scope, Monitoring, Players, Pl
         Sources.query({}, function (res) {
             $scope.sources = res;
         }, $scope.onError);
+    };
+
+    $scope.enableAll = function (){
+        angular.forEach($scope.players, function (value, key) {
+            if(!value.underMonitoring)
+                $scope.addToMonitoring(value.id);
+        });
+    };
+
+    $scope.disableAll = function (){
+       angular.forEach($scope.players, function (value, key) {
+          if(value.underMonitoring)
+            $scope.removeFromMonitoring(value.id);
+       });
     };
 
     $scope.playerFilter();

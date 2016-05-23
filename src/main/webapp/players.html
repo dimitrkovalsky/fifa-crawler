@@ -3,6 +3,7 @@
 </div>
 
 <div class="container">
+
     <span ng-repeat="source in sources">
         <span class="label label-default source-label" ng-if="source!=filterSource"
               ng-click="filterBySource(source)">{{source}}
@@ -11,6 +12,10 @@
               ng-click="filterBySource(source)">{{source}}
         </span>
     </span>
+    <div style="margin:10px">
+        <button class="btn btn-success" ng-click="enableAll()">Enable All</button>
+        <button class="btn btn-danger" ng-click="disableAll()">Disable All</button>
+    </div>
     <table class="table">
         <thead>
         <tr>

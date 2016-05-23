@@ -21,4 +21,6 @@ public class MonitoringResult {
   private String name;
 
   private PriceHistory history;
+
+  public String image;
 }

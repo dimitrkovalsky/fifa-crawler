@@ -18,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -80,32 +83,56 @@ public class MonitoringServiceImpl implements MonitoringService {
   }
 
   @Override
+  public List<MonitoringResult> getAllMonitored() {
+    Set<Long> ids = monitoringRepository.findAll().stream()
+        .map(PlayerMonitoring::getId).collect(Collectors.toSet());
+
+    List<MonitoringResult> collect = monitoringResultRepository.findAll().stream().filter(m -> ids.contains(m.getId())).collect
+        (Collectors.toList());
+    addImages(collect);
+    return collect;
+  }
+
+  private void addImages(Iterable<MonitoringResult> collect) {
+    collect.forEach(mr -> {
+      String image = profileRepository.findOne(mr.getId()).getInfo().getImage();
+      mr.setImage(image);
+    });
+  }
+
+  @Override
   public void deleteMonitor(long id) {
     monitoringRepository.delete(id);
   }
 
   @Override
   public Iterable<MonitoringResult> getAllByIds(List<Long> ids) {
-    return  monitoringResultRepository.findAll(ids);
+    Iterable<MonitoringResult> all = monitoringResultRepository.findAll(ids);
+    addImages(all);
+    return all;
   }
 
   @Override
-  public void updatePrices() {
+  public void updatePrices(Consumer<MonitoringResult> onUpdate) {
     monitoringRepository.findAll().parallelStream().forEach(p -> {
       Price currentPrice = getCurrentPrice(p.getId());
       HistoryServiceImpl.RecordResult result = historyService.recordHistory(p.getId(), currentPrice);
       if (result.isPriceChanged())
-        onPriceChanged(result.getHistory());
+        onPriceChanged(result.getHistory(), onUpdate);
+
     });
   }
 
-  private void onPriceChanged(PriceHistory history) {
+  private void onPriceChanged(PriceHistory history, Consumer<MonitoringResult> onUpdate) {
     // Toolkit.getDefaultToolkit().beep();
     PlayerProfile one = profileRepository.findOne(history.getId());
     info("PRICE CHANGE", "Price changed for : " + one.getInfo().getName());
     info("PRICE CHANGE", "Start price : " + history.getFirstPrice().getPrice());
     info("PRICE CHANGE", "Current price : " + history.getCurrentPrice().getPrice());
-    monitoringResultRepository.save(new MonitoringResult(history.getId(), one.getInfo().getName(), history));
+    MonitoringResult monitoringResult = new MonitoringResult(history.getId(), one.getInfo()
+        .getName(), history, one.getInfo().getImage());
+    monitoringResultRepository.save(monitoringResult);
+    onUpdate.accept(monitoringResult);
   }
 
   private Price getCurrentPrice(Long id) {

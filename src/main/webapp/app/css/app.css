@@ -10,3 +10,8 @@
     cursor: pointer;
     margin: 4px;
 }
+
+b, strong {
+    font-weight: bold;
+    color: darkgoldenrod;
+}
