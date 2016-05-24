@@ -10,15 +10,15 @@ public interface CrawlerService {
 
   void execute();
 
-  void monitorInforms();
-
   PlayerProfile fetchData(long playerId, boolean force);
 
   Price getCurrentPrice(Long id);
 
-  void fetchTots();
+  String fetchTots();
 
-  void fetchTows();
+  String fetchTows();
 
-  void fetchSources();
+  String fetchSources();
+
+  String getStatus(String id);
 }

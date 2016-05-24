@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
+import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class InformProcessor {
   private static final int TOTW_PAGES = 36;
   private static final int FROM_TOTW_PAGES = 20;
 
-  public void getTotsIds(Consumer<List<Long>> onPageLoaded) {
+  public void getTotsIds(BiFunction<List<Long>, String, Void> onPageLoaded) {
     int pages = getPages();
     AtomicInteger counter = new AtomicInteger();
     AtomicInteger pageCounter = new AtomicInteger();
@@ -39,7 +39,8 @@ public class InformProcessor {
         List<Long> ids = getIds(url);
 
         info(this, "Fetched ids for : " + ids.size() + " players for : " + url);
-        onPageLoaded.accept(ids);
+        String status = pageCounter.get() + " / " + pages + " pages loaded";
+        onPageLoaded.apply(ids, status);
         pageCounter.addAndGet(1);
         counter.addAndGet(ids.size());
         log.info("[TOTS] processed " + pageCounter.get() + " pages from " + pages);
@@ -48,9 +49,10 @@ public class InformProcessor {
       }
     });
     log.info("[TOTS] fetched ids for " + counter.get() + " TOTS players");
+    onPageLoaded.apply(new ArrayList<>(), "Completed");
   }
 
-  public void getTotwIds(Consumer<List<Long>> onPageLoaded) {
+  public void getTotwIds(BiFunction<List<Long>, String, Void> onPageLoaded) {
     AtomicInteger counter = new AtomicInteger();
     AtomicInteger pageCounter = new AtomicInteger();
     IntStream.range(FROM_TOTW_PAGES, TOTW_PAGES + 1).parallel().forEach(i -> {
@@ -60,13 +62,15 @@ public class InformProcessor {
         List<Long> ids = getIdsFromInformTeamPage(url);
 
         log.info("[TOWS] Fetched ids for : " + ids.size() + " players for : " + url);
-        onPageLoaded.accept(ids);
+        String status = pageCounter.get() + " / " + TOTW_PAGES + 1 + " pages loaded";
+        onPageLoaded.apply(ids, status);
         pageCounter.addAndGet(1);
         counter.addAndGet(ids.size());
       } catch (Exception e) {
         log.error(e.getMessage());
       }
     });
+    onPageLoaded.apply(new ArrayList<>(), "Completed");
     log.info("[TOWS] fetched ids for " + counter.get() + " TOWS players");
   }
 

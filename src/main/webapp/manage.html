@@ -1,7 +1,14 @@
 <h1>Manage</h1>
-
-<button ng-click="fetchTots()">Fetch TOTS </button>
-<button ng-click="fetchTows()">Fetch TOWS </button>
-<button ng-click="fetchSources()">Fetch Sources </button>
-<input type="text" ng-model="playerId">
-<button ng-click="fetchPlayer(playerId)">Fetch Player </button>
+<div>
+    <button class="btn btn-default" ng-click="fetchTots()">Fetch TOTS</button>  {{totsStatus}}
+</div>
+<div>
+    <button class="btn btn-default" ng-click="fetchTows()">Fetch TOWS</button> {{towsStatus}}
+</div>
+<div>
+    <button class="btn btn-default" ng-click="fetchSources()">Fetch Sources</button>
+</div>
+<div>
+    <input type="text" ng-model="playerId">
+    <button class="btn btn-default" ng-click="fetchPlayer(playerId)">Fetch Player</button>
+</div>

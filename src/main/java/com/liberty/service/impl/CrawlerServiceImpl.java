@@ -21,9 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,6 +42,8 @@ import static com.liberty.common.LoggingUtil.info;
 @Component
 @Slf4j
 public class CrawlerServiceImpl implements CrawlerService {
+
+  private Map<String, String> statuses = new HashMap<>();
 
   public static final int DEFAULT_PAGE_SIZE = 20;
   @Autowired
@@ -69,7 +74,7 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   @Override
-  public void fetchSources() {
+  public String fetchSources() {
     Set<String> sources = profileRepository.findAll().stream().map(p -> {
       PlayerInfo info = p.getInfo();
       if (info == null || info.getSource() == null)
@@ -81,12 +86,12 @@ public class CrawlerServiceImpl implements CrawlerService {
     Set<Source> toSave = sources.stream().map(Source::new).collect(Collectors.toSet());
     sourceRepository.deleteAll();
     sourceRepository.save(toSave);
+    return "";
   }
 
   @Override
-  public void monitorInforms() {
-    informProcessor.getTotsIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
-    informProcessor.getTotwIds(ids -> ids.parallelStream().forEach(monitoringService::monitor));
+  public String getStatus(String id) {
+    return statuses.get(id);
   }
 
   @Override
@@ -111,13 +116,27 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   @Override
-  public void fetchTots() {
-    informProcessor.getTotsIds(ids -> ids.parallelStream().forEach(this::fetchData));
+  public String fetchTots() {
+    String trackId = UUID.randomUUID().toString();
+    new Thread(() ->
+        informProcessor.getTotsIds((ids, status) -> processPage(ids, status, trackId))
+    ).start();
+    return trackId;
+  }
+
+  private Void processPage(List<Long> ids, String status, String trackId) {
+    statuses.put(trackId, status);
+    ids.parallelStream().forEach(this::fetchData);
+    return null;
   }
 
   @Override
-  public void fetchTows() {
-    informProcessor.getTotwIds(ids -> ids.parallelStream().forEach(this::fetchData));
+  public String fetchTows() {
+    String trackId = UUID.randomUUID().toString();
+    new Thread(() ->
+        informProcessor.getTotwIds((ids, status) -> processPage(ids, status, trackId))
+    ).start();
+    return trackId;
   }
 
   private void fetchBaseData() {

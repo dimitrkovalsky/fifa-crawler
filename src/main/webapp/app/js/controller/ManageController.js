@@ -1,10 +1,12 @@
-fifaApp.controller('ManageController', function ($scope, ManageResource) {
+fifaApp.controller('ManageController', function ($scope, $interval, ManageResource, Tracking) {
 
     $scope.fetchTots = function () {
+        $scope.totsStatus = "Started";
         $scope.fetch("tots");
     };
 
     $scope.fetchTows = function () {
+        $scope.towsStatus = "Started";
         $scope.fetch("tows");
     };
 
@@ -17,14 +19,33 @@ fifaApp.controller('ManageController', function ($scope, ManageResource) {
     };
 
     $scope.fetch = function (toFetch) {
-        ManageResource.save(toFetch, $scope.onSuccess, $scope.onError);
+        ManageResource.save(toFetch, function (res) {
+            $scope.onSuccess(res.response, toFetch);
+        }, $scope.onError);
     };
 
-    $scope.onSuccess = function (result) {
-        console.log("Success fetch : " + result);
+    $scope.updateStatus = function (toTrack, response) {
+        if(toTrack == "tots")
+            $scope.totsStatus = response;
+        else if(toTrack == "tows")
+            $scope.towsStatus = response;
+    };
+    $scope.onSuccess = function (trackId, toTrack) {
+        debugger;
+        $scope.runTracking = function (trackId) {
+            var stop = $interval(function () {
+                Tracking.get({id: trackId}, function (st) {
+                    $scope.updateStatus(toTrack, st.response);
+                    if (st.response == "Completed")
+                        $interval.cancel(stop);
+                }, $scope.onError);
+            }, 1000);
+        };
+        $scope.runTracking(trackId, status);
     };
 
-    $scope.onSuccess = function (err) {
+    $scope.onError = function (err, s) {
+        debugger;
         console.log("Error fetch: " + err);
     };
 });

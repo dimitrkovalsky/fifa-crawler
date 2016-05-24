@@ -21,6 +21,10 @@ fifaApp.factory('ManageResource', function ($resource) {
     return $resource('/api/manage/fetch/:id');
 });
 
+fifaApp.factory('Tracking', function ($resource) {
+    return $resource('/api/manage/track/:id');
+});
+
 fifaApp.factory('StatisticResource', function ($resource) {
     return $resource('/api/stats/');
 });
