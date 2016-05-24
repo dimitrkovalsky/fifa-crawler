@@ -126,7 +126,13 @@ public class CrawlerServiceImpl implements CrawlerService {
 
   private Void processPage(List<Long> ids, String status, String trackId) {
     statuses.put(trackId, status);
-    ids.parallelStream().forEach(this::fetchData);
+    AtomicInteger counter = new AtomicInteger();
+    ids.parallelStream().forEach(id -> {
+      fetchData(id);
+      int current = counter.getAndIncrement();
+      String currentStatus = status + " processed " + current + " / " + ids.size() + " players";
+      statuses.put(trackId, currentStatus);
+    });
     return null;
   }
 

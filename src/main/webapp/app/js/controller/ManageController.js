@@ -1,4 +1,4 @@
-fifaApp.controller('ManageController', function ($scope, $interval, ManageResource, Tracking) {
+fifaApp.controller('ManageController', function ($rootScope, $scope, $interval, ManageResource, Tracking) {
 
     $scope.fetchTots = function () {
         $scope.totsStatus = "Started";
@@ -25,17 +25,17 @@ fifaApp.controller('ManageController', function ($scope, $interval, ManageResour
     };
 
     $scope.updateStatus = function (toTrack, response) {
-        if(toTrack == "tots")
+        if (toTrack == "tots")
             $scope.totsStatus = response;
-        else if(toTrack == "tows")
+        else if (toTrack == "tows")
             $scope.towsStatus = response;
     };
     $scope.onSuccess = function (trackId, toTrack) {
-        debugger;
         $scope.runTracking = function (trackId) {
             var stop = $interval(function () {
                 Tracking.get({id: trackId}, function (st) {
                     $scope.updateStatus(toTrack, st.response);
+                    $rootScope.updateStats();
                     if (st.response == "Completed")
                         $interval.cancel(stop);
                 }, $scope.onError);
@@ -45,7 +45,6 @@ fifaApp.controller('ManageController', function ($scope, $interval, ManageResour
     };
 
     $scope.onError = function (err, s) {
-        debugger;
         console.log("Error fetch: " + err);
     };
 });
