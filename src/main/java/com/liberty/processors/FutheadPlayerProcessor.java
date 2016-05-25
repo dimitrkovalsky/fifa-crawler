@@ -19,6 +19,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 
 import static com.liberty.common.LoggingUtil.info;
@@ -33,6 +36,7 @@ import static com.liberty.common.ValueParser.parseInt;
 public class FutheadPlayerProcessor {
 
   private static final String URL_PATTERN = "http://www.futhead.com/16/players/%s";
+  public static final String DEFAULT_SOURCE = "default";
   private PriceProcessor priceProcessor = new PriceProcessor();
 
   public PlayerProfile parse(PlayerInfo player) {
@@ -87,11 +91,25 @@ public class FutheadPlayerProcessor {
     info.setTeamName(table.get(1).child(1).text());
     info.setLeagueName(table.get(2).child(1).text());
     info.setNation(table.get(3).child(1).text());
-    info.setSource(table.get(4).child(1).text());
+    try {
+      info.setSource(table.get(4).child(1).text());
+    } catch (Exception e){
+      info.setSource(DEFAULT_SOURCE);
+    }
     info.setPlayCardPicture(document.select(".playercard-picture").first().select("img").attr("src"));
 
+    info.setCardType(getCardType(document));
     info.setPrice(parsePrice(document));
     return info;
+  }
+
+  private String getCardType(Document document) {
+    List<String> classes = document.select(".playercard.fut16.card-large").first().classNames().stream().collect(Collectors.toList());
+    if (classes == null || classes.isEmpty() || classes.size() < 2)
+      return "default";
+
+    String cardType = classes.get(classes.size() - 2) + " " + classes.get(classes.size() - 1);
+    return cardType;
   }
 
   private Price parsePrice(Document document) {

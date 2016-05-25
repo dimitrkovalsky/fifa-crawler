@@ -25,7 +25,7 @@ public class InformProcessor {
 
   private static final String TOTS_URL = "http://www.futhead.com/tots/?page=%d";
   private static final String TOTW_URL = "http://www.futhead.com/16/totw/totw%d/";
-  private static final int TOTW_PAGES = 36;
+  private static final int TOTW_PAGES = 37;
   private static final int FROM_TOTW_PAGES = 20;
 
   public void getTotsIds(BiFunction<List<Long>, String, Void> onPageLoaded) {

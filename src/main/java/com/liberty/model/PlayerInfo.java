@@ -26,6 +26,7 @@ public class PlayerInfo {
   private String nation;
   private String source;
   private PlayerStats stats;
+  private String cardType;
 
   private Price price;
 

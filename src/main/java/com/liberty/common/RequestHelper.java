@@ -102,7 +102,7 @@ public class RequestHelper {
       driver.get(url);
 
       String source = driver.getPageSource();
-      driver.quit();
+      driver.close();
       return source;
     } catch (Exception e) {
       log.error("Url is not valid : " + url);
