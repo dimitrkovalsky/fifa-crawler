@@ -1,5 +1,6 @@
 package com.liberty.rest;
 
+import com.liberty.model.PlayerFullInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.Source;
 import com.liberty.service.PlayerService;
@@ -37,6 +38,11 @@ public class PlayerProfileResource {
   @RequestMapping(path = "source/{source}", method = RequestMethod.GET)
   public List<PlayerProfile> getAllBySource(@PathVariable String source) {
     return playerService.getAllPlayers(source);
+  }
+
+  @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+  public PlayerFullInfo get(@PathVariable Long id) {
+    return playerService.geSingle(id);
   }
 
 }

@@ -1,5 +1,6 @@
 package com.liberty.service;
 
+import com.liberty.model.PlayerFullInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.Source;
 
@@ -15,4 +16,6 @@ public interface PlayerService {
   List<PlayerProfile> getAllPlayers(String source);
 
   List<Source> getAllSources();
+
+  PlayerFullInfo geSingle(Long id);
 }

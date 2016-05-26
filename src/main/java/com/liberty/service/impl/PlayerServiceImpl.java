@@ -1,9 +1,12 @@
 package com.liberty.service.impl;
 
+import com.liberty.model.PlayerFullInfo;
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.PriceHistory;
 import com.liberty.model.Source;
 import com.liberty.repositories.PlayerMonitoringRepository;
 import com.liberty.repositories.PlayerProfileRepository;
+import com.liberty.repositories.PriceHistoryRepository;
 import com.liberty.repositories.SourceRepository;
 import com.liberty.service.PlayerService;
 
@@ -31,6 +34,9 @@ public class PlayerServiceImpl implements PlayerService {
   @Autowired
   private PlayerProfileRepository playerProfileRepository;
 
+  @Autowired
+  private PriceHistoryRepository historyRepository;
+
   @Override
   public List<PlayerProfile> getAllPlayers() {
     return filterBySource(playerProfileRepository::findAll);
@@ -55,5 +61,17 @@ public class PlayerServiceImpl implements PlayerService {
   @Override
   public List<Source> getAllSources() {
     return sourceRepository.findAll();
+  }
+
+  @Override
+  public PlayerFullInfo geSingle(Long id) {
+    if(id == null)
+      throw new IllegalArgumentException("Id can not be null");
+    PlayerProfile profile = playerProfileRepository.findOne(id);
+    PriceHistory history = historyRepository.findOne(id);
+    PlayerFullInfo info = new PlayerFullInfo();
+    info.setProfile(profile);
+    info.setHistory(history);
+    return info;
   }
 }

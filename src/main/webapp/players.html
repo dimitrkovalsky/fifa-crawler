@@ -32,7 +32,7 @@
         <tbody ng-repeat="player in players">
         <td>
             <img class="table-image" src="{{player.image}}"> <br>
-            {{player.id}}
+            <a href="#/player/{{player.id}}">{{player.id}}</a>
         </td>
         <td>{{player.name}}</td>
         <td>{{player.position}}</td>

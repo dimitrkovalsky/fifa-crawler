@@ -42,6 +42,11 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: 'live.html',
             controller: 'LiveController'
         })
+        .state('single-player', {
+            url: '/player/:id',
+            templateUrl: 'player.html',
+            controller: 'SinglePlayerController'
+        })
         .state('players', {
             url: '/players',
             templateUrl: 'players.html',
