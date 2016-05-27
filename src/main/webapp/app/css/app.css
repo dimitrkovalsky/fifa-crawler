@@ -17,11 +17,42 @@ b, strong {
 }
 
 .gold-tots {
-    width: 100px;
-    /* Положение фона */
-    background: #cccccc url("../img/cards/tots.png") no-repeat right bottom;
+    background: url("../img/cards/tots.png") no-repeat;
+    height: 207px;
+    width: 132px;
+    background-position: 1px;
+    padding: 10px;
 }
 
 .gold-rare {
     background: #cccccc url("../img/cards/standard-rare.png");
+}
+
+.card-image {
+     height: 85px;
+     padding-left: 25px;
+     margin-top: -65px;
+}
+
+.card-tows-position {
+    font-size: 15px;
+    font-weight: bold;
+    color: gold;
+    margin-top: 0px;
+    margin-left: 7px;
+    text-shadow: -1px 0 #B7B7B7, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.card-tows-total {
+    font-size: 25px;
+    font-weight: bold;
+    color: gold;
+    margin-top: 10px;
+    margin-left: 5px;
+    text-shadow: -1px 0 #B7B7B7, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.card-name {
+   font-weight: bold;
+   text-align: center;
 }

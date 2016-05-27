@@ -86,7 +86,7 @@ PlayersFiltered, Sources) {
         });
     };
 
-    $scope.disableAll = function (){
+    $scope.disableAll = function () {
        angular.forEach($scope.players, function (value, key) {
           if(value.underMonitoring)
             $scope.removeFromMonitoring(value.id);

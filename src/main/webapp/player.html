@@ -1,9 +1,21 @@
 <div class="container">
     <h1 style="margin-top: 30px">{{profile.info.name}} </h1>
-    <div class="player-card gold-tots">
-        <img src="{{profile.info.image}}">
+    <div class="gold-tots">
+        <div class="card-tows-total">{{profile.info.stats.total}}</div>
+        <div class="card-tows-position">{{profile.info.position}}</div>
+        <img class="card-image" src="{{profile.info.image}}">
+        <div class="card-name">{{getLastName()}}</div>
+
+
+        <div class="playercard-attr playercard-attr1">70 <span class="playercard-thin">PAC</span></div>
+        <div class="playercard-attr playercard-attr2">72 <span class="playercard-thin">SHO</span></div>
+        <div class="playercard-attr playercard-attr3">77 <span class="playercard-thin">PAS</span></div>
+        <div class="playercard-attr playercard-attr4">72 <span class="playercard-thin">DRI</span></div>
+        <div class="playercard-attr playercard-attr5">90 <span class="playercard-thin">DEF</span></div>
+
+        <div class="playercard-attr playercard-attr6">86 <span class="playercard-thin">PHY</span></div>
     </div>
-    <strong>{{profile.info.cardType}}</strong>
+    <strong></strong>
     <div>
         {{profile}}
         {{history}}

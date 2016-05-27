@@ -13,7 +13,7 @@
         <tbody ng-repeat="mon in monitoringResults">
         <tr
                 ng-class="{ danger:mon.currentPrice < mon.lastPrice, success:mon.currentPrice > mon.lastPrice, default: mon.currentPrice == mon.lastPrice}">
-            <td>{{mon.Id}}</td>
+            <td>{{mon.id}}</td>
             <td>{{mon.name}}</td>
             <td>{{mon.firstPrice}}</td>
             <td>{{mon.lastPrice}}</td>
