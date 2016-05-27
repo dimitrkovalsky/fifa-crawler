@@ -15,3 +15,13 @@ b, strong {
     font-weight: bold;
     color: darkgoldenrod;
 }
+
+.gold-tots {
+    width: 100px;
+    /* Положение фона */
+    background: #cccccc url("../img/cards/tots.png") no-repeat right bottom;
+}
+
+.gold-rare {
+    background: #cccccc url("../img/cards/standard-rare.png");
+}
