@@ -96,17 +96,20 @@ public class RequestHelper {
   }
 
   public static String executeWithJs(String url) {
+    WebDriver driver = null;
     try {
-      WebDriver driver = new PhantomJSDriver(getDriverConfig());
+      driver = new PhantomJSDriver(getDriverConfig());
       log.info("Trying to get content from : " + url);
       driver.get(url);
 
       String source = driver.getPageSource();
-      driver.close();
       return source;
     } catch (Exception e) {
       log.error("Url is not valid : " + url);
       return "";
+    } finally {
+      if (driver != null)
+        driver.quit();
     }
   }
 
