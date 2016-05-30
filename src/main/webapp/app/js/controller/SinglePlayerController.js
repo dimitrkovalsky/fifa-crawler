@@ -6,6 +6,7 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
         console.log(player);
         $scope.profile = player.profile;
         $scope.history = player.history;
+        $scope.draw($scope.history)
     };
 
     $scope.getLastName = function () {
@@ -16,47 +17,47 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
             return "Undefined";
     };
 
-    $scope.draw = function () {
+    $scope.draw = function (history) {
         if (!$scope.chartLoaded()) {
             setTimeout(function () {
-                $scope.draw();
+                $scope.draw(history);
             }, 1000);
         } else {
             drawChart();
         }
         function drawChart() {
+            function getPrice(record) {
+                if (record && record.price && record.price.pc && record.price.pc.price)
+                    return record.price.pc.price;
+            }
+
             var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Day');
-
-            data.addRows([
-                [1],
-                [24],
-                [3],
-                [45],
-                [54],
-                [6],
-                [7],
-                [86],
-                [98],
-                [10],
-                [11],
-                [12],
-                [13],
-                [14]
-            ]);
-
+            data.addColumn('date', 'Day');
+            data.addColumn('number', 'Price');
+            var points = [];
+            for (var i = 0; i < history.history.length; i++) {
+                var price = getPrice(history.history[i]);
+                if (price) {
+                    var recorded = history.history[i].recoded;
+                    points.push([new Date(recorded), price]);
+                }
+            }
+            var currentPrice = getPrice(history.currentPrice);
+            if (currentPrice) {
+                var recordedDate = history.currentPrice.recoded;
+                points.push([new Date(recordedDate), currentPrice]);
+            } else {
+                points.push([new Date(), 0]);
+            }
+            data.addRows(points);
+            var subtitle = currentPrice || "None history";
             var options = {
                 chart: {
-                    title: 'Player price change',
-                    subtitle: 'last update'
+                    title: 'Current price',
+                    subtitle: subtitle
                 },
                 width: 900,
-                height: 500,
-                axes: {
-                    x: {
-                        0: {side: 'top'}
-                    }
-                }
+                height: 400
             };
 
             var chart = new google.charts.Line(document.getElementById('price-chart'));
@@ -70,8 +71,6 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
     $scope.chartLoaded = function () {
         return !((typeof google === 'undefined') || (typeof google.visualization === 'undefined'));
     };
-
-    $scope.draw();
 
     Players.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
 })

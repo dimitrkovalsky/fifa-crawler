@@ -89,7 +89,6 @@ fifaApp.controller('LiveController', function ($scope, Monitoring) {
     $scope.connect();
 
      $scope.$on("$destroy", function() {
-          debugger;
          $scope.disconnect();
      });
 });
