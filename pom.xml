@@ -29,6 +29,7 @@
         <spring-mongo.version>1.8.4.RELEASE</spring-mongo.version>
         <selenium-java.version>2.53.0</selenium-java.version>
         <htmlunit-driver.version>2.52.0</htmlunit-driver.version>
+        <robotframework.version>3.0</robotframework.version>
     </properties>
 
 
@@ -55,6 +56,13 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.robotframework</groupId>
+            <artifactId>robotframework</artifactId>
+            <version>${robotframework.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -116,6 +124,13 @@
             <artifactId>selenium-htmlunit-driver</artifactId>
             <version>2.52.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>2.53.0</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.github.detro.ghostdriver</groupId>
