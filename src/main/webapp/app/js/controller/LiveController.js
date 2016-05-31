@@ -17,7 +17,6 @@ fifaApp.controller('LiveController', function ($scope, Monitoring) {
     };
 
     $scope.onUpdate = function (frame) {
-        debugger;
         var object =  JSON.parse(frame.body);
         var player = $scope.parsePlayer(object);
         $scope.updateRow(player);
@@ -69,11 +68,14 @@ fifaApp.controller('LiveController', function ($scope, Monitoring) {
      };
 
     $scope.highlightRow = function(id) {
-      var selector ='#player-row-' + id;
-      $(selector).css("background-color", "red");
-      setTimeout(function() {
-          $(selector).css("background-color", "white");
-      }, 2000);
+        $scope.$apply();
+        setTimeout(function(){
+            var selector ='#player-row-' + id;
+            $(selector).css("background-color", "red");
+            setTimeout(function() {
+                $(selector).css("background-color", "white");
+            }, 2000);
+        }, 500);
     };
 
     $scope.onError = function(error){

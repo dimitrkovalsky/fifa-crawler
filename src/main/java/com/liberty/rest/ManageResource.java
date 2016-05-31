@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +42,7 @@ public class ManageResource {
           break;
         case "sources":
           trackId = crawlerService.fetchSources();
+          break;
         default:
           log.error("Can not fetch : " + toFetch.toLowerCase());
       }
@@ -70,4 +74,11 @@ public class ManageResource {
     }
   }
 
+  public static void main(String[] args) {
+    List<Integer> list = new ArrayList<Integer>() {{
+      add(1);
+      add(2);
+    }};
+    System.out.println(list);
+  }
 }
