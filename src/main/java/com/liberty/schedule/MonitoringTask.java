@@ -23,7 +23,7 @@ public class MonitoringTask {
   @Autowired
   private MonitoringService monitoringService;
 
-  @Scheduled(fixedRate = 60000)
+  @Scheduled(fixedRate = 300000)
   public void monitor() {
     log.info("Trying to update prices");
     monitoringService.updatePrices(liveController::onPriceChanged);
