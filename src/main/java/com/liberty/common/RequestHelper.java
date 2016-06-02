@@ -171,9 +171,9 @@ public class RequestHelper {
     request.setHeader("X-HTTP-Method-Override", "GET");
     request.setHeader("X-Requested-With", "ShockwaveFlash/21.0.0.242");
     request.setHeader("X-UT-Embed-Error", "true");
-    request.setHeader("X-UT-PHISHING-TOKEN", "2079335444359560537");
-    request.setHeader("X-UT-SID", "b3b78b1b-00e8-47fe-9516-84df1345860e");
-    request.setHeader("Cookie","optimizelyEndUserId=oeu1450945658852r0.39485638681799173; __utma=103303007.2105186675.1448875174.1448875174.1451291418.2; __utmz=103303007.1451291418.2.2.utmcsr=accounts.ea.com|utmccn=(referral)|utmcmd=referral|utmcct=/connect/logout; _nx_mpcid=9ddb98a4-ab3e-4c9a-a223-6764be03113f; utag_main=_st:1464791605501$v_id:0151d319be6300099ce81dcd82090c07e006e07600bd0$_sn:4$_ss:0$_pn:2%3Bexp-session$ses_id:1464789794804%3Bexp-session; optimizelySegments=%7B%222200840229%22%3A%22opera%22%2C%222207560119%22%3A%22false%22%2C%222209790291%22%3A%22none%22%2C%222215600082%22%3A%22search%22%7D; optimizelyBuckets=%7B%7D; _ga=GA1.2.2105186675.1448875174");
+    request.setHeader("X-UT-PHISHING-TOKEN", "9002495091363405202");
+    request.setHeader("X-UT-SID", "aeeac1b4-824e-4e47-a9a2-83e20c13d7e1");
+//    request.setHeader("Cookie","optimizelyEndUserId=oeu1450945658852r0.39485638681799173; __utma=103303007.2105186675.1448875174.1448875174.1451291418.2; __utmz=103303007.1451291418.2.2.utmcsr=accounts.ea.com|utmccn=(referral)|utmcmd=referral|utmcct=/connect/logout; _nx_mpcid=9ddb98a4-ab3e-4c9a-a223-6764be03113f; utag_main=_st:1464791605501$v_id:0151d319be6300099ce81dcd82090c07e006e07600bd0$_sn:4$_ss:0$_pn:2%3Bexp-session$ses_id:1464789794804%3Bexp-session; optimizelySegments=%7B%222200840229%22%3A%22opera%22%2C%222207560119%22%3A%22false%22%2C%222209790291%22%3A%22none%22%2C%222215600082%22%3A%22search%22%7D; optimizelyBuckets=%7B%7D; _ga=GA1.2.2105186675.1448875174");
 //    request.setHeader(HttpHeaders.COO, "application/json");
     HttpResponse response = client.execute(request);
     InputStream content = response.getEntity().getContent();

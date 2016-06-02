@@ -48,6 +48,18 @@
         <priority value="NONE"/>
     </category>
 
+    <logger name="org.apache.commons.httpclient">
+        <level value="fatal"/>
+    </logger>
+
+    <logger name="httpclient.wire.header">
+        <level value="fatal"/>
+    </logger>
+
+    <logger name="httpclient.wire.content">
+        <level value="fatal"/>
+    </logger>
+
     <root>
         <appender-ref ref="LOG-FILE-APPENDER"/>
         <appender-ref ref="CONSOLE-DEBUG"/>
