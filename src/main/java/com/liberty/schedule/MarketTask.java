@@ -21,7 +21,7 @@ public class MarketTask {
 
   @Scheduled(fixedRate = 120000)
   public void monitor() {
-  //  addPlayers();
+    //addPlayers();
     log.info("Trying to check market");
     tradeService.checkMarket();
   }
@@ -45,6 +45,7 @@ public class MarketTask {
     add("Sterling", 202652, 1000);
     add("Azpilcueta", 184432, 1000);
     add("Diego Costa", 179844, 2100);
+    add("Santi Cazorla", 146562, 1000);
 
 
     // Spain
@@ -55,6 +56,7 @@ public class MarketTask {
     add("Busgets", 189511, 1200);
     add("Carvajal", 204963, 1300);
     add("Marcelo", 176676, 1300);
+    add("Martinez", 196144, 1300);
 
 
     // Germany
