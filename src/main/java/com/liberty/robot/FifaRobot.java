@@ -1,6 +1,5 @@
 package com.liberty.robot;
 
-import com.opera.core.systems.OperaProfile;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -13,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
-import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.awt.*;
@@ -31,7 +29,7 @@ public class FifaRobot {
 
     driver.manage().window().maximize();
 
-   // driver.get("https://google.com");
+    // driver.get("https://google.com");
     driver.get("https://www.easports.com/fifa/ultimate-team/web-app");
     Thread.sleep(10000);
     Set<Cookie> cookies = driver.manage().getCookies();
@@ -58,11 +56,12 @@ public class FifaRobot {
     String operaPath = "C:\\Program Files (x86)\\Opera\\launcher.exe";
 //    System.setProperty("opera.launcher", operaPath);
     System.setProperty("webdriver.opera.driver", operaPath);
-    OperaProfile profile = new OperaProfile("C:\\Users\\Dmytro_Kovalskyi\\AppData\\Roaming\\Opera Software\\Opera Stable");
-    DesiredCapabilities capabilities = DesiredCapabilities.opera();
-    capabilities.setCapability("opera.profile", profile);
+//    OperaProfile profile = new OperaProfile("C:\\Users\\Dmytro_Kovalskyi\\AppData\\Roaming\\Opera Software\\Opera Stable");
+//    DesiredCapabilities capabilities = DesiredCapabilities.opera();
+//    capabilities.setCapability("opera.profile", profile);
 //    capabilities.setCapability("opera.launcher", operaPath);
-    return new OperaDriver(capabilities);
+//    return new OperaDriver(capabilities);
+    return null;
   }
 
   private static WebDriver getChromeWebDriver() {

@@ -16,7 +16,7 @@ public class JsonHelper {
 
   private static ObjectMapper objectMapper = new ObjectMapper();
 
-  private JsonHelper(){
+  private JsonHelper() {
 
   }
 
@@ -24,8 +24,17 @@ public class JsonHelper {
     return objectMapper.convertValue(data, ObjectNode.class);
   }
 
-  public static String toString(JsonNode data) throws JsonProcessingException {
-    return objectMapper.writeValueAsString(data);
+  public static <T> String toJsonString(T data) {
+    return toString(objectMapper.convertValue(data, ObjectNode.class));
+  }
+
+  public static String toString(JsonNode data) {
+    try {
+      return objectMapper.writeValueAsString(data);
+    } catch (JsonProcessingException e) {
+      log.error(e.getMessage());
+      return "";
+    }
   }
 
   @SuppressWarnings("unchecked")

@@ -125,23 +125,23 @@
             <version>2.52.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-            <version>2.53.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.seleniumhq.selenium</groupId>-->
+            <!--<artifactId>selenium-chrome-driver</artifactId>-->
+            <!--<version>2.53.0</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>com.opera</groupId>
-            <artifactId>operadriver</artifactId>
-            <version>1.5</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.opera</groupId>-->
+            <!--<artifactId>operadriver</artifactId>-->
+            <!--<version>1.5</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>net.lightbody.bmp</groupId>
-            <artifactId>browsermob-core</artifactId>
-            <version>2.1.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.lightbody.bmp</groupId>-->
+            <!--<artifactId>browsermob-core</artifactId>-->
+            <!--<version>2.1.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>

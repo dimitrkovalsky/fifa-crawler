@@ -13,4 +13,8 @@ public class FifaError {
   private String message;
   private Integer code;
 
+
+  public interface ErrorCode {
+    int SESSION_EXPIRED = 401;
+  }
 }
