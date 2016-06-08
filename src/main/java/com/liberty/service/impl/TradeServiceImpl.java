@@ -29,7 +29,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
 @Slf4j
 public class TradeServiceImpl implements TradeService {
 
-  private static int MAX_PURCHASE_AMOUNT = 5;
+  private static int MAX_PURCHASE_AMOUNT = 20;
   private static int MIN_DELAY = 2000;
   private static int MAX_DELAY = 5000;
   private FifaRequests fifaRequests = new FifaRequests();

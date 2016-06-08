@@ -21,37 +21,64 @@ public class MarketTask {
 
   @Scheduled(fixedRate = 120000)
   public void monitor() {
-    //addPlayers();
+    richPlayers();
+    addPlayers();
     log.info("Trying to check market");
     tradeService.checkMarket();
   }
 
-  private void addPlayers() {
+  private void richPlayers() {
     tradeService.removeAllPlayers();
+    add("Bellerin", 203747, 1500);
+    add("Diego Costa", 179844, 2100);
+    add("Carvajal", 204963, 1300);
+
+    add("Isco", 197781, 900);
+    add("Dani Alves", 146530, 1500);
+    add("Jordi Alba", 189332, 1300);
+    add("Dybala", 211110, 1300);
+    add("Courtius", 192119, 1600);
+    add("Martinez", 196144, 2000);
+    add("Griezman", 194765, 2000);
+    add("Gotze", 192318, 1300);
+    add("Rooney", 54050, 3000);
+    add("Fabregas", 162895, 3000);
+    add("Silva", 168542, 3300);
+    add("Pizscek", 173771, 2200);
+    add("Naldo", 171919, 1000);
+    add("Aubumeyang", 188567, 3000);
+    add("Baines", 163631, 950);
+    add("Rodriguez", 193352, 900);
+    add("Vardy", 208830L, 950);
+    add("Payet", 177388, 1000);
+  }
+
+  private void addPlayers() {
+  //  tradeService.removeAllPlayers();
     // England
     add("Mahrez", 204485L, 900);
-    add("Vardy", 208830L, 1000);
+    add("Vardy", 208830L, 950);
     add("Payet", 177388, 1000);
     add("Kompany", 139720, 1000);
     add("Otamendi", 192366, 1000);
     add("Walcot", 164859, 900);
-    add("Baines", 163631, 1000);
-    add("Bellerin", 203747, 2000);
-    add("Schwenstaiger", 121944, 1100);
-    add("Koscelnyi", 165229, 1300);
-    add("Coutinho", 189242, 1000);
+    add("Baines", 163631, 950);
+    add("Bellerin", 203747, 1500);
+    add("Schwenstaiger", 121944, 1000);
+    add("Koscelnyi", 165229, 1000);
+    add("Coutinho", 189242, 900);
     add("Willian", 180403, 1000);
     add("Sturrige", 171833, 1000);
     add("Sterling", 202652, 1000);
     add("Azpilcueta", 184432, 1000);
     add("Diego Costa", 179844, 2100);
-    add("Santi Cazorla", 146562, 1000);
+    add("Santi Cazorla", 146562, 900);
 
 
     // Spain
     add("Varane", 201535, 900);
     add("Pepe", 120533, 900);
-    add("Pique", 152729, 1100);
+    add("Pique", 152729, 1000);
     add("Turan", 143745, 900);
     add("Busgets", 189511, 1200);
     add("Carvajal", 204963, 1300);
@@ -60,7 +87,7 @@ public class MarketTask {
 
 
     // Germany
-    add("Bellarabi", 202857, 900);
+    add("Bellarabi", 202857, 850);
     add("Mkhitarian", 192883, 900);
     add("Aubumeyang", 188567, 1500);
     add("Rodriguez", 193352, 900);
@@ -72,7 +99,7 @@ public class MarketTask {
     add("Verrati", 199556, 900);
     add("Verrati", 199556, 900);
     add("Pastore", 191180, 950);
-    add("Matudi", 170890, 1000);
+    add("Matudi", 170890, 900);
   }
 
   private void add(String name, long id, int maxPrice) {

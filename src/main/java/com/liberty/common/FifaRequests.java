@@ -30,8 +30,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "0c9e54c6-358f-4d6f-98cc-cc68d3214f54";
-  private String phishingToken = "3334028481728691671";
+  private String sessionId = "4f11548a-c134-419f-b963-12d74a016496";
+  private String phishingToken = "7433501828602351075";
 
   public FifaRequests() {
     System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
