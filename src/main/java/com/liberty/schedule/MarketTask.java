@@ -39,13 +39,13 @@ public class MarketTask {
     add("Iniesta", 41, 8000);
     add("Rodriges", 198710, 9000);
     add("Boateng", 183907, 10000);
-    add("Sergio Ramos", 155862, 17000);
-    add("Benzema", 165153, 4500);
+    add("Sergio Ramos", 155862, 18000);
+    add("Benzema", 165153, 5500);
     add("Toure", 20289, 6000);
-    add("Sanchez", 184941, 11000);
-    add("Lewandowsky", 188545, 16000);
+    add("Sanchez", 184941, 12000);
+    add("Lewandowsky", 188545, 17000);
     add("Alaba", 197445, 20000);
-    add("Modric", 177003, 15000);
+    add("Modric", 177003, 17000);
     add("Di Maria", 183898, 9000);
     add("Vidal", 181872, 6000);
     add("Tiago Silva", 164240, 8000);
