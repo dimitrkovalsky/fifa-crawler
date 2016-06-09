@@ -21,10 +21,30 @@ public class MarketTask {
 
   @Scheduled(fixedRate = 120000)
   public void monitor() {
-    richPlayers();
     addPlayers();
     log.info("Trying to check market");
     tradeService.checkMarket();
+  }
+
+  private void veryRichPlayers(){
+    tradeService.removeAllPlayers();
+    add("De Brune", 192985, 12000);
+    add("De Gea", 193080, 6000);
+    add("Iniesta", 41, 8000);
+    add("Rodriges", 198710, 9000);
+    add("Boateng", 183907, 12000);
+    add("Sergio Ramos", 155862, 21000);
+    add("Benzema", 165153, 4500);
+    add("Toure", 20289, 7000);
+    add("Sanchez", 184941, 11000);
+    add("Lewandowsky", 188545, 16000);
+    add("Alaba", 197445, 20000);
+    add("Modric", 177003, 15000);
+    add("Di Maria", 183898, 9000);
+    add("Vidal", 181872, 6000);
+    add("Tiago Silva", 164240, 8000);
+    add("Reus", 188350, 22000);
+    add("Ribery", 156616, 13000);
   }
 
   private void richPlayers() {
@@ -54,16 +74,16 @@ public class MarketTask {
   }
 
   private void addPlayers() {
-  //  tradeService.removeAllPlayers();
+    tradeService.removeAllPlayers();
     // England
-    add("Mahrez", 204485L, 900);
-    add("Vardy", 208830L, 950);
-    add("Payet", 177388, 1000);
-    add("Kompany", 139720, 1000);
-    add("Otamendi", 192366, 1000);
-    add("Walcot", 164859, 900);
-    add("Baines", 163631, 950);
-    add("Bellerin", 203747, 1500);
+    add("Mahrez", 204485L, 2000);
+    add("Vardy", 208830L, 1500);
+    add("Payet", 177388, 1400);
+    add("Kompany", 139720, 1300);
+    add("Otamendi", 192366, 1200);
+    add("Walcot", 164859, 1000);
+    add("Baines", 163631, 1000);
+    add("Bellerin", 203747, 1800);
     add("Schwenstaiger", 121944, 1000);
     add("Koscelnyi", 165229, 1000);
     add("Coutinho", 189242, 900);
@@ -89,8 +109,8 @@ public class MarketTask {
     // Germany
     add("Bellarabi", 202857, 850);
     add("Mkhitarian", 192883, 900);
-    add("Aubumeyang", 188567, 1500);
-    add("Rodriguez", 193352, 900);
+    add("Aubumeyang", 188567, 3000);
+    add("Rodriguez", 193352, 1300);
 
     // France
     add("Kurzava", 201510, 900);
