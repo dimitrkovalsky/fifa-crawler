@@ -40,7 +40,7 @@ public class MarketTask {
     add("Rodriges", 198710, 9000);
     add("Boateng", 183907, 10000);
     add("Sergio Ramos", 155862, 18000);
-    add("Benzema", 165153, 5500);
+    add("Benzema", 165153, 4500);
     add("Toure", 20289, 6000);
     add("Sanchez", 184941, 12000);
     add("Lewandowsky", 188545, 17000);
