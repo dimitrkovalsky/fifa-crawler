@@ -28,9 +28,9 @@ public class MarketTask {
 
   private void track() {
     tradeService.removeAllPlayers();
-   // simplePlayers();
-  // richPlayers();
-    veryRichPlayers();
+  //  simplePlayers();
+   //richPlayers();
+   veryRichPlayers();
   }
 
   private void veryRichPlayers() {
@@ -87,7 +87,7 @@ public class MarketTask {
 
   private void simplePlayers() {
     // England
-    add("Mahrez", 204485L, 2000);
+    add("Mahrez", 204485L, 1400);
     add("Vardy", 208830L, 1500);
     add("Payet", 177388, 1400);
     add("Kompany", 139720, 1300);
