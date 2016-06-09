@@ -21,21 +21,27 @@ public class MarketTask {
 
   @Scheduled(fixedRate = 120000)
   public void monitor() {
-    addPlayers();
+    track();
     log.info("Trying to check market");
     tradeService.checkMarket();
   }
 
-  private void veryRichPlayers(){
+  private void track() {
     tradeService.removeAllPlayers();
+   // simplePlayers();
+  // richPlayers();
+    veryRichPlayers();
+  }
+
+  private void veryRichPlayers() {
     add("De Brune", 192985, 12000);
     add("De Gea", 193080, 6000);
     add("Iniesta", 41, 8000);
     add("Rodriges", 198710, 9000);
-    add("Boateng", 183907, 12000);
-    add("Sergio Ramos", 155862, 21000);
+    add("Boateng", 183907, 10000);
+    add("Sergio Ramos", 155862, 17000);
     add("Benzema", 165153, 4500);
-    add("Toure", 20289, 7000);
+    add("Toure", 20289, 6000);
     add("Sanchez", 184941, 11000);
     add("Lewandowsky", 188545, 16000);
     add("Alaba", 197445, 20000);
@@ -43,12 +49,18 @@ public class MarketTask {
     add("Di Maria", 183898, 9000);
     add("Vidal", 181872, 6000);
     add("Tiago Silva", 164240, 8000);
-    add("Reus", 188350, 22000);
+    add("Reus", 188350, 18000);
     add("Ribery", 156616, 13000);
+
+    add("Ibrahimovich", 41236, 33000);
+    add("Aguero", 153079, 33000);
+    add("Robben", 9014, 45000);
+    add("Messi", 158023, 100000);
+    add("Neymar", 190871, 100000);
+    add("Bale", 173731, 60000);
   }
 
   private void richPlayers() {
-    tradeService.removeAllPlayers();
     add("Bellerin", 203747, 1500);
     add("Diego Costa", 179844, 2100);
     add("Carvajal", 204963, 1300);
@@ -73,8 +85,7 @@ public class MarketTask {
     add("Payet", 177388, 1000);
   }
 
-  private void addPlayers() {
-    tradeService.removeAllPlayers();
+  private void simplePlayers() {
     // England
     add("Mahrez", 204485L, 2000);
     add("Vardy", 208830L, 1500);
@@ -116,7 +127,6 @@ public class MarketTask {
     add("Kurzava", 201510, 900);
     add("Lacazette", 193301, 1500);
     add("Lavezzi", 159065, 950);
-    add("Verrati", 199556, 900);
     add("Verrati", 199556, 900);
     add("Pastore", 191180, 950);
     add("Matudi", 170890, 900);
