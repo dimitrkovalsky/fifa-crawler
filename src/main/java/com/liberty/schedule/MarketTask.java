@@ -28,9 +28,9 @@ public class MarketTask {
 
   private void track() {
     tradeService.removeAllPlayers();
-  //  simplePlayers();
-   //richPlayers();
-   veryRichPlayers();
+    simplePlayers();
+    richPlayers();
+  //  veryRichPlayers();
   }
 
   private void veryRichPlayers() {
@@ -135,5 +135,4 @@ public class MarketTask {
   private void add(String name, long id, int maxPrice) {
     tradeService.addToAutoBuy(name, id, maxPrice);
   }
-
 }

@@ -21,5 +21,7 @@ public class PlayerTradeStatus {
 
   private String name;
 
-  private int maxPrice;
+  private Integer maxPrice;
+
+  private Long lastBuyPrice;
 }
