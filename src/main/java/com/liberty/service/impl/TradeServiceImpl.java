@@ -13,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -32,6 +35,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
 public class TradeServiceImpl implements TradeService {
 
   public static final int DEFAULT_LOW_BOUND = 1000;
+  public static final int STATISTIC_PLAYER_COLLECTION_AMOUND = 20;
   private static int MAX_PURCHASE_AMOUNT = 40;
   private static int MIN_DELAY = 2000;
   private static int MAX_DELAY = 5000;
@@ -138,8 +142,8 @@ public class TradeServiceImpl implements TradeService {
     fifaRequests.auctionHouse();
   }
 
-  private Optional<AuctionInfo> foundMin(TradeStatus tradeStatus) {
-    Optional<AuctionInfo> min = tradeStatus.getAuctionInfo().stream()
+  private Optional<AuctionInfo> foundMin(List<AuctionInfo> statuses) {
+    Optional<AuctionInfo> min = statuses.stream()
         .min(getAuctionInfoComparator());
     return min.flatMap(m -> {
       if (m.getItemData().getContract() <= 0) {
@@ -197,18 +201,100 @@ public class TradeServiceImpl implements TradeService {
     return true;
   }
 
-
-  public void findMinPrice(long playerId) {
+  @Override
+  public void findMinPrice(long playerId) throws IOException {
     PlayerStatistic player = statisticRepository.findOne(playerId);
     if (player == null) {
       player = new PlayerStatistic();
+      player.setId(playerId);
     }
 
     Integer lowBound = player.getLastPrice();
     if (lowBound == null) {
       lowBound = DEFAULT_LOW_BOUND;
     }
+    int iteration = 0;
+    List<AuctionInfo> toStatistic = new ArrayList<>();
 
+    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUND) {
+      iteration++;
+      List<AuctionInfo> players = findPlayers(playerId, lowBound);
+      if (players.size() == 0) {
+        lowBound = getHigherBound(0, lowBound);
+      } else if (players.size() >= 20) {
+        lowBound = getLowerBound(lowBound);
+      } else {
+        toStatistic.addAll(players);
+        lowBound = getHigherBound(0, lowBound);
+      }
+
+      if (iteration >= 20) {
+        log.info("Exceeded iteration limit");
+      }
+    }
+    Map<Integer, List<AuctionInfo>> stats =
+        toStatistic.stream().collect(Collectors.groupingBy(AuctionInfo::getBuyNowPrice));
+    updateStats(playerId, toStatistic, stats);
+
+
+    log.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
+    log.info(stats.toString());
+  }
+
+  private void updateStats(long playerId, List<AuctionInfo> toStatistic,
+                           Map<Integer, List<AuctionInfo>> stats) {
+    foundMin(toStatistic).ifPresent(m -> {
+      PlayerStatistic toSave = new PlayerStatistic();
+      toSave.setId(playerId);
+      toSave.setLastPrice(m.getBuyNowPrice());
+      List<PlayerStatistic.PriceDistribution> prices = toStatistic(stats);
+      toSave.setPrices(prices);
+      System.out.println("Player stats : " + toSave);
+      statisticRepository.save(toSave);
+    });
+  }
+
+  private List<PlayerStatistic.PriceDistribution> toStatistic(
+      Map<Integer, List<AuctionInfo>> stats) {
+    List<PlayerStatistic.PriceDistribution> result = new ArrayList<>();
+    stats.forEach((k, v) -> {
+      result.add(new PlayerStatistic.PriceDistribution(k, v.size()));
+    });
+    return result;
+  }
+
+  private Integer getLowerBound(Integer lowBound) {
+    if (lowBound <= 1000) {
+      return lowBound - 50;
+    } else if (lowBound <= 10000) {
+      return lowBound - 100;
+    } else if (lowBound <= 50000) {
+      return lowBound - 250;
+    } else if (lowBound <= 100000) {
+      return lowBound - 500;
+    } else {
+      return lowBound - 1000;
+    }
+
+  }
+
+  public List<AuctionInfo> findPlayers(long playerId, Integer lowBound) throws IOException {
+    Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerId, lowBound);
+    return maybe.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
+  }
+
+  private int getHigherBound(int found, Integer lowBound) {
+    if (lowBound < 1000) {
+      return lowBound + 50;
+    } else if (lowBound < 10000) {
+      return lowBound + 100;
+    } else if (lowBound < 50000) {
+      return lowBound + 250;
+    } else if (lowBound < 100000) {
+      return lowBound + 500;
+    } else {
+      return lowBound + 1000;
+    }
 
   }
 }
