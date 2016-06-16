@@ -1,0 +1,31 @@
+<div class="page-header">
+    <h1>Market</h1>
+</div>
+
+
+<div class="col-md-6">
+    Phishing Token : <strong>{{marketInfo.phishingToken}}</strong><br>
+    Session Id : <strong>{{marketInfo.sessionId}}</strong> <br>
+    Max Purchases : <strong>{{marketInfo.maxPurchases}}</strong> <br>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Max buy now price</th>
+            <th>Bought</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="player in players">
+        <td>
+            <a href="#/player/{{player.id}}">{{player.id}}</a>
+        </td>
+        <td>{{player.name}}</td>
+        <td>{{player.maxPrice}}</td>
+        <td>{{player.boughtAmount}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
