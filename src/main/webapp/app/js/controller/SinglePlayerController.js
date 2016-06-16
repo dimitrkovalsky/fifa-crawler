@@ -1,12 +1,14 @@
-fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stateParams, Players) {
+fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stateParams,
+PlayerAutoBuy, MinPrice) {
     $scope.id = $stateParams.id;
 
 
     $scope.onLoaded = function (player) {
-        console.log(player);
-        $scope.profile = player.profile;
-        $scope.history = player.history;
-        $scope.draw($scope.history)
+        $scope.player = player;
+    };
+
+    $scope.onStatsLoaded = function (result) {
+        $scope.playerPrice = result;
     };
 
     $scope.getLastName = function () {
@@ -17,7 +19,7 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
             return "Undefined";
     };
 
-    $scope.draw = function (history) {
+    $scope.draw = function (prices) {
         if (!$scope.chartLoaded()) {
             setTimeout(function () {
                 $scope.draw(history);
@@ -26,10 +28,7 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
             drawChart();
         }
         function drawChart() {
-            function getPrice(record) {
-                if (record && record.price && record.price.pc && record.price.pc.price)
-                    return record.price.pc.price;
-            }
+
 
             var data = new google.visualization.DataTable();
             data.addColumn('date', 'Day');
@@ -72,6 +71,11 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
         return !((typeof google === 'undefined') || (typeof google.visualization === 'undefined'));
     };
 
-    Players.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
-})
-;
+    $scope.updatePrice = function() {
+      MinPrice.save({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
+    }
+
+    PlayerAutoBuy.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
+
+    MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
+});

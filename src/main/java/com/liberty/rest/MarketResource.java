@@ -4,10 +4,12 @@ import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.rest.request.AddToBayRequest;
+import com.liberty.rest.request.IdRequest;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +32,7 @@ public class MarketResource {
   @RequestMapping(path = "/info", method = RequestMethod.GET)
   public MarketInfo getInfo() {
     return tradeService.getMarketInfo();
-}
+  }
 
   @RequestMapping(path = "/info", method = RequestMethod.POST)
   public void setInfo(MarketInfo info) {
@@ -52,6 +54,11 @@ public class MarketResource {
     return tradeService.getAllToAutoBuy();
   }
 
+  @RequestMapping(path = "/player/{id}", method = RequestMethod.GET)
+  public PlayerTradeStatus getOne(@PathVariable Long id) {
+    return tradeService.getOnePlayer(id);
+  }
+
   @RequestMapping(path = "/player/{id}", method = RequestMethod.DELETE)
   public void removePlayer(@PathVariable Long id) {
     tradeService.deleteFromAutoBuy(id);
@@ -62,8 +69,8 @@ public class MarketResource {
     return tradeService.getMinPrice(id);
   }
 
-  @RequestMapping(path = "/player/{id}/min", method = RequestMethod.POST)
-  public PlayerStatistic findMin(@PathVariable Long id) {
-    return tradeService.findMinPrice(id);
+  @RequestMapping(path = "/player/min", method = RequestMethod.POST)
+  public PlayerStatistic findMin(@RequestBody IdRequest request) {
+    return tradeService.findMinPrice(request.getId());
   }
 }

@@ -344,4 +344,9 @@ public class TradeServiceImpl implements TradeService {
   public List<PlayerTradeStatus> getAllToAutoBuy() {
     return tradeRepository.findAll();
   }
+
+  @Override
+  public PlayerTradeStatus getOnePlayer(Long id) {
+    return tradeRepository.findOne(id);
+  }
 }

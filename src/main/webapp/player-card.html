@@ -1,0 +1,42 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['line']});
+    google.charts.setOnLoadCallback(draw);
+</script>
+
+    <div class="page-header">
+    <h1>{{player.name}}</h1>
+</div>
+<div class="container">
+    <span class="team-title">Max price : {{player.maxPrice}} </span>
+    <div class="player-card gold-tots">
+        <div class="card-tows-total">{{profile.info.stats.total}}</div>
+        <div class="card-tows-position">{{profile.info.position}}</div>
+        <img class="card-image" src="{{profile.info.image}}">
+        <div class="card-name">{{getLastName()}}</div>
+
+
+        <div class="playercard-attr playercard-attr1">{{profile.info.stats.pace}} <span
+                class="playercard-thin">PAC
+        </span>
+        </div>
+        <div class="playercard-attr playercard-attr2">{{profile.info.stats.shooting}} <span
+                class="playercard-thin">SHO</span>
+        </div>
+        <div class="playercard-attr playercard-attr3">{{profile.info.stats.passing}} <span
+                class="playercard-thin">PAS</span>
+        </div>
+        <div class="right-attr">
+            <div class="playercard-attr playercard-attr4">{{profile.info.stats.dribbling}} <span
+                    class="playercard-thin">DRI</span></div>
+            <div class="playercard-attr playercard-attr5">{{profile.info.stats.defending}} <span
+                    class="playercard-thin">DEF</span></div>
+            <div class="playercard-attr playercard-attr6">{{profile.info.stats.heading}} <span
+                    class="playercard-thin">PHY</span></div>
+        </div>
+    </div>
+    <strong></strong>
+    <div>
+        <div id="price-chart" ></div>
+    </div>
+</div>

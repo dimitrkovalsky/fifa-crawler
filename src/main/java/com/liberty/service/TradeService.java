@@ -30,4 +30,6 @@ public interface TradeService {
   PlayerStatistic getMinPrice(Long id);
 
   List<PlayerTradeStatus> getAllToAutoBuy();
+
+  PlayerTradeStatus getOnePlayer(Long id);
 }
