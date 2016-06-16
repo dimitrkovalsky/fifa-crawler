@@ -1,6 +1,10 @@
 package com.liberty.service;
 
-import java.io.IOException;
+import com.liberty.model.MarketInfo;
+import com.liberty.model.PlayerTradeStatus;
+import com.liberty.model.market.PlayerStatistic;
+
+import java.util.List;
 
 /**
  * User: Dimitr Date: 03.06.2016 Time: 20:12
@@ -13,5 +17,17 @@ public interface TradeService {
 
   void addToAutoBuy(String name, long id, int maxPrice);
 
-  void findMinPrice(long playerId) throws IOException;
+  PlayerStatistic findMinPrice(long playerId);
+
+  MarketInfo getMarketInfo();
+
+  void setMarketInfo(MarketInfo info);
+
+  void autoBuy(boolean run);
+
+  void deleteFromAutoBuy(Long id);
+
+  PlayerStatistic getMinPrice(Long id);
+
+  List<PlayerTradeStatus> getAllToAutoBuy();
 }

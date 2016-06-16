@@ -114,7 +114,7 @@ public class MarketTask {
     add("Busgets", 189511, 1200);
     add("Carvajal", 204963, 1300);
     add("Marcelo", 176676, 1300);
-    add("Martinez", 196144, 1300);
+    add("Martinez", 196144, 1000);
 
 
     // Germany

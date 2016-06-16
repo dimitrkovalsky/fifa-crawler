@@ -30,8 +30,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "63aa3c2e-7973-40be-84fa-f1aa4b6ce0f9";
-  private String phishingToken = "2433198738289828119";
+  private String sessionId = "60de39dc-fab8-4231-bbf4-3ba16fc25e5e";
+  private String phishingToken = "1494305989351969131";
 
   public FifaRequests() {
     System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -63,7 +63,6 @@ public class FifaRequests extends BaseFifaRequests {
     return JsonHelper.toEntity(json, TradeStatus.class);
   }
 
-
   private boolean isError(String json) {
     ObjectMapper objectMapper = JsonHelper.getObjectMapper();
     try {
@@ -77,6 +76,7 @@ public class FifaRequests extends BaseFifaRequests {
       return false;
     }
   }
+
 
   /**
    * Returns true if error
@@ -94,12 +94,20 @@ public class FifaRequests extends BaseFifaRequests {
     return JsonHelper.toJson(request).toString();
   }
 
-  protected String getSessionId() {
+  public String getSessionId() {
     return sessionId;
   }
 
-  protected String getPhishingToken() {
+  public String getPhishingToken() {
     return phishingToken;
+  }
+
+  public void setPhishingToken(String phishingToken) {
+    this.phishingToken = phishingToken;
+  }
+
+  public void setSessionId(String sessionId) {
+    this.sessionId = sessionId;
   }
 
   public Optional<String> auth() {

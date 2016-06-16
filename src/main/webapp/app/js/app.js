@@ -29,6 +29,18 @@ fifaApp.factory('StatisticResource', function ($resource) {
     return $resource('/api/stats/');
 });
 
+fifaApp.factory('MarketInfo', function ($resource) {
+    return $resource('/api/market/info/');
+});
+
+fifaApp.factory('AutoBuy', function ($resource) {
+    return $resource('/api/market/autobuy/');
+});
+
+fifaApp.factory('PlayerAutoBuy', function ($resource) {
+    return $resource('/api/market/player');
+});
+
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/index");
 
