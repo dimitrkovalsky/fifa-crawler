@@ -9,6 +9,7 @@ PlayerAutoBuy, MinPrice) {
 
     $scope.onStatsLoaded = function (result) {
         $scope.playerPrice = result;
+        $scope.draw($scope.playerPrice.prices);
     };
 
     $scope.getLastName = function () {
@@ -22,34 +23,20 @@ PlayerAutoBuy, MinPrice) {
     $scope.draw = function (prices) {
         if (!$scope.chartLoaded()) {
             setTimeout(function () {
-                $scope.draw(history);
+                $scope.draw(prices);
             }, 1000);
         } else {
             drawChart();
         }
         function drawChart() {
+           var matrix = [];
+           matrix.push(["Price", "Amount"]);
+           angular.forEach(prices, function (value, key) {
+              matrix.push([value.price, value.amount]);
+           });
 
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('date', 'Day');
-            data.addColumn('number', 'Price');
-            var points = [];
-            for (var i = 0; i < history.history.length; i++) {
-                var price = getPrice(history.history[i]);
-                if (price) {
-                    var recorded = history.history[i].recoded;
-                    points.push([new Date(recorded), price]);
-                }
-            }
-            var currentPrice = getPrice(history.currentPrice);
-            if (currentPrice) {
-                var recordedDate = history.currentPrice.recoded;
-                points.push([new Date(recordedDate), currentPrice]);
-            } else {
-                points.push([new Date(), 0]);
-            }
-            data.addRows(points);
-            var subtitle = currentPrice || "None history";
+           var data = new google.visualization.arrayToDataTable(matrix);
+            var subtitle = "Price distribution";
             var options = {
                 chart: {
                     title: 'Current price',
@@ -59,7 +46,7 @@ PlayerAutoBuy, MinPrice) {
                 height: 400
             };
 
-            var chart = new google.charts.Line(document.getElementById('price-chart'));
+            var chart = new google.charts.Bar(document.getElementById('price-chart'));
 
             chart.draw(data, options);
         }
