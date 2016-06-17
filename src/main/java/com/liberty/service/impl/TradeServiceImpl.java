@@ -8,6 +8,7 @@ import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
+import com.liberty.rest.request.BuyRequest;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +45,7 @@ public class TradeServiceImpl implements TradeService {
   private FifaRequests fifaRequests = new FifaRequests();
   private boolean failed;
   private int purchases = 0;
+  private boolean autoBuyEnabled = true;
 
   @Autowired
   private PlayerTradeStatusRepository tradeRepository;
@@ -57,6 +61,10 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public void checkMarket() {
+    if (!autoBuyEnabled) {
+      log.info("Auto Buy Disabled...");
+      return;
+    }
     if (failed) {
       onFailed();
       return;
@@ -66,7 +74,9 @@ public class TradeServiceImpl implements TradeService {
           "MAX purchase amount is : " + maxPurchaseAmount + " currently bought " + purchases);
       return;
     }
-    List<PlayerTradeStatus> players = tradeRepository.findAll();
+    List<PlayerTradeStatus> players = tradeRepository.findAll().stream()
+        .filter(PlayerTradeStatus::isEnabled)
+        .collect(Collectors.toList());
     Collections.shuffle(players, new Random(System.currentTimeMillis()));
     log.info("Monitor : " + players.size() + " players");
     if (isEmpty(players)) {
@@ -75,6 +85,8 @@ public class TradeServiceImpl implements TradeService {
     }
     for (PlayerTradeStatus p : players) {
       log.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice());
+      if (!autoBuyEnabled)
+        return;
       boolean success = checkMarket(p);
       if (!success) {
         failed = false;
@@ -133,7 +145,7 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public void addToAutoBuy(String name, long id, int maxPrice) {
-    PlayerTradeStatus status = new PlayerTradeStatus(id, 0, name, maxPrice, null);
+    PlayerTradeStatus status = new PlayerTradeStatus(id, name, maxPrice);
     tradeRepository.save(status);
   }
 
@@ -214,7 +226,7 @@ public class TradeServiceImpl implements TradeService {
       lowBound = DEFAULT_LOW_BOUND;
     }
     int iteration = 0;
-    List<AuctionInfo> toStatistic = new ArrayList<>();
+    Set<AuctionInfo> toStatistic = new HashSet<>();
 
     while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT) {
       iteration++;
@@ -230,6 +242,7 @@ public class TradeServiceImpl implements TradeService {
 
       if (iteration >= 20) {
         log.info("Exceeded iteration limit");
+        break;
       }
     }
     if (toStatistic.isEmpty()) {
@@ -240,7 +253,7 @@ public class TradeServiceImpl implements TradeService {
     }
     Map<Integer, List<AuctionInfo>> stats =
         toStatistic.stream().collect(Collectors.groupingBy(AuctionInfo::getBuyNowPrice));
-    updateStats(playerId, toStatistic, stats);
+    updateStats(playerId, toStatistic.stream().collect(Collectors.toList()), stats);
 
 
     log.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
@@ -282,7 +295,6 @@ public class TradeServiceImpl implements TradeService {
     } else {
       return lowBound - 1000;
     }
-
   }
 
   public List<AuctionInfo> findPlayers(long playerId, Integer lowBound) {
@@ -327,7 +339,7 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public void autoBuy(boolean run) {
-
+    this.autoBuyEnabled = run;
   }
 
   @Override
@@ -348,5 +360,17 @@ public class TradeServiceImpl implements TradeService {
   @Override
   public PlayerTradeStatus getOnePlayer(Long id) {
     return tradeRepository.findOne(id);
+  }
+
+  @Override
+  public void updateAutoBuy(BuyRequest request) {
+    PlayerTradeStatus playerTradeStatus = tradeRepository.findOne(request.getId());
+    playerTradeStatus.setEnabled(request.getEnabled());
+    tradeRepository.save(playerTradeStatus);
+  }
+
+  @Override
+  public void updatePlayer(PlayerTradeStatus request) {
+    tradeRepository.save(request);
   }
 }

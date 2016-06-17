@@ -16,6 +16,8 @@
             <th>Name</th>
             <th>Max buy now price</th>
             <th>Bought</th>
+            <th>Enabled</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody ng-repeat="player in players">
@@ -25,6 +27,15 @@
         <td>{{player.name}}</td>
         <td>{{player.maxPrice}}</td>
         <td>{{player.boughtAmount}}</td>
+        <td>{{player.enabled}}</td>
+        <td>
+            <button ng-if="!player.enabled"
+                    ng-click="addToAutoBuy(player.id)">Enable
+            </button>
+            <button ng-if="player.enabled"
+                    ng-click="removeFromAutoBuy(player.id)">Disable
+            </button>
+        </td>
         </tr>
         </tbody>
     </table>

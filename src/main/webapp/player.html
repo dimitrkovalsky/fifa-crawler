@@ -1,6 +1,6 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    google.charts.load('current', {'packages':['line']});
+    google.charts.load('current', {'packages': ['line']});
     google.charts.setOnLoadCallback(draw);
 
 
@@ -10,9 +10,10 @@
     <h1>{{player.name}}</h1>
     <span>Max price : {{player.maxPrice}} </span>
     <button ng-click="updatePrice()">Update</button>
+    <span ng-if="isLoading"><img src="app/img/preloader.gif"></span>
 </div>
 <div class="container">
-      {{playerPrice}}
+    {{playerPrice}}
 
     <div>
         <div id="price-chart"></div>

@@ -14,6 +14,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class PlayerTradeStatus {
 
+  public PlayerTradeStatus(Long id, String name, Integer maxPrice) {
+    this.id = id;
+    this.name = name;
+    this.maxPrice = maxPrice;
+  }
+
   @Id
   private Long id;
 
@@ -24,4 +30,10 @@ public class PlayerTradeStatus {
   private Integer maxPrice;
 
   private Long lastBuyPrice;
+
+  private Integer sellStartPrice;
+
+  private Integer sellBuyNowPrice;
+
+  private boolean enabled;
 }

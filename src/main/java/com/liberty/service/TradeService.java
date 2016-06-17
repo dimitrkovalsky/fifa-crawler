@@ -3,6 +3,7 @@ package com.liberty.service;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.PlayerStatistic;
+import com.liberty.rest.request.BuyRequest;
 
 import java.util.List;
 
@@ -32,4 +33,8 @@ public interface TradeService {
   List<PlayerTradeStatus> getAllToAutoBuy();
 
   PlayerTradeStatus getOnePlayer(Long id);
+
+  void updateAutoBuy(BuyRequest request);
+
+  void updatePlayer(PlayerTradeStatus request);
 }

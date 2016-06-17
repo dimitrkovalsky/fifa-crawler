@@ -3,7 +3,7 @@ package com.liberty.rest;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.PlayerStatistic;
-import com.liberty.rest.request.AddToBayRequest;
+import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;
 import com.liberty.service.TradeService;
 
@@ -44,9 +44,14 @@ public class MarketResource {
     tradeService.autoBuy(run);
   }
 
+  @RequestMapping(path = "/autobuy", method = RequestMethod.PUT)
+  public void updateAutoBuy(@RequestBody BuyRequest request) {
+    tradeService.updateAutoBuy(request);
+  }
+
   @RequestMapping(path = "/player", method = RequestMethod.POST)
-  public void updatePlayer(AddToBayRequest request) {
-    tradeService.addToAutoBuy(request.getName(), request.getId(), request.getMaxPrice());
+  public void updatePlayer(PlayerTradeStatus request) {
+    tradeService.updatePlayer(request);
   }
 
   @RequestMapping(path = "/player", method = RequestMethod.GET)

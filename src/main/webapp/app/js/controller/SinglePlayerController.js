@@ -1,13 +1,13 @@
 fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stateParams,
-PlayerAutoBuy, MinPrice) {
+                                                       PlayerAutoBuy, MinPrice) {
     $scope.id = $stateParams.id;
-
 
     $scope.onLoaded = function (player) {
         $scope.player = player;
     };
 
     $scope.onStatsLoaded = function (result) {
+        $scope.isLoading = false;
         $scope.playerPrice = result;
         $scope.draw($scope.playerPrice.prices);
     };
@@ -29,13 +29,13 @@ PlayerAutoBuy, MinPrice) {
             drawChart();
         }
         function drawChart() {
-           var matrix = [];
-           matrix.push(["Price", "Amount"]);
-           angular.forEach(prices, function (value, key) {
-              matrix.push([value.price, value.amount]);
-           });
+            var matrix = [];
+            matrix.push(["Price", "Amount"]);
+            angular.forEach(prices, function (value, key) {
+                matrix.push([value.price, value.amount]);
+            });
 
-           var data = new google.visualization.arrayToDataTable(matrix);
+            var data = new google.visualization.arrayToDataTable(matrix);
             var subtitle = "Price distribution";
             var options = {
                 chart: {
@@ -50,17 +50,16 @@ PlayerAutoBuy, MinPrice) {
 
             chart.draw(data, options);
         }
-
-
     };
 
     $scope.chartLoaded = function () {
         return !((typeof google === 'undefined') || (typeof google.visualization === 'undefined'));
     };
 
-    $scope.updatePrice = function() {
-      MinPrice.save({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
-    }
+    $scope.updatePrice = function () {
+        $scope.isLoading = true;
+        MinPrice.save({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
+    };
 
     PlayerAutoBuy.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
 
