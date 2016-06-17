@@ -11,4 +11,5 @@ public class MarketInfo {
   private Integer maxPurchases;
   private String sessionId;
   private String phishingToken;
+  private Boolean autoBuyEnabled;
 }

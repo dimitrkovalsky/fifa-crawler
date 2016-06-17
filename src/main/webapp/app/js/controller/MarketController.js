@@ -1,5 +1,6 @@
 fifaApp.controller('MarketController', function ($rootScope, $scope, MarketInfo, PlayerAutoBuy,
-                                                 AutoBuy) {
+                                                 AutoBuy, AutoBuyPlayer) {
+
     $scope.onPlayersLoaded = function (result) {
         $scope.players = result;
     };
@@ -14,12 +15,21 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, MarketInfo,
 
     $scope.onInfoLoad = function (result) {
         $scope.marketInfo = result;
+        $scope.autoBuyEnabled = result.autoBuyEnabled;
     };
 
     $scope.changeAutoBuyStatus = function (id, enabled) {
-        AutoBuy.update({id: id, enabled: enabled}, $scope.getAllPlayers(), $rootScope.onError)
+        AutoBuyPlayer.save({}, {id: id, enabled: enabled}, $scope.getAllPlayers,$rootScope.onError);
     };
 
+    $scope.updateInfo = function(){
+        MarketInfo.get({}, $scope.onInfoLoad, $rootScope.onError);
+    };
+
+    $scope.enableAutoBuy = function(enabled){
+        AutoBuy.save({enabled: enabled}, $scope.updateInfo, $rootScope.onError);
+    };
+
+    $scope.updateInfo();
     $scope.getAllPlayers();
-    MarketInfo.get({}, $scope.onInfoLoad, $rootScope.onError);
 });

@@ -31,15 +31,17 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
         function drawChart() {
             var matrix = [];
             matrix.push(["Price", "Amount"]);
+            var counter = 0;
             angular.forEach(prices, function (value, key) {
                 matrix.push([value.price, value.amount]);
+                counter = counter + value.amount;
             });
-
+            var title = counter + " players";
             var data = new google.visualization.arrayToDataTable(matrix);
             var subtitle = "Price distribution";
             var options = {
                 chart: {
-                    title: 'Current price',
+                    title: title,
                     subtitle: subtitle
                 },
                 width: 900,
@@ -61,7 +63,15 @@ fifaApp.controller('SinglePlayerController', function ($rootScope, $scope, $stat
         MinPrice.save({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
     };
 
-    PlayerAutoBuy.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
+    $scope.updatePlayer = function() {
+        PlayerAutoBuy.save({id:$scope.player.id, name: $scope.player.name, maxPrice : $scope.player.maxPrice },
+            $scope.getPlayerInfo, $rootScope.onError);
+    }
 
+    $scope.getPlayerInfo = function () {
+        PlayerAutoBuy.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
+    };
+
+    $scope.getPlayerInfo();
     MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
 });

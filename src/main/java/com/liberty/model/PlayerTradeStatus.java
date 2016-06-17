@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * User: Dimitr Date: 03.06.2016 Time: 20:08
@@ -12,6 +13,7 @@ import lombok.Data;
 @Data
 @Document(collection = "player_trade_status")
 @AllArgsConstructor
+@NoArgsConstructor
 public class PlayerTradeStatus {
 
   public PlayerTradeStatus(Long id, String name, Integer maxPrice) {
@@ -33,7 +35,9 @@ public class PlayerTradeStatus {
 
   private Integer sellStartPrice;
 
+  private Integer minMarketPrice;
+
   private Integer sellBuyNowPrice;
 
-  private boolean enabled;
+  private boolean enabled = true;
 }

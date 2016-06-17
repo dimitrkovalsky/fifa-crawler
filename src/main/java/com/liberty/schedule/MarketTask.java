@@ -21,16 +21,16 @@ public class MarketTask {
 
   @Scheduled(fixedRate = 120000)
   public void monitor() {
-    track();
+   // fillDatabase();
     log.info("Trying to check market");
     tradeService.checkMarket();
   }
 
-  private void track() {
+  private void fillDatabase() {
     tradeService.removeAllPlayers();
     simplePlayers();
     richPlayers();
-  //  veryRichPlayers();
+    veryRichPlayers();
   }
 
   private void veryRichPlayers() {

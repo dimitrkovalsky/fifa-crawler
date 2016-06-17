@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
 public class TradeServiceImpl implements TradeService {
 
   public static final int DEFAULT_LOW_BOUND = 1000;
-  public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 20;
+  public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 40;
   private int maxPurchaseAmount = 40;
   private static int MIN_DELAY = 2000;
   private static int MAX_DELAY = 5000;
@@ -85,8 +87,9 @@ public class TradeServiceImpl implements TradeService {
     }
     for (PlayerTradeStatus p : players) {
       log.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice());
-      if (!autoBuyEnabled)
+      if (!autoBuyEnabled) {
         return;
+      }
       boolean success = checkMarket(p);
       if (!success) {
         failed = false;
@@ -268,6 +271,9 @@ public class TradeServiceImpl implements TradeService {
       toSave.setId(playerId);
       toSave.setLastPrice(m.getBuyNowPrice());
       List<PlayerStatistic.PriceDistribution> prices = toStatistic(stats);
+      prices = prices.stream()
+          .sorted(Comparator.comparing(PlayerStatistic.PriceDistribution::getPrice))
+          .collect(Collectors.toList());
       toSave.setPrices(prices);
       System.out.println("Player stats : " + toSave);
       statisticRepository.save(toSave);
@@ -327,6 +333,7 @@ public class TradeServiceImpl implements TradeService {
     info.setMaxPurchases(maxPurchaseAmount);
     info.setPhishingToken(fifaRequests.getPhishingToken());
     info.setSessionId(fifaRequests.getSessionId());
+    info.setAutoBuyEnabled(autoBuyEnabled);
     return info;
   }
 
@@ -354,7 +361,21 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public List<PlayerTradeStatus> getAllToAutoBuy() {
-    return tradeRepository.findAll();
+    List<PlayerTradeStatus> all = tradeRepository.findAll();
+    List<PlayerStatistic> stats = statisticRepository.findAll();
+    Map<Long, Integer> idMinPrice = new HashMap<>();
+    stats.forEach(s -> {
+      if (!s.getPrices().isEmpty()) {
+        idMinPrice.put(s.getId(), s.getPrices().get(0).getPrice());
+      }
+    });
+    all.forEach(p -> {
+      Integer price = idMinPrice.get(p.getId());
+      if (price != null) {
+        p.setMinMarketPrice(price);
+      }
+    });
+    return all;
   }
 
   @Override
@@ -371,6 +392,12 @@ public class TradeServiceImpl implements TradeService {
 
   @Override
   public void updatePlayer(PlayerTradeStatus request) {
-    tradeRepository.save(request);
+    PlayerTradeStatus toUpdate = tradeRepository.findOne(request.getId());
+    toUpdate.setSellStartPrice(request.getSellStartPrice());
+    toUpdate.setSellBuyNowPrice(request.getSellBuyNowPrice());
+    toUpdate.setMaxPrice(request.getMaxPrice());
+    toUpdate.setName(request.getName());
+
+    tradeRepository.save(toUpdate);
   }
 }
