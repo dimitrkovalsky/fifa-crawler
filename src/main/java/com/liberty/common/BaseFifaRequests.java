@@ -106,12 +106,12 @@ abstract class BaseFifaRequests {
     request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
     request.setHeader(HttpHeaders.HOST, "utas.s2.fut.ea.com");
     request.setHeader(HttpHeaders.REFERER,
-        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=158890");
+        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=159444");
     request.setHeader(HttpHeaders.USER_AGENT,
         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 OPR/37.0.2178.43");
     request.setHeader("Origin", "https://www.easports.com");
     request.setHeader("X-HTTP-Method-Override", "GET");
-    request.setHeader("X-Requested-With", "ShockwaveFlash/21.0.0.242");
+    request.setHeader("X-Requested-With", "ShockwaveFlash/22.0.0.192");
     request.setHeader("X-UT-Embed-Error", "true");
     request.setHeader("X-UT-PHISHING-TOKEN", getPhishingToken());
     request.setHeader("X-UT-SID", getSessionId());
@@ -127,19 +127,27 @@ abstract class BaseFifaRequests {
     request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
     request.setHeader(HttpHeaders.HOST, "utas.s2.fut.ea.com");
     request.setHeader(HttpHeaders.REFERER,
-        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=158890");
+        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=159444");
     request.setHeader(HttpHeaders.USER_AGENT,
         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 OPR/37.0.2178.43");
     request.setHeader("Origin", "https://www.easports.com");
     request.setHeader("X-HTTP-Method-Override", "PUT");
-    request.setHeader("X-Requested-With", "ShockwaveFlash/21.0.0.242");
+    request.setHeader("X-Requested-With", "ShockwaveFlash/22.0.0.192");
     request.setHeader("X-UT-Embed-Error", "true");
     request.setHeader("X-UT-PHISHING-TOKEN", getPhishingToken());
     request.setHeader("X-UT-SID", getSessionId());
     return request;
   }
 
-  protected HttpPost createRequest(String url) {
+  protected HttpPost createDeleteRequest(String url) {
+      return createRequest(url, "DELETE");
+  }
+
+  protected HttpPost createPutRequest(String url) {
+    return createRequest(url, "PUT");
+  }
+
+  protected HttpPost createRequest(String url, String method) {
     HttpPost request = new HttpPost(url);
     request.setHeader(HttpHeaders.ACCEPT, "application/json");
     request.setHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate, lzma");
@@ -148,16 +156,20 @@ abstract class BaseFifaRequests {
     request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
     request.setHeader(HttpHeaders.HOST, "utas.s2.fut.ea.com");
     request.setHeader(HttpHeaders.REFERER,
-        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=158890");
+        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=159444");
     request.setHeader(HttpHeaders.USER_AGENT,
         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 OPR/37.0.2178.43");
     request.setHeader("Origin", "https://www.easports.com");
-    request.setHeader("X-HTTP-Method-Override", "GET");
-    request.setHeader("X-Requested-With", "ShockwaveFlash/21.0.0.242");
+    request.setHeader("X-HTTP-Method-Override", method);
+    request.setHeader("X-Requested-With", "ShockwaveFlash/22.0.0.192");
     request.setHeader("X-UT-Embed-Error", "true");
     request.setHeader("X-UT-PHISHING-TOKEN", getPhishingToken());
     request.setHeader("X-UT-SID", getSessionId());
     return request;
+  }
+
+  protected HttpPost createRequest(String url) {
+    return createRequest(url, "GET");
   }
 
   protected HttpPost createAuthRequest(String url) {
@@ -170,11 +182,11 @@ abstract class BaseFifaRequests {
     request.setHeader(HttpHeaders.HOST, "www.easports.com");
     request.setHeader("Origin", "https://www.easports.com");
     request.setHeader(HttpHeaders.REFERER,
-        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=158890");
+        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=159444");
     request.setHeader(HttpHeaders.USER_AGENT,
         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 OPR/37.0.2178.43");
     request.setHeader("Origin", "https://www.easports.com");
-    request.setHeader("X-Requested-With", "ShockwaveFlash/21.0.0.242");
+    request.setHeader("X-Requested-With", "ShockwaveFlash/22.0.0.192");
     request.setHeader("X-UT-Embed-Error", "true");
     request.setHeader("X-HTTP-Method-Override", "POST");
 //    request.setHeader("Easw-Session-Data-Nucleus-Id", getNucleusId());
@@ -192,4 +204,6 @@ abstract class BaseFifaRequests {
   public String getNucleusId() {
     return "2311254984";
   }
+
+
 }

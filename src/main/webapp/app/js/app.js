@@ -1,5 +1,5 @@
 var fifaApp = angular.module('fifaApp', ['ngResource', 'ui.router', 'ui.bootstrap',
-    'fifa-directives']);
+    'fifa-directives', 'ngTable']);
 
 fifaApp.factory('Monitoring', function ($resource) {
     return $resource('/api/monitoring/:id');
@@ -50,31 +50,16 @@ fifaApp.factory('MinPrice', function ($resource) {
 });
 
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise("/index");
+    $urlRouterProvider.otherwise("/market");
 
-    $stateProvider.state('manage', {
-            url: '/manage',
-            templateUrl: 'manage.html',
-            controller: 'ManageController'
-        })
-        .state('live', {
-            url: '/live',
-            templateUrl: 'live.html',
-            controller: 'LiveController'
-        })
-        .state('single-player', {
+    $stateProvider.state('single-player', {
             url: '/player/:id',
             templateUrl: 'player.html',
-            controller: 'SinglePlayerController'
+            controller: 'PlayerController'
         })
         .state('market', {
-             url: '/market',
-             templateUrl: 'market.html',
-             controller: 'MarketController'
-         })
-        .state('players', {
-            url: '/players',
-            templateUrl: 'players.html',
-            controller: 'PlayerController'
+            url: '/market',
+            templateUrl: 'market.html',
+            controller: 'MarketController'
         });
 });

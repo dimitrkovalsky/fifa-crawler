@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Statistic {
 
-  private long profiles;
-  private long monitored;
-  private long sources;
+  private long players;
+  private long autoBuy;
+  private boolean enabled;
 }

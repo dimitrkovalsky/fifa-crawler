@@ -1,98 +1,73 @@
-fifaApp.controller('PlayerController', function ($rootScope, $scope, Monitoring, Players,
-PlayersFiltered, Sources) {
-    var ALL = "all";
-    var BY_SOURCE = "by_source";
-    var BY_LEAGUE = "by_league";
-    $scope.filter = ALL;
+fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParams,
+                                                 PlayerAutoBuy, MinPrice) {
+    $scope.id = $stateParams.id;
 
-    $scope.filterSource = "Winter Update";
-    $scope.filterLeague = "";
+    $scope.onLoaded = function (player) {
+        $scope.player = player;
+    };
 
-    $scope.playerFilter = function () {
-        switch ($scope.filter) {
-            case BY_SOURCE:
-                $scope.getAllBySource();
-                break;
-            case BY_LEAGUE:
-                $scope.getAllByLeague();
-                break;
-            default:
-                $scope.getAllPlayers();
-                break;
+    $scope.onStatsLoaded = function (result) {
+        $scope.isLoading = false;
+        $scope.playerPrice = result;
+        $scope.draw($scope.playerPrice.prices);
+    };
+
+    $scope.draw = function (prices) {
+        if (!$scope.chartLoaded()) {
+            setTimeout(function () {
+                $scope.draw(prices);
+            }, 1000);
+        } else {
+            drawChart();
+        }
+        function drawChart() {
+            var matrix = [];
+            matrix.push(["Price", "Amount"]);
+            var counter = 0;
+            angular.forEach(prices, function (value, key) {
+                matrix.push([value.price, value.amount]);
+                counter = counter + value.amount;
+            });
+            var title = counter + " players";
+            var data = new google.visualization.arrayToDataTable(matrix);
+            var subtitle = "Price distribution";
+            var options = {
+                chart: {
+                    title: title,
+                    subtitle: subtitle
+                },
+                width: 900,
+                height: 400
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('price-chart'));
+
+            chart.draw(data, options);
         }
     };
 
-    $scope.onPlayersLoaded = function (result) {
-        $scope.players = [];
-        angular.forEach(result, function (value, key) {
-            $scope.players.push({
-                id: value.id,
-                name: value.info.name,
-                position: value.info.position,
-                total: value.info.stats.total,
-                source: value.info.source,
-                league: value.info.leagueName,
-                underMonitoring: value.underMonitoring,
-                image: value.info.image
-            });
-        });
-    };
-    $scope.onError = function (error) {
-        console.log(error);
-    };
-    $scope.getAllPlayers = function () {
-        console.log("Getting all players...");
-        Players.query({}, $scope.onPlayersLoaded, $scope.onError);
+    $scope.chartLoaded = function () {
+        return !((typeof google === 'undefined') || (typeof google.visualization === 'undefined'));
     };
 
-    $scope.getAllBySource = function () {
-        PlayersFiltered.query({source: $scope.filterSource}, $scope.onPlayersLoaded, $scope.onError);
+    $scope.updatePrice = function () {
+        $scope.isLoading = true;
+        MinPrice.save({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
     };
 
-    $scope.filterBySource = function (source) {
-        $scope.filter = BY_SOURCE;
-        $scope.filterSource = source;
-        $scope.playerFilter();
+    $scope.updatePlayer = function () {
+        PlayerAutoBuy.save({
+                id: $scope.player.id,
+                name: $scope.player.name,
+                maxPrice: $scope.player.maxPrice
+            },
+            $scope.getPlayerInfo, $rootScope.onError);
     };
 
-    $scope.getAllByLeague = function (league) {
-        $scope.filter = BY_LEAGUE;
-        $scope.filterLeague = league;
-        $scope.playerFilter();
+    $scope.getPlayerInfo = function () {
+        PlayerAutoBuy.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
     };
 
-    $scope.addToMonitoring = function (id) {
-        Monitoring.save(id);
-        $rootScope.updateStats();
-        $scope.playerFilter();
-    };
-
-    $scope.removeFromMonitoring = function (id) {
-        Monitoring.remove({id: id});
-        $rootScope.updateStats();
-        $scope.playerFilter();
-    };
-
-    $scope.getAllSources = function () {
-        Sources.query({}, function (res) {
-            $scope.sources = res;
-        }, $scope.onError);
-    };
-
-    $scope.enableAll = function (){
-        angular.forEach($scope.players, function (value, key) {
-            if(!value.underMonitoring)
-                $scope.addToMonitoring(value.id);
-        });
-    };
-
-    $scope.disableAll = function () {
-       angular.forEach($scope.players, function (value, key) {
-          if(value.underMonitoring)
-            $scope.removeFromMonitoring(value.id);
-       });
-    };
-
-    $scope.playerFilter();
-    $scope.getAllSources();
+    $scope.getPlayerInfo();
+    MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
 });

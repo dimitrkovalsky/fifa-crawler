@@ -16,37 +16,36 @@
         Max Purchases : <strong>{{marketInfo.maxPurchases}}</strong> <br>
     </div>
 </div>
+<div class="col-md-6">
+    <div class="col-md-2">
+        <button ng-click="updateAllPrices()" class="btn btn-info"> Update All</button>
+    </div>
+    <div class="col-md-2">
+        <img style="height: 81px; padding-bottom: 45px;" ng-show="isLoading"
+             src="app/img/preloader.gif">
+    </div>
+</div>
 <div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Max Buy Now Price</th>
-            <th>Min Market Price</th>
-            <th>Bought</th>
-            <th>Enabled</th>
-            <th>Actions</th>
+    <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
+        <tr ng-repeat="player in $data">
+            <td data-title="'Id'"
+                sortable="'id'"><a href="#/player/{{player.id}}">{{player.id}}</a></td>
+            <td data-title="'Name'" sortable="'name'" filter="{name: 'text'}">{{player.name}}</td>
+            <td data-title="'Max Buy Now Price'" sortable="'maxPrice'">{{player.maxPrice}}</td>
+            <td data-title="'Min Market Price'" sortable="'minMarketPrice'">
+                {{player.minMarketPrice}}
+            </td>
+            <td data-title="'Diff'" sortable="'diff'">{{player.diff}}</td>
+            <td data-title="'Bought'" sortable="'boughtAmount'">{{player.boughtAmount}}</td>
+            <td data-title="'Enabled'" sortable="'enabled'">{{player.enabled}}</td>
+            <td data-title="'Actions'">
+                <button ng-if="!player.enabled" class="btn btn-success"
+                        ng-click="changeAutoBuyStatus(player.id, true)">Enable
+                </button>
+                <button ng-if="player.enabled" class="btn btn-danger"
+                        ng-click="changeAutoBuyStatus(player.id, false)">Disable
+                </button>
+            </td>
         </tr>
-        </thead>
-        <tbody ng-repeat="player in players">
-        <td>
-            <a href="#/player/{{player.id}}">{{player.id}}</a>
-        </td>
-        <td>{{player.name}}</td>
-        <td>{{player.maxPrice}}</td>
-        <td>{{player.minMarketPrice}}</td>
-        <td>{{player.boughtAmount}}</td>
-        <td>{{player.enabled}}</td>
-        <td>
-            <button ng-if="!player.enabled" class="btn btn-success"
-                    ng-click="changeAutoBuyStatus(player.id, true)">Enable
-            </button>
-            <button ng-if="player.enabled" class="btn btn-danger"
-                    ng-click="changeAutoBuyStatus(player.id, false)">Disable
-            </button>
-        </td>
-        </tr>
-        </tbody>
     </table>
 </div>

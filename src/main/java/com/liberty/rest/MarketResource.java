@@ -77,6 +77,10 @@ public class MarketResource {
 
   @RequestMapping(path = "/player/min", method = RequestMethod.POST)
   public PlayerStatistic findMin(@RequestBody IdRequest request) {
+    if (request.getId().equals(-1L)) {
+      tradeService.findMinPriceAll();
+      return null;
+    }
     return tradeService.findMinPrice(request.getId());
   }
 }

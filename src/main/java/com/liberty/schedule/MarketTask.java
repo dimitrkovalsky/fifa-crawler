@@ -1,6 +1,7 @@
 package com.liberty.schedule;
 
 import com.liberty.service.TradeService;
+import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,11 +20,16 @@ public class MarketTask {
   @Autowired
   private TradeService tradeService;
 
-  @Scheduled(fixedRate = 120000)
+  @Autowired
+  private LogController logController;
+
+  @Scheduled(fixedRate = 2000)
   public void monitor() {
-   // fillDatabase();
-    log.info("Trying to check market");
-    tradeService.checkMarket();
+    // fillDatabase();
+    logController.info("Trying to check market");
+ //   tradeService.updatePrices();
+  //  tradeService.checkMarket();
+    tradeService.getUnassigned();
   }
 
   private void fillDatabase() {

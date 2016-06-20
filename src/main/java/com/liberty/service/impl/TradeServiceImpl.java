@@ -1,20 +1,20 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.FifaRequests;
+import com.liberty.common.TradeState;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
+import com.liberty.model.market.ItemData;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerStatisticRepository;
-import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,8 +27,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
-
 import static com.liberty.common.Comparators.getAuctionInfoComparator;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
@@ -36,25 +34,16 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
  * User: Dimitr Date: 03.06.2016 Time: 20:11
  */
 @Service
-@Slf4j
-public class TradeServiceImpl implements TradeService {
+public class TradeServiceImpl extends ATradeService implements TradeService {
 
   public static final int DEFAULT_LOW_BOUND = 1000;
-  public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 40;
-  private int maxPurchaseAmount = 40;
-  private static int MIN_DELAY = 2000;
-  private static int MAX_DELAY = 5000;
-  private FifaRequests fifaRequests = new FifaRequests();
-  private boolean failed;
-  private int purchases = 0;
+  public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 25;
+  public static final int ITERATION_LIMIT = 20;
+
   private boolean autoBuyEnabled = true;
 
   @Autowired
-  private PlayerTradeStatusRepository tradeRepository;
-
-  @Autowired
   private PlayerStatisticRepository statisticRepository;
-
 
   @Override
   public void removeAllPlayers() {
@@ -62,17 +51,60 @@ public class TradeServiceImpl implements TradeService {
   }
 
   @Override
-  public void checkMarket() {
-    if (!autoBuyEnabled) {
-      log.info("Auto Buy Disabled...");
-      return;
+  public int getTradePileSize(){
+    List<AuctionInfo> tradePile = fifaRequests.getTradePile();
+    Map<String, List<AuctionInfo>> byState = tradePile.stream()
+        .collect(Collectors.groupingBy(AuctionInfo::getTradeState));
+    if(byState.containsKey(TradeState.CLOSED)){
+      fifaRequests.removeAllSold();
     }
-    if (failed) {
-      onFailed();
+    if(byState.containsKey(TradeState.EXPIRED)){
+      fifaRequests.relistAll();
+    }
+    return tradePile.size();
+  }
+
+  @Override
+  public List<ItemData> getUnassigned(){
+    List<ItemData> unassigned = fifaRequests.getUnassigned();
+    sell(unassigned.get(0),1700, 1900);
+    return unassigned;
+  }
+
+  @Override
+  public void updatePrices() {
+    Map<Long, Integer> pricesMap = getMinPricesMap();
+    tradeRepository.findAll().stream()
+        .map(p -> {
+          p.setEnabled(false);
+          Integer price = pricesMap.get(p.getId());
+          if (price != null && price != 0) {
+            p.setEnabled(true);
+            if (price <= 1000)
+              p.setMaxPrice(price - 200);
+            else if (price <= 2000)
+              p.setMaxPrice(price - 300);
+            else if (price <= 3000)
+              p.setMaxPrice(price - 400);
+            else if (price <= 4000)
+              p.setMaxPrice(price - 500);
+            else if (price <= 5000)
+              p.setMaxPrice(price - 700);
+            else
+              p.setEnabled(false);
+          }
+          return p;
+        }).forEach(tradeRepository::save);
+  }
+
+  @Override
+  public void checkMarket() {
+    if (!autoBuyEnabled || failed) {
+      logController.info("Auto Buy Disabled...");
       return;
     }
     if (purchases >= maxPurchaseAmount) {
-      log.info(
+      logController.info(
           "MAX purchase amount is : " + maxPurchaseAmount + " currently bought " + purchases);
       return;
     }
@@ -80,13 +112,13 @@ public class TradeServiceImpl implements TradeService {
         .filter(PlayerTradeStatus::isEnabled)
         .collect(Collectors.toList());
     Collections.shuffle(players, new Random(System.currentTimeMillis()));
-    log.info("Monitor : " + players.size() + " players");
+    logController.info("Monitor : " + players.size() + " players");
     if (isEmpty(players)) {
-      log.info("Nothing to buy. Player trade is empty");
+      logController.info("Nothing to buy. Player trade is empty");
       return;
     }
     for (PlayerTradeStatus p : players) {
-      log.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice());
+      logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice());
       if (!autoBuyEnabled) {
         return;
       }
@@ -95,31 +127,14 @@ public class TradeServiceImpl implements TradeService {
         failed = false;
         break;
       }
-      log.info("Total purchases : " + purchases);
+      logController.info("Total purchases : " + purchases);
       if (purchases >= maxPurchaseAmount) {
-        log.info("Limit of purchases : " + purchases);
+        logController.info("Limit of purchases : " + purchases);
         failed = true;
         onFailed();
         return;
       }
       sleep();
-    }
-  }
-
-  private void onFailed() {
-    log.debug("Previously failed");
-    Toolkit.getDefaultToolkit().beep();
-    Toolkit.getDefaultToolkit().beep();
-    Toolkit.getDefaultToolkit().beep();
-  }
-
-  private void sleep() {
-    int delay = new Random().nextInt(MAX_DELAY - MIN_DELAY) + MIN_DELAY;
-    log.info("Waiting " + delay + " millis");
-    try {
-      Thread.sleep(delay);
-    } catch (InterruptedException e) {
-      log.error(e.getMessage());
     }
   }
 
@@ -133,14 +148,14 @@ public class TradeServiceImpl implements TradeService {
       }
       TradeStatus tradeStatus = maybe.get();
       int found = tradeStatus.getAuctionInfo().size();
-      log.info("Found " + found + " players for " + playerTradeStatus.getName() + " maxPrice : "
+      logController.info("Found " + found + " players for " + playerTradeStatus.getName() + " maxPrice : "
           + playerTradeStatus.getMaxPrice());
       if (found <= 0) {
         return true;
       }
       buyPlayers(tradeStatus, playerTradeStatus);
     } catch (Exception e) {
-      log.error(e.getMessage());
+      logController.error(e.getMessage());
       return false;
     }
     return true;
@@ -150,11 +165,6 @@ public class TradeServiceImpl implements TradeService {
   public void addToAutoBuy(String name, long id, int maxPrice) {
     PlayerTradeStatus status = new PlayerTradeStatus(id, name, maxPrice);
     tradeRepository.save(status);
-  }
-
-  public void sell() {
-    fifaRequests.item();
-    fifaRequests.auctionHouse();
   }
 
   private Optional<AuctionInfo> foundMin(List<AuctionInfo> statuses) {
@@ -168,100 +178,92 @@ public class TradeServiceImpl implements TradeService {
     });
   }
 
-  private List<AuctionInfo> foundMinList(TradeStatus tradeStatus) {
-    return tradeStatus.getAuctionInfo().stream()
-        .sorted(getAuctionInfoComparator().reversed())
-        .filter(a -> a.getItemData().getContract() > 0)
-        .collect(Collectors.toList());
-  }
-
-
-  private void buyPlayers(TradeStatus tradeStatus, PlayerTradeStatus playerTradeStatus) {
-
-    List<AuctionInfo> list = foundMinList(tradeStatus);
-    if (list.isEmpty()) {
-      log.error("Can not find trades for " + playerTradeStatus.getName());
-      return;
-    }
-    for (AuctionInfo info : list) {
-      boolean success = buyOne(info, playerTradeStatus);
-      if (success && purchases >= maxPurchaseAmount) {
-        onFailed();
-        return;
-      }
-      if (!success) {
-        return;
-      }
-    }
-  }
-
-  private boolean buyOne(AuctionInfo auctionInfo, PlayerTradeStatus playerTradeStatus) {
-    log.info("Found min player : " + auctionInfo.getBuyNowPrice());
-    boolean success = fifaRequests.buy(auctionInfo);
-    if (!success) {
-      failed = false;
-      return success;
-    }
-    log.info(
-        "Success bought " + playerTradeStatus.getName() + " for " + auctionInfo.getBuyNowPrice());
-    purchases++;
-    PlayerTradeStatus one = tradeRepository.findOne(playerTradeStatus.getId());
-    if (one == null) {
-      log.error("Player with id " + auctionInfo.getItemData().getId() + " not found. Player name " +
-          ": " + auctionInfo.getItemData().getAssetId());
-      return true;
-    }
-    one.setBoughtAmount(one.getBoughtAmount() + 1);
-    tradeRepository.save(one);
-    return true;
+  @Override
+  public void findMinPriceAll() {
+    List<PlayerTradeStatus> all = tradeRepository.findAll();
+    Collections.reverse(all);
+    final int[] counter = {0};
+    all.stream().forEach(p -> {
+      findMinPrice(p.getId());
+      counter[0]++;
+      logController.info("Updated market price for " + counter[0] + " / " + all.size());
+      sleep(3000);
+    });
   }
 
   @Override
   public PlayerStatistic findMinPrice(long playerId) {
     PlayerStatistic player = statisticRepository.findOne(playerId);
+    PlayerTradeStatus tradeStatus = tradeRepository.findOne(playerId);
     if (player == null) {
       player = new PlayerStatistic();
       player.setId(playerId);
     }
+//    if (player.getPrices().size() >= 10) {
+//      return null;
+//    }
+    Integer lowBound = defineLowBound(player, tradeStatus);
 
-    Integer lowBound = player.getLastPrice();
-    if (lowBound == null) {
-      lowBound = DEFAULT_LOW_BOUND;
-    }
     int iteration = 0;
     Set<AuctionInfo> toStatistic = new HashSet<>();
 
     while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT) {
       iteration++;
+      logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
+      try {
+        Thread.sleep(200);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
       List<AuctionInfo> players = findPlayers(playerId, lowBound);
       if (players.size() == 0) {
         lowBound = getHigherBound(0, lowBound);
-      } else if (players.size() >= 20) {
-        lowBound = getLowerBound(lowBound);
       } else {
         toStatistic.addAll(players);
         lowBound = getHigherBound(0, lowBound);
       }
+      logController.info("Found " + players.size() + " players");
 
-      if (iteration >= 20) {
-        log.info("Exceeded iteration limit");
+      if (iteration >= ITERATION_LIMIT) {
+        logController.info("Exceeded iteration limit");
         break;
       }
     }
+
+    collectStatistic(playerId, lowBound, toStatistic);
+
+    logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
+    return getMinPrice(playerId);
+  }
+
+  private void collectStatistic(long playerId, int lowBound, Set<AuctionInfo> toStatistic) {
     if (toStatistic.isEmpty()) {
-      PlayerStatistic toSave = new PlayerStatistic();
-      toSave.setId(playerId);
-      toSave.setLastPrice(lowBound);
-      statisticRepository.save(toSave);
+      updateStatistic(playerId, lowBound);
     }
     Map<Integer, List<AuctionInfo>> stats =
         toStatistic.stream().collect(Collectors.groupingBy(AuctionInfo::getBuyNowPrice));
     updateStats(playerId, toStatistic.stream().collect(Collectors.toList()), stats);
+  }
 
+  private void updateStatistic(long playerId, Integer lowBound) {
+    PlayerStatistic toSave = new PlayerStatistic();
+    toSave.setId(playerId);
+    toSave.setLastPrice(lowBound);
+    toSave.setDate(LocalDateTime.now());
+    statisticRepository.save(toSave);
+  }
 
-    log.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
-    log.info(stats.toString());
-    return getMinPrice(playerId);
+  private Integer defineLowBound(PlayerStatistic player, PlayerTradeStatus tradeStatus) {
+    Integer lowBound;
+    if (player.getLastPrice() == null) {
+      lowBound = DEFAULT_LOW_BOUND;
+    } else {
+      lowBound = player.getLastPrice();
+    }
+    if (lowBound - tradeStatus.getMaxPrice() > 3000) {
+      lowBound = tradeStatus.getMaxPrice();
+    }
+    return lowBound;
   }
 
   private void updateStats(long playerId, List<AuctionInfo> toStatistic,
@@ -275,7 +277,7 @@ public class TradeServiceImpl implements TradeService {
           .sorted(Comparator.comparing(PlayerStatistic.PriceDistribution::getPrice))
           .collect(Collectors.toList());
       toSave.setPrices(prices);
-      System.out.println("Player stats : " + toSave);
+      toSave.setDate(LocalDateTime.now());
       statisticRepository.save(toSave);
     });
   }
@@ -287,6 +289,24 @@ public class TradeServiceImpl implements TradeService {
       result.add(new PlayerStatistic.PriceDistribution(k, v.size()));
     });
     return result;
+  }
+
+  private int getHigherBound(int found, Integer lowBound) {
+    if (lowBound < 1000) {
+      return lowBound + 50;
+    } else if (lowBound <= 3000) {
+      return lowBound + 100;
+    } else if (lowBound <= 5000) {
+      return lowBound + 300;
+    } else if (lowBound < 10000) {
+      return lowBound + 500;
+    } else if (lowBound < 50000) {
+      return lowBound + 1500;
+    } else if (lowBound < 100000) {
+      return lowBound + 2500;
+    } else {
+      return lowBound + 5000;
+    }
   }
 
   private Integer getLowerBound(Integer lowBound) {
@@ -308,22 +328,8 @@ public class TradeServiceImpl implements TradeService {
       Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerId, lowBound);
       return maybe.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
     } catch (Exception e) {
-      log.error(e.getMessage());
+      logController.error(e.getMessage());
       return Collections.emptyList();
-    }
-  }
-
-  private int getHigherBound(int found, Integer lowBound) {
-    if (lowBound < 1000) {
-      return lowBound + 50;
-    } else if (lowBound < 10000) {
-      return lowBound + 100;
-    } else if (lowBound < 50000) {
-      return lowBound + 250;
-    } else if (lowBound < 100000) {
-      return lowBound + 500;
-    } else {
-      return lowBound + 1000;
     }
   }
 
@@ -362,13 +368,8 @@ public class TradeServiceImpl implements TradeService {
   @Override
   public List<PlayerTradeStatus> getAllToAutoBuy() {
     List<PlayerTradeStatus> all = tradeRepository.findAll();
-    List<PlayerStatistic> stats = statisticRepository.findAll();
-    Map<Long, Integer> idMinPrice = new HashMap<>();
-    stats.forEach(s -> {
-      if (!s.getPrices().isEmpty()) {
-        idMinPrice.put(s.getId(), s.getPrices().get(0).getPrice());
-      }
-    });
+
+    Map<Long, Integer> idMinPrice = getMinPricesMap();
     all.forEach(p -> {
       Integer price = idMinPrice.get(p.getId());
       if (price != null) {
@@ -376,6 +377,17 @@ public class TradeServiceImpl implements TradeService {
       }
     });
     return all;
+  }
+
+  private Map<Long, Integer> getMinPricesMap() {
+    List<PlayerStatistic> stats = statisticRepository.findAll();
+    Map<Long, Integer> idMinPrice = new HashMap<>();
+    stats.forEach(s -> {
+      if (!s.getPrices().isEmpty()) {
+        idMinPrice.put(s.getId(), s.getPrices().get(0).getPrice());
+      }
+    });
+    return idMinPrice;
   }
 
   @Override

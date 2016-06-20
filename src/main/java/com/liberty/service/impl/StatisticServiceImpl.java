@@ -1,10 +1,10 @@
 package com.liberty.service.impl;
 
+import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.Statistic;
-import com.liberty.repositories.PlayerMonitoringRepository;
-import com.liberty.repositories.PlayerProfileRepository;
-import com.liberty.repositories.SourceRepository;
+import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.service.StatisticService;
+import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,18 @@ import org.springframework.stereotype.Service;
 public class StatisticServiceImpl implements StatisticService {
 
   @Autowired
-  private PlayerProfileRepository playerProfileRepository;
+  private PlayerTradeStatusRepository statusRepository;
+
   @Autowired
-  private PlayerMonitoringRepository playerMonitoringRepository;
-  @Autowired
-  private SourceRepository sourceRepository;
+  private TradeService tradeService;
+
 
   @Override
   public Statistic getGeneralStatistic() {
     Statistic statistic = new Statistic();
-    statistic.setProfiles(playerProfileRepository.count());
-    statistic.setMonitored(playerMonitoringRepository.count());
-    statistic.setSources(sourceRepository.count());
+    statistic.setPlayers(statusRepository.count());
+    statistic.setAutoBuy(statusRepository.findAll().stream().filter(PlayerTradeStatus::isEnabled).count());
+    statistic.setEnabled(tradeService.getMarketInfo().getAutoBuyEnabled());
     return statistic;
   }
 }

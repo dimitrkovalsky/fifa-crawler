@@ -21,6 +21,7 @@ public class AuctionInfo {
   private int sellerId;
   private boolean tradeOwner;
   private String tradeIdStr;
+  private long coinsProcessed;
 
   @Override
   public boolean equals(Object o) {

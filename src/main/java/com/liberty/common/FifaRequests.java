@@ -7,12 +7,18 @@ import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.Bid;
 import com.liberty.model.market.BuyResponse;
 import com.liberty.model.market.FifaError;
+import com.liberty.model.market.ItemData;
+import com.liberty.model.market.Items;
+import com.liberty.model.market.SellItem;
 import com.liberty.model.market.TradeStatus;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,23 +36,18 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "1b136296-7d9d-4383-9a59-2ab98a59e4c6";
-  private String phishingToken = "3767025960522869782";
+  private String sessionId = "528a70e0-bd28-4b81-8a57-89545248db59";
+  private String phishingToken = "2282881850690183364";
 
-  public FifaRequests() {
-    System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-    System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
-    System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.wire", "DEBUG");
-    System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.impl.conn", "DEBUG");
-    System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.impl.client", "DEBUG");
-    System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.client", "DEBUG");
-    System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "DEBUG");
-  }
-
-  public void getTradeLine() {
+  public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(TRADE_LINE_URL);
-    Optional<String> result = execute(request);
-    System.out.println(result);
+    String json = execute(request).get();
+    if (isError(json)) {
+      return Collections.emptyList();
+    }
+    Optional<TradeStatus> trade = JsonHelper.toEntity(json, TradeStatus.class);
+
+    return trade.get().getAuctionInfo();
   }
 
   public Optional<TradeStatus> searchPlayer(long id, int maxPrice) throws IOException {
@@ -109,6 +110,7 @@ public class FifaRequests extends BaseFifaRequests {
   public void setSessionId(String sessionId) {
     this.sessionId = sessionId;
   }
+
 
   public Optional<String> auth() {
     try {
@@ -175,13 +177,44 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
-  public void item() {
-    HttpPost request = createRequest(ITEM_URL);
-//    SellItem item = new SellItem();
-//    request.setEntity(new StringEntity());
+  public boolean item(ItemData itemData) {
+    HttpPost request = createPutRequest(ITEM_URL);
+    SellItem toSell = new SellItem(itemData.getId());
+
+    try {
+      request.setEntity(new StringEntity(JsonHelper.toJsonString(toSell)));
+    } catch (UnsupportedEncodingException e) {
+      log.error(e.getMessage());
+    }
+    String json = execute(request).get();
+    if (isError(json)) {
+      return false;
+    }
+    Optional<SellItem> trade = JsonHelper.toEntity(json, SellItem.class);
+    return trade.get().getItemData().get(0).getSuccess();
   }
 
   public void auctionHouse() {
 
+  }
+
+  public void removeAllSold() {
+    HttpPost deleteRequest = createDeleteRequest(FifaEndpoints.REMOVE_SOLD);
+    execute(deleteRequest);
+  }
+
+  public void relistAll() {
+    HttpPost putRequest = createPutRequest(FifaEndpoints.RELIST);
+    execute(putRequest);
+  }
+
+  public List<ItemData> getUnassigned() {
+    HttpPost request = createRequest(FifaEndpoints.GET_UNASSIGNED);
+    String json = execute(request).get();
+    if (isError(json)) {
+      return Collections.emptyList();
+    }
+    Optional<Items> trade = JsonHelper.toEntity(json, Items.class);
+    return trade.get().getItemData();
   }
 }

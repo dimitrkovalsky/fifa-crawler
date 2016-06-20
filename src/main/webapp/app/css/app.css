@@ -31,6 +31,7 @@ b, strong {
 .player-card.gold-rare {
     background: #cccccc url("../img/cards/standard-rare.png");
 }
+
 .player-title {
     margin-left: 160px;
     margin-top: 30px;
@@ -87,4 +88,19 @@ b, strong {
 }
 
 #price-chart {
+}
+
+.infoLog {
+    font-size: 10px;
+    color: #0086ae;
+}
+
+.errorLog {
+    font-size: 10px;
+    color: red;
+}
+
+.logView {
+    overflow-y: scroll;
+    height: 100px;
 }

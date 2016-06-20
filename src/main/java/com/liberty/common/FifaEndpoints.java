@@ -15,4 +15,7 @@ public interface FifaEndpoints {
   String ITEM_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/item";
   String AUCTION_HOUSE_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/trade/%s/bid";
   String STATUS_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/trade/status?tradeIds=%s";
+  String REMOVE_SOLD = "https://utas.s2.fut.ea.com/ut/game/fifa16/trade/sold";
+  String RELIST = "https://utas.s2.fut.ea.com/ut/game/fifa16/auctionhouse/relist";
+  String GET_UNASSIGNED = "https://utas.s2.fut.ea.com/ut/game/fifa16/purchased/items";
 }
