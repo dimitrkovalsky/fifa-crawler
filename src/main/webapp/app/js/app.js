@@ -45,6 +45,19 @@ fifaApp.factory('PlayerAutoBuy', function ($resource) {
     return $resource('/api/market/player/:id');
 });
 
+fifaApp.factory('Search', function ($resource) {
+    return $resource('/api/market/search/');
+});
+
+fifaApp.factory('Trade', function ($resource) {
+    return $resource('/api/trade/');
+});
+
+fifaApp.factory('Tradepile', function ($resource) {
+    return $resource('/api/trade/tradepile');
+});
+
+
 fifaApp.factory('MinPrice', function ($resource) {
     return $resource('/api/market/player/:id/min/');
 });
@@ -61,5 +74,10 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/market',
             templateUrl: 'market.html',
             controller: 'MarketController'
+        })
+        .state('trade', {
+            url: '/trade',
+            templateUrl: 'trade.html',
+            controller: 'TradeController'
         });
 });

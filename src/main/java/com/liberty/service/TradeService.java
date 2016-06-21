@@ -5,6 +5,7 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.ItemData;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.rest.request.BuyRequest;
+import com.liberty.rest.request.SellRequest;
 
 import java.util.List;
 
@@ -46,4 +47,8 @@ public interface TradeService {
   void updateAutoBuy(BuyRequest request);
 
   void updatePlayer(PlayerTradeStatus request);
+
+  void sell(SellRequest request);
+
+  List<PlayerTradeStatus> search(String phrase);
 }

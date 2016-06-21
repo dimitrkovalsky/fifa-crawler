@@ -36,8 +36,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "528a70e0-bd28-4b81-8a57-89545248db59";
-  private String phishingToken = "2282881850690183364";
+  private String sessionId = "c305767e-2b13-435a-8f43-59a442d3903d";
+  private String phishingToken = "8248130916897195480";
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(TRADE_LINE_URL);
@@ -84,8 +84,9 @@ public class FifaRequests extends BaseFifaRequests {
    */
   private boolean updateSession() {
     Optional<String> auth = auth();
-    if (!auth.isPresent())
+    if (!auth.isPresent()) {
       return true;
+    }
     sessionId = auth.get();
     return false;
   }
@@ -122,11 +123,13 @@ public class FifaRequests extends BaseFifaRequests {
       log.info("Auth request " + authRequest);
       request.setEntity(entity);
       Optional<String> result = execute(request);
-      if (!result.isPresent())
+      if (!result.isPresent()) {
         return Optional.empty();
+      }
       Optional<AuthResponse> response = JsonHelper.toEntity(result.get(), AuthResponse.class);
-      if (!response.isPresent())
+      if (!response.isPresent()) {
         return Optional.empty();
+      }
       log.info("Retrieved session >>> " + response.get());
       String sid = response.get().getSid();
       return Optional.ofNullable(sid);
@@ -142,8 +145,6 @@ public class FifaRequests extends BaseFifaRequests {
       log.info(request.toString());
       Optional<String> execute = execute(request);
       Optional<BuyResponse> buy = JsonHelper.toEntity(execute.get(), BuyResponse.class);
-//      log.info("Status for : " + auctionInfo.getTradeId() + " " + buy.get().getAuctionInfo().get(0)
-//          .getBidState());
     } catch (Exception e) {
       log.error("Buy status error : " + e.getMessage());
     }
@@ -160,11 +161,13 @@ public class FifaRequests extends BaseFifaRequests {
       String json = JsonHelper.toJsonString(bid);
       request.setEntity(new StringEntity(json));
       Optional<String> response = execute(request);
-      if (!response.isPresent())
+      if (!response.isPresent()) {
         return false;
+      }
       Optional<BuyResponse> buy = JsonHelper.toEntity(response.get(), BuyResponse.class);
-      if (!buy.isPresent())
+      if (!buy.isPresent()) {
         return false;
+      }
       log.info("Buy response : " + buy.get());
       if (buy.get().getErrorState() != null) {
         log.error("Buy error : " + buy.get().getErrorState());
@@ -194,7 +197,7 @@ public class FifaRequests extends BaseFifaRequests {
     return trade.get().getItemData().get(0).getSuccess();
   }
 
-  public void auctionHouse() {
+  public void auctionHouse(ItemData itemData, int startPrice, int buyNow) {
 
   }
 

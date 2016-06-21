@@ -1,0 +1,28 @@
+<div class="page-header">
+    <h1>Trades</h1>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>First Price</th>
+            <th>Previous Price</th>
+            <th>Current Price</th>
+            <th>Last update</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="trade in trades">
+        <tr>
+            <td>{{trade.id}}</td>
+            <td>{{trade}}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

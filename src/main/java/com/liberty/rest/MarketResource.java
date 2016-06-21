@@ -6,6 +6,7 @@ import com.liberty.model.market.PlayerStatistic;
 import com.liberty.rest.request.BoolRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;
+import com.liberty.rest.request.SearchRequest;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,12 @@ public class MarketResource {
   public List<PlayerTradeStatus> getAll() {
     return tradeService.getAllToAutoBuy();
   }
+
+  @RequestMapping(path = "/search", method = RequestMethod.GET)
+  public List<PlayerTradeStatus> getAll(SearchRequest request) {
+    return tradeService.search(request.getPhrase());
+  }
+
 
   @RequestMapping(path = "/player/{id}", method = RequestMethod.GET)
   public PlayerTradeStatus getOne(@PathVariable Long id) {

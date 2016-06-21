@@ -24,6 +24,7 @@
 <script src="app/js/controller/IndexController.js"></script>
 <script src="app/js/controller/MarketController.js"></script>
 <script src="app/js/controller/PlayerController.js"></script>
+<script src="app/js/controller/TradeController.js"></script>
 
 <body ng-app="fifaApp" ng-controller="IndexController">
 
@@ -43,11 +44,17 @@
                     Market</a>
             </li>
             <li>
+                <a href="#/trade" class="top-level-menu"><span
+                        class="glyphicon glyphicon-tags"></span>
+                    Trade</a>
+            </li>
+            <li>
                 <a href="#collapseLog" data-toggle="collapse" aria-expanded="false"
                    class="top-level-menu">
                     <span class="glyphicon glyphicon-list-alt"></span>
                     Logs</a>
             </li>
+
         </ul>
         <ul class="nav navbar-nav navbar-right" style="margin-right:20px">
             <li> Players : <strong>{{stats.players}}</strong></li>

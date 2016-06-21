@@ -3,7 +3,6 @@ package com.liberty.service.impl;
 import com.liberty.common.FifaRequests;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
-import com.liberty.model.market.ItemData;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.websockets.LogController;
@@ -34,6 +33,12 @@ public abstract class ATradeService {
 
   @Autowired
   protected PlayerTradeStatusRepository tradeRepository;
+
+  public List<PlayerTradeStatus> search(String phrase) {
+    return tradeRepository.findByName(phrase)
+        .stream().limit(5)
+        .collect(Collectors.toList());
+  }
 
   protected FifaRequests fifaRequests = new FifaRequests();
 
@@ -68,8 +73,9 @@ public abstract class ATradeService {
     purchases++;
     PlayerTradeStatus one = tradeRepository.findOne(playerTradeStatus.getId());
     if (one == null) {
-      logController.error("Player with id " + auctionInfo.getItemData().getId() + " not found. Player name " +
-          ": " + auctionInfo.getItemData().getAssetId());
+      logController.error(
+          "Player with id " + auctionInfo.getItemData().getId() + " not found. Player name " +
+              ": " + auctionInfo.getItemData().getAssetId());
       return true;
     }
     one.setBoughtAmount(one.getBoughtAmount() + 1);
@@ -105,8 +111,5 @@ public abstract class ATradeService {
         .collect(Collectors.toList());
   }
 
-  protected void sell(ItemData itemData, int startPrice, int buyNow) {
-    fifaRequests.item(itemData);
-    fifaRequests.auctionHouse();
-  }
+
 }

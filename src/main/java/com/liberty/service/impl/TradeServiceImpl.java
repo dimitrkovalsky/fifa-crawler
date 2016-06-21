@@ -1,21 +1,18 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.TradeState;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
-import com.liberty.model.market.ItemData;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.rest.request.BuyRequest;
+import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -27,14 +24,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.liberty.common.Comparators.getAuctionInfoComparator;
+import static com.liberty.common.BoundHelper.defineLowBound;
+import static com.liberty.common.BoundHelper.getHigherBound;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * User: Dimitr Date: 03.06.2016 Time: 20:11
  */
 @Service
-public class TradeServiceImpl extends ATradeService implements TradeService {
+public class TradeServiceImpl extends ASellService implements TradeService {
 
   public static final int DEFAULT_LOW_BOUND = 1000;
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 25;
@@ -45,31 +43,14 @@ public class TradeServiceImpl extends ATradeService implements TradeService {
   @Autowired
   private PlayerStatisticRepository statisticRepository;
 
+  @Autowired
+  private StatisticService statisticService;
+
   @Override
   public void removeAllPlayers() {
     tradeRepository.deleteAll();
   }
 
-  @Override
-  public int getTradePileSize(){
-    List<AuctionInfo> tradePile = fifaRequests.getTradePile();
-    Map<String, List<AuctionInfo>> byState = tradePile.stream()
-        .collect(Collectors.groupingBy(AuctionInfo::getTradeState));
-    if(byState.containsKey(TradeState.CLOSED)){
-      fifaRequests.removeAllSold();
-    }
-    if(byState.containsKey(TradeState.EXPIRED)){
-      fifaRequests.relistAll();
-    }
-    return tradePile.size();
-  }
-
-  @Override
-  public List<ItemData> getUnassigned(){
-    List<ItemData> unassigned = fifaRequests.getUnassigned();
-    sell(unassigned.get(0),1700, 1900);
-    return unassigned;
-  }
 
   @Override
   public void updatePrices() {
@@ -80,18 +61,19 @@ public class TradeServiceImpl extends ATradeService implements TradeService {
           Integer price = pricesMap.get(p.getId());
           if (price != null && price != 0) {
             p.setEnabled(true);
-            if (price <= 1000)
+            if (price <= 1000) {
               p.setMaxPrice(price - 200);
-            else if (price <= 2000)
+            } else if (price <= 2000) {
               p.setMaxPrice(price - 300);
-            else if (price <= 3000)
+            } else if (price <= 3000) {
               p.setMaxPrice(price - 400);
-            else if (price <= 4000)
+            } else if (price <= 4000) {
               p.setMaxPrice(price - 500);
-            else if (price <= 5000)
+            } else if (price <= 5000) {
               p.setMaxPrice(price - 700);
-            else
+            } else {
               p.setEnabled(false);
+            }
           }
           return p;
         }).forEach(tradeRepository::save);
@@ -148,8 +130,9 @@ public class TradeServiceImpl extends ATradeService implements TradeService {
       }
       TradeStatus tradeStatus = maybe.get();
       int found = tradeStatus.getAuctionInfo().size();
-      logController.info("Found " + found + " players for " + playerTradeStatus.getName() + " maxPrice : "
-          + playerTradeStatus.getMaxPrice());
+      logController
+          .info("Found " + found + " players for " + playerTradeStatus.getName() + " maxPrice : "
+              + playerTradeStatus.getMaxPrice());
       if (found <= 0) {
         return true;
       }
@@ -167,27 +150,17 @@ public class TradeServiceImpl extends ATradeService implements TradeService {
     tradeRepository.save(status);
   }
 
-  private Optional<AuctionInfo> foundMin(List<AuctionInfo> statuses) {
-    Optional<AuctionInfo> min = statuses.stream()
-        .min(getAuctionInfoComparator());
-    return min.flatMap(m -> {
-      if (m.getItemData().getContract() <= 0) {
-        return Optional.empty();
-      }
-      return Optional.of(m);
-    });
-  }
-
   @Override
   public void findMinPriceAll() {
     List<PlayerTradeStatus> all = tradeRepository.findAll();
-    Collections.reverse(all);
+    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
+
     final int[] counter = {0};
     all.stream().forEach(p -> {
       findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + all.size());
-      sleep(3000);
+      sleep(20000);
     });
   }
 
@@ -199,9 +172,9 @@ public class TradeServiceImpl extends ATradeService implements TradeService {
       player = new PlayerStatistic();
       player.setId(playerId);
     }
-//    if (player.getPrices().size() >= 10) {
-//      return null;
-//    }
+    if (player.getPrices().size() >= 10) {
+      return null;
+    }
     Integer lowBound = defineLowBound(player, tradeStatus);
 
     int iteration = 0;
@@ -230,100 +203,14 @@ public class TradeServiceImpl extends ATradeService implements TradeService {
       }
     }
 
-    collectStatistic(playerId, lowBound, toStatistic);
+    statisticService.collectStatistic(playerId, lowBound, toStatistic);
 
     logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
     return getMinPrice(playerId);
   }
 
-  private void collectStatistic(long playerId, int lowBound, Set<AuctionInfo> toStatistic) {
-    if (toStatistic.isEmpty()) {
-      updateStatistic(playerId, lowBound);
-    }
-    Map<Integer, List<AuctionInfo>> stats =
-        toStatistic.stream().collect(Collectors.groupingBy(AuctionInfo::getBuyNowPrice));
-    updateStats(playerId, toStatistic.stream().collect(Collectors.toList()), stats);
-  }
 
-  private void updateStatistic(long playerId, Integer lowBound) {
-    PlayerStatistic toSave = new PlayerStatistic();
-    toSave.setId(playerId);
-    toSave.setLastPrice(lowBound);
-    toSave.setDate(LocalDateTime.now());
-    statisticRepository.save(toSave);
-  }
-
-  private Integer defineLowBound(PlayerStatistic player, PlayerTradeStatus tradeStatus) {
-    Integer lowBound;
-    if (player.getLastPrice() == null) {
-      lowBound = DEFAULT_LOW_BOUND;
-    } else {
-      lowBound = player.getLastPrice();
-    }
-    if (lowBound - tradeStatus.getMaxPrice() > 3000) {
-      lowBound = tradeStatus.getMaxPrice();
-    }
-    return lowBound;
-  }
-
-  private void updateStats(long playerId, List<AuctionInfo> toStatistic,
-                           Map<Integer, List<AuctionInfo>> stats) {
-    foundMin(toStatistic).ifPresent(m -> {
-      PlayerStatistic toSave = new PlayerStatistic();
-      toSave.setId(playerId);
-      toSave.setLastPrice(m.getBuyNowPrice());
-      List<PlayerStatistic.PriceDistribution> prices = toStatistic(stats);
-      prices = prices.stream()
-          .sorted(Comparator.comparing(PlayerStatistic.PriceDistribution::getPrice))
-          .collect(Collectors.toList());
-      toSave.setPrices(prices);
-      toSave.setDate(LocalDateTime.now());
-      statisticRepository.save(toSave);
-    });
-  }
-
-  private List<PlayerStatistic.PriceDistribution> toStatistic(
-      Map<Integer, List<AuctionInfo>> stats) {
-    List<PlayerStatistic.PriceDistribution> result = new ArrayList<>();
-    stats.forEach((k, v) -> {
-      result.add(new PlayerStatistic.PriceDistribution(k, v.size()));
-    });
-    return result;
-  }
-
-  private int getHigherBound(int found, Integer lowBound) {
-    if (lowBound < 1000) {
-      return lowBound + 50;
-    } else if (lowBound <= 3000) {
-      return lowBound + 100;
-    } else if (lowBound <= 5000) {
-      return lowBound + 300;
-    } else if (lowBound < 10000) {
-      return lowBound + 500;
-    } else if (lowBound < 50000) {
-      return lowBound + 1500;
-    } else if (lowBound < 100000) {
-      return lowBound + 2500;
-    } else {
-      return lowBound + 5000;
-    }
-  }
-
-  private Integer getLowerBound(Integer lowBound) {
-    if (lowBound <= 1000) {
-      return lowBound - 50;
-    } else if (lowBound <= 10000) {
-      return lowBound - 100;
-    } else if (lowBound <= 50000) {
-      return lowBound - 250;
-    } else if (lowBound <= 100000) {
-      return lowBound - 500;
-    } else {
-      return lowBound - 1000;
-    }
-  }
-
-  public List<AuctionInfo> findPlayers(long playerId, Integer lowBound) {
+  private List<AuctionInfo> findPlayers(long playerId, Integer lowBound) {
     try {
       Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerId, lowBound);
       return maybe.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
