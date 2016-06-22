@@ -7,21 +7,16 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>First Price</th>
-            <th>Previous Price</th>
-            <th>Current Price</th>
-            <th>Last update</th>
+            <th>Players</th>
+            <th>Max Price</th>
         </tr>
         </thead>
         <tbody ng-repeat="trade in trades">
         <tr>
-            <td>{{trade.id}}</td>
-            <td>{{trade}}</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-
+            <td>{{trade.playerId}}</td>
+            <td><a href="#/trade-player/{{trade.playerId}}">{{trade.tradeStatus.name}}</a></td>
+            <td>{{trade.items.length}}</td>
+            <td>{{trade.tradeStatus.maxPrice}}</td>
         </tr>
         </tbody>
     </table>

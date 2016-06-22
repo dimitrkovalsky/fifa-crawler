@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static com.liberty.common.FifaEndpoints.AUCTION_HOUSE_URL;
 import static com.liberty.common.FifaEndpoints.AUTH;
 import static com.liberty.common.FifaEndpoints.BID_URL;
 import static com.liberty.common.FifaEndpoints.ITEM_URL;
@@ -36,8 +37,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "c305767e-2b13-435a-8f43-59a442d3903d";
-  private String phishingToken = "8248130916897195480";
+  private String sessionId = "f46e7a47-959f-460e-b490-038e774ce23c";
+  private String phishingToken = "548257015481347697";
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(TRADE_LINE_URL);
@@ -180,9 +181,9 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
-  public boolean item(ItemData itemData) {
+  public boolean item(Long itemId) {
     HttpPost request = createPutRequest(ITEM_URL);
-    SellItem toSell = new SellItem(itemData.getId());
+    SellItem toSell = new SellItem(itemId);
 
     try {
       request.setEntity(new StringEntity(JsonHelper.toJsonString(toSell)));
@@ -197,8 +198,20 @@ public class FifaRequests extends BaseFifaRequests {
     return trade.get().getItemData().get(0).getSuccess();
   }
 
-  public void auctionHouse(ItemData itemData, int startPrice, int buyNow) {
-
+  public void auctionHouse(Long id, int startPrice, int buyNow) {
+    HttpPost request = createRequest(AUCTION_HOUSE_URL);
+    AuctionInfo toSell = new AuctionInfo();
+    toSell.setStartingBid(startPrice);
+    toSell.setBuyNowPrice(buyNow);
+    toSell.setDuration(3600L);
+    ItemData itemData = new ItemData();
+    itemData.setId(id);
+    toSell.setItemData(itemData);
+    try {
+      request.setEntity(new StringEntity(JsonHelper.toJsonString(toSell)));
+    } catch (UnsupportedEncodingException e) {
+      log.error(e.getMessage());
+    }
   }
 
   public void removeAllSold() {

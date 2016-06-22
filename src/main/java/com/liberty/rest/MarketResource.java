@@ -66,7 +66,6 @@ public class MarketResource {
     return tradeService.search(request.getPhrase());
   }
 
-
   @RequestMapping(path = "/player/{id}", method = RequestMethod.GET)
   public PlayerTradeStatus getOne(@PathVariable Long id) {
     return tradeService.getOnePlayer(id);

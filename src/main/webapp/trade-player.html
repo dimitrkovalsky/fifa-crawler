@@ -1,0 +1,78 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['line']});
+    google.charts.setOnLoadCallback(draw);
+</script>
+
+<div class="page-header">
+    <h1>{{player.name}}
+        <small>bought {{toSell.length}} players</small>
+    </h1>
+</div>
+<div class="col-md-6" style="height:100px">
+    <div class="col-md-4">
+        <span>Max price : {{player.maxPrice}} </span>
+        <button ng-click="updatePrice()" class="btn btn-default">Refresh market</button>
+    </div>
+
+    <div class="col-md-2">
+        <img style="height: 81px; padding-bottom: 45px;" ng-show="isLoading"
+             src="app/img/preloader.gif">
+    </div>
+
+    <div class="col-md-6">
+        <span>Last update : <strong>{{playerPrice.date}}</strong> </span>
+    </div>
+</div>
+<div class="container">
+    <div class="col-md-6">
+        <div class="col-md-8">
+            <label for="name" class="col-md-6">Name</label>
+            <input type="text" id="name" ng-model="player.name" class="col-md-6"> <br>
+        </div>
+        <div class="col-md-8">
+            <label for="maxPrice" class="col-md-6">Max price</label>
+            <input type="number" id="maxPrice" ng-model="player.maxPrice" class="col-md-6"> <br>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="updatePlayer()" class="btn btn-primary"> Update info</button>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-8">
+            <label for="startPrice" class="col-md-6">Start price</label>
+            <input type="number" id="startPrice" ng-model="sellPrice.sellStartPrice"
+                   class="col-md-6"> <br>
+        </div>
+        <div class="col-md-8">
+            <label for="buyNow" class="col-md-6">Buy now price</label>
+            <input type="number" id="buyNow" ng-model="sellPrice.sellBuyNowPrice" class="col-md-6">
+            <br>
+        </div>
+        <div class="col-md-2">
+            <button ng-click="sellAll()" class="btn btn-primary">Sell All</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Trade Id</th>
+            <th>Bought for</th>
+            <th>contracts</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="trade in toSell">
+        <tr>
+            <td>{{trade.id}}</td>
+            <td>{{trade.lastSalePrice}}</td>
+            <td>{{trade.contract}}</td>
+            <td>
+                <button class="btn btn-default" ng-click="sell(trade.id)"> Sell</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="col-md-12" id="price-chart"></div>
+
+</div>

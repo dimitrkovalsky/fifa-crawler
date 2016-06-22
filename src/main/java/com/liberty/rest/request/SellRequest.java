@@ -1,7 +1,5 @@
 package com.liberty.rest.request;
 
-import com.liberty.model.market.ItemData;
-
 import lombok.Data;
 
 /**
@@ -11,7 +9,7 @@ import lombok.Data;
 @Data
 public class SellRequest {
 
-  private ItemData itemData;
+  private Long itemId;
   private Integer startPrice;
   private Integer buyNow;
 }

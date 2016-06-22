@@ -11,7 +11,7 @@ public class ItemData {
   private Long timestamp;
   private String formation;
   private boolean untradeable;
-  private int assetId;
+  private Long assetId;
   private int rating;
   private String itemType;
   private int resourceId;

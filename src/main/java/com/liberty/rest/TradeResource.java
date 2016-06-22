@@ -1,6 +1,6 @@
 package com.liberty.rest;
 
-import com.liberty.model.market.ItemData;
+import com.liberty.model.market.GroupedToSell;
 import com.liberty.rest.request.SellRequest;
 import com.liberty.rest.response.SizeResponse;
 import com.liberty.service.TradeService;
@@ -25,7 +25,7 @@ public class TradeResource {
   private TradeService tradeService;
 
   @RequestMapping(method = RequestMethod.GET)
-  public List<ItemData> getUnassigned() {
+  public List<GroupedToSell> getUnassigned() {
     return tradeService.getUnassigned();
   }
 

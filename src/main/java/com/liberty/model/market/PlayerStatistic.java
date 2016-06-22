@@ -16,6 +16,8 @@ public class PlayerStatistic {
   private LocalDateTime date;
 
   public String getDate() {
+    if (date == null)
+      return "Match time ago";
     DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
     return date.format(formatter);
   }

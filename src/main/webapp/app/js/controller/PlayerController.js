@@ -1,5 +1,5 @@
 fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParams,
-                                                 PlayerAutoBuy, MinPrice) {
+                                                       PlayerAutoBuy, MinPrice) {
     $scope.id = $stateParams.id;
 
     $scope.onLoaded = function (player) {

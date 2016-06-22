@@ -75,6 +75,11 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: 'market.html',
             controller: 'MarketController'
         })
+        .state('trade-player', {
+            url: '/trade-player/:id',
+            templateUrl: 'trade-player.html',
+            controller: 'TradePlayerController'
+        })
         .state('trade', {
             url: '/trade',
             templateUrl: 'trade.html',

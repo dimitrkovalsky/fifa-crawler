@@ -51,7 +51,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     tradeRepository.deleteAll();
   }
 
-
   @Override
   public void updatePrices() {
     Map<Long, Integer> pricesMap = getMinPricesMap();
@@ -172,9 +171,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       player = new PlayerStatistic();
       player.setId(playerId);
     }
-    if (player.getPrices().size() >= 10) {
-      return null;
-    }
+//    if (player.getPrices().size() >= 10) {
+//      return null;
+//    }
     Integer lowBound = defineLowBound(player, tradeStatus);
 
     int iteration = 0;
