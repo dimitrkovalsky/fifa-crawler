@@ -13,6 +13,7 @@ public interface FifaEndpoints {
   String AUTH = "https://www.easports.com/iframe/fut16/p/ut/auth";
   String BID_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/trade/%s/bid";
   String ITEM_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/item";
+  String ITEMS_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/purchased/items";
   String AUCTION_HOUSE_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/auctionhouse";
   String STATUS_URL = "https://utas.s2.fut.ea.com/ut/game/fifa16/trade/status?tradeIds=%s";
   String REMOVE_SOLD = "https://utas.s2.fut.ea.com/ut/game/fifa16/trade/sold";

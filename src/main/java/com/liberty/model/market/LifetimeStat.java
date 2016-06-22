@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class LifetimeStat
 {
-  private int value;
-  private int index;
+  private Integer value;
+  private Integer index;
 }

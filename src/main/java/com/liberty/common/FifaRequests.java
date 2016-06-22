@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import static com.liberty.common.FifaEndpoints.AUCTION_HOUSE_URL;
 import static com.liberty.common.FifaEndpoints.AUTH;
 import static com.liberty.common.FifaEndpoints.BID_URL;
+import static com.liberty.common.FifaEndpoints.ITEMS_URL;
 import static com.liberty.common.FifaEndpoints.ITEM_URL;
 import static com.liberty.common.FifaEndpoints.SEARCH_URL;
 import static com.liberty.common.FifaEndpoints.STATUS_URL;
@@ -37,8 +38,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "f46e7a47-959f-460e-b490-038e774ce23c";
-  private String phishingToken = "548257015481347697";
+  private String sessionId = "069e2c5e-873a-454a-8069-9eeb30624fc0";
+  private String phishingToken = "2445656323758010585";
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(TRADE_LINE_URL);
@@ -198,8 +199,8 @@ public class FifaRequests extends BaseFifaRequests {
     return trade.get().getItemData().get(0).getSuccess();
   }
 
-  public void auctionHouse(Long id, int startPrice, int buyNow) {
-    HttpPost request = createRequest(AUCTION_HOUSE_URL);
+  public boolean auctionHouse(Long id, int startPrice, int buyNow) {
+    HttpPost request = createPostRequest(AUCTION_HOUSE_URL);
     AuctionInfo toSell = new AuctionInfo();
     toSell.setStartingBid(startPrice);
     toSell.setBuyNowPrice(buyNow);
@@ -209,9 +210,12 @@ public class FifaRequests extends BaseFifaRequests {
     toSell.setItemData(itemData);
     try {
       request.setEntity(new StringEntity(JsonHelper.toJsonString(toSell)));
-    } catch (UnsupportedEncodingException e) {
+      execute(request);
+      return true;
+    } catch (Exception e) {
       log.error(e.getMessage());
     }
+    return false;
   }
 
   public void removeAllSold() {
@@ -232,5 +236,10 @@ public class FifaRequests extends BaseFifaRequests {
     }
     Optional<Items> trade = JsonHelper.toEntity(json, Items.class);
     return trade.get().getItemData();
+  }
+
+  public void items() {
+    HttpPost request = createRequest(ITEMS_URL);
+    execute(request);
   }
 }

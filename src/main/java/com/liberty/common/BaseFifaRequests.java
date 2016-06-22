@@ -113,6 +113,10 @@ abstract class BaseFifaRequests {
     return createRequest(url, "DELETE");
   }
 
+  protected HttpPost createPostRequest(String url) {
+    return createRequest(url, "POST");
+  }
+
   protected HttpPost createPutRequest(String url) {
     return createRequest(url, "PUT");
   }

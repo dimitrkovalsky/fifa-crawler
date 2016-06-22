@@ -9,19 +9,19 @@ public class AuctionInfo {
   private ItemData itemData;
   private String tradeState;
   private Integer buyNowPrice;
-  private int currentBid;
-  private int offers;
+  private Integer currentBid;
+  private Integer offers;
   private Object watched;
   private String bidState;
-  private int startingBid;
-  private int confidenceValue;
-  private int expires;
+  private Integer startingBid;
+  private Integer confidenceValue;
+  private Integer expires;
   private String sellerName;
-  private int sellerEstablished;
-  private int sellerId;
-  private boolean tradeOwner;
+  private Integer sellerEstablished;
+  private Integer sellerId;
+  private Boolean tradeOwner;
   private String tradeIdStr;
-  private long coinsProcessed;
+  private Long coinsProcessed;
   private Long duration;
 
   @Override

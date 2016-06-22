@@ -9,7 +9,7 @@ import lombok.Data;
 public class TradeStatus {
 
   private Object errorState;
-  private int credits;
+  private Integer credits;
   private List<AuctionInfo> auctionInfo;
   private Object duplicateItemIdList;
   private BidTokens bidTokens;

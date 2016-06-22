@@ -32,6 +32,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
 
     $scope.filterPlayers = function (id) {
         $scope.toSell = [];
+        $scope.tradeStatus = {};
         if (!$rootScope.trades) {
             getUnassigned();
             return
@@ -40,7 +41,6 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
             if ($rootScope.trades[index].playerId == id) {
                 $scope.toSell = $rootScope.trades[index].items;
                 $scope.tradeStatus = $rootScope.trades[index].tradeStatus;
-
             }
         }
         $scope.defineSellPrice();
@@ -56,11 +56,13 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
             startPrice.sellBuyNowPrice = $scope.tradeStatus.maxPrice + 400;
         }
         $scope.sellPrice = startPrice;
+        $scope.sellPrice = startPrice;
     };
 
     $scope.sell = function (tradeId) {
         Trade.save({
             itemId: tradeId,
+            playerId: $scope.id,
             startPrice: $scope.sellPrice.sellStartPrice,
             buyNow: $scope.sellPrice.sellBuyNowPrice
         }, $scope.init, $rootScope.onError);

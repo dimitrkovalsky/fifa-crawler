@@ -1,6 +1,7 @@
 package com.liberty.service.impl;
 
 import com.liberty.common.TradeState;
+import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.ItemData;
@@ -36,7 +37,8 @@ public abstract class ASellService extends ATradeService implements TradeService
   @Override
   public List<GroupedToSell> getUnassigned() {
     List<ItemData> unassigned = fifaRequests.getUnassigned();
-    Map<Long, List<ItemData>> map = unassigned.stream().collect(Collectors.groupingBy(ItemData::getAssetId));
+    Map<Long, List<ItemData>> map =
+        unassigned.stream().collect(Collectors.groupingBy(ItemData::getAssetId));
     List<GroupedToSell> result = new ArrayList<>();
     map.forEach((k, v) -> {
       result.add(new GroupedToSell(k, v, tradeRepository.findOne(k)));
@@ -48,7 +50,17 @@ public abstract class ASellService extends ATradeService implements TradeService
   @Override
   public void sell(SellRequest request) {
     if (fifaRequests.item(request.getItemId())) {
-      fifaRequests.auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
+      boolean success = fifaRequests
+          .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
+      if (success) {
+        fifaRequests.items();
+        PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
+        logController.info("Success placed to market : " + player.getName() + " startPrice: " +
+            request.getStartPrice() + " buyNow: " + request.getBuyNow());
+        player.setSellStartPrice(request.getStartPrice());
+        player.setSellBuyNowPrice(request.getBuyNow());
+        tradeRepository.save(player);
+      }
     }
   }
 }

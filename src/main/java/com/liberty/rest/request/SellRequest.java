@@ -10,6 +10,7 @@ import lombok.Data;
 public class SellRequest {
 
   private Long itemId;
+  private Long playerId;
   private Integer startPrice;
   private Integer buyNow;
 }

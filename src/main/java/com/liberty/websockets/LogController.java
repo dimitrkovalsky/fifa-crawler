@@ -9,8 +9,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -53,13 +51,7 @@ public class LogController {
       log.error("Client doesn't connected");
   }
 
-  @Data
-  @AllArgsConstructor
-  private static class LogMessage {
 
-    private String message;
-    private LogLevel level;
-  }
 
 
   public void live(String data) {

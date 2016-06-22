@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AttributeList {
 
-  private int value;
-  private int index;
+  private Integer value;
+  private Integer index;
 
 }

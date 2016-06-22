@@ -1,5 +1,6 @@
 package com.liberty.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerTradeStatusRepository;
@@ -29,8 +30,12 @@ public class BackupService {
   }
 
   public void restore() throws IOException {
-    List<PlayerTradeStatus> players = statusRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
-
+    List<PlayerTradeStatus> players = (List<PlayerTradeStatus>) mapper
+        .readValue(new File(BACKUP_PATH), new TypeReference<List<PlayerTradeStatus>>() {
+        });
+    statusRepository.deleteAll();
+    statusRepository.save(players);
+    System.exit(1);
   }
 }

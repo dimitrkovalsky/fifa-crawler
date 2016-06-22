@@ -6,6 +6,6 @@ import lombok.Data;
 public class Currency {
 
   private String name;
-  private int funds;
-  private int finalFunds;
+  private Integer funds;
+  private Integer finalFunds;
 }
