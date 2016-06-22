@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -18,6 +19,7 @@ public class BackupService {
 
   private static String BACKUP_PATH = "D:\\players.json";
 
+  @Autowired
   private PlayerTradeStatusRepository statusRepository;
 
   public void backup() throws IOException {
