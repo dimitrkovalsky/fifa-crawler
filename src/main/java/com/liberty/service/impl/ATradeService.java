@@ -59,6 +59,7 @@ public abstract class ATradeService {
         return;
       }
     }
+    logBuyOrSell();
   }
 
   protected boolean buyOne(AuctionInfo auctionInfo, PlayerTradeStatus playerTradeStatus) {
@@ -82,6 +83,8 @@ public abstract class ATradeService {
     tradeRepository.save(one);
     return true;
   }
+
+  protected abstract void logBuyOrSell();
 
   protected void sleep() {
     sleep(0);

@@ -31,7 +31,6 @@ public class LogController {
 
   public void onPriceChanged(MonitoringResult monitoringResult) {
     log.info("Changed : " + monitoringResult);
-    send(monitoringResult);
   }
 
   public void info(String toLog) {
@@ -44,17 +43,19 @@ public class LogController {
     send(new LogMessage(toLog, LogLevel.ERROR));
   }
 
-  private void send(Object data) {
-    if (template != null)
-      template.convertAndSend(TOPIC_NAME, data);
-    else
+  private void send(BaseMessage msg) {
+    if (template != null) {
+      template.convertAndSend(TOPIC_NAME, msg);
+    } else {
       log.error("Client doesn't connected");
+    }
   }
-
-
-
 
   public void live(String data) {
     log.info("Live connected : " + data);
+  }
+
+  public void logBuy(int unassigned, int canSell) {
+    send(new BuyMessage(unassigned, canSell));
   }
 }

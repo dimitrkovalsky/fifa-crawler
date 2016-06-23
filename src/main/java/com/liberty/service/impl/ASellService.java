@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
  */
 public abstract class ASellService extends ATradeService implements TradeService {
 
+  public static final int TRADEPILE_SIZE = 70;
+
   @Override
   public int getTradePileSize() {
     List<AuctionInfo> tradePile = fifaRequests.getTradePile();
@@ -48,12 +50,13 @@ public abstract class ASellService extends ATradeService implements TradeService
   }
 
   @Override
-  public void sell(SellRequest request) {
+  public synchronized void sell(SellRequest request) {
     if (fifaRequests.item(request.getItemId())) {
       boolean success = fifaRequests
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
       if (success) {
-        fifaRequests.items();
+        logBuyOrSell();
+        
         PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
         logController.info("Success placed to market : " + player.getName() + " startPrice: " +
             request.getStartPrice() + " buyNow: " + request.getBuyNow());
@@ -62,5 +65,12 @@ public abstract class ASellService extends ATradeService implements TradeService
         tradeRepository.save(player);
       }
     }
+  }
+  
+  
+  protected void logBuyOrSell(){
+    int unassigned = fifaRequests.getUnassigned().size();
+    int canSell = TRADEPILE_SIZE - getTradePileSize();
+    logController.logBuy(unassigned, canSell);
   }
 }

@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import static com.liberty.common.FifaEndpoints.AUCTION_HOUSE_URL;
 import static com.liberty.common.FifaEndpoints.AUTH;
 import static com.liberty.common.FifaEndpoints.BID_URL;
-import static com.liberty.common.FifaEndpoints.ITEMS_URL;
 import static com.liberty.common.FifaEndpoints.ITEM_URL;
 import static com.liberty.common.FifaEndpoints.SEARCH_URL;
 import static com.liberty.common.FifaEndpoints.STATUS_URL;
@@ -38,8 +37,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "069e2c5e-873a-454a-8069-9eeb30624fc0";
-  private String phishingToken = "2445656323758010585";
+  private String sessionId = "65ed7d4c-25a7-489e-a55d-8a816fcf7089";
+  private String phishingToken = "7200907993424763351";
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(TRADE_LINE_URL);
@@ -238,8 +237,4 @@ public class FifaRequests extends BaseFifaRequests {
     return trade.get().getItemData();
   }
 
-  public void items() {
-    HttpPost request = createRequest(ITEMS_URL);
-    execute(request);
-  }
 }
