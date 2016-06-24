@@ -1,21 +1,15 @@
 package com.liberty.rest;
 
-import com.liberty.model.PlayerProfile;
-import com.liberty.service.CrawlerService;
+import com.liberty.rest.request.TokenUpdateRequest;
+import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,62 +17,17 @@ import lombok.extern.slf4j.Slf4j;
  */
 @RestController
 @RequestMapping("/api/manage")
+@CrossOrigin(origins = "*")
 @Slf4j
 public class ManageResource {
 
   @Autowired
-  private CrawlerService crawlerService;
+  private TradeService tradeService;
 
-  @RequestMapping(path = "/fetch", method = RequestMethod.POST)
-  public StringResponse fetch(@RequestBody String toFetch) {
-    String trackId = "";
-    try {
-      switch (toFetch.toLowerCase()) {
-        case "tots":
-          trackId = crawlerService.fetchTots();
-          break;
-        case "tows":
-          trackId = crawlerService.fetchTows();
-          break;
-        case "sources":
-          trackId = crawlerService.fetchSources();
-          break;
-        default:
-          log.error("Can not fetch : " + toFetch.toLowerCase());
-      }
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
-    return new StringResponse(trackId);
+  @RequestMapping(path = "/token", method = RequestMethod.POST)
+  public void fetch(@RequestBody TokenUpdateRequest request) {
+    tradeService.updateTokens(request.getSessionId(), request.getToken());
+    log.info("Updating tokens " + request);
   }
 
-  @RequestMapping(path = "/track/{id}", method = RequestMethod.GET)
-  public StringResponse track(@PathVariable String id) {
-    return new StringResponse(crawlerService.getStatus(id));
-  }
-
-  @RequestMapping(path = "/fetch/{id}", method = RequestMethod.GET)
-  public PlayerProfile fetchOne(@PathVariable Long id, @RequestParam(value = "force",
-      required = false, defaultValue = "false") boolean force) {
-    return crawlerService.fetchData(id, force);
-  }
-
-  @Data
-  @NoArgsConstructor
-  public class StringResponse {
-
-    private String response;
-
-    public StringResponse(String s) {
-      this.response = s;
-    }
-  }
-
-  public static void main(String[] args) {
-    List<Integer> list = new ArrayList<Integer>() {{
-      add(1);
-      add(2);
-    }};
-    System.out.println(list);
-  }
 }

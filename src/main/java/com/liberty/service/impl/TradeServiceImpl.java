@@ -237,6 +237,18 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
+  public void updateTokens(String sessionId, String phishingToken) {
+    if (!phishingToken.equals(fifaRequests.getPhishingTokenForCheck())) {
+      fifaRequests.setPhishingToken(phishingToken);
+      logController.info("Updated phishingToken to " + phishingToken);
+    }
+    if (!sessionId.equals(fifaRequests.getSessionForCheck())) {
+      fifaRequests.setSessionId(sessionId);
+      logController.info("Updated sessionId to " + sessionId);
+    }
+  }
+
+  @Override
   public void autoBuy(boolean run) {
     this.autoBuyEnabled = run;
   }

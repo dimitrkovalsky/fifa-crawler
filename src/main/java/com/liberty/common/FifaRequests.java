@@ -37,8 +37,8 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "65ed7d4c-25a7-489e-a55d-8a816fcf7089";
-  private String phishingToken = "7200907993424763351";
+  private String sessionId = null;
+  private String phishingToken = null;
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(TRADE_LINE_URL);
@@ -98,10 +98,40 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   public String getSessionId() {
+    if (sessionId == null) {
+      log.error("sessionId is null. Waiting until session will be updated");
+      try {
+        synchronized (this) {
+          this.wait();
+        }
+      } catch (InterruptedException e) {
+        log.error(e.getMessage());
+      }
+    }
+    return sessionId;
+  }
+
+  /**
+   * Returns current session id not blocked.
+   */
+  public String getSessionForCheck() {
+    return sessionId;
+  }
+  public String getPhishingTokenForCheck() {
     return sessionId;
   }
 
   public String getPhishingToken() {
+    if (phishingToken == null) {
+      log.error("phishingToken is null. Waiting to phishingToken will be updated");
+      try {
+        synchronized (this) {
+          this.wait();
+        }
+      } catch (InterruptedException e) {
+        log.error(e.getMessage());
+      }
+    }
     return phishingToken;
   }
 
@@ -111,6 +141,10 @@ public class FifaRequests extends BaseFifaRequests {
 
   public void setSessionId(String sessionId) {
     this.sessionId = sessionId;
+    log.info("Updated session id to " + sessionId);
+    synchronized (this) {
+      this.notifyAll();
+    }
   }
 
 

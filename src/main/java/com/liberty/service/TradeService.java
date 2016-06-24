@@ -34,6 +34,8 @@ public interface TradeService {
 
   void setMarketInfo(MarketInfo info);
 
+  void updateTokens(String sessionId, String phishingToken);
+
   void autoBuy(boolean run);
 
   void deleteFromAutoBuy(Long id);
