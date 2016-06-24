@@ -38,7 +38,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
             return
         }
         for (var index in $rootScope.trades) {
-            if ($rootScope.trades[index].playerId == id) {
+            if ($rootScope.trades[index] && $rootScope.trades[index].playerId == id) {
                 $scope.toSell = $rootScope.trades[index].items;
                 $scope.tradeStatus = $rootScope.trades[index].tradeStatus;
             }
@@ -56,7 +56,6 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
             startPrice.sellBuyNowPrice = $scope.tradeStatus.maxPrice + 400;
         }
         $scope.sellPrice = startPrice;
-        $scope.sellPrice = startPrice;
     };
 
     $scope.sell = function (tradeId) {
@@ -65,15 +64,26 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
             playerId: $scope.id,
             startPrice: $scope.sellPrice.sellStartPrice,
             buyNow: $scope.sellPrice.sellBuyNowPrice
-        }, $scope.init, $rootScope.onError);
+        }, $scope.updateSell, $rootScope.onError);
     };
 
-    $scope.init = function () {
-        $scope.filterPlayers($scope.id);
+    $scope.sellAll = function () {
+        for (var index in $scope.toSell) {
+            if ($scope.toSell[index].id) {
+                 $scope.sell($scope.toSell[index].id);
+            }
+        }
+    };
+
+    $scope.updateSell = function () {
+        getUnassigned();
 
         $scope.getPlayerInfo();
         MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
     };
 
-    $scope.init();
+    $scope.filterPlayers($scope.id);
+
+    $scope.getPlayerInfo();
+    MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
 });

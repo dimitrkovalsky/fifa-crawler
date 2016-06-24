@@ -13,6 +13,9 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     google.charts.load('current', {'packages': ['corechart', 'bar']});
+
+
+
 </script>
 
 <link rel="stylesheet" href="app/lib/bootstrap/css/bootstrap.css">
@@ -45,9 +48,11 @@
                     Market</a>
             </li>
             <li>
-                <a href="#/trade" class="top-level-menu"><span
-                        class="glyphicon glyphicon-tags"></span>
-                    Trade</a>
+                <a href="#/trade" class="top-level-menu">
+                    <span class="label label-success label-as-badge">{{canSell}}</span>
+                    <span class="glyphicon glyphicon-tags"></span> Trade
+                    <span class="label label-danger label-as-badge">{{unassigned}}</span>
+                </a>
             </li>
             <li>
                 <a href="#collapseLog" data-toggle="collapse" aria-expanded="false"

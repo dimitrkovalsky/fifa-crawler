@@ -1,4 +1,4 @@
-fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticResource) {
+fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticResource, Tradepile) {
     $scope.stompClient = null;
     $rootScope.logs = [];
     $rootScope.autoScroll = true;
@@ -42,13 +42,28 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         if ($rootScope.logs.length > 10) {
             $rootScope.logs.shift();
         }
-        $rootScope.logs.push(msg);
-        $rootScope.$apply();
-        if ($rootScope.autoScroll) {
-            var elem = document.getElementById('collapseLog');
-            elem.scrollTop = elem.scrollHeight;
+        switch(msg.messageType) {
+            case 'log': {
+                $rootScope.logs.push(msg);
+                $rootScope.$apply();
+                if ($rootScope.autoScroll) {
+                    var elem = document.getElementById('collapseLog');
+                    elem.scrollTop = elem.scrollHeight;
+                }
+                break;
+            }
+            case 'bought' :
+                $rootScope.updateTradepile(msg);
+                break;
+            default :
+                console.log("Unrecognized message type : " + msg);
         }
     };
+
+    $rootScope.updateTradepile = function(msg) {
+        $rootScope.unassigned = msg.unassigned;
+        $rootScope.canSell = msg.canSell;
+    }
 
     $rootScope.onScroll = function(){
         $rootScope.autoScroll = false;
@@ -69,4 +84,5 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
 
     $scope.connect();
     $rootScope.updateStats();
+    Tradepile.get({}, $rootScope.updateTradepile, $rootScope.onError);
 });

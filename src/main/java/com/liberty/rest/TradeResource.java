@@ -2,8 +2,8 @@ package com.liberty.rest;
 
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.rest.request.SellRequest;
-import com.liberty.rest.response.SizeResponse;
 import com.liberty.service.TradeService;
+import com.liberty.websockets.BuyMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +30,8 @@ public class TradeResource {
   }
 
   @RequestMapping(path = "/tradepile", method = RequestMethod.GET)
-  public SizeResponse getTradePileSize() {
-    return new SizeResponse(tradeService.getTradePileSize());
+  public BuyMessage getTradePileSize() {
+    return tradeService.getTradepileInfo();
   }
 
   @RequestMapping(method = RequestMethod.POST)

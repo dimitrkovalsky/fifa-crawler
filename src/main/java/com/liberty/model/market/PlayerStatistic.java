@@ -1,7 +1,7 @@
 package com.liberty.model.market;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +16,24 @@ public class PlayerStatistic {
   private LocalDateTime date;
 
   public String getDate() {
-    if (date == null)
+    if (date == null) {
       return "Match time ago";
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-    return date.format(formatter);
+    }
+
+    LocalDateTime now = LocalDateTime.now();
+    Duration duration = Duration.between(date, now);
+    long days = duration.toDays();
+    long hours = duration.toHours();
+    long minutes = duration.toMinutes();
+    if (minutes < 60) {
+      return minutes + " minutes ago";
+    } else if (hours < 10) {
+      return String.format("%s hours %s minutes ago", (int) hours % 60, minutes - hours * 60);
+    } else if (days == 0) {
+      return hours + " hours ago";
+    }
+
+    return String.format("%s days %s hours ago", (int) days % 24, hours - days * 24);
   }
 
   private List<PriceDistribution> prices = new ArrayList<>();

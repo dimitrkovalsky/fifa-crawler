@@ -6,6 +6,7 @@ import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.SellRequest;
+import com.liberty.websockets.BuyMessage;
 
 import java.util.List;
 
@@ -53,4 +54,6 @@ public interface TradeService {
   void sell(SellRequest request);
 
   List<PlayerTradeStatus> search(String phrase);
+
+  BuyMessage getTradepileInfo();
 }

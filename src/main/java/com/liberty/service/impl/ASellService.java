@@ -7,6 +7,7 @@ import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.ItemData;
 import com.liberty.rest.request.SellRequest;
 import com.liberty.service.TradeService;
+import com.liberty.websockets.BuyMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public abstract class ASellService extends ATradeService implements TradeService
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
       if (success) {
         logBuyOrSell();
-        
+
         PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
         logController.info("Success placed to market : " + player.getName() + " startPrice: " +
             request.getStartPrice() + " buyNow: " + request.getBuyNow());
@@ -66,9 +67,16 @@ public abstract class ASellService extends ATradeService implements TradeService
       }
     }
   }
-  
-  
-  protected void logBuyOrSell(){
+
+  @Override
+  public BuyMessage getTradepileInfo() {
+    int unassigned = fifaRequests.getUnassigned().size();
+    int canSell = TRADEPILE_SIZE - getTradePileSize();
+    return new BuyMessage(unassigned, canSell);
+  }
+
+
+  protected void logBuyOrSell() {
     int unassigned = fifaRequests.getUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
     logController.logBuy(unassigned, canSell);

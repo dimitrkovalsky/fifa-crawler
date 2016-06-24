@@ -223,8 +223,8 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   public MarketInfo getMarketInfo() {
     MarketInfo info = new MarketInfo();
     info.setMaxPurchases(maxPurchaseAmount);
-    info.setPhishingToken(fifaRequests.getPhishingToken());
-    info.setSessionId(fifaRequests.getSessionId());
+    info.setPhishingToken(fifaRequests.getPhishingTokenForCheck());
+    info.setSessionId(fifaRequests.getSessionForCheck());
     info.setAutoBuyEnabled(autoBuyEnabled);
     return info;
   }

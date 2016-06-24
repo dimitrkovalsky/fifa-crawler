@@ -27,6 +27,8 @@ public class BackupService {
     List<PlayerTradeStatus> players = statusRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
     mapper.writeValue(new File(BACKUP_PATH), players);
+    System.out.println("Backup completed...");
+    System.exit(1);
   }
 
   public void restore() throws IOException {
@@ -36,6 +38,7 @@ public class BackupService {
         });
     statusRepository.deleteAll();
     statusRepository.save(players);
+    System.out.println("Backup restored...");
     System.exit(1);
   }
 }
