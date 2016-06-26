@@ -13,6 +13,7 @@ import com.liberty.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   public static final int DEFAULT_LOW_BOUND = 1000;
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 25;
-  public static final int ITERATION_LIMIT = 20;
+  public static final int ITERATION_LIMIT = 35;
 
   private boolean autoBuyEnabled = true;
 
@@ -123,7 +124,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     try {
       sleep();
       Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerTradeStatus.getId(),
-          playerTradeStatus.getMaxPrice());
+          playerTradeStatus.getMaxPrice(), 0);
       if (!maybe.isPresent()) {
         return false;
       }
@@ -187,9 +188,12 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      List<AuctionInfo> players = findPlayers(playerId, lowBound);
+      List<AuctionInfo> players = findPlayers(playerId, lowBound, 0);
       if (players.size() == 0) {
         lowBound = getHigherBound(0, lowBound);
+      } else if (players.size() >= 10) {
+        players.addAll(findNextPagesPlayers(playerId, lowBound));
+        toStatistic.addAll(players);
       } else {
         toStatistic.addAll(players);
         lowBound = getHigherBound(0, lowBound);
@@ -208,10 +212,29 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     return getMinPrice(playerId);
   }
 
+  private List<AuctionInfo> findNextPagesPlayers(long playerId, Integer lowBound) {
+    boolean completed = false;
+    int page = 1;
+    List<AuctionInfo> players = new ArrayList<>();
+    while (!completed) {
+      List<AuctionInfo> found = findPlayers(playerId, lowBound, page);
+      if (found.size() < 10) {
+        completed = true;
+      }   else {
+        try {
+          Thread.sleep(250);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+      players.addAll(found);
+    }
+    return players;
+  }
 
-  private List<AuctionInfo> findPlayers(long playerId, Integer lowBound) {
+  private List<AuctionInfo> findPlayers(long playerId, Integer lowBound, int page) {
     try {
-      Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerId, lowBound);
+      Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerId, lowBound, page);
       return maybe.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
     } catch (Exception e) {
       logController.error(e.getMessage());
@@ -251,6 +274,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   public void autoBuy(boolean run) {
     this.autoBuyEnabled = run;
+    if(autoBuyEnabled){
+      checkMarket();
+    }
   }
 
   @Override

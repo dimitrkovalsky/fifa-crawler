@@ -19,7 +19,7 @@ public class BackubRunner {
     BackupService service = context.getBean(BackupService.class);
 //    service.addToAutoBuy("Vardy", 208830L, 1000);
 //    service.addToAutoBuy("Mahrez", 204485L, 1000);
-    service.backup();
-//    service.restore();
+//    service.backup();
+    service.restore();
   }
 }

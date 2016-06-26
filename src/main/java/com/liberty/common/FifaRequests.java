@@ -51,8 +51,8 @@ public class FifaRequests extends BaseFifaRequests {
     return trade.get().getAuctionInfo();
   }
 
-  public Optional<TradeStatus> searchPlayer(long id, int maxPrice) throws IOException {
-    HttpPost request = createRequest(String.format(SEARCH_URL, id, maxPrice));
+  public Optional<TradeStatus> searchPlayer(long id, int maxPrice, int page) throws IOException {
+    HttpPost request = createRequest(String.format(SEARCH_URL, page, id, maxPrice));
     Optional<String> execute = execute(request);
     if (!execute.isPresent()) {
       log.error("Player not found");
@@ -117,6 +117,7 @@ public class FifaRequests extends BaseFifaRequests {
   public String getSessionForCheck() {
     return sessionId;
   }
+
   public String getPhishingTokenForCheck() {
     return sessionId;
   }
