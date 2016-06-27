@@ -1,6 +1,6 @@
 fifaApp.controller('MarketController', function ($rootScope, $scope, NgTableParams, MarketInfo,
                                                  PlayerAutoBuy, AutoBuy, AutoBuyPlayer, MinPrice) {
-
+    $scope.purchases = 10;
     $scope.onPlayersLoaded = function (result) {
         $scope.players = result;
         angular.forEach($scope.players, function (value, key) {
@@ -57,7 +57,13 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
     };
 
     $scope.enableAutoBuy = function (enabled) {
-        AutoBuy.save({enabled: enabled}, $scope.updateInfo, $rootScope.onError);
+        var data = {};
+        data.enabled = enabled;
+        if(enabled){
+          data.purchases =  $scope.purchases;
+        }
+        AutoBuy.save(data, $scope.updateInfo, $rootScope.onError);
+        $scope.updateInfo();
     };
 
     $scope.onAllUpdated = function () {

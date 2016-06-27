@@ -55,7 +55,7 @@ public class LogController {
     log.info("Live connected : " + data);
   }
 
-  public void logBuy(int unassigned, int canSell) {
-    send(new BuyMessage(unassigned, canSell));
+  public void logBuy(int unassigned, int canSell, int purchasesRemained) {
+    send(new BuyMessage(unassigned, canSell, purchasesRemained));
   }
 }

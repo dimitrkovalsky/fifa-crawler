@@ -6,4 +6,5 @@ fifaApp.controller('TradeController', function ($rootScope, $scope, Trade) {
     };
 
     Trade.query({}, $scope.onLoaded, $rootScope.onError);
+    $rootScope.updateTradepile();
 });

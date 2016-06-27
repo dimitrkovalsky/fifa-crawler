@@ -60,9 +60,10 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         }
     };
 
-    $rootScope.updateTradepile = function(msg) {
+    $rootScope.onUpdateTradepile = function(msg) {
         $rootScope.unassigned = msg.unassigned;
         $rootScope.canSell = msg.canSell;
+        $rootScope.purchasesRemained = msg.purchasesRemained;
     }
 
     $rootScope.onScroll = function(){
@@ -82,7 +83,11 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.$apply();
     };
 
+     $rootScope.updateTradepile = function(){
+         Tradepile.get({}, $rootScope.onUpdateTradepile, $rootScope.onError);
+     };
+
     $scope.connect();
     $rootScope.updateStats();
-    Tradepile.get({}, $rootScope.updateTradepile, $rootScope.onError);
+    $rootScope.updateTradepile();
 });

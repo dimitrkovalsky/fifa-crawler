@@ -7,7 +7,8 @@ import lombok.Data;
  * @since 17.06.2016.
  */
 @Data
-public class BoolRequest {
+public class AutobuyRequest {
 
   private Boolean enabled;
+  private Integer purchases;
 }

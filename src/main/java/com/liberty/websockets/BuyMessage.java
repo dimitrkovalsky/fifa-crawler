@@ -15,6 +15,7 @@ public class BuyMessage extends BaseMessage {
 
   private Integer unassigned;
   private Integer canSell;
+  private Integer purchasesRemained;
 
   @Override
   public String getMessageType() {

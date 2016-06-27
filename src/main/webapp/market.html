@@ -4,9 +4,12 @@
 
 
 <div class="col-md-6">
-    <button ng-if="!autoBuyEnabled" class="btn btn-success"
-            ng-click="enableAutoBuy(true)">Run Autobuy
-    </button>
+    <div ng-if="!autoBuyEnabled">
+        <button class="btn btn-success" ng-click="enableAutoBuy(true)">Run Autobuy</button>
+        <input ng-model="purchases" type="number">
+    </div>
+
+
     <button ng-if="autoBuyEnabled" class="btn btn-danger"
             ng-click="enableAutoBuy(false)">Stop Autobuy
     </button>

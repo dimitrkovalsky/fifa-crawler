@@ -6,6 +6,7 @@ import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerStatisticRepository;
+import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
@@ -274,9 +275,11 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public void autoBuy(boolean run) {
-    this.autoBuyEnabled = run;
+  public void autoBuy(AutobuyRequest request) {
+    this.autoBuyEnabled = request.getEnabled();
     if (autoBuyEnabled) {
+      purchases = 0;
+      maxPurchaseAmount = request.getPurchases();
       checkMarket();
     }
   }
@@ -337,5 +340,10 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     toUpdate.setName(request.getName());
 
     tradeRepository.save(toUpdate);
+  }
+
+  @Override
+  protected Integer getPurchasesRemained() {
+    return maxPurchaseAmount - purchases;
   }
 }

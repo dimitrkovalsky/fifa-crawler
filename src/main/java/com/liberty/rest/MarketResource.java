@@ -3,7 +3,7 @@ package com.liberty.rest;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.PlayerStatistic;
-import com.liberty.rest.request.BoolRequest;
+import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;
 import com.liberty.rest.request.SearchRequest;
@@ -42,8 +42,8 @@ public class MarketResource {
   }
 
   @RequestMapping(path = "/autobuy", method = RequestMethod.POST)
-  public void autoBuy(@RequestBody BoolRequest request) {
-    tradeService.autoBuy(request.getEnabled());
+  public void autoBuy(@RequestBody AutobuyRequest request) {
+    tradeService.autoBuy(request);
   }
 
   @RequestMapping(path = "/autobuy/player", method = RequestMethod.POST)

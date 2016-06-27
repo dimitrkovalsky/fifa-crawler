@@ -4,6 +4,7 @@ import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.PlayerStatistic;
+import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.SellRequest;
 import com.liberty.websockets.BuyMessage;
@@ -37,7 +38,7 @@ public interface TradeService {
 
   void updateTokens(String sessionId, String phishingToken);
 
-  void autoBuy(boolean run);
+  void autoBuy(AutobuyRequest run);
 
   void deleteFromAutoBuy(Long id);
 
