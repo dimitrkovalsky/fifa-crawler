@@ -36,7 +36,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
 public class TradeServiceImpl extends ASellService implements TradeService {
 
   public static final int DEFAULT_LOW_BOUND = 1000;
-  public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 25;
+  public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
   public static final int ITERATION_LIMIT = 35;
 
   private boolean autoBuyEnabled = true;
@@ -62,11 +62,11 @@ public class TradeServiceImpl extends ASellService implements TradeService {
           if (price != null && price != 0) {
             p.setEnabled(true);
             if (price <= 1000) {
-              p.setMaxPrice(price - 200);
+              p.setMaxPrice(price - 100);
             } else if (price <= 2000) {
-              p.setMaxPrice(price - 300);
+              p.setMaxPrice(price - 200);
             } else if (price <= 3000) {
-              p.setMaxPrice(price - 400);
+              p.setMaxPrice(price - 300);
             } else if (price <= 4000) {
               p.setMaxPrice(price - 500);
             } else if (price <= 5000) {
@@ -172,9 +172,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       player = new PlayerStatistic();
       player.setId(playerId);
     }
-//    if (player.getPrices().size() >= 10) {
-//      return null;
-//    }
+    if (player.getPrices().size() >= 10) {
+      return null;
+    }
     Integer lowBound = defineLowBound(player, tradeStatus);
 
     int iteration = 0;
@@ -191,14 +191,15 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       List<AuctionInfo> players = findPlayers(playerId, lowBound, 0);
       if (players.size() == 0) {
         lowBound = getHigherBound(0, lowBound);
-      } else if (players.size() >= 10) {
+      } else if (players.size() >= 12) {
         players.addAll(findNextPagesPlayers(playerId, lowBound));
         toStatistic.addAll(players);
+        lowBound = getHigherBound(0, lowBound);
       } else {
         toStatistic.addAll(players);
         lowBound = getHigherBound(0, lowBound);
       }
-      logController.info("Found " + players.size() + " players");
+      logController.info("Found " + toStatistic.size() + " players");
 
       if (iteration >= ITERATION_LIMIT) {
         logController.info("Exceeded iteration limit");
@@ -217,10 +218,10 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     int page = 1;
     List<AuctionInfo> players = new ArrayList<>();
     while (!completed) {
-      List<AuctionInfo> found = findPlayers(playerId, lowBound, page);
-      if (found.size() < 10) {
+      List<AuctionInfo> found = findPlayers(playerId, lowBound, page * 12);
+      if (found.size() < 12) {
         completed = true;
-      }   else {
+      } else {
         try {
           Thread.sleep(250);
         } catch (InterruptedException e) {
@@ -228,6 +229,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
         }
       }
       players.addAll(found);
+      page++;
     }
     return players;
   }
@@ -274,7 +276,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   public void autoBuy(boolean run) {
     this.autoBuyEnabled = run;
-    if(autoBuyEnabled){
+    if (autoBuyEnabled) {
       checkMarket();
     }
   }
