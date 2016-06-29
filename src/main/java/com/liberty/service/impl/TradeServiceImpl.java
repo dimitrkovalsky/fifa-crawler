@@ -173,9 +173,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       player = new PlayerStatistic();
       player.setId(playerId);
     }
-    if (player.getPrices().size() >= 10) {
-      return null;
-    }
+//    if (player.getPrices().size() >= 10) {
+//      return null;
+//    }
     Integer lowBound = defineLowBound(player, tradeStatus);
 
     int iteration = 0;

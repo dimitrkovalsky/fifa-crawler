@@ -28,12 +28,12 @@ public class PlayerStatistic {
     if (minutes < 60) {
       return minutes + " minutes ago";
     } else if (hours < 24) {
-      return String.format("%s hours %s minutes ago", (int) hours / 60, minutes - hours * 60);
+      return String.format("%s hours %s minutes ago", (int) minutes / 60, minutes - hours * 60);
     } else if (days == 0) {
       return hours + " hours ago";
     }
 
-    return String.format("%s days %s hours ago", (int) days / 24, hours - days * 24);
+    return String.format("%s days %s hours ago", (int) hours / 24, hours - days * 24);
   }
 
   private List<PriceDistribution> prices = new ArrayList<>();
