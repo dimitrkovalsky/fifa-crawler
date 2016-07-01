@@ -27,7 +27,7 @@ public class MarketTask {
   public void monitor() {
     // fillDatabase();
     logController.info("Trying to check market");
-  //  tradeService.updatePrices();
+ //   tradeService.updatePrices();
     tradeService.checkMarket();
     //tradeService.getUnassigned();
   }
