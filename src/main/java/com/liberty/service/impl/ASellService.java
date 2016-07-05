@@ -26,6 +26,7 @@ public abstract class ASellService extends ATradeService implements TradeService
   public int getTradePileSize() {
     List<AuctionInfo> tradePile = fifaRequests.getTradePile();
     Map<String, List<AuctionInfo>> byState = tradePile.stream()
+        .filter(a -> !a.getTradeId().equals(0L))
         .collect(Collectors.groupingBy(AuctionInfo::getTradeState));
     if (byState.containsKey(TradeState.CLOSED)) {
       fifaRequests.removeAllSold();
