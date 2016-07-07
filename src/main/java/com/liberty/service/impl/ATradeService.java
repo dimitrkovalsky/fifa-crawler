@@ -109,8 +109,8 @@ public abstract class ATradeService {
 
   private List<AuctionInfo> foundMinList(TradeStatus tradeStatus) {
     return tradeStatus.getAuctionInfo().stream()
-        .sorted(getAuctionInfoComparator().reversed())
         .filter(a -> a.getItemData().getContract() > 0)
+        .sorted(getAuctionInfoComparator().reversed())
         .collect(Collectors.toList());
   }
 
