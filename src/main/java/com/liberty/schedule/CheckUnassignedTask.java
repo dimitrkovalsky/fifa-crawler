@@ -20,7 +20,7 @@ public class CheckUnassignedTask {
   private TradeService tradeService;
 
 
-  @Scheduled(fixedRate = 1_550_000)
+  @Scheduled(fixedRate = 300_000)
   public void check() {
     log.info("Trying to check unassigned");
     tradeService.getUnassigned();
