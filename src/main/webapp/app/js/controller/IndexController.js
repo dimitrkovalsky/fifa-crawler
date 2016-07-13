@@ -64,6 +64,7 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.unassigned = msg.unassigned;
         $rootScope.canSell = msg.canSell;
         $rootScope.purchasesRemained = msg.purchasesRemained;
+        document.title = " Fifa " + $rootScope.canSell;
     }
 
     $rootScope.onScroll = function(){

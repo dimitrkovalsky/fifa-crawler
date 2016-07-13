@@ -57,4 +57,6 @@ public interface TradeService {
   List<PlayerTradeStatus> search(String phrase);
 
   BuyMessage getTradepileInfo();
+
+  void logBuyOrSell();
 }

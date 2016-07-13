@@ -26,7 +26,7 @@ public class CheckUnassignedTask {
   @Scheduled(fixedRate = 300_000)
   public void check() {
     log.info("Trying to update tradepile");
-    tradeService.getTradePileSize();
+    tradeService.logBuyOrSell();
     logController.info("Checked tradepile");
   }
 
