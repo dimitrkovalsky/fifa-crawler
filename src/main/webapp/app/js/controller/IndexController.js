@@ -64,8 +64,20 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.unassigned = msg.unassigned;
         $rootScope.canSell = msg.canSell;
         $rootScope.purchasesRemained = msg.purchasesRemained;
-        document.title = " Fifa " + $rootScope.canSell;
-    }
+        document.title = "Fifa (" + $rootScope.unassigned + ")";
+        $rootScope.updateFavicon($rootScope.canSell);
+    };
+
+    $rootScope.favicon = new Favico({
+        animation :'slide',
+        position : 'up',
+        bgColor : '#5CB85C',
+        textColor : '#ff0'
+    });
+
+    $rootScope.updateFavicon = function(badge) {
+        $rootScope.favicon.badge(badge);
+    };
 
     $rootScope.onScroll = function(){
         $rootScope.autoScroll = false;
