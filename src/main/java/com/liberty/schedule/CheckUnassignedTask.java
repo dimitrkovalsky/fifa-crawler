@@ -1,6 +1,7 @@
 package com.liberty.schedule;
 
 import com.liberty.service.TradeService;
+import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,11 +20,14 @@ public class CheckUnassignedTask {
   @Autowired
   private TradeService tradeService;
 
+  @Autowired
+  private LogController logController;
 
   @Scheduled(fixedRate = 300_000)
   public void check() {
-    log.info("Trying to check unassigned");
+    log.info("Trying to update tradepile");
     tradeService.getTradePileSize();
+    logController.info("Checked tradepile");
   }
 
 }
