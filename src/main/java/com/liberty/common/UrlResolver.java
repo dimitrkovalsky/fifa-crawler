@@ -15,7 +15,7 @@ import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
 @Slf4j
 public class UrlResolver {
 
-  public static boolean externalUrl = false;
+  public static boolean externalUrl = true;
 
   public static void setExternalUrl(boolean externalUrl) {
     if (UrlResolver.externalUrl != externalUrl) {
