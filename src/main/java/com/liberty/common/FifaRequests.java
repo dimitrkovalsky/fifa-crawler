@@ -23,13 +23,8 @@ import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
-import static com.liberty.common.FifaEndpoints.AUCTION_HOUSE_URL;
 import static com.liberty.common.FifaEndpoints.AUTH;
-import static com.liberty.common.FifaEndpoints.BID_URL;
-import static com.liberty.common.FifaEndpoints.ITEM_URL;
-import static com.liberty.common.FifaEndpoints.SEARCH_URL;
-import static com.liberty.common.FifaEndpoints.STATUS_URL;
-import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
+import static com.liberty.common.UrlResolver.*;
 
 /**
  * User: Dimitr Date: 02.06.2016 Time: 7:34
@@ -41,7 +36,7 @@ public class FifaRequests extends BaseFifaRequests {
   private String phishingToken = null;
 
   public List<AuctionInfo> getTradePile() {
-    HttpPost request = createRequest(TRADE_LINE_URL);
+    HttpPost request = createRequest(getTradeLineUrl());
     String json = execute(request).get();
     if (isError(json)) {
       return Collections.emptyList();
@@ -52,7 +47,7 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   public Optional<TradeStatus> searchPlayer(long id, int maxPrice, int page) throws IOException {
-    HttpPost request = createRequest(String.format(SEARCH_URL, page, id, maxPrice));
+    HttpPost request = createRequest(String.format(getSearchUrl(), page, id, maxPrice));
     Optional<String> execute = execute(request);
     if (!execute.isPresent()) {
       log.error("Player not found");
@@ -78,7 +73,6 @@ public class FifaRequests extends BaseFifaRequests {
       return false;
     }
   }
-
 
   /**
    * Returns true if error
@@ -148,10 +142,8 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
-
   public Optional<String> auth() {
     try {
-
       HttpPost request = createAuthRequest(AUTH);
       String authRequest = getAuthRequest();
       StringEntity entity = new StringEntity(authRequest);
@@ -177,7 +169,7 @@ public class FifaRequests extends BaseFifaRequests {
 
   private void status(AuctionInfo auctionInfo) {
     try {
-      HttpPost request = createRequest(String.format(STATUS_URL, auctionInfo.getTradeId()));
+      HttpPost request = createRequest(String.format(getStatusUrl(), auctionInfo.getTradeId()));
       log.info(request.toString());
       Optional<String> execute = execute(request);
       Optional<BuyResponse> buy = JsonHelper.toEntity(execute.get(), BuyResponse.class);
@@ -186,13 +178,12 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
-
   public boolean buy(AuctionInfo auctionInfo) {
     try {
       status(auctionInfo);
       Long tradeId = auctionInfo.getTradeId();
       log.info("Trying to bid : " + tradeId + " for " + auctionInfo.getBuyNowPrice());
-      HttpPost request = createBidRequest(String.format(BID_URL, tradeId));
+      HttpPost request = createBidRequest(String.format(getBidUrl(), tradeId));
       Bid bid = new Bid(auctionInfo.getBuyNowPrice());
       String json = JsonHelper.toJsonString(bid);
       request.setEntity(new StringEntity(json));
@@ -217,7 +208,7 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   public boolean item(Long itemId) {
-    HttpPost request = createPutRequest(ITEM_URL);
+    HttpPost request = createPutRequest(getItemUrl());
     SellItem toSell = new SellItem(itemId);
 
     try {
@@ -234,7 +225,7 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   public boolean auctionHouse(Long id, int startPrice, int buyNow) {
-    HttpPost request = createPostRequest(AUCTION_HOUSE_URL);
+    HttpPost request = createPostRequest(getAuctionHouseUrl());
     AuctionInfo toSell = new AuctionInfo();
     toSell.setStartingBid(startPrice);
     toSell.setBuyNowPrice(buyNow);
@@ -253,17 +244,18 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   public void removeAllSold() {
-    HttpPost deleteRequest = createDeleteRequest(FifaEndpoints.REMOVE_SOLD);
+    HttpPost deleteRequest = createDeleteRequest(getRemoveSold());
     execute(deleteRequest);
   }
 
+
   public void relistAll() {
-    HttpPost putRequest = createPutRequest(FifaEndpoints.RELIST);
+    HttpPost putRequest = createPutRequest(getRelistUrl());
     execute(putRequest);
   }
 
   public List<ItemData> getUnassigned() {
-    HttpPost request = createRequest(FifaEndpoints.GET_UNASSIGNED);
+    HttpPost request = createRequest(getGetUnassignedUrl());
     String json = execute(request).get();
     if (isError(json)) {
       return Collections.emptyList();
@@ -271,5 +263,7 @@ public class FifaRequests extends BaseFifaRequests {
     Optional<Items> trade = JsonHelper.toEntity(json, Items.class);
     return trade.get().getItemData();
   }
+
+
 
 }

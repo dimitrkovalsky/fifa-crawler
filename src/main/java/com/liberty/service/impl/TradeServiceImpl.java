@@ -1,5 +1,6 @@
 package com.liberty.service.impl;
 
+import com.liberty.common.UrlResolver;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
@@ -263,7 +264,10 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public void updateTokens(String sessionId, String phishingToken) {
+  public void updateTokens(String sessionId, String phishingToken, Boolean external) {
+    if (external != null) {
+      UrlResolver.externalUrl = external;
+    }
     if (!phishingToken.equals(fifaRequests.getPhishingTokenForCheck())) {
       fifaRequests.setPhishingToken(phishingToken);
       logController.info("Updated phishingToken to " + phishingToken);

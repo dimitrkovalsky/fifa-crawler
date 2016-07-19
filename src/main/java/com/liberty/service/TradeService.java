@@ -36,7 +36,7 @@ public interface TradeService {
 
   void setMarketInfo(MarketInfo info);
 
-  void updateTokens(String sessionId, String phishingToken);
+  void updateTokens(String sessionId, String phishingToken, Boolean external);
 
   void autoBuy(AutobuyRequest run);
 

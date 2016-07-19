@@ -12,4 +12,5 @@ public class TokenUpdateRequest {
 
   private String sessionId;
   private String token;
+  private Boolean external = false;
 }
