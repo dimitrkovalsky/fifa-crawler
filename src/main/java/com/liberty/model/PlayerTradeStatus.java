@@ -39,5 +39,7 @@ public class PlayerTradeStatus {
 
   private Integer sellBuyNowPrice;
 
+  private String lastUpdate;
+
   private boolean enabled = true;
 }

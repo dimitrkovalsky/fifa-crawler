@@ -302,11 +302,15 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   public List<PlayerTradeStatus> getAllToAutoBuy() {
     List<PlayerTradeStatus> all = tradeRepository.findAll();
 
-    Map<Long, Integer> idMinPrice = getMinPricesMap();
+    Map<Long, PlayerStatistic> idMinPrice = getStatsMap();
     all.forEach(p -> {
-      Integer price = idMinPrice.get(p.getId());
-      if (price != null) {
-        p.setMinMarketPrice(price);
+      PlayerStatistic stats = idMinPrice.get(p.getId());
+      if (stats != null) {
+        List<PlayerStatistic.PriceDistribution> prices = stats.getPrices();
+        if (prices != null && !prices.isEmpty()) {
+          p.setMinMarketPrice(prices.get(0).getPrice());
+        }
+        p.setLastUpdate(stats.getDate());
       }
     });
     return all;
@@ -321,6 +325,15 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       }
     });
     return idMinPrice;
+  }
+
+  private Map<Long, PlayerStatistic> getStatsMap() {
+    List<PlayerStatistic> stats = statisticRepository.findAll();
+    Map<Long, PlayerStatistic> idMinStats = new HashMap<>();
+    stats.forEach(s -> {
+      idMinStats.put(s.getId(), s);
+    });
+    return idMinStats;
   }
 
   @Override

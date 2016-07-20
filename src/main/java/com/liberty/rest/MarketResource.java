@@ -58,7 +58,9 @@ public class MarketResource {
 
   @RequestMapping(path = "/player", method = RequestMethod.GET)
   public List<PlayerTradeStatus> getAll() {
-    return tradeService.getAllToAutoBuy();
+    List<PlayerTradeStatus> all = tradeService.getAllToAutoBuy();
+
+    return all;
   }
 
   @RequestMapping(path = "/search", method = RequestMethod.GET)
