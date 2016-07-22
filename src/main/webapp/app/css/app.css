@@ -108,3 +108,8 @@ b, strong {
 .label-as-badge {
     border-radius: 1em;
 }
+
+.show {
+    color: #ea0a08;
+    font-weight: bolder;
+}

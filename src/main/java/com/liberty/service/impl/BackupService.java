@@ -18,7 +18,10 @@ import java.util.List;
 @Service
 public class BackupService {
 
-  private static String BACKUP_PATH = "D:\\players.json";
+  private static String BACKUP_PATH = System.getProperty("user.dir") +
+      "\\src\\main\\resources\\players.json";
+
+  //private static String BACKUP_PATH = "D:\\players.json";
 
   @Autowired
   private PlayerTradeStatusRepository statusRepository;
@@ -26,19 +29,21 @@ public class BackupService {
   public void backup() throws IOException {
     List<PlayerTradeStatus> players = statusRepository.findAll();
     ObjectMapper mapper = new ObjectMapper();
-    mapper.writeValue(new File(BACKUP_PATH), players);
-    System.out.println("Backup completed...");
+    mapper.writerWithDefaultPrettyPrinter().writeValue(new File(BACKUP_PATH), players);
+    System.out.println("Backup completed... ");
+    System.out.println("Data stored in " + BACKUP_PATH);
     System.exit(1);
   }
 
   public void restore() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
-    List<PlayerTradeStatus> players = (List<PlayerTradeStatus>) mapper
+    List<PlayerTradeStatus> players = mapper
         .readValue(new File(BACKUP_PATH), new TypeReference<List<PlayerTradeStatus>>() {
         });
     statusRepository.deleteAll();
     statusRepository.save(players);
     System.out.println("Backup restored...");
+    System.out.println("Data restored from " + BACKUP_PATH);
     System.exit(1);
   }
 }

@@ -64,7 +64,7 @@ public class StatisticServiceImpl implements StatisticService {
     PlayerStatistic toSave = new PlayerStatistic();
     toSave.setId(playerId);
     toSave.setLastPrice(lowBound);
-    toSave.setDate(LocalDateTime.now());
+    toSave.setInnerDate(LocalDateTime.now());
     statisticRepository.save(toSave);
   }
 
@@ -79,7 +79,7 @@ public class StatisticServiceImpl implements StatisticService {
           .sorted(Comparator.comparing(PlayerStatistic.PriceDistribution::getPrice))
           .collect(Collectors.toList());
       toSave.setPrices(prices);
-      toSave.setDate(LocalDateTime.now());
+      toSave.setInnerDate(LocalDateTime.now());
       statisticRepository.save(toSave);
     });
   }

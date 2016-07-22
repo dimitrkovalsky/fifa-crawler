@@ -283,6 +283,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     this.autoBuyEnabled = request.getEnabled();
     if (autoBuyEnabled) {
       purchases = 0;
+      failed = false;
       maxPurchaseAmount = request.getPurchases();
       checkMarket();
     }

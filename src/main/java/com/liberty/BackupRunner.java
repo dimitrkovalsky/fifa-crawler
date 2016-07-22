@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Dmytro_Kovalskyi.
  * @since 16.05.2016.
  */
-public class BackubRunner {
+public class BackupRunner {
 
   public static void main(String[] args) throws IOException {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);

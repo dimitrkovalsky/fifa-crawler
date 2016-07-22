@@ -1,7 +1,6 @@
 package com.liberty;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.io.File;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -10,41 +9,12 @@ import java.util.concurrent.Executors;
 public class Main {
 
   public static void main(String[] args) {
-//    ExecutorService service = Executors.newCachedThreadPool();
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
-//    service.submit(()-> System.out.println("Service"));
+    File file = new File("../abc.txt");
+    String absolutePath = file.getAbsolutePath();
+    System.out.println(absolutePath);
 
-    final Executor executor = Executors.newSingleThreadExecutor();
-
-      executor.execute(()-> System.out.println("Service"));
-    //service.shutdown();
+    System.out.println("Working Directory = " +
+        System.getProperty("user.dir"));
   }
 
-  public static void test(Testable testable)  {
-    try {
-      testable.test();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
-  interface Testable {
-
-    public void test() throws Exception;
-  }
-
-  static class Test implements Testable{
-
-    @Override
-    public void test() {
-      System.out.println("Test class");
-    }
-  }
 }

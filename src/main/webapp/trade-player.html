@@ -2,6 +2,8 @@
 <script type="text/javascript">
     google.charts.load('current', {'packages': ['line']});
     google.charts.setOnLoadCallback(draw);
+
+
 </script>
 
 <div class="page-header">
@@ -66,7 +68,10 @@
         <tr>
             <td>{{trade.id}}</td>
             <td>{{trade.lastSalePrice}}</td>
-            <td>{{trade.contract}}</td>
+            <td>
+                <span ng-if="trade.contract>=40" class="show">{{trade.contract}}</span>
+                <span ng-if="trade.contract<40">{{trade.contract}}</span>
+            </td>
             <td>
                 <button class="btn btn-default" ng-click="sell(trade.id)"> Sell</button>
             </td>
