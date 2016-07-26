@@ -182,7 +182,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     int iteration = 0;
     Set<AuctionInfo> toStatistic = new HashSet<>();
 
-    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT) {
+    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && lowBound < 11000) {
       iteration++;
       logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
       try {

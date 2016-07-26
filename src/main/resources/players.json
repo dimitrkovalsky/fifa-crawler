@@ -1,19 +1,19 @@
 [ {
   "id" : 121944,
-  "boughtAmount" : 25,
+  "boughtAmount" : 27,
   "name" : "Schwenstaiger",
-  "maxPrice" : 1900,
+  "maxPrice" : 2500,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 2700,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 2900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 165229,
-  "boughtAmount" : 32,
+  "boughtAmount" : 33,
   "name" : "Koscelnyi",
-  "maxPrice" : 2000,
+  "maxPrice" : 2400,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3100,
   "minMarketPrice" : null,
@@ -22,9 +22,9 @@
   "enabled" : true
 }, {
   "id" : 189242,
-  "boughtAmount" : 77,
+  "boughtAmount" : 78,
   "name" : "Coutinho",
-  "maxPrice" : 1800,
+  "maxPrice" : 1700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2600,
   "minMarketPrice" : null,
@@ -37,42 +37,42 @@
   "name" : "Willian",
   "maxPrice" : 2200,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3800,
+  "sellStartPrice" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 4100,
+  "sellBuyNowPrice" : null,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 171833,
-  "boughtAmount" : 44,
+  "boughtAmount" : 46,
   "name" : "Sturrige",
-  "maxPrice" : 1700,
+  "maxPrice" : 1900,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1900,
+  "sellStartPrice" : 2600,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2100,
+  "sellBuyNowPrice" : 2800,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 202652,
-  "boughtAmount" : 60,
+  "boughtAmount" : 65,
   "name" : "Sterling",
-  "maxPrice" : 2000,
+  "maxPrice" : 2400,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3000,
+  "sellStartPrice" : 3200,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3400,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 184432,
-  "boughtAmount" : 108,
+  "boughtAmount" : 114,
   "name" : "Azpilcueta",
-  "maxPrice" : 1200,
+  "maxPrice" : 1600,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1700,
+  "sellStartPrice" : 2200,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 1900,
+  "sellBuyNowPrice" : 2400,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -85,22 +85,11 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 146562,
-  "boughtAmount" : 79,
+  "boughtAmount" : 84,
   "name" : "Santi Cazorla",
-  "maxPrice" : 1600,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : 2100,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2300,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
-  "id" : 201535,
-  "boughtAmount" : 44,
-  "name" : "Varane",
   "maxPrice" : 1700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2100,
@@ -109,21 +98,32 @@
   "lastUpdate" : null,
   "enabled" : true
 }, {
-  "id" : 120533,
-  "boughtAmount" : 18,
-  "name" : "Pepe",
-  "maxPrice" : 1800,
+  "id" : 201535,
+  "boughtAmount" : 59,
+  "name" : "Varane",
+  "maxPrice" : 1900,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2400,
+  "sellStartPrice" : 2200,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2600,
+  "sellBuyNowPrice" : 2400,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 120533,
+  "boughtAmount" : 20,
+  "name" : "Pepe",
+  "maxPrice" : 2600,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 3700,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 3900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 152729,
-  "boughtAmount" : 97,
+  "boughtAmount" : 104,
   "name" : "Pique",
-  "maxPrice" : 2000,
+  "maxPrice" : 2200,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2700,
   "minMarketPrice" : null,
@@ -132,7 +132,7 @@
   "enabled" : true
 }, {
   "id" : 143745,
-  "boughtAmount" : 27,
+  "boughtAmount" : 29,
   "name" : "Turan",
   "maxPrice" : 1100,
   "lastBuyPrice" : null,
@@ -143,31 +143,31 @@
   "enabled" : true
 }, {
   "id" : 189511,
-  "boughtAmount" : 51,
+  "boughtAmount" : 52,
   "name" : "Busgets",
-  "maxPrice" : 1800,
+  "maxPrice" : 2100,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3000,
+  "sellStartPrice" : 2700,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3300,
+  "sellBuyNowPrice" : 2900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 204963,
-  "boughtAmount" : 37,
+  "boughtAmount" : 39,
   "name" : "Carvajal",
-  "maxPrice" : 2600,
+  "maxPrice" : 3300,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3600,
+  "sellStartPrice" : 3900,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3800,
+  "sellBuyNowPrice" : 4100,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 176676,
-  "boughtAmount" : 48,
+  "boughtAmount" : 49,
   "name" : "Marcelo",
-  "maxPrice" : 2000,
+  "maxPrice" : 2200,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3100,
   "minMarketPrice" : null,
@@ -178,7 +178,7 @@
   "id" : 196144,
   "boughtAmount" : 18,
   "name" : "Martinez",
-  "maxPrice" : 2500,
+  "maxPrice" : 2900,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3300,
   "minMarketPrice" : null,
@@ -187,9 +187,9 @@
   "enabled" : true
 }, {
   "id" : 202857,
-  "boughtAmount" : 79,
+  "boughtAmount" : 82,
   "name" : "Bellarabi",
-  "maxPrice" : 1400,
+  "maxPrice" : 1200,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1700,
   "minMarketPrice" : null,
@@ -198,20 +198,20 @@
   "enabled" : true
 }, {
   "id" : 192883,
-  "boughtAmount" : 33,
+  "boughtAmount" : 35,
   "name" : "Mkhitarian",
-  "maxPrice" : 1600,
+  "maxPrice" : 2000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1900,
+  "sellStartPrice" : 2700,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2100,
+  "sellBuyNowPrice" : 2900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 188567,
   "boughtAmount" : 23,
   "name" : "Aubumeyang",
-  "maxPrice" : 3500,
+  "maxPrice" : 2800,
   "lastBuyPrice" : null,
   "sellStartPrice" : 4700,
   "minMarketPrice" : null,
@@ -220,24 +220,24 @@
   "enabled" : true
 }, {
   "id" : 193352,
-  "boughtAmount" : 91,
+  "boughtAmount" : 97,
   "name" : "Rodriguez",
-  "maxPrice" : 1500,
+  "maxPrice" : 1900,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2400,
+  "sellStartPrice" : 2900,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2600,
+  "sellBuyNowPrice" : 3100,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 201510,
-  "boughtAmount" : 87,
+  "boughtAmount" : 96,
   "name" : "Kurzava",
-  "maxPrice" : 1600,
+  "maxPrice" : 1800,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2000,
+  "sellStartPrice" : 2200,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2200,
+  "sellBuyNowPrice" : 2400,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -250,7 +250,7 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 159065,
   "boughtAmount" : 5,
@@ -264,9 +264,9 @@
   "enabled" : false
 }, {
   "id" : 199556,
-  "boughtAmount" : 56,
+  "boughtAmount" : 64,
   "name" : "Verrati",
-  "maxPrice" : 1200,
+  "maxPrice" : 1500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1700,
   "minMarketPrice" : null,
@@ -275,20 +275,20 @@
   "enabled" : true
 }, {
   "id" : 191180,
-  "boughtAmount" : 71,
+  "boughtAmount" : 78,
   "name" : "Pastore",
-  "maxPrice" : 1400,
+  "maxPrice" : 1300,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2100,
+  "sellStartPrice" : 1700,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2300,
+  "sellBuyNowPrice" : 1900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 170890,
-  "boughtAmount" : 60,
+  "boughtAmount" : 63,
   "name" : "Matudi",
-  "maxPrice" : 1600,
+  "maxPrice" : 1800,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2200,
   "minMarketPrice" : null,
@@ -297,9 +297,9 @@
   "enabled" : true
 }, {
   "id" : 197781,
-  "boughtAmount" : 60,
+  "boughtAmount" : 63,
   "name" : "Isco",
-  "maxPrice" : 1400,
+  "maxPrice" : 1600,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2000,
   "minMarketPrice" : null,
@@ -316,27 +316,27 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 5400,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 189332,
-  "boughtAmount" : 33,
+  "boughtAmount" : 39,
   "name" : "Jordi Alba",
-  "maxPrice" : 2600,
+  "maxPrice" : 3000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3200,
+  "sellStartPrice" : 3600,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3400,
+  "sellBuyNowPrice" : 3800,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 211110,
-  "boughtAmount" : 82,
+  "boughtAmount" : 85,
   "name" : "Dybala",
-  "maxPrice" : 3200,
+  "maxPrice" : 3300,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3800,
+  "sellStartPrice" : 4300,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 4100,
+  "sellBuyNowPrice" : 4500,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -349,7 +349,7 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 4600,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 194765,
   "boughtAmount" : 5,
@@ -360,12 +360,12 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 4600,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 192318,
-  "boughtAmount" : 21,
+  "boughtAmount" : 27,
   "name" : "Gotze",
-  "maxPrice" : 1900,
+  "maxPrice" : 2000,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2900,
   "minMarketPrice" : null,
@@ -382,7 +382,7 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 6200,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 162895,
   "boughtAmount" : 4,
@@ -393,7 +393,7 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 7100,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 168542,
   "boughtAmount" : 0,
@@ -404,27 +404,27 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 173771,
-  "boughtAmount" : 18,
+  "boughtAmount" : 20,
   "name" : "Pizscek",
-  "maxPrice" : 4000,
+  "maxPrice" : 3700,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 6000,
+  "sellStartPrice" : 5700,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 6300,
+  "sellBuyNowPrice" : 5900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 171919,
-  "boughtAmount" : 84,
+  "boughtAmount" : 90,
   "name" : "Naldo",
-  "maxPrice" : 1800,
+  "maxPrice" : 2400,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2800,
+  "sellStartPrice" : 2900,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3000,
+  "sellBuyNowPrice" : 3100,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -682,42 +682,42 @@
   "enabled" : false
 }, {
   "id" : 204485,
-  "boughtAmount" : 52,
+  "boughtAmount" : 53,
   "name" : "Mahrez",
-  "maxPrice" : 1700,
+  "maxPrice" : 1800,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 3600,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 3800,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 208830,
-  "boughtAmount" : 42,
+  "boughtAmount" : 46,
   "name" : "Vardy",
-  "maxPrice" : 1600,
+  "maxPrice" : 2000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 3500,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 3700,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 177388,
-  "boughtAmount" : 15,
+  "boughtAmount" : 18,
   "name" : "Payet",
-  "maxPrice" : 3000,
+  "maxPrice" : 3200,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 3700,
+  "sellStartPrice" : 4100,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3900,
+  "sellBuyNowPrice" : 4300,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 139720,
   "boughtAmount" : 29,
   "name" : "Kompany",
-  "maxPrice" : 2000,
+  "maxPrice" : 2400,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
@@ -728,7 +728,7 @@
   "id" : 192366,
   "boughtAmount" : 27,
   "name" : "Otamendi",
-  "maxPrice" : 2000,
+  "maxPrice" : 2600,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
@@ -745,12 +745,12 @@
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2400,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false
 }, {
   "id" : 163631,
-  "boughtAmount" : 47,
+  "boughtAmount" : 48,
   "name" : "Baines",
-  "maxPrice" : 1600,
+  "maxPrice" : 1700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3200,
   "minMarketPrice" : null,
@@ -761,7 +761,7 @@
   "id" : 203747,
   "boughtAmount" : 51,
   "name" : "Bellerin",
-  "maxPrice" : 2400,
+  "maxPrice" : 3500,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
