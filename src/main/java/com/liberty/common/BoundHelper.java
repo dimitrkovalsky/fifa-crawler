@@ -44,6 +44,7 @@ public class BoundHelper {
   }
 
   public static Integer defineLowBound(PlayerStatistic player, PlayerTradeStatus tradeStatus) {
+
     Integer lowBound;
     if (player.getLastPrice() == null) {
       if (tradeStatus.getMaxPrice() > 50000) {
@@ -65,6 +66,7 @@ public class BoundHelper {
     if (player.getLastPrice() - tradeStatus.getMaxPrice() < 2000) {
       lowBound = player.getLastPrice();
     }
-    return lowBound;
+    return 10000;
+//    return lowBound;
   }
 }

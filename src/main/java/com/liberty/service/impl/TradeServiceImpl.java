@@ -158,11 +158,11 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
 
     final int[] counter = {0};
-    all.stream().forEach(p -> {
+    all.forEach(p -> {
       findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + all.size());
-      sleep(20000);
+      sleep(7000);
     });
   }
 
@@ -174,9 +174,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       player = new PlayerStatistic();
       player.setId(playerId);
     }
-//    if (player.getPrices().size() >= 10) {
-//      return null;
-//    }
     Integer lowBound = defineLowBound(player, tradeStatus);
 
     int iteration = 0;
