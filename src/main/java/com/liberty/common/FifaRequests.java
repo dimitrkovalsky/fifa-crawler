@@ -11,6 +11,7 @@ import com.liberty.model.market.ItemData;
 import com.liberty.model.market.Items;
 import com.liberty.model.market.SellItem;
 import com.liberty.model.market.TradeStatus;
+import com.liberty.model.market.Watchlist;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -32,8 +33,8 @@ import static com.liberty.common.UrlResolver.*;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  private String sessionId = "e93a0fa2-2a80-41ec-ba0d-78dfc61164a0";
-  private String phishingToken = "5111389195979842053";
+  private String sessionId = null;
+  private String phishingToken = null;
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(getTradeLineUrl());
@@ -44,6 +45,17 @@ public class FifaRequests extends BaseFifaRequests {
     Optional<TradeStatus> trade = JsonHelper.toEntity(json, TradeStatus.class);
 
     return trade.get().getAuctionInfo();
+  }
+
+  public Watchlist getWatchlist() {
+    HttpPost request = createRequest(getWatchlistUrl());
+    String json = execute(request).get();
+    if (isError(json)) {
+      return null;
+    }
+    Optional<Watchlist> watchlist =  JsonHelper.toEntity(json, Watchlist.class);
+
+    return watchlist.get();
   }
 
   public Optional<TradeStatus> searchPlayer(long id, int maxPrice, int page) throws IOException {

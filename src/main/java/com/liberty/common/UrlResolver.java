@@ -8,6 +8,7 @@ import static com.liberty.common.FifaEndpoints.ITEM_URL;
 import static com.liberty.common.FifaEndpoints.SEARCH_URL;
 import static com.liberty.common.FifaEndpoints.STATUS_URL;
 import static com.liberty.common.FifaEndpoints.TRADE_LINE_URL;
+import static com.liberty.common.FifaEndpoints.WATCHLIST_URL;
 
 /**
  * User: Dimitr Date: 19.07.2016 Time: 9:19
@@ -78,6 +79,13 @@ public class UrlResolver {
       return FifaExternalEndpoints.TRADE_LINE_URL;
     }
     return TRADE_LINE_URL;
+  }
+
+  public static String getWatchlistUrl() {
+    if (externalUrl) {
+      return FifaExternalEndpoints.WATCHLIST_URL;
+    }
+    return WATCHLIST_URL;
   }
 
   public static String getSearchUrl() {

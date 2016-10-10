@@ -12,4 +12,5 @@ public class Statistic {
   private long players;
   private long autoBuy;
   private boolean enabled;
+  private int credits;
 }

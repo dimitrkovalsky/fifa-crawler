@@ -11,7 +11,7 @@ public interface FifaExternalEndpoints {
   String INFORM_SEARCH_URL = DOMAIN_EXTERNAL + "/ut/game/fifa17/transfermarket?" +
       "rare=SP&num=16&type=player&maxb=%s&maskedDefId=%s&start=0";
   String LOGGED_IN = "https://www.easports.com/fifa/api/isUserLoggedIn";
-  String AUTH = "https://www.easports.com/iframe/fut16/p/ut/auth";
+  String AUTH = "https://www.easports.com/iframe/fut17/p/ut/auth";
   String BID_URL = DOMAIN_EXTERNAL + "/ut/game/fifa17/trade/%s/bid";
   String ITEM_URL = DOMAIN_EXTERNAL + "/ut/game/fifa17/item";
   String ITEMS_URL = DOMAIN_EXTERNAL + "/ut/game/fifa17/purchased/items";
@@ -20,6 +20,7 @@ public interface FifaExternalEndpoints {
   String REMOVE_SOLD = DOMAIN_EXTERNAL + "/ut/game/fifa17/trade/sold";
   String RELIST = DOMAIN_EXTERNAL + "/ut/game/fifa17/auctionhouse/relist";
   String GET_UNASSIGNED = DOMAIN_EXTERNAL + "/ut/game/fifa17/purchased/items";
+  String WATCHLIST_URL = DOMAIN_EXTERNAL + "/ut/game/fifa17/watchlist";
 
 
 }

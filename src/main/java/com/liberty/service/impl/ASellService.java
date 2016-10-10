@@ -73,14 +73,16 @@ public abstract class ASellService extends ATradeService implements TradeService
   public BuyMessage getTradepileInfo() {
     int unassigned = fifaRequests.getUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
-    return new BuyMessage(unassigned, canSell, getPurchasesRemained());
+    int credits = fifaRequests.getWatchlist().getCredits();
+    return new BuyMessage(unassigned, canSell, credits, getPurchasesRemained());
   }
 
   @Override
   public void logBuyOrSell() {
     int unassigned = fifaRequests.getUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
-    logController.logBuy(unassigned, canSell, getPurchasesRemained());
+    int credits = fifaRequests.getWatchlist().getCredits();
+    logController.logBuy(unassigned, canSell, credits, getPurchasesRemained());
   }
 
 

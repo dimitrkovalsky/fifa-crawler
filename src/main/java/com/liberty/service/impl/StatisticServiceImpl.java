@@ -8,6 +8,7 @@ import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
+import com.liberty.websockets.BuyMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,8 @@ public class StatisticServiceImpl implements StatisticService {
         .filter(PlayerTradeStatus::isEnabled)
         .count());
     statistic.setEnabled(tradeService.getMarketInfo().getAutoBuyEnabled());
+    BuyMessage tradepileInfo = tradeService.getTradepileInfo();
+    statistic.setCredits(tradepileInfo.getCredits());
     return statistic;
   }
 

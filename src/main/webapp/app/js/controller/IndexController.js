@@ -64,6 +64,7 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.unassigned = msg.unassigned;
         $rootScope.canSell = msg.canSell;
         $rootScope.purchasesRemained = msg.purchasesRemained;
+        $rootScope.credits = msg.credits;
         document.title = "Fifa (" + $rootScope.unassigned + ")";
         $rootScope.updateFavicon($rootScope.canSell);
     };
