@@ -25,7 +25,7 @@ public class MarketTask {
 
   @Scheduled(fixedRate = 200000)
   public void monitor() {
-    // fillDatabase();
+   // fillDatabase();
     logController.info("Trying to check market");
     //tradeService.updatePrices();
     tradeService.checkMarket();
@@ -34,36 +34,31 @@ public class MarketTask {
 
   private void fillDatabase() {
     tradeService.removeAllPlayers();
-    simplePlayers();
-    richPlayers();
+
     veryRichPlayers();
+//    richPlayers();
+//    veryRichPlayers();
   }
 
   private void veryRichPlayers() {
-    add("De Brune", 192985, 12000);
-    add("De Gea", 193080, 6000);
-    add("Iniesta", 41, 8000);
-    add("Rodriges", 198710, 9000);
-    add("Boateng", 183907, 10000);
-    add("Sergio Ramos", 155862, 18000);
-    add("Benzema", 165153, 4500);
-    add("Toure", 20289, 6000);
-    add("Sanchez", 184941, 12000);
-    add("Lewandowsky", 188545, 17000);
-    add("Alaba", 197445, 20000);
-    add("Modric", 177003, 17000);
-    add("Di Maria", 183898, 9000);
-    add("Vidal", 181872, 6000);
-    add("Tiago Silva", 164240, 8000);
-    add("Reus", 188350, 18000);
-    add("Ribery", 156616, 13000);
+    add("Cheryshev", 206225, 800);
+    add("Promes", 208808, 1200);
+    add("Pedro", 189505, 2300);
+    add("Schneiderlin", 177358, 1500);
+    add("Mark Bartra", 198141, 1500);
+    add("El Shaarawy", 190813, 1500);
+    add("Slimani", 217699, 2000);
+    add("Jagielka", 53914, 1700);
+    add("Alli", 211117, 2000);
+    add("Lallana", 180819, 2000);
+    add("Vela", 169416, 1200);
+    add("Coquelin", 189271, 1200);
+    add("Oscar", 188152, 2600);
+    add("Evra", 52091, 1500);
+    add("Carvajal", 204963, 2200);
+    add("Witsel", 177413, 1100);
+    add("Ter Stegen", 192448, 1600);
 
-    add("Ibrahimovich", 41236, 33000);
-    add("Aguero", 153079, 33000);
-    add("Robben", 9014, 45000);
-    add("Messi", 158023, 100000);
-    add("Neymar", 190871, 100000);
-    add("Bale", 173731, 60000);
   }
 
   private void richPlayers() {

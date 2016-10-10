@@ -42,7 +42,7 @@ abstract class BaseFifaRequests {
     request.setHeader("X-Requested-With", "XMLHttpRequest");
     request.setHeader("X-XSRF-TOKEN", getXsrfToken());
     request.setHeader(HttpHeaders.USER_AGENT,
-        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0");
+        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 OPR/40.0.2308.81");
     request.setHeader("Cookie", "hl=us; 7adb0816=1; " +
         "EASSSO=cc744a530b2255d4cd768773e499d2be64983abd6926a00bd49a5c36cf8a1b2b; utag_main=v_id:01550814248d001e4881f541f18e0a049003300d009dc$_sn:2$_ss:1$_st:1464844167977$_pn:1%3Bexp-session$ses_id:1464842367977%3Bexp-session; optimizelyEndUserId=oeu1464719386422r0.2961764697498508; optimizelySegments=%7B%22172174479%22%3A%22none%22%2C%22172202804%22%3A%22direct%22%2C%22172207507%22%3A%22false%22%2C%22172316047%22%3A%22ff%22%2C%22265568016%22%3A%22true%22%7D; optimizelyBuckets=%7B%7D; __utma=242180630.368449729.1464842370.1464842370.1464842370.1; __utmz=242180630.1464842370.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); _ceg.s=o84nlt; _ceg.u=o84nlt; FUTWebPhishing1214832867=9002495091363405202; EASFC-WEB-SESSION=adf70u30gaa37k6p3eik565ub4; XSRF-TOKEN=Xek4krbtHItMDuCvvweV9qs0a9XE6hDoOTNEk54j1IE; __utmb=242180630.12.10.1464842370; __utmc=242180630; __utmt_~1=1");
 
@@ -137,13 +137,13 @@ abstract class BaseFifaRequests {
     request.setHeader(HttpHeaders.ACCEPT_LANGUAGE, "Accept-Language");
     request.setHeader(HttpHeaders.CONNECTION, "keep-alive");
     request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-    request.setHeader(HttpHeaders.HOST, "utas.s2.fut.ea.com");
+    request.setHeader(HttpHeaders.HOST, "utas.external.s2.fut.ea.com");
     request.setHeader(HttpHeaders.REFERER,
-        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=159444");
+        "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=163415");
     request.setHeader(HttpHeaders.USER_AGENT,
-        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 OPR/37.0.2178.43");
+        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 OPR/40.0.2308.81");
     request.setHeader("Origin", "https://www.easports.com");
-    request.setHeader("X-Requested-With", "ShockwaveFlash/22.0.0.192");
+    request.setHeader("X-Requested-With", "ShockwaveFlash/23.0.0.162");
     request.setHeader("X-UT-Embed-Error", "true");
   }
 
@@ -161,11 +161,11 @@ abstract class BaseFifaRequests {
     request.setHeader(HttpHeaders.HOST, "www.easports.com");
     request.setHeader("Origin", "https://www.easports.com");
     request.setHeader(HttpHeaders.REFERER,
-        "https://www.easports.com/iframe/fut16/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=159444");
+        "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=163415");
     request.setHeader(HttpHeaders.USER_AGENT,
-        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36 OPR/37.0.2178.43");
+        "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 OPR/40.0.2308.81");
     request.setHeader("Origin", "https://www.easports.com");
-    request.setHeader("X-Requested-With", "ShockwaveFlash/22.0.0.192");
+    request.setHeader("X-Requested-With", "ShockwaveFlash/23.0.0.162");
     request.setHeader("X-UT-Embed-Error", "true");
     request.setHeader("X-HTTP-Method-Override", "POST");
 //    request.setHeader("Easw-Session-Data-Nucleus-Id", getNucleusId());

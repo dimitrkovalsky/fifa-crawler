@@ -40,4 +40,9 @@ public class ItemData {
   private Integer loyaltyBonus;
   private Integer pile;
   private Integer nation;
+  private String firstName;
+  private String lastName;
+  private String negotiation;
+  private Integer marketDataMinPrice;
+  private Integer marketDataMaxPrice;
 }

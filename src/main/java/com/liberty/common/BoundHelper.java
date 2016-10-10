@@ -58,7 +58,7 @@ public class BoundHelper {
       } else if (tradeStatus.getMaxPrice() > 3000) {
         lowBound = 3000;
       } else {
-        lowBound = DEFAULT_LOW_BOUND;
+        return DEFAULT_LOW_BOUND;
       }
     } else {
       lowBound = tradeStatus.getMaxPrice();
@@ -66,7 +66,6 @@ public class BoundHelper {
     if (player.getLastPrice() - tradeStatus.getMaxPrice() < 2000) {
       lowBound = player.getLastPrice();
     }
-    return 10000;
-//    return lowBound;
+    return lowBound;
   }
 }

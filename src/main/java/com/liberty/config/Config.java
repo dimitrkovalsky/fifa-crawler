@@ -24,7 +24,7 @@ public class Config extends AbstractMongoConfiguration  {
 
   @Override
   protected String getDatabaseName() {
-    return "fifa16";
+    return "fifa17";
   }
 
   @Override

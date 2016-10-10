@@ -37,7 +37,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
 @Service
 public class TradeServiceImpl extends ASellService implements TradeService {
 
-  public static final int DEFAULT_LOW_BOUND = 1000;
+  public static final int DEFAULT_LOW_BOUND = 4000;
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
   public static final int ITERATION_LIMIT = 35;
 
