@@ -33,6 +33,7 @@
 <script src="app/js/controller/PlayerController.js"></script>
 <script src="app/js/controller/TradeController.js"></script>
 <script src="app/js/controller/TradePlayerController.js"></script>
+<script src="app/js/controller/SearchController.js"></script>
 
 <body ng-app="fifaApp" ng-controller="IndexController">
 
@@ -58,6 +59,11 @@
                     <span class="glyphicon glyphicon-tags"></span> Trade
                     <span class="label label-danger label-as-badge">{{unassigned}}</span>
                 </a>
+            </li>
+            <li>
+                <a href="#/search"    class="top-level-menu">
+                    <span class="glyphicon glyphicon-search"></span>
+                    Search</a>
             </li>
             <li>
                 <a href="#collapseLog" data-toggle="collapse" aria-expanded="false"

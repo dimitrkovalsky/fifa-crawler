@@ -42,8 +42,8 @@ public class MarketTask {
 
   private void veryRichPlayers() {
     add("Cheryshev", 206225, 800);
-    add("Promes", 208808, 1200);
-    add("Pedro", 189505, 2300);
+    add("Promes", 208808, 800);
+    add("Pedro", 189505, 2000);
     add("Schneiderlin", 177358, 1500);
     add("Mark Bartra", 198141, 1500);
     add("El Shaarawy", 190813, 1500);
@@ -58,6 +58,12 @@ public class MarketTask {
     add("Carvajal", 204963, 2200);
     add("Witsel", 177413, 1100);
     add("Ter Stegen", 192448, 1600);
+
+    add("Salah", 209331, 1100);
+    add("Debuchy", 158626, 2000);
+    add("Benteke", 184111, 2500);
+    add("Danny", 20800, 800);
+    add("Nolito", 199561, 2500);
 
   }
 

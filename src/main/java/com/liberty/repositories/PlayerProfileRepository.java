@@ -1,6 +1,7 @@
 package com.liberty.repositories;
 
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.PlayerTradeStatus;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -15,6 +16,6 @@ import java.util.List;
 @Repository
 public interface PlayerProfileRepository extends MongoRepository<PlayerProfile, Long> {
 
-  @Query("{'info.source':'?0'}")
-  List<PlayerProfile> findAllBySource(String source);
+  @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
+  List<PlayerTradeStatus> findByName(String phrase);
 }

@@ -45,4 +45,9 @@ public class ItemData {
   private String negotiation;
   private Integer marketDataMinPrice;
   private Integer marketDataMaxPrice;
+  private Integer cardassetid;
+  private Object value;
+  private String category;
+  private String manufacturer;
+  private String name;
 }

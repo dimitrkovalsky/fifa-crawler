@@ -84,5 +84,10 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/trade',
             templateUrl: 'trade.html',
             controller: 'TradeController'
+        })
+        .state('search', {
+            url: '/search',
+            templateUrl: 'search.html',
+            controller: 'SearchController'
         });
 });

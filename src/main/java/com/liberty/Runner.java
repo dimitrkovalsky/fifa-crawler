@@ -1,7 +1,7 @@
 package com.liberty;
 
 import com.liberty.config.Config;
-import com.liberty.service.TradeService;
+import com.liberty.service.CrawlerService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,9 +16,10 @@ public class Runner {
 
   public static void main(String[] args) throws IOException {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-    TradeService service = context.getBean(TradeService.class);
+    CrawlerService service = context.getBean(CrawlerService.class);
 //    service.addToAutoBuy("Vardy", 208830L, 1000);
 //    service.addToAutoBuy("Mahrez", 204485L, 1000);
-    service.findMinPrice(208830L);
+//    service.fetchData(199561L);
+    service.fetchAllPlayers();
   }
 }

@@ -1,12 +1,12 @@
 package com.liberty.model;
 
-import com.liberty.model.stats.OverviewStats;
-import com.liberty.model.stats.Stats;
+import com.liberty.processors.pojo.Attributes;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -20,10 +20,40 @@ public class PlayerProfile {
 
   @Id
   private Long id;
-  private PlayerInfo info;
-  private Stats stats;
-  private Price price;
-  private boolean underMonitoring;
-  private OverviewStats overviewStats;
+
+  public String commonName;
+
+  public String firstName;
+
+  public String headshotImgUrl;
+
+  public String lastName;
+
+  public Long leagueId;
+
+  public Long nationId;
+
+  public Long clubId;
+
+  public String position;
+
+  public String playerType;
+
+  public List<Attributes> attributes;
+
+  public String name;
+
+  public String quality;
+
+  public String color;
+
+  public boolean isGK;
+
+  public boolean isSpecialType;
+
+  public Long baseId;
+
+  public Integer rating;
+
   private Date updated = new Date();
 }
