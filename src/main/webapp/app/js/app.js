@@ -41,6 +41,10 @@ fifaApp.factory('AutoBuyPlayer', function ($resource) {
     return $resource('/api/market/autobuy/player/');
 });
 
+fifaApp.factory('PlayerUpdate', function ($resource) {
+    return $resource('/api/market/player/update');
+});
+
 fifaApp.factory('PlayerAutoBuy', function ($resource) {
     return $resource('/api/market/player/:id');
 });

@@ -31,8 +31,7 @@
 <div class="container">
     <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="player in $data">
-            <td data-title="'Id'"><img class="trade-image-rare-gold"
-                                           src="/api/images/{{player.id}}"></td>
+            <td data-title="'Id'"><small-player/></td>
             <td data-title="'Name'" sortable="'name'" filter="{name: 'text'}">
                 <a  href="#/player/{{player.id}}">{{player.name}}</a></td>
             <td data-title="'Max Buy Now Price'" sortable="'maxPrice'">{{player.maxPrice}}</td>

@@ -2,15 +2,18 @@
 <script type="text/javascript">
     google.charts.load('current', {'packages': ['line']});
     google.charts.setOnLoadCallback(draw);
+
 </script>
 
 <div class="page-header">
     <h1>{{player.name}}</h1>
 </div>
 <div class="col-md-6" style="height:100px">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <span>Max price : {{player.maxPrice}} </span>
         <button ng-click="updatePrice()" class="btn btn-default">Refresh market</button>
+        <button ng-if="isNew" class="btn btn-info" ng-click="addToMonitoring()">Monitor
+        </button>
     </div>
 
     <div class="col-md-2">
@@ -18,8 +21,8 @@
              src="app/img/preloader.gif">
     </div>
 
-    <div class="col-md-6">
-        <span>Last update : <strong>{{playerPrice.date}}</strong> </span>
+    <div class="col-md-5">
+        <span>Last update : <strong>{{playerPrice.date || 'Never'}} </strong> </span>
     </div>
 </div>
 <div class="container">

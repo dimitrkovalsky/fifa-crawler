@@ -1,6 +1,7 @@
 package com.liberty.rest;
 
 import com.liberty.model.MarketInfo;
+import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.rest.request.AutobuyRequest;
@@ -51,16 +52,15 @@ public class MarketResource {
     tradeService.updateAutoBuy(request);
   }
 
-  @RequestMapping(path = "/player", method = RequestMethod.POST)
+  @RequestMapping(path = "/player/update", method = RequestMethod.POST)
   public void updatePlayer(@RequestBody PlayerTradeStatus request) {
     tradeService.updatePlayer(request);
   }
 
   @RequestMapping(path = "/player", method = RequestMethod.GET)
-  public List<PlayerTradeStatus> getAll() {
-    List<PlayerTradeStatus> all = tradeService.getAllToAutoBuy();
+  public List<PlayerInfo> getAll() {
 
-    return all;
+    return tradeService.getAllToAutoBuy();
   }
 
   @RequestMapping(path = "/search", method = RequestMethod.GET)
@@ -69,8 +69,8 @@ public class MarketResource {
   }
 
   @RequestMapping(path = "/player/{id}", method = RequestMethod.GET)
-  public PlayerTradeStatus getOne(@PathVariable Long id) {
-    return tradeService.getOnePlayer(id);
+  public PlayerInfo getPlayerInfo(@PathVariable Long id) {
+    return tradeService.getPlayerInfo(id);
   }
 
   @RequestMapping(path = "/player/{id}", method = RequestMethod.DELETE)

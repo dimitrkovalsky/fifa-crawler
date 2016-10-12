@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,6 +52,7 @@ public class CrawlerServiceImpl implements CrawlerService {
   @Override
   public void fetchData(Long playerId) {
     PlayerProfile profile = profileRepository.findOne(playerId);
+    // TODO: Fix club and nation fetch if profile was saved;
     if (profile == null) {
       Optional<PlayerProfile> maybeProfile = processor.fetchInfo(playerId);
       if (!maybeProfile.isPresent()) {
@@ -67,28 +67,34 @@ public class CrawlerServiceImpl implements CrawlerService {
     imageService.saveImage(profile.getHeadshotImgUrl(), playerId);
 
 
-
   }
 
   private void saveOthers() {
+    log.info("Trying to save " + processor.getClubs().size() + " clubs");
     clubRepository.save(processor.getClubs());
-    leagueRepository.save(processor.getLeagues());
-    nationRepository.save(processor.getNations());
+    processor.getClubs().forEach(c -> imageService.saveClubImage(c));
 
+    log.info("Trying to save " + processor.getLeagues().size() + " leagues");
+    leagueRepository.save(processor.getLeagues());
+    processor.getLeagues().forEach(l -> imageService.saveLeagueImage(l));
+
+    log.info("Trying to save " + processor.getNations().size() + " nations");
+    nationRepository.save(processor.getNations());
+    processor.getNations().forEach(n -> imageService.saveNationImage(n));
   }
 
   @Override
   public void fetchAllPlayers() {
     List<FifaPlayerSuggestion> suggestions = processor.readSuggestions();
-    List<FifaPlayerSuggestion> players = suggestions.stream()
-        .filter(x -> x.getRating() >= 80)
-        .collect(Collectors.toList());
+    List<FifaPlayerSuggestion> players = suggestions;
+//    suggestions.stream()
+//        .filter(x -> x.getRating() >= 80)
+//        .collect(Collectors.toList());
 
     log.info("Trying to fetch data for : " + players.size() + " players");
     AtomicInteger counter = new AtomicInteger(0);
     players.parallelStream().forEach(p -> {
       fetchData(p.getId());
-      counter.incrementAndGet();
       log.info("Fetched " + counter.incrementAndGet() + " / " + players.size());
     });
     saveOthers();

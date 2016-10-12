@@ -82,6 +82,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
         MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
     };
 
+
     $scope.filterPlayers($scope.id);
 
     $scope.getPlayerInfo();

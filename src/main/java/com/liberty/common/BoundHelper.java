@@ -1,5 +1,6 @@
 package com.liberty.common;
 
+import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.PlayerStatistic;
 
@@ -43,10 +44,10 @@ public class BoundHelper {
     }
   }
 
-  public static Integer defineLowBound(PlayerStatistic player, PlayerTradeStatus tradeStatus) {
+  public static Integer defineLowBound(PlayerStatistic stats, PlayerTradeStatus tradeStatus) {
 
     Integer lowBound;
-    if (player.getLastPrice() == null) {
+    if (stats.getLastPrice() == null) {
       if (tradeStatus.getMaxPrice() > 50000) {
         lowBound = 50000;
       } else if (tradeStatus.getMaxPrice() > 30000) {
@@ -60,12 +61,29 @@ public class BoundHelper {
       } else {
         return DEFAULT_LOW_BOUND;
       }
+    } else if (stats.getLastPrice() - tradeStatus.getMaxPrice() >= 2000) {
+      lowBound = stats.getLastPrice();
+    } else if (tradeStatus.getMaxPrice() <= 5000) {
+      lowBound = tradeStatus.getMaxPrice();
     } else {
       lowBound = tradeStatus.getMaxPrice();
     }
-    if (player.getLastPrice() - tradeStatus.getMaxPrice() < 2000) {
-      lowBound = player.getLastPrice();
-    }
+
     return lowBound;
+  }
+
+  public static Integer defineMaxBuyNow(PlayerProfile profile) {
+    Integer rating = profile.getRating();
+    int maxBuy;
+    if (profile.isSpecialType) {
+      maxBuy = 50000;
+    } else if (rating >= 85) {
+      maxBuy = 20000;
+    } else if (rating >= 82) {
+      maxBuy = 2000;
+    } else {
+      maxBuy = 1000;
+    }
+    return maxBuy;
   }
 }

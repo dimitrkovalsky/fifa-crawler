@@ -31,6 +31,31 @@ public class ImageResource {
   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
   public ResponseEntity<?> get(@PathVariable Long id) {
     Optional<GridFSDBFile> image = imageService.getImage(id);
+    return sendImage(image);
+  }
+
+  @RequestMapping(value = "/club/{id}", method = RequestMethod.GET, produces = MediaType
+      .IMAGE_PNG_VALUE)
+  public ResponseEntity<?> getClub(@PathVariable Long id) {
+    Optional<GridFSDBFile> image = imageService.getClubImage(id);
+    return sendImage(image);
+  }
+
+  @RequestMapping(value = "/league/{id}", method = RequestMethod.GET, produces = MediaType
+      .IMAGE_PNG_VALUE)
+  public ResponseEntity<?> getLeague(@PathVariable Long id) {
+    Optional<GridFSDBFile> image = imageService.getLeagueImage(id);
+    return sendImage(image);
+  }
+
+  @RequestMapping(value = "/nation/{id}", method = RequestMethod.GET, produces = MediaType
+      .IMAGE_PNG_VALUE)
+  public ResponseEntity<?> getNation(@PathVariable Long id) {
+    Optional<GridFSDBFile> image = imageService.getNationImage(id);
+    return sendImage(image);
+  }
+
+  private ResponseEntity<?> sendImage(Optional<GridFSDBFile> image) {
     if (!image.isPresent()) {
       return notFound();
     }

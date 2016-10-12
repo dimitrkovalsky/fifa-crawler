@@ -1,6 +1,6 @@
 [ {
   "id" : 206225,
-  "boughtAmount" : 6,
+  "boughtAmount" : 14,
   "name" : "Cheryshev",
   "maxPrice" : 700,
   "lastBuyPrice" : null,
@@ -11,7 +11,7 @@
   "enabled" : true
 }, {
   "id" : 208808,
-  "boughtAmount" : 5,
+  "boughtAmount" : 7,
   "name" : "Promes",
   "maxPrice" : 800,
   "lastBuyPrice" : null,
@@ -33,13 +33,13 @@
   "enabled" : true
 }, {
   "id" : 177358,
-  "boughtAmount" : 0,
+  "boughtAmount" : 1,
   "name" : "Schneiderlin",
   "maxPrice" : 1500,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 2100,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 2300,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -66,9 +66,20 @@
   "enabled" : true
 }, {
   "id" : 217699,
-  "boughtAmount" : 5,
+  "boughtAmount" : 7,
   "name" : "Slimani",
   "maxPrice" : 2000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 2400,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 2600,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 53914,
+  "boughtAmount" : 2,
+  "name" : "Jagielka",
+  "maxPrice" : 1700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2700,
   "minMarketPrice" : null,
@@ -76,36 +87,25 @@
   "lastUpdate" : null,
   "enabled" : true
 }, {
-  "id" : 53914,
-  "boughtAmount" : 0,
-  "name" : "Jagielka",
-  "maxPrice" : 1700,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : null,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
   "id" : 211117,
-  "boughtAmount" : 0,
+  "boughtAmount" : 1,
   "name" : "Alli",
   "maxPrice" : 2500,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 2900,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 3100,
   "lastUpdate" : null,
   "enabled" : true
 }, {
   "id" : 180819,
-  "boughtAmount" : 0,
+  "boughtAmount" : 1,
   "name" : "Lallana",
   "maxPrice" : 2000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 2700,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 2900,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -121,7 +121,7 @@
   "enabled" : true
 }, {
   "id" : 189271,
-  "boughtAmount" : 8,
+  "boughtAmount" : 13,
   "name" : "Coquelin",
   "maxPrice" : 1200,
   "lastBuyPrice" : null,
@@ -143,7 +143,7 @@
   "enabled" : true
 }, {
   "id" : 52091,
-  "boughtAmount" : 1,
+  "boughtAmount" : 2,
   "name" : "Evra",
   "maxPrice" : 1700,
   "lastBuyPrice" : null,
@@ -165,7 +165,7 @@
   "enabled" : true
 }, {
   "id" : 177413,
-  "boughtAmount" : 5,
+  "boughtAmount" : 12,
   "name" : "Witsel",
   "maxPrice" : 1000,
   "lastBuyPrice" : null,
@@ -176,7 +176,7 @@
   "enabled" : true
 }, {
   "id" : 192448,
-  "boughtAmount" : 4,
+  "boughtAmount" : 8,
   "name" : "Ter Stegen",
   "maxPrice" : 1400,
   "lastBuyPrice" : null,
@@ -198,7 +198,7 @@
   "enabled" : true
 }, {
   "id" : 158626,
-  "boughtAmount" : 4,
+  "boughtAmount" : 5,
   "name" : "Debuchy",
   "maxPrice" : 2000,
   "lastBuyPrice" : null,
@@ -209,13 +209,13 @@
   "enabled" : true
 }, {
   "id" : 184111,
-  "boughtAmount" : 1,
+  "boughtAmount" : 2,
   "name" : "Benteke",
   "maxPrice" : 3000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 3900,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 4100,
   "lastUpdate" : null,
   "enabled" : true
 }, {
@@ -231,13 +231,266 @@
   "enabled" : true
 }, {
   "id" : 199561,
-  "boughtAmount" : 1,
+  "boughtAmount" : 2,
   "name" : "Nolito",
-  "maxPrice" : 2500,
+  "maxPrice" : 3000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2900,
+  "sellStartPrice" : 3600,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3100,
+  "sellBuyNowPrice" : 3800,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 190871,
+  "boughtAmount" : 0,
+  "name" : "Neymar",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 177003,
+  "boughtAmount" : 0,
+  "name" : "Modrić",
+  "maxPrice" : 20000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 208830,
+  "boughtAmount" : 0,
+  "name" : "Vardy",
+  "maxPrice" : 2000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 201535,
+  "boughtAmount" : 0,
+  "name" : "Varane",
+  "maxPrice" : 2000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 50511461,
+  "boughtAmount" : 0,
+  "name" : "Cavani",
+  "maxPrice" : 20000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 167664,
+  "boughtAmount" : 0,
+  "name" : "Higuaín",
+  "maxPrice" : 20000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 182493,
+  "boughtAmount" : 0,
+  "name" : "Godín",
+  "maxPrice" : 20000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 186115,
+  "boughtAmount" : 1,
+  "name" : "Gibbs",
+  "maxPrice" : 2300,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 2500,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 2700,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 175943,
+  "boughtAmount" : 0,
+  "name" : "Mertens",
+  "maxPrice" : 3600,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 170368,
+  "boughtAmount" : 0,
+  "name" : "Lamela",
+  "maxPrice" : 1600,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 50528890,
+  "boughtAmount" : 0,
+  "name" : "Krychowiak",
+  "maxPrice" : 50000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 197242,
+  "boughtAmount" : 1,
+  "name" : "Krychowiak",
+  "maxPrice" : 2900,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 3500,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 3700,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 112316,
+  "boughtAmount" : 0,
+  "name" : "Mathieu",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 186146,
+  "boughtAmount" : 2,
+  "name" : "Welbeck",
+  "maxPrice" : 3200,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 3700,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 3900,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 191740,
+  "boughtAmount" : 0,
+  "name" : "Ander Herrera",
+  "maxPrice" : 3000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 193130,
+  "boughtAmount" : 0,
+  "name" : "Schürrle",
+  "maxPrice" : 3500,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 199304,
+  "boughtAmount" : 0,
+  "name" : "Danilo",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 163587,
+  "boughtAmount" : 3,
+  "name" : "Schmeichel",
+  "maxPrice" : 1200,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 1600,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 1800,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 186132,
+  "boughtAmount" : 1,
+  "name" : "Drinkwater",
+  "maxPrice" : 1600,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 1900,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 2100,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 21146,
+  "boughtAmount" : 0,
+  "name" : "Carrick",
+  "maxPrice" : 1500,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : false
+}, {
+  "id" : 199503,
+  "boughtAmount" : 0,
+  "name" : "Xhaka",
+  "maxPrice" : 3000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 139997,
+  "boughtAmount" : 3,
+  "name" : "Srna",
+  "maxPrice" : 1100,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 1700,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 1900,
+  "lastUpdate" : null,
+  "enabled" : true
+}, {
+  "id" : 179813,
+  "boughtAmount" : 0,
+  "name" : "Cavani",
+  "maxPrice" : 3000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
   "lastUpdate" : null,
   "enabled" : true
 } ]

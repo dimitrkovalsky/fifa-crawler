@@ -1,7 +1,10 @@
 package com.liberty.service.impl;
 
+import com.liberty.common.BoundHelper;
 import com.liberty.common.UrlResolver;
 import com.liberty.model.MarketInfo;
+import com.liberty.model.PlayerInfo;
+import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.PlayerStatistic;
@@ -9,6 +12,7 @@ import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
+import com.liberty.service.PlayerProfileService;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
 
@@ -48,6 +52,8 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Autowired
   private StatisticService statisticService;
+
+
 
   @Override
   public void removeAllPlayers() {
@@ -168,18 +174,22 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public PlayerStatistic findMinPrice(long playerId) {
-    PlayerStatistic player = statisticRepository.findOne(playerId);
+    PlayerStatistic playerStatistic = statisticRepository.findOne(playerId);
     PlayerTradeStatus tradeStatus = tradeRepository.findOne(playerId);
-    if (player == null) {
-      player = new PlayerStatistic();
-      player.setId(playerId);
+    PlayerProfile profile = playerProfileService.findOne(playerId);
+    if (playerStatistic == null) {
+      playerStatistic = new PlayerStatistic();
+      playerStatistic.setId(playerId);
     }
-    Integer lowBound = defineLowBound(player, tradeStatus);
+    if (tradeStatus == null) {
+      tradeStatus = createNewTrade(profile);
+    }
+    Integer lowBound = defineLowBound(playerStatistic, tradeStatus);
 
     int iteration = 0;
     Set<AuctionInfo> toStatistic = new HashSet<>();
 
-    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && lowBound < 11000) {
+    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(profile)) {
       iteration++;
       logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
       try {
@@ -210,6 +220,18 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
     logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
     return getMinPrice(playerId);
+  }
+
+  private boolean isMaxBound(PlayerProfile profile) {
+    return false;
+  }
+
+  private PlayerTradeStatus createNewTrade(PlayerProfile profile) {
+    PlayerTradeStatus tradeStatus = new PlayerTradeStatus(profile.getId(), profile.getName(),
+        BoundHelper.defineMaxBuyNow(profile));
+    tradeStatus.setEnabled(false);
+    tradeRepository.save(tradeStatus);
+    return tradeStatus;
   }
 
   private List<AuctionInfo> findNextPagesPlayers(long playerId, Integer lowBound) {
@@ -297,10 +319,17 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public List<PlayerTradeStatus> getAllToAutoBuy() {
+  public List<PlayerInfo> getAllToAutoBuy() {
     List<PlayerTradeStatus> all = tradeRepository.findAll();
 
+
     Map<Long, PlayerStatistic> idMinPrice = getStatsMap();
+    List<Long> ids = all.stream().map(PlayerTradeStatus::getId).collect(Collectors.toList());
+    List<PlayerProfile> profiles = playerProfileService.getAll(ids);
+    Map<Long, PlayerProfile> profileMap = new HashMap<>();
+    profiles.forEach(p -> profileMap.put(p.getId(), p));
+
+    List<PlayerInfo> infos = new ArrayList<>();
     all.forEach(p -> {
       PlayerStatistic stats = idMinPrice.get(p.getId());
       if (stats != null) {
@@ -309,9 +338,12 @@ public class TradeServiceImpl extends ASellService implements TradeService {
           p.setMinMarketPrice(prices.get(0).getPrice());
         }
         p.setLastUpdate(stats.getDate());
+        infos.add(new PlayerInfo(p, profileMap.get(p.getId())));
       }
     });
-    return all;
+
+
+    return infos;
   }
 
   private Map<Long, Integer> getMinPricesMap() {
@@ -340,6 +372,13 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
+  public PlayerInfo getPlayerInfo(Long id) {
+    PlayerTradeStatus tradeStatus = tradeRepository.findOne(id);
+    PlayerProfile profile = playerProfileService.findOne(id);
+    return new PlayerInfo(tradeStatus, profile);
+  }
+
+  @Override
   public void updateAutoBuy(BuyRequest request) {
     PlayerTradeStatus playerTradeStatus = tradeRepository.findOne(request.getId());
     playerTradeStatus.setEnabled(request.getEnabled());
@@ -349,12 +388,23 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   public void updatePlayer(PlayerTradeStatus request) {
     PlayerTradeStatus toUpdate = tradeRepository.findOne(request.getId());
+    if (toUpdate == null) {
+      toUpdate = createNewTrade(request);
+    }
     toUpdate.setSellStartPrice(request.getSellStartPrice());
     toUpdate.setSellBuyNowPrice(request.getSellBuyNowPrice());
     toUpdate.setMaxPrice(request.getMaxPrice());
-    toUpdate.setName(request.getName());
 
     tradeRepository.save(toUpdate);
+  }
+
+  private PlayerTradeStatus createNewTrade(PlayerTradeStatus request) {
+    PlayerProfile profile = playerProfileService.findOne(request.getId());
+    PlayerTradeStatus tradeStatus = new PlayerTradeStatus();
+    tradeStatus.setId(request.getId());
+    tradeStatus.setName(profile.getName());
+    tradeStatus.setEnabled(false);
+    return tradeStatus;
   }
 
   @Override

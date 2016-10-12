@@ -1,16 +1,32 @@
 fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParams,
-                                                       PlayerAutoBuy, MinPrice) {
+                                                       PlayerAutoBuy, MinPrice, PlayerUpdate) {
     $scope.id = $stateParams.id;
 
-    $scope.onLoaded = function (player) {
-        $scope.player = player;
+    $scope.onLoaded = function (result) {
+        $scope.player = result.tradeStatus;
+        $scope.profile = result.profile
+        if($scope.player == null){
+            $scope.isNew = true;
+            $scope.player = {};
+            $scope.player.maxPrice = 1000;
+            $scope.player.name = $scope.profile.name;
+        } else {
+            $scope.isNew = false;
+        }
     };
 
     $scope.onStatsLoaded = function (result) {
         $scope.isLoading = false;
         $scope.playerPrice = result;
         $scope.draw($scope.playerPrice.prices);
+        $scope.getPlayerInfo();
     };
+
+
+    $scope.addToMonitoring = function(){
+        var id = $scope.profile.id;
+        PlayerUpdate.save({id: id, maxPrice:1000}, $scope.getPlayerInfo, $rootScope.onError);
+    }
 
     $scope.draw = function (prices) {
         if (!$scope.chartLoaded()) {
@@ -56,12 +72,12 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
     };
 
     $scope.updatePlayer = function () {
-        PlayerAutoBuy.save({
-                id: $scope.player.id,
-                name: $scope.player.name,
-                maxPrice: $scope.player.maxPrice
-            },
-            $scope.getPlayerInfo, $rootScope.onError);
+        PlayerUpdate.save({
+            id: $scope.player.id,
+            name: $scope.player.name,
+            maxPrice: $scope.player.maxPrice
+        },
+        $scope.getPlayerInfo, $rootScope.onError);
     };
 
     $scope.getPlayerInfo = function () {

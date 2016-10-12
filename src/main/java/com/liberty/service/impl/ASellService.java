@@ -1,15 +1,21 @@
 package com.liberty.service.impl;
 
 import com.liberty.common.TradeState;
+import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.ItemData;
 import com.liberty.rest.request.SellRequest;
+import com.liberty.service.PlayerProfileService;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.BuyMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,9 +24,13 @@ import java.util.stream.Collectors;
  * @author Dmytro_Kovalskyi.
  * @since 21.06.2016.
  */
+@Component
 public abstract class ASellService extends ATradeService implements TradeService {
 
   public static final int TRADEPILE_SIZE = 70;
+
+  @Autowired
+  protected PlayerProfileService playerProfileService;
 
   @Override
   public int getTradePileSize() {
@@ -62,12 +72,21 @@ public abstract class ASellService extends ATradeService implements TradeService
     List<ItemData> unassigned = fifaRequests.getUnassigned();
     Map<Long, List<ItemData>> map =
         unassigned.stream().collect(Collectors.groupingBy(ItemData::getAssetId));
+
     List<GroupedToSell> result = new ArrayList<>();
+
+
     map.forEach((k, v) -> {
       result.add(new GroupedToSell(k, v, tradeRepository.findOne(k)));
     });
+
+    List<Long> ids = result.stream().map(GroupedToSell::getPlayerId).collect(Collectors.toList());
+    List<PlayerProfile> profiles = playerProfileService.getAll(ids);
+    Map<Long, PlayerProfile> profileMap = new HashMap<>();
+
+    profiles.forEach(p -> profileMap.put(p.getId(), p));
+    result.forEach(r -> r.setProfile(profileMap.get(r.getPlayerId())));
     return result;
-    // sell(unassigned.get(0), 1700, 1900);
   }
 
   @Override

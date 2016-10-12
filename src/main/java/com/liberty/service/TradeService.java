@@ -1,6 +1,7 @@
 package com.liberty.service;
 
 import com.liberty.model.MarketInfo;
+import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.PlayerStatistic;
@@ -44,9 +45,11 @@ public interface TradeService {
 
   PlayerStatistic getMinPrice(Long id);
 
-  List<PlayerTradeStatus> getAllToAutoBuy();
+  List<PlayerInfo> getAllToAutoBuy();
 
   PlayerTradeStatus getOnePlayer(Long id);
+
+  PlayerInfo getPlayerInfo(Long id);
 
   void updateAutoBuy(BuyRequest request);
 

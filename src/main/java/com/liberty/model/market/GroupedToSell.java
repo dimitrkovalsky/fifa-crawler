@@ -1,5 +1,6 @@
 package com.liberty.model.market;
 
+import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 
 import java.util.List;
@@ -17,4 +18,11 @@ public class GroupedToSell {
   private Long playerId;
   private List<ItemData> items;
   private PlayerTradeStatus tradeStatus;
+  private PlayerProfile profile;
+
+  public GroupedToSell(Long playerId, List<ItemData> items, PlayerTradeStatus tradeStatus) {
+    this.playerId = playerId;
+    this.items = items;
+    this.tradeStatus = tradeStatus;
+  }
 }

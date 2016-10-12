@@ -8,10 +8,10 @@
         }
     });
 
-    module.directive('team', function () {
+    module.directive('smallPlayer', function () {
         return {
             restrict: 'E',
-            templateUrl: 'templates/team.html'
+            templateUrl: 'templates/small-player.html'
         }
     });
 

@@ -1,6 +1,9 @@
 package com.liberty.service.impl;
 
 import com.liberty.common.RequestHelper;
+import com.liberty.model.Club;
+import com.liberty.model.League;
+import com.liberty.model.Nation;
 import com.liberty.service.ImageService;
 import com.mongodb.gridfs.GridFSDBFile;
 
@@ -42,6 +45,72 @@ public class ImageServiceImpl implements ImageService {
     GridFSDBFile image = template
         .findOne(new Query().addCriteria(Criteria.where("filename").is(getFileName(playerId))));
     return Optional.ofNullable(image);
+  }
+
+  @Override
+  public Optional<GridFSDBFile> getClubImage(long clubId) {
+    GridFSDBFile image = template
+        .findOne(new Query().addCriteria(Criteria.where("filename").is(getClubFileName(clubId))));
+    return Optional.ofNullable(image);
+  }
+
+  @Override
+  public Optional<GridFSDBFile> getLeagueImage(long leagueId) {
+    GridFSDBFile image = template.findOne(
+        new Query().addCriteria(Criteria.where("filename").is(getLeagueFileName(leagueId))));
+    return Optional.ofNullable(image);
+  }
+
+  @Override
+  public Optional<GridFSDBFile> getNationImage(long nationId) {
+    GridFSDBFile image = template.findOne(
+        new Query().addCriteria(Criteria.where("filename").is(getNationFileName(nationId))));
+    return Optional.ofNullable(image);
+  }
+
+  private String getClubFileName(long clubId) {
+    return "club-" + clubId + ".png";
+  }
+
+  private String getLeagueFileName(long leagueId) {
+    return "league-" + leagueId + ".png";
+  }
+
+  private String getNationFileName(long nationId) {
+    return "nation-" + nationId + ".png";
+  }
+
+  @Override
+  public void saveClubImage(Club club) {
+    if (getClubImage(club.getId()).isPresent()) {
+      log.info("Image for " + club.getName() + " club was stored before");
+      return;
+    }
+    InputStream inputStream = RequestHelper.executeRequest(club.getImgUrl());
+    template.store(inputStream, getClubFileName(club.getId()), "image/png");
+    log.info("Stored image for club : " + club.getName());
+  }
+
+  @Override
+  public void saveLeagueImage(League league) {
+    if (getClubImage(league.getId()).isPresent()) {
+      log.info("Image for " + league.getName() + " league was stored before");
+      return;
+    }
+    InputStream inputStream = RequestHelper.executeRequest(league.getImgUrl());
+    template.store(inputStream, getLeagueFileName(league.getId()), "image/png");
+    log.info("Stored image for league : " + league.getName());
+  }
+
+  @Override
+  public void saveNationImage(Nation nation) {
+    if (getClubImage(nation.getId()).isPresent()) {
+      log.info("Image for " + nation.getName() + " nation was stored before");
+      return;
+    }
+    InputStream inputStream = RequestHelper.executeRequest(nation.getImgUrl());
+    template.store(inputStream, getNationFileName(nation.getId()), "image/png");
+    log.info("Stored image for nation : " + nation.getName());
   }
 
   private String getFileName(long playerId) {

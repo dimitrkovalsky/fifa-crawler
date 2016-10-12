@@ -11,12 +11,12 @@
             <th>Max Price</th>
         </tr>
         </thead>
-        <tbody ng-repeat="trade in trades">
+        <tbody ng-repeat="player in trades">
         <tr>
-            <td>{{trade.playerId}}</td>
-            <td><a href="#/trade-player/{{trade.playerId}}">{{trade.tradeStatus.name}}</a></td>
-            <td>{{trade.items.length}}</td>
-            <td>{{trade.tradeStatus.maxPrice}}</td>
+            <td><small-player/></td>
+            <td><a href="#/trade-player/{{player.playerId}}">{{player.tradeStatus.name}}</a></td>
+            <td>{{player.items.length}}</td>
+            <td>{{player.tradeStatus.maxPrice}}</td>
         </tr>
         </tbody>
     </table>

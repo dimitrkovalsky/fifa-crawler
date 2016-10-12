@@ -114,47 +114,95 @@ b, strong {
     font-weight: bolder;
 }
 
+.trade-image-ones-to-watch {
+  height: 50px;
+  background: #ffffff url("../img/cards/ones_to_watch.png");
+  background-size: cover;
+}
+
+.trade-image-totw-gold {
+  height: 50px;
+  background: #ffffff url("../img/cards/totw_gold.png");
+  background-size: cover;
+}
+.trade-image-totw-silver {
+   height: 50px;
+   background: #ffffff url("../img/cards/totw_silver.png");
+   background-size: cover;
+ }
+ .trade-image-totw-bronze {
+   height: 50px;
+   background: #ffffff url("../img/cards/totw_bronze.png");
+   background-size: cover;
+ }
+
 .trade-image-rare-gold {
- height: 50px;
- background: #ffffff url("../img/cards/gold1.png");
- background-size: cover;
+  height: 50px;
+  background: #ffffff url("../img/cards/rare_gold.png");
+  background-size: cover;
+}
+
+.trade-image-gold {
+  height: 50px;
+  background: #ffffff url("../img/cards/gold.png");
+  background-size: cover;
+}
+.trade-image-rare-silver {
+  height: 50px;
+  background: #ffffff url("../img/cards/rare_silver.png");
+  background-size: cover;
+}
+.trade-image-silver {
+  height: 50px;
+  background: #ffffff url("../img/cards/silver.png");
+  background-size: cover;
+}
+.trade-image-rare-bronze {
+  height: 50px;
+  background: #ffffff url("../img/cards/rare_bronze.png");
+  background-size: cover;
+}
+.trade-image-bronze {
+  height: 50px;
+  background: #ffffff url("../img/cards/bronze.png");
+  background-size: cover;
 }
 
 #custom-search-input {
-        margin:0;
-        margin-top: 10px;
-        padding: 0;
-    }
+    margin:0;
+    margin-top: 10px;
+    padding: 0;
+}
 
-    #custom-search-input .search-query {
-        padding-right: 3px;
-        padding-right: 4px \9;
-        padding-left: 3px;
-        padding-left: 4px \9;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+#custom-search-input .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
 
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
 
-    #custom-search-input button {
-        border: 0;
-        background: none;
-        /** belows styles are working good */
-        padding: 2px 5px;
-        margin-top: 2px;
-        position: relative;
-        left: -28px;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        color:#D9230F;
-    }
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color:#D9230F;
+}
 
-    .search-query:focus + button {
-        z-index: 3;
-    }
+.search-query:focus + button {
+    z-index: 3;
+}

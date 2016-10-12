@@ -2,7 +2,16 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
                                                  PlayerAutoBuy, AutoBuy, AutoBuyPlayer, MinPrice) {
     $scope.purchases = 10;
     $scope.onPlayersLoaded = function (result) {
-        $scope.players = result;
+        $scope.players = [];
+        angular.forEach(result, function(value, key){
+            var player = value.tradeStatus;
+            if(value.profile) {
+                if(value.profile.color){
+                    player.color = value.profile.color;
+                }
+                $scope.players.push(player);
+            }
+        });
         angular.forEach($scope.players, function (value, key) {
             if (value.minMarketPrice)
                 value.diff = value.minMarketPrice - value.maxPrice;
