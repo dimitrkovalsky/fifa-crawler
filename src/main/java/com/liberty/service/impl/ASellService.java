@@ -31,11 +31,30 @@ public abstract class ASellService extends ATradeService implements TradeService
     if (byState.containsKey(TradeState.CLOSED)) {
       fifaRequests.removeAllSold();
     }
+//    if (byState.containsKey(TradeState.INACTIVE)) {
+//      sellAll(byState.get(TradeState.INACTIVE));
+//    }
     if (byState.containsKey(TradeState.EXPIRED)) {
       fifaRequests.relistAll();
     }
     tradePile = fifaRequests.getTradePile();
     return tradePile.size();
+  }
+
+  private void sellAll(List<AuctionInfo> auctionInfos) {
+    auctionInfos.forEach(x -> {
+      SellRequest request = new SellRequest();
+      request.setBuyNow(x.getBuyNowPrice());
+      request.setStartPrice(x.getStartingBid());
+      request.setItemId(x.getItemData().getId());
+      request.setPlayerId(x.getTradeId());
+      sell(request);
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    });
   }
 
   @Override
@@ -58,13 +77,17 @@ public abstract class ASellService extends ATradeService implements TradeService
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
       if (success) {
         logBuyOrSell();
+        try {
 
-        PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
-        logController.info("Success placed to market : " + player.getName() + " startPrice: " +
-            request.getStartPrice() + " buyNow: " + request.getBuyNow());
-        player.setSellStartPrice(request.getStartPrice());
-        player.setSellBuyNowPrice(request.getBuyNow());
-        tradeRepository.save(player);
+          PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
+          logController.info("Success placed to market : " + player.getName() + " startPrice: " +
+              request.getStartPrice() + " buyNow: " + request.getBuyNow());
+          player.setSellStartPrice(request.getStartPrice());
+          player.setSellBuyNowPrice(request.getBuyNow());
+          tradeRepository.save(player);
+        } catch (Exception e) {
+          System.out.println("Can not find player : " + request.getPlayerId());
+        }
       }
     }
   }

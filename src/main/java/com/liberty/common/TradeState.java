@@ -6,6 +6,7 @@ package com.liberty.common;
 public interface TradeState {
 
   String ACTIVE = "active";
+  String INACTIVE = "inactive";
   String CLOSED = "closed";
   String EXPIRED = "expired";
 

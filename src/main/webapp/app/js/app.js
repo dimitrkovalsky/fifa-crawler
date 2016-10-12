@@ -57,6 +57,9 @@ fifaApp.factory('Tradepile', function ($resource) {
     return $resource('/api/trade/tradepile');
 });
 
+fifaApp.factory('Search', function ($resource) {
+    return $resource('/api/profiles/search');
+});
 
 fifaApp.factory('MinPrice', function ($resource) {
     return $resource('/api/market/player/:id/min/');

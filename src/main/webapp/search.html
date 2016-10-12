@@ -4,12 +4,14 @@
 <div class="container">
     <div id="custom-search-input">
         <div class="input-group col-md-12">
-            <input type="text" class="  search-query form-control" placeholder="Search"  ng-model="search"/>
+            <input type="text" class="  search-query form-control" placeholder="Search"
+                   ng-model="search" ng-keypress="performSearch()"/>
             <span class="input-group-btn">
-                                    <button class="btn btn-danger" type="button">
-                                        <span class=" glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>
+                <button class="btn btn-danger" type="button"
+                        ng-click="performSearch()">
+                    <span class=" glyphicon glyphicon-search"></span>
+                </button>
+            </span>
         </div>
     </div>
 
@@ -18,16 +20,20 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Players</th>
-            <th>Max Price</th>
+            <th>Rating</th>
+            <th>Club</th>
+            <th>League</th>
+            <th>Nation</th>
         </tr>
         </thead>
-        <tbody ng-repeat="trade in trades">
+        <tbody ng-repeat="player in profiles">
         <tr>
-            <td>{{trade.playerId}}</td>
-            <td><a href="#/trade-player/{{trade.playerId}}">{{trade.tradeStatus.name}}</a></td>
-            <td>{{trade.items.length}}</td>
-            <td>{{trade.tradeStatus.maxPrice}}</td>
+            <td><img class="trade-image-rare-gold" src="/api/images/{{player.id}}"></td>
+            <td><a href="#/trade-player/{{player.id}}">{{player.name}}</a></td>
+            <td>{{player.rating}}</td>
+            <td>{{player.clubId}}</td>
+            <td>{{player.leagueId}}</td>
+            <td>{{player.nationId}}</td>
         </tr>
         </tbody>
     </table>
