@@ -11,6 +11,13 @@ import com.liberty.model.Nation;
 import com.liberty.model.PlayerProfile;
 import com.liberty.processors.pojo.FifaResponse;
 import com.liberty.processors.pojo.Items;
+import com.liberty.repositories.ClubRepository;
+import com.liberty.repositories.LeagueRepository;
+import com.liberty.repositories.NationRepository;
+import com.liberty.service.ImageService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -31,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 11.10.2016.
  */
 @Slf4j
+@Component
 public class FifaDatabaseProcessor {
 
   @Getter
@@ -39,6 +47,18 @@ public class FifaDatabaseProcessor {
   private Set<League> leagues = new HashSet<>();
   @Getter
   private Set<Nation> nations = new HashSet<>();
+
+  @Autowired
+  private LeagueRepository leagueRepository;
+
+  @Autowired
+  private ClubRepository clubRepository;
+
+  @Autowired
+  private NationRepository nationRepository;
+
+  @Autowired
+  private ImageService imageService;
 
   private static final String URL_PATTERN = "http://www.easports" +
       ".com/fifa/ultimate-team/api/fut/item?jsonParamObject=%s";
@@ -77,25 +97,53 @@ public class FifaDatabaseProcessor {
     profile.setAttributes(item.getAttributes());
     profile.setBaseId(item.getBaseId());
     profile.setClubId(item.getClub().getId());
-    clubs.add(item.getClub());
+
     profile.setColor(item.getColor());
     profile.setCommonName(item.getCommonName());
     profile.setFirstName(item.getFirstName());
     profile.setLastName(item.getLastName());
     profile.setGK(item.isGK());
     profile.setLeagueId(item.getLeague().getId());
-    leagues.add(item.getLeague());
     profile.setName(item.getName());
     profile.setHeadshotImgUrl(item.getHeadshotImgUrl());
     profile.setNationId(item.getNation().getId());
-    nations.add(item.getNation());
+
     profile.setRating(item.getRating());
     profile.setPlayerType(item.getPlayerType());
     profile.setQuality(item.getQuality());
     profile.setSpecialType(item.isSpecialType());
     profile.setPosition(item.getPosition());
 
+    addClubsAndLeagues(item);
     return Optional.of(profile);
+  }
+
+  private void addClubsAndLeagues(Items item) {
+    try {
+
+      if (!leagues.contains(item.getLeague())) {
+        log.info("Trying to save " + item.getLeague().getName() + " league");
+        leagueRepository.save(item.getLeague());
+        imageService.saveLeagueImage(item.getLeague());
+        leagues.add(item.getLeague());
+      }
+
+      if (!clubs.contains(item.getClub())) {
+        log.info("Trying to save " + item.getClub().getName() + " club");
+        clubRepository.save(item.getClub());
+        imageService.saveClubImage(item.getClub());
+        clubs.add(item.getClub());
+      }
+
+      if (!nations.contains(item.getNation())) {
+        log.info("Trying to save " + item.getNation().getName() + " nation");
+        nationRepository.save(item.getNation());
+        imageService.saveNationImage(item.getNation());
+        nations.add(item.getNation());
+      }
+    } catch (Exception e) {
+      log.error("Save clubs and leagues error : " + e.getMessage());
+    }
   }
 
   private Optional<PlayerProfile> parseGoalkeeper(Items item) {

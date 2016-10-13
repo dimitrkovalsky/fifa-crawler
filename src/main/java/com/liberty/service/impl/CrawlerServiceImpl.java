@@ -4,9 +4,6 @@ import com.liberty.model.FifaPlayerSuggestion;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.processors.FifaDatabaseProcessor;
-import com.liberty.repositories.ClubRepository;
-import com.liberty.repositories.LeagueRepository;
-import com.liberty.repositories.NationRepository;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.service.CrawlerService;
@@ -29,19 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CrawlerServiceImpl implements CrawlerService {
 
-  private FifaDatabaseProcessor processor = new FifaDatabaseProcessor();
+  @Autowired
+  private FifaDatabaseProcessor processor;
 
   @Autowired
   private PlayerProfileRepository profileRepository;
 
-  @Autowired
-  private LeagueRepository leagueRepository;
-
-  @Autowired
-  private ClubRepository clubRepository;
-
-  @Autowired
-  private NationRepository nationRepository;
 
   @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
@@ -70,17 +60,7 @@ public class CrawlerServiceImpl implements CrawlerService {
   }
 
   private void saveOthers() {
-    log.info("Trying to save " + processor.getClubs().size() + " clubs");
-    clubRepository.save(processor.getClubs());
-    processor.getClubs().forEach(c -> imageService.saveClubImage(c));
 
-    log.info("Trying to save " + processor.getLeagues().size() + " leagues");
-    leagueRepository.save(processor.getLeagues());
-    processor.getLeagues().forEach(l -> imageService.saveLeagueImage(l));
-
-    log.info("Trying to save " + processor.getNations().size() + " nations");
-    nationRepository.save(processor.getNations());
-    processor.getNations().forEach(n -> imageService.saveNationImage(n));
   }
 
   @Override

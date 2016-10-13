@@ -86,6 +86,9 @@ public class ImageServiceImpl implements ImageService {
       log.info("Image for " + club.getName() + " club was stored before");
       return;
     }
+    if (club.getImgUrl() == null) {
+      return;
+    }
     InputStream inputStream = RequestHelper.executeRequest(club.getImgUrl());
     template.store(inputStream, getClubFileName(club.getId()), "image/png");
     log.info("Stored image for club : " + club.getName());
@@ -97,6 +100,9 @@ public class ImageServiceImpl implements ImageService {
       log.info("Image for " + league.getName() + " league was stored before");
       return;
     }
+    if (league.getImgUrl() == null) {
+      return;
+    }
     InputStream inputStream = RequestHelper.executeRequest(league.getImgUrl());
     template.store(inputStream, getLeagueFileName(league.getId()), "image/png");
     log.info("Stored image for league : " + league.getName());
@@ -106,6 +112,9 @@ public class ImageServiceImpl implements ImageService {
   public void saveNationImage(Nation nation) {
     if (getClubImage(nation.getId()).isPresent()) {
       log.info("Image for " + nation.getName() + " nation was stored before");
+      return;
+    }
+    if (nation.getImgUrl() == null) {
       return;
     }
     InputStream inputStream = RequestHelper.executeRequest(nation.getImgUrl());
