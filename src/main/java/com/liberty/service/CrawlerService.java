@@ -7,6 +7,8 @@ public interface CrawlerService {
 
   void fetchData(Long playerId);
 
+  void saveOthers();
+
   void fetchAllPlayers();
 
   void fetchAllTrades();

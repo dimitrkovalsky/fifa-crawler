@@ -50,4 +50,8 @@ public class ItemData {
   private String category;
   private String manufacturer;
   private String name;
+  private String description;
+  private String biodescription;
+  private Long stadiumid;
+  private Long capacity;
 }

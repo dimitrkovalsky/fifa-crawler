@@ -59,8 +59,9 @@ public class CrawlerServiceImpl implements CrawlerService {
 
   }
 
-  private void saveOthers() {
-
+  @Override
+  public void saveOthers() {
+    processor.saveOthers();
   }
 
   @Override

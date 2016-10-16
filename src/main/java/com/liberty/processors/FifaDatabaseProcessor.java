@@ -161,6 +161,12 @@ public class FifaDatabaseProcessor {
     return Collections.emptyList();
   }
 
+  public void saveOthers() {
+    nationRepository.findAll().forEach(n -> imageService.saveNationImage(n));
+//    clubRepository.findAll().forEach(n -> imageService.saveClubImage(n));
+//    leagueRepository.findAll().forEach(n -> imageService.saveLeagueImage(n));
+  }
+
   @Data
   public static class FifaPlayers {
 

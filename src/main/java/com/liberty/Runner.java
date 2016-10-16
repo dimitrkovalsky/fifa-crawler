@@ -18,7 +18,7 @@ public class Runner {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
     CrawlerService service = context.getBean(CrawlerService.class);
 
-    service.fetchAllPlayers();
+    service.saveOthers();
     System.exit(0);
   }
 }

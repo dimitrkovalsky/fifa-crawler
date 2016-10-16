@@ -22,7 +22,7 @@ import static com.liberty.common.Comparators.getAuctionInfoComparator;
 @org.springframework.stereotype.Component
 public abstract class ATradeService {
 
-  protected int maxPurchaseAmount = 15;
+  protected int maxPurchaseAmount = 30;
   protected static int MIN_DELAY = 2000;
   protected static int MAX_DELAY = 5000;
   protected int purchases = 0;
