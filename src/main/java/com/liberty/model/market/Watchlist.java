@@ -12,6 +12,7 @@ import lombok.Data;
 public class Watchlist {
 
   private List<AuctionInfo> auctionInfo;
+  private List<Object> duplicateItemIdList;
   private Integer credits;
   private Integer total;
 }

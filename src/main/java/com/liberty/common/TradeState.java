@@ -10,4 +10,5 @@ public interface TradeState {
   String CLOSED = "closed";
   String EXPIRED = "expired";
 
+
 }

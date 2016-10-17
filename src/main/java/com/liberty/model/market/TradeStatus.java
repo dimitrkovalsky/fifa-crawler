@@ -17,5 +17,5 @@ public class TradeStatus {
   private Object debug;
   private String string;
   private Integer code;
-  private Object reason;
+  private String reason;
 }

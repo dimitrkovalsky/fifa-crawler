@@ -86,4 +86,20 @@ public class BoundHelper {
     }
     return maxBuy;
   }
+
+  public static int defineNextBid(Integer currentBid) {
+    if (currentBid <= 0) {
+      return 150;
+    } else if (currentBid < 1000) {
+      return currentBid + 50;
+    } else if (currentBid < 10_000) {
+      return currentBid + 100;
+    } else if (currentBid < 50_000) {
+      return currentBid + 250;
+    } else if (currentBid < 100_000) {
+      return currentBid + 500;
+    } else {
+      return currentBid + 1000;
+    }
+  }
 }

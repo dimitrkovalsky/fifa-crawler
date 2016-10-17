@@ -3,11 +3,14 @@ package com.liberty.service;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerTradeStatus;
+import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.PlayerStatistic;
+import com.liberty.model.market.TradeStatus;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.SellRequest;
+import com.liberty.rest.response.BidStatus;
 import com.liberty.websockets.BuyMessage;
 
 import java.util.List;
@@ -62,4 +65,17 @@ public interface TradeService {
   BuyMessage getTradepileInfo();
 
   void logBuyOrSell();
+
+  List<AuctionInfo> getTransferTargets();
+
+  void removeExpired(List<AuctionInfo> expired);
+
+  BidStatus makeBid(long tradeId, long bidPrice);
+
+  void removeFromTargets(Long tradeId);
+
+  TradeStatus getTradeStatus(Long tradeId);
+
+  BidStatus makeBid(Long tradeId, Long price);
+
 }

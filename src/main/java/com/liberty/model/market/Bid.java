@@ -10,5 +10,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class Bid {
 
-  Integer bid;
+  Long bid;
 }

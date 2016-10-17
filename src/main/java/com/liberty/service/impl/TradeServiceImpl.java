@@ -12,7 +12,8 @@ import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
-import com.liberty.service.PlayerProfileService;
+import com.liberty.rest.request.MarketSearchRequest;
+import com.liberty.rest.response.BidStatus;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
 
@@ -52,7 +53,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Autowired
   private StatisticService statisticService;
-
 
 
   @Override
@@ -398,6 +398,36 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     tradeRepository.save(toUpdate);
   }
 
+  @Override
+  public List<AuctionInfo> getTransferTargets() {
+    return fifaRequests.getWatchlist().getAuctionInfo();
+  }
+
+  @Override
+  public void removeExpired(List<AuctionInfo> expired) {
+    expired.forEach(x-> removeFromTargets(x.getTradeId()));
+  }
+
+  @Override
+  public BidStatus makeBid(long tradeId, long bidPrice) {
+    return fifaRequests.makeBid(tradeId, bidPrice);
+  }
+
+  @Override
+  public void removeFromTargets(Long tradeId) {
+    fifaRequests.removeFromTargets(tradeId);
+  }
+
+  @Override
+  public TradeStatus getTradeStatus(Long tradeId) {
+    return fifaRequests.getTradeStatus(tradeId);
+  }
+
+  @Override
+  public BidStatus makeBid(Long tradeId, Long price) {
+    return fifaRequests.makeBid(tradeId, price);
+  }
+
   private PlayerTradeStatus createNewTrade(PlayerTradeStatus request) {
     PlayerProfile profile = playerProfileService.findOne(request.getId());
     PlayerTradeStatus tradeStatus = new PlayerTradeStatus();
@@ -405,6 +435,10 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     tradeStatus.setName(profile.getName());
     tradeStatus.setEnabled(false);
     return tradeStatus;
+  }
+
+  public void search(MarketSearchRequest searchRequest){
+    fifaRequests.search(searchRequest);
   }
 
   @Override
