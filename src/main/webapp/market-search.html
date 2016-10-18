@@ -1,0 +1,98 @@
+<form class="from-inline col-md-12">
+    <button class="btn btn-info col-md-2" ng-click="performSearch()">
+        <span class=" glyphicon glyphicon-search"></span>Search
+    </button>
+    <div class="form-group col-md-10">
+        <div class="col-md-2">
+            <select class="form-control" id="quality" ng-model="search.quality"
+                    ng-change="resetPage()">
+                <option value="gold">Gold</option>
+                <option value="silver">Silver</option>
+                <option value="bronze">Bronze</option>
+            </select>
+        </div>
+        <input type="text" class="typeahead col-md-10" placeholder="Player" editable="editable"
+               sf-typeahead ng-model="playerName"
+               uib-typeahead="f for f in suggestion | limitTo:8">
+    </div>
+</form>
+<form class="col-md-12">
+    <div class="col-md-9">
+        <div class="form-group col-md-3">
+            <label for="minPrice">Min Price</label>
+            <input type="number" class="form-control  input-number" ng-model="search.minPrice"
+                   id="minPrice" ng-change="resetPage()">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="maxPrice">Max Price</label>
+            <input type="number" class="form-control  input-number" ng-model="search.maxPrice"
+                   id="maxPrice" ng-change="resetPage()">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="minBuyNowPrice">Buy Now Min</label>
+            <input type="number" class="form-control" ng-model="search.minBuyNowPrice"
+                   id="minBuyNowPrice" ng-change="resetPage()">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="maxBuyNowPrice">Buy Now Max</label>
+            <input type="number" class="form-control" ng-model="search.maxBuyNowPrice"
+                   id="maxBuyNowPrice" ng-change="resetPage()">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label for="pager">Pages</label>
+        <div id="pager">
+            <button class="previous col-md-4" ng-disabled="isFirst()" ng-click="previousPage()">
+                Previous </a></button>
+            <div class="col-md-4">Page {{search.page}}</div>
+            <button class="next col-md-4" ng-disabled="!hasMoreElements() || !resultPresent"
+                    ng-click="nextPage()"> Next</a></button>
+        </div>
+    </div>
+</form>
+<div class="container">
+    <div ng-if="resultPresent">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Player Id</th>
+                <th>Name</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Trade State</th>
+                <th>Bid State</th>
+
+                <th>Current Bid</th>
+                <th>Starting Bid</th>
+                <th>Buy Now</th>
+
+                <th>Offers</th>
+                <th>Expires</th>
+
+            </tr>
+            </thead>
+            <tbody ng-repeat="trade in trades">
+            <tr>
+                <td>
+                    <search-row/>
+                </td>
+                <td><a href="#/player/{{trade.itemData.assetId}}">{{trade.profile.name}}</a></td>
+                <td>{{trade.profile.rating}}</td>
+                <td>
+                    <trade-status/>
+                </td>
+                <td>{{trade.auctionInfo.tradeState}}</td>
+                <td>{{trade.auctionInfo.bidState}}</td>
+
+                <td>{{trade.auctionInfo.currentBid}}</td>
+                <td>{{trade.auctionInfo.startingBid}}</td>
+                <td>{{trade.auctionInfo.buyNowPrice}}</td>
+
+                <td>{{trade.auctionInfo.offers}}</td>
+                <td>{{trade.auctionInfo.expires}} seconds</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

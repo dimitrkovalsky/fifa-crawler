@@ -6,10 +6,13 @@ import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
+import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
+import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
+import com.liberty.rest.request.AutobidRequest;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.MarketSearchRequest;
@@ -53,6 +56,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Autowired
   private StatisticService statisticService;
+
+  @Autowired
+  private PlayerProfileRepository profileRepository;
 
 
   @Override
@@ -405,13 +411,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public void removeExpired(List<AuctionInfo> expired) {
-    expired.forEach(x-> removeFromTargets(x.getTradeId()));
+    expired.forEach(x -> removeFromTargets(x.getTradeId()));
   }
 
-  @Override
-  public BidStatus makeBid(long tradeId, long bidPrice) {
-    return fifaRequests.makeBid(tradeId, bidPrice);
-  }
 
   @Override
   public void removeFromTargets(Long tradeId) {
@@ -437,8 +439,57 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     return tradeStatus;
   }
 
-  public void search(MarketSearchRequest searchRequest){
-    fifaRequests.search(searchRequest);
+  @Override
+  public List<TradeInfo> search(MarketSearchRequest searchRequest) {
+    Optional<TradeStatus> search = fifaRequests.search(searchRequest);
+    if (!search.isPresent()) {
+      return Collections.emptyList();
+    }
+
+    List<AuctionInfo> auctionInfo = search.get().getAuctionInfo();
+    Set<Long> ids = auctionInfo.stream()
+        .map(x -> x.getItemData().getAssetId())
+        .collect(Collectors.toSet());
+    Map<Long, PlayerProfile> profiles = findProfiles(ids);
+    Map<Long, PlayerTradeStatus> tradeStatuses = findTradeStatuses(ids);
+    return auctionInfo.stream()
+        .map(a -> new TradeInfo(a, tradeStatuses.get(a.getItemData().getAssetId()),
+            profiles.get(a.getItemData().getAssetId())))
+        .collect(Collectors.toList());
+  }
+
+  private Map<Long, PlayerTradeStatus> findTradeStatuses(Set<Long> ids) {
+    Map<Long, PlayerTradeStatus> map = new HashMap<>();
+    tradeRepository.findAll(ids).forEach(x -> map.put(x.getId(), x));
+    return map;
+  }
+
+  private Map<Long, PlayerProfile> findProfiles(Set<Long> ids) {
+    Map<Long, PlayerProfile> map = new HashMap<>();
+    profileRepository.findAll(ids).forEach(x -> map.put(x.getId(), x));
+    return map;
+  }
+
+  @Override
+  public void addToAutoBid(AutobidRequest bidRequest) {
+    Long playerId = bidRequest.getPlayerId();
+    PlayerTradeStatus playerTradeStatus = tradeRepository.findOne(playerId);
+    if (playerTradeStatus == null) {
+      playerTradeStatus = createNewTrade(bidRequest);
+    }
+    logController.info("Added to autobid " + playerTradeStatus.getName() + ". Max price : " +
+        playerTradeStatus.getMaxPrice());
+  }
+
+  private PlayerTradeStatus createNewTrade(AutobidRequest bidRequest) {
+    Long playerId = bidRequest.getPlayerId();
+    PlayerProfile profile = playerProfileService.findOne(playerId);
+    PlayerTradeStatus tradeStatus = new PlayerTradeStatus();
+    tradeStatus.setId(playerId);
+    tradeStatus.setName(profile.getName());
+    tradeStatus.setMaxPrice(bidRequest.getMaxBid());
+    tradeRepository.save(tradeStatus);
+    return tradeStatus;
   }
 
   @Override

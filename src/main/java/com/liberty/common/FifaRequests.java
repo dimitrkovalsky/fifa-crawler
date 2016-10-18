@@ -357,8 +357,8 @@ public class FifaRequests extends BaseFifaRequests {
   private String getSearchParameters(MarketSearchRequest searchRequest) {
     List<String> params = new ArrayList<>();
     params.add("type=player");
-    params.add("num=16");
-    params.add("start=0");
+    params.add("num=12");
+    params.add("start=" + searchRequest.getPage() * 12);
     if (searchRequest.getQuality() != null) {
       params.add("lev=" + searchRequest.getQuality());
     }

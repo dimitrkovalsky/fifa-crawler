@@ -86,7 +86,7 @@ public class AuctionRobot {
     Long playerId = info.getItemData().getAssetId();
     Integer currentBid = info.getCurrentBid();
 //    PlayerProfile profile = getProfile(playerId);
-    if(playerId == null){
+    if (playerId == null) {
       int i = 0;
       log.debug("Id null");
     }
@@ -95,7 +95,7 @@ public class AuctionRobot {
       log.error("Can not trade " + playerId + " player. There is no PlayerTradeStatus item.");
       return;
     }
-    int nextBid = BoundHelper.defineNextBid(currentBid);
+    long nextBid = BoundHelper.defineNextBid(currentBid);
     if (nextBid <= tradeStatus.getMaxPrice()) {
       if (!isMyBid(info)) {
         BidStatus bidStatus = tradeService.makeBid(info.getTradeId(), nextBid);

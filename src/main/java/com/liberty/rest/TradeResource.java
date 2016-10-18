@@ -1,7 +1,10 @@
 package com.liberty.rest;
 
 import com.liberty.model.market.GroupedToSell;
+import com.liberty.rest.request.AutobidRequest;
+import com.liberty.rest.request.BidRequest;
 import com.liberty.rest.request.SellRequest;
+import com.liberty.rest.response.BidStatus;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.BuyMessage;
 
@@ -32,6 +35,16 @@ public class TradeResource {
   @RequestMapping(path = "/tradepile", method = RequestMethod.GET)
   public BuyMessage getTradePileSize() {
     return tradeService.getTradepileInfo();
+  }
+
+  @RequestMapping(path = "/bid", method = RequestMethod.GET)
+  public BidStatus makeBid(BidRequest bidRequest) {
+    return tradeService.makeBid(bidRequest.getTradeId(), bidRequest.getBid());
+  }
+
+  @RequestMapping(path = "/autobid", method = RequestMethod.GET)
+  public void autoBid(AutobidRequest bidRequest) {
+    tradeService.addToAutoBid(bidRequest);
   }
 
   @RequestMapping(method = RequestMethod.POST)

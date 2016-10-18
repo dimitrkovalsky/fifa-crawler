@@ -65,8 +65,18 @@ fifaApp.factory('Search', function ($resource) {
     return $resource('/api/profiles/search');
 });
 
+fifaApp.factory('MarketSearch', function ($resource) {
+    return $resource('/api/search');
+});
+
 fifaApp.factory('MinPrice', function ($resource) {
     return $resource('/api/market/player/:id/min/');
+});
+
+fifaApp.factory('Suggestions', function ($resource) {
+    return $resource('/app/res/fifa-players.json',{},{
+       getData: {method:'GET', isArray: false}
+    });
 });
 
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
@@ -96,5 +106,10 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/search',
             templateUrl: 'search.html',
             controller: 'SearchController'
+        })
+        .state('market-search', {
+            url: '/market-search',
+            templateUrl: 'market-search.html',
+            controller: 'MarketSearchController'
         });
 });

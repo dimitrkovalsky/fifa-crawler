@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class MarketSearchRequest {
+  private int page;
   private Long playerId;
   private Long leagueId;
   private Long nationId;

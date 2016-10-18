@@ -1,7 +1,15 @@
-fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticResource, Tradepile) {
+fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticResource, Tradepile,
+    Suggestions) {
     $scope.stompClient = null;
     $rootScope.logs = [];
     $rootScope.autoScroll = true;
+    $rootScope.suggestions = [];
+
+    $rootScope.readSuggestions = function() {
+       Suggestions.getData(function(data){
+          $scope.suggestions = data.Players;
+       });
+    };
 
     $scope.logConfig = {
         autoHideScrollbar: false,
@@ -64,7 +72,9 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.unassigned = msg.unassigned;
         $rootScope.canSell = msg.canSell;
         $rootScope.purchasesRemained = msg.purchasesRemained;
-        $scope.stats.credits = msg.credits;
+        if($scope.stats){
+            $scope.stats.credits = msg.credits;
+        }
         document.title = "Fifa (" + $rootScope.unassigned + ")";
         $rootScope.updateFavicon($rootScope.canSell);
     };
@@ -104,4 +114,5 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
     $scope.connect();
     $rootScope.updateStats();
     $rootScope.updateTradepile();
+    $rootScope.readSuggestions();
 });

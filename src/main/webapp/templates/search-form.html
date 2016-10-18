@@ -1,0 +1,37 @@
+<form class="from-inline col-md-12">
+    <button class="btn btn-info col-md-2" ng-click="performSearch()">
+        <span class=" glyphicon glyphicon-search"></span>Search
+    </button>
+    <div class="form-group col-md-10">
+        <div class="col-md-2">
+            <select class="form-control" id="quality" ng-model="search.quality">
+                <option value="gold">Gold</option>
+                <option value="silver">Silver</option>
+                <option value="bronze">Bronze</option>
+            </select>
+        </div>
+        <input type="text" class="col-md-10" placeholder="Player" ng-model="playerName">
+    </div>
+</form>
+<form class="col-md-12">
+    <div class="form-group col-md-3">
+        <label for="minPrice">Min Price</label>
+        <input type="number" class="form-control  input-number" ng-model="search.minPrice"
+               id="minPrice">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="maxPrice">Max Price</label>
+        <input type="number" class="form-control  input-number" ng-model="search.maxPrice"
+               id="maxPrice">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="minBuyNowPrice">Buy Now Min</label>
+        <input type="number" class="form-control" ng-model="search.minBuyNowPrice"
+               id="minBuyNowPrice">
+    </div>
+    <div class="form-group col-md-3">
+        <label for="maxBuyNowPrice">Buy Now Max</label>
+        <input type="number" class="form-control" ng-model="search.maxBuyNowPrice"
+               id="maxBuyNowPrice">
+    </div>
+</form>

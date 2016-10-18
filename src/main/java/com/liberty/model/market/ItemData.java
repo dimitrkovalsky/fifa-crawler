@@ -54,4 +54,5 @@ public class ItemData {
   private String biodescription;
   private Long stadiumid;
   private Long capacity;
+  private Object trainingItem;
 }
