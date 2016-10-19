@@ -2,46 +2,54 @@
   "id" : 206225,
   "boughtAmount" : 16,
   "name" : "Cheryshev",
-  "maxPrice" : 600,
+  "maxPrice" : 700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 800,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 900,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 208808,
   "boughtAmount" : 11,
   "name" : "Promes",
-  "maxPrice" : 800,
+  "maxPrice" : 900,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 1200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 189505,
   "boughtAmount" : 2,
   "name" : "Pedro",
-  "maxPrice" : 3300,
+  "maxPrice" : 2500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2500,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 177358,
   "boughtAmount" : 1,
   "name" : "Schneiderlin",
-  "maxPrice" : 2900,
+  "maxPrice" : 2600,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3600,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3800,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 198141,
   "boughtAmount" : 8,
@@ -51,85 +59,101 @@
   "sellStartPrice" : 1700,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 1900,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 190813,
   "boughtAmount" : 17,
   "name" : "El Shaarawy",
-  "maxPrice" : 1600,
+  "maxPrice" : 1300,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1800,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2000,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 217699,
   "boughtAmount" : 7,
   "name" : "Slimani",
-  "maxPrice" : 2400,
+  "maxPrice" : 1800,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3200,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3400,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 53914,
   "boughtAmount" : 4,
   "name" : "Jagielka",
-  "maxPrice" : 1700,
+  "maxPrice" : 1300,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 211117,
   "boughtAmount" : 12,
   "name" : "Alli",
-  "maxPrice" : 1800,
+  "maxPrice" : 1600,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2500,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 180819,
   "boughtAmount" : 1,
   "name" : "Lallana",
-  "maxPrice" : 1900,
+  "maxPrice" : 1500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3100,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3300,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 169416,
-  "boughtAmount" : 28,
+  "boughtAmount" : 29,
   "name" : "Vela",
-  "maxPrice" : 1200,
+  "maxPrice" : 1000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1500,
+  "sellStartPrice" : 1400,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 1700,
+  "sellBuyNowPrice" : 1600,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 189271,
   "boughtAmount" : 11,
   "name" : "Coquelin",
-  "maxPrice" : 2300,
+  "maxPrice" : 1700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2700,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2900,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 188152,
   "boughtAmount" : 0,
@@ -139,85 +163,101 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 52091,
   "boughtAmount" : 12,
   "name" : "Evra",
-  "maxPrice" : 1600,
+  "maxPrice" : 1500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2100,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2300,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 204963,
   "boughtAmount" : 0,
   "name" : "Carvajal",
-  "maxPrice" : 2500,
+  "maxPrice" : 2200,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 177413,
   "boughtAmount" : 21,
   "name" : "Witsel",
-  "maxPrice" : 900,
+  "maxPrice" : 1000,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1600,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 1800,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 192448,
   "boughtAmount" : 11,
   "name" : "Ter Stegen",
-  "maxPrice" : 1400,
+  "maxPrice" : 1200,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 209331,
   "boughtAmount" : 2,
   "name" : "Salah",
-  "maxPrice" : 2700,
+  "maxPrice" : 2400,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2700,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2900,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 158626,
   "boughtAmount" : 6,
   "name" : "Debuchy",
-  "maxPrice" : 2600,
+  "maxPrice" : 2500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2600,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2800,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 184111,
   "boughtAmount" : 3,
   "name" : "Benteke",
-  "maxPrice" : 3100,
+  "maxPrice" : 3300,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3500,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 20800,
   "boughtAmount" : 0,
@@ -227,19 +267,23 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 199561,
   "boughtAmount" : 5,
   "name" : "Nolito",
-  "maxPrice" : 1700,
+  "maxPrice" : 1500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2700,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2900,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 202556,
   "boughtAmount" : 0,
@@ -249,8 +293,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 167397,
   "boughtAmount" : 0,
@@ -260,74 +306,88 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 121944,
   "boughtAmount" : 0,
   "name" : "Schweinsteiger",
-  "maxPrice" : 3400,
+  "maxPrice" : 2700,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 197853,
   "boughtAmount" : 8,
   "name" : "Aurier",
-  "maxPrice" : 3400,
+  "maxPrice" : 2800,
   "lastBuyPrice" : null,
   "sellStartPrice" : 5900,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 6000,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 204529,
   "boughtAmount" : 0,
   "name" : "Batshuayi",
-  "maxPrice" : 4300,
+  "maxPrice" : 3100,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 200641,
   "boughtAmount" : 0,
   "name" : "Konoplyanka",
-  "maxPrice" : 3500,
+  "maxPrice" : 3400,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 208722,
   "boughtAmount" : 0,
   "name" : "Mané",
-  "maxPrice" : 3500,
+  "maxPrice" : 3000,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 199503,
   "boughtAmount" : 4,
   "name" : "Xhaka",
-  "maxPrice" : 3000,
+  "maxPrice" : 2700,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3500,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 192227,
   "boughtAmount" : 1,
@@ -337,19 +397,23 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 169595,
   "boughtAmount" : 20,
   "name" : "Rose",
-  "maxPrice" : 2800,
+  "maxPrice" : 3000,
   "lastBuyPrice" : null,
   "sellStartPrice" : 4300,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 4500,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 208418,
   "boughtAmount" : 1,
@@ -359,19 +423,23 @@
   "sellStartPrice" : 5000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 5200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 186146,
   "boughtAmount" : 4,
   "name" : "Welbeck",
-  "maxPrice" : 2400,
+  "maxPrice" : 2500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3500,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 213345,
   "boughtAmount" : 1,
@@ -381,8 +449,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 172879,
   "boughtAmount" : 0,
@@ -392,41 +462,49 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 142784,
-  "boughtAmount" : 2,
+  "boughtAmount" : 8,
   "name" : "Zabaleta",
-  "maxPrice" : 3900,
+  "maxPrice" : 3300,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 5500,
+  "sellStartPrice" : 4300,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 5700,
+  "sellBuyNowPrice" : 4500,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 50549347,
   "boughtAmount" : 1,
   "name" : "Slimani",
-  "maxPrice" : 2500,
+  "maxPrice" : 1800,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 193130,
   "boughtAmount" : 0,
   "name" : "Schürrle",
-  "maxPrice" : 3500,
+  "maxPrice" : 3800,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 179813,
   "boughtAmount" : 0,
@@ -436,19 +514,23 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 164468,
   "boughtAmount" : 0,
   "name" : "Cahill",
-  "maxPrice" : 2600,
+  "maxPrice" : 2500,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 163419,
   "boughtAmount" : 0,
@@ -458,8 +540,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 201942,
   "boughtAmount" : 1,
@@ -469,8 +553,10 @@
   "sellStartPrice" : 5000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 5200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 189125,
   "boughtAmount" : 1,
@@ -480,8 +566,10 @@
   "sellStartPrice" : 1400,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 1700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 210282,
   "boughtAmount" : 0,
@@ -491,8 +579,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 164859,
   "boughtAmount" : 1,
@@ -502,8 +592,10 @@
   "sellStartPrice" : 5700,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 5900,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 188377,
   "boughtAmount" : 0,
@@ -513,8 +605,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 189358,
   "boughtAmount" : 0,
@@ -524,8 +618,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 178224,
   "boughtAmount" : 0,
@@ -535,8 +631,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 142754,
   "boughtAmount" : 0,
@@ -546,8 +644,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 163631,
   "boughtAmount" : 0,
@@ -557,8 +657,10 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 193352,
   "boughtAmount" : 0,
@@ -568,41 +670,49 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 201153,
   "boughtAmount" : 0,
   "name" : "Morata",
-  "maxPrice" : 4100,
+  "maxPrice" : 3100,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 191740,
   "boughtAmount" : 0,
   "name" : "Ander Herrera",
-  "maxPrice" : 3400,
+  "maxPrice" : 3300,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 13732,
   "boughtAmount" : 3,
   "name" : "Terry",
-  "maxPrice" : 3000,
+  "maxPrice" : 2500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 4000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 4200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 180216,
   "boughtAmount" : 0,
@@ -612,19 +722,23 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 183394,
   "boughtAmount" : 0,
   "name" : "Sissoko",
-  "maxPrice" : 4300,
+  "maxPrice" : 4000,
   "lastBuyPrice" : null,
   "sellStartPrice" : 5100,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 5300,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 222492,
   "boughtAmount" : 0,
@@ -634,19 +748,23 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 202477,
-  "boughtAmount" : 6,
+  "boughtAmount" : 10,
   "name" : "Deulofeu",
-  "maxPrice" : 2300,
+  "maxPrice" : 1600,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 2900,
+  "sellStartPrice" : 2400,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3100,
+  "sellBuyNowPrice" : 2600,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 50534300,
   "boughtAmount" : 0,
@@ -656,74 +774,88 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 201510,
   "boughtAmount" : 6,
   "name" : "Kurzawa",
-  "maxPrice" : 1400,
+  "maxPrice" : 1500,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1800,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2000,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 53612,
   "boughtAmount" : 3,
   "name" : "Mertesacker",
-  "maxPrice" : 2600,
+  "maxPrice" : 2100,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3500,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3700,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 175943,
   "boughtAmount" : 0,
   "name" : "Mertens",
-  "maxPrice" : 3400,
+  "maxPrice" : 2700,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 177683,
   "boughtAmount" : 0,
   "name" : "Sommer",
-  "maxPrice" : 1000,
+  "maxPrice" : 900,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 45197,
   "boughtAmount" : 8,
   "name" : "Xabi Alonso",
-  "maxPrice" : 1200,
+  "maxPrice" : 1000,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2000,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2200,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 197242,
   "boughtAmount" : 0,
   "name" : "Krychowiak",
-  "maxPrice" : 2200,
+  "maxPrice" : 1800,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 191043,
   "boughtAmount" : 0,
@@ -733,105 +865,151 @@
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : false
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 185239,
   "boughtAmount" : 1,
   "name" : "Toprak",
-  "maxPrice" : 2700,
+  "maxPrice" : 2000,
   "lastBuyPrice" : null,
   "sellStartPrice" : 3100,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 3300,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
   "id" : 172871,
   "boughtAmount" : 0,
   "name" : "Vertonghen",
-  "maxPrice" : 4000,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : null,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
-  "id" : 203775,
-  "boughtAmount" : 3,
-  "name" : "Karius",
-  "maxPrice" : 2700,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : 3100,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : 3300,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
-  "id" : 183285,
-  "boughtAmount" : 1,
-  "name" : "Sakho",
-  "maxPrice" : 2000,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : 2300,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : 2500,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
-  "id" : 161956,
-  "boughtAmount" : 0,
-  "name" : "Borja Valero",
-  "maxPrice" : 1100,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : null,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
-  "id" : 200145,
-  "boughtAmount" : 0,
-  "name" : "Casemiro",
-  "maxPrice" : 2500,
-  "lastBuyPrice" : null,
-  "sellStartPrice" : null,
-  "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "lastUpdate" : null,
-  "enabled" : true
-}, {
-  "id" : 200949,
-  "boughtAmount" : 0,
-  "name" : "Lucas",
   "maxPrice" : 3300,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
-  "id" : 188802,
-  "boughtAmount" : 1,
-  "name" : "Schmelzer",
-  "maxPrice" : 1600,
+  "id" : 203775,
+  "boughtAmount" : 3,
+  "name" : "Karius",
+  "maxPrice" : 900,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1700,
+  "sellStartPrice" : 3100,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 1900,
+  "sellBuyNowPrice" : 3300,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
 }, {
-  "id" : 176600,
-  "boughtAmount" : 0,
-  "name" : "Gameiro",
-  "maxPrice" : 3400,
+  "id" : 183285,
+  "boughtAmount" : 1,
+  "name" : "Sakho",
+  "maxPrice" : 1000,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
+  "innerDate" : null,
   "lastUpdate" : null,
-  "enabled" : true
+  "enabled" : true,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 161956,
+  "boughtAmount" : 0,
+  "name" : "Borja Valero",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : true,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 200145,
+  "boughtAmount" : 6,
+  "name" : "Casemiro",
+  "maxPrice" : 1800,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 2700,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 2900,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : true,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 200949,
+  "boughtAmount" : 0,
+  "name" : "Lucas",
+  "maxPrice" : 2700,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : true,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 188802,
+  "boughtAmount" : 1,
+  "name" : "Schmelzer",
+  "maxPrice" : 1800,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : 1700,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : 1900,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : true,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 176600,
+  "boughtAmount" : 0,
+  "name" : "Gameiro",
+  "maxPrice" : 3100,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : true,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 193554,
+  "boughtAmount" : 0,
+  "name" : "Sakho",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : false,
+  "lastDate" : "Match time ago"
+}, {
+  "id" : 176944,
+  "boughtAmount" : 0,
+  "name" : "Fellaini",
+  "maxPrice" : 1500,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "enabled" : false,
+  "lastDate" : "Match time ago"
 } ]

@@ -89,6 +89,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
               p.setEnabled(false);
             }
           }
+          p.updateDate();
           return p;
         }).forEach(tradeRepository::save);
   }
@@ -161,6 +162,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   public void addToAutoBuy(String name, long id, int maxPrice) {
     PlayerTradeStatus status = new PlayerTradeStatus(id, name, maxPrice);
+    status.updateDate();
     tradeRepository.save(status);
   }
 
@@ -237,6 +239,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
         BoundHelper.defineMaxBuyNow(profile));
     tradeStatus.setEnabled(false);
     tradeRepository.save(tradeStatus);
+    tradeStatus.updateDate();
     return tradeStatus;
   }
 
@@ -388,6 +391,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   public void updateAutoBuy(BuyRequest request) {
     PlayerTradeStatus playerTradeStatus = tradeRepository.findOne(request.getId());
     playerTradeStatus.setEnabled(request.getEnabled());
+    playerTradeStatus.updateDate();
     tradeRepository.save(playerTradeStatus);
   }
 
@@ -400,7 +404,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     toUpdate.setSellStartPrice(request.getSellStartPrice());
     toUpdate.setSellBuyNowPrice(request.getSellBuyNowPrice());
     toUpdate.setMaxPrice(request.getMaxPrice());
-
+    toUpdate.updateDate();
     tradeRepository.save(toUpdate);
   }
 

@@ -80,6 +80,7 @@ public abstract class ATradeService {
       return true;
     }
     one.setBoughtAmount(one.getBoughtAmount() + 1);
+
     tradeRepository.save(one);
     return true;
   }

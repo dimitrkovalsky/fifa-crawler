@@ -360,7 +360,11 @@ public class FifaRequests extends BaseFifaRequests {
     params.add("num=12");
     params.add("start=" + searchRequest.getPage() * 12);
     if (searchRequest.getQuality() != null) {
-      params.add("lev=" + searchRequest.getQuality());
+      if(searchRequest.getQuality().equals("rare")){
+        params.add("rare=SP");
+      } else {
+        params.add("lev=" + searchRequest.getQuality());
+      }
     }
     if (searchRequest.getMinPrice() != null) {
       params.add("micr=" + searchRequest.getMinPrice());
@@ -382,6 +386,9 @@ public class FifaRequests extends BaseFifaRequests {
     }
     if (searchRequest.getNationId() != null) {
       params.add("nat=" + searchRequest.getNationId());
+    }
+    if(searchRequest.getPlayerId() != null) {
+      params.add("maskedDefId=" + searchRequest.getPlayerId());
     }
     return String.join("&", params);
   }

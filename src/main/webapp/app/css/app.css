@@ -211,7 +211,41 @@ b, strong {
     margin-bottom: 5px;
 }
 
+
 .player-suggest .name{
     font-weight: bold;
     color: #333;
 }
+
+.player-suggest .nation{
+
+}
+
+.image-suggest {
+    height: 50px;
+}
+
+.ms-ctn form-control .ms-ctn-focus .ms-res-ctn .dropdown-menu {
+    height: 400px;
+}
+
+.green-bold {
+    color:#16d416; font-weight: bold;
+}
+
+.orange-bold {
+    color:#e68f07; font-weight: bold;
+}
+
+.black-bold {
+    color:black; font-weight: bold;
+}
+
+.blue-bold {
+    color:#38a2ff; font-weight: bold;
+}
+
+.red-bold {
+    color:#ff4747; font-weight: bold;
+}
+

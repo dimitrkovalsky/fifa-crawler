@@ -37,13 +37,13 @@ public class TradeResource {
     return tradeService.getTradepileInfo();
   }
 
-  @RequestMapping(path = "/bid", method = RequestMethod.GET)
-  public BidStatus makeBid(BidRequest bidRequest) {
+  @RequestMapping(path = "/bid", method = RequestMethod.POST)
+  public BidStatus makeBid(@RequestBody BidRequest bidRequest) {
     return tradeService.makeBid(bidRequest.getTradeId(), bidRequest.getBid());
   }
 
   @RequestMapping(path = "/autobid", method = RequestMethod.GET)
-  public void autoBid(AutobidRequest bidRequest) {
+  public void autoBid(@RequestBody AutobidRequest bidRequest) {
     tradeService.addToAutoBid(bidRequest);
   }
 

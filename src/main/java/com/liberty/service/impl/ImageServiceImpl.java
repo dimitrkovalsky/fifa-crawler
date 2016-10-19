@@ -118,6 +118,7 @@ public class ImageServiceImpl implements ImageService {
     if (nation.getImageUrls() == null || nation.getImageUrls().small == null) {
       return;
     }
+    log.info("Trying to request : " + nation.getImageUrls().small.toString());
     InputStream inputStream = RequestHelper.executeRequest(nation.getImageUrls().small.toString());
     template.store(inputStream, getNationFileName(nation.getId()), "image/png");
     log.info("Stored image for nation : " + nation.getName());

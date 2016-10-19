@@ -1,12 +1,12 @@
 <div ng-if="trade.tradeStatus!=null && !shouldBid(trade) && !shouldBuy(trade)"
-     style="color:#16d416; font-weight: bold;">Under Monitoring
+     class="black-bold">Monitoring
 </div>
 
-<div ng-if="trade.tradeStatus!=null && shouldBid(trade)" style="color:red font-weight: bold;">Should
-    Bid
+<div ng-if="shouldBid(trade)"
+     class="blue-bold">Should  Bid
 </div>
-<div ng-if="trade.tradeStatus!=null && shouldBuy(trade)" style="color:orange font-weight: bold;">
+<div ng-if="shouldBuy(trade)" class="green-bold">
     Should Buy
 </div>
 
-<div ng-if="trade.tradeStatus==null" style="color: black;">Not Monitored</div>
+<div ng-if="trade.tradeStatus==null" style="color: black;">-</div>
