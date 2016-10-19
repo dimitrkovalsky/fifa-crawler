@@ -3,13 +3,8 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
     $scope.stompClient = null;
     $rootScope.logs = [];
     $rootScope.autoScroll = true;
-    $rootScope.suggestions = [];
 
-    $rootScope.readSuggestions = function() {
-       Suggestions.getData(function(data){
-          $scope.suggestions = data.Players;
-       });
-    };
+
 
     $scope.logConfig = {
         autoHideScrollbar: false,
@@ -114,5 +109,5 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
     $scope.connect();
     $rootScope.updateStats();
     $rootScope.updateTradepile();
-    $rootScope.readSuggestions();
+
 });

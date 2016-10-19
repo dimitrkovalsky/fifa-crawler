@@ -206,3 +206,12 @@ b, strong {
 .search-query:focus + button {
     z-index: 3;
 }
+
+.player-suggest{
+    margin-bottom: 5px;
+}
+
+.player-suggest .name{
+    font-weight: bold;
+    color: #333;
+}
