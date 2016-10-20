@@ -241,11 +241,27 @@ b, strong {
     color:black; font-weight: bold;
 }
 
+.time-black {
+    color:black; font-weight: bold; font-size: 10px;
+}
+
 .blue-bold {
     color:#38a2ff; font-weight: bold;
 }
 
 .red-bold {
     color:#ff4747; font-weight: bold;
+}
+
+.badRow {
+    background: #f5dede;
+}
+
+.buyRow {
+    background: #98f596;
+}
+
+.bidRow {
+    background: #a3c3f5;
 }
 

@@ -47,12 +47,7 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         }
         switch(msg.messageType) {
             case 'log': {
-                $rootScope.logs.push(msg);
-                $rootScope.$apply();
-                if ($rootScope.autoScroll) {
-                    var elem = document.getElementById('collapseLog');
-                    elem.scrollTop = elem.scrollHeight;
-                }
+                $rootScope.addLog(msg);
                 break;
             }
             case 'bought' :
@@ -60,6 +55,15 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
                 break;
             default :
                 console.log("Unrecognized message type : " + msg);
+        }
+    };
+
+    $rootScope.addLog = function(msg) {
+        $rootScope.logs.push(msg);
+        $rootScope.$apply();
+        if ($rootScope.autoScroll) {
+            var elem = document.getElementById('collapseLog');
+            elem.scrollTop = elem.scrollHeight;
         }
     };
 

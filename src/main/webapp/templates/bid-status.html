@@ -1,0 +1,7 @@
+<div ng-if="trade.tradeStatus!=null && !shouldBid(trade) && !shouldBuy(trade)"
+     class="green-bold">Success
+</div>
+
+<div ng-if="shouldBid(trade)"
+     class="red-bold">Failed
+</div>

@@ -77,10 +77,13 @@
 
             </tr>
             </thead>
-            <tbody ng-repeat="trade in trades">
-            <tr>
+            <tbody ng-repeat="trade in trades track by $index">
+            <tr ng-class="{buyRow: isMonitored(trade) && shouldBuy(trade), bidRow: isMonitored(trade)&& shouldBid(trade),badRow: isMonitored(trade) && !shouldBuy(trade) }">
                 <td>
+
                     <search-row/>
+                    <contracts/>
+
                 </td>
                 <td>
                     <table>
@@ -111,19 +114,23 @@
                             {{trade.auctionInfo.buyNowPrice}}
                         </tr>
                         <tr ng-if="isMonitored(trade)">
-                            <div ng-if="!shouldBuy(trade)" class="red-bold">
-                                {{trade.tradeStatus.maxPrice}}
+                            <div ng-if="isMonitored(trade) && !shouldBuy(trade)" class="red-bold">
+                                {{trade.tradeStatus.maxPrice - trade.auctionInfo.buyNowPrice}}
                             </div>
                             <div ng-if="shouldBuy(trade)" class="green-bold">
-                                {{trade.tradeStatus.maxPrice}}
+                                +{{trade.tradeStatus.maxPrice - trade.auctionInfo.buyNowPrice}}
                             </div>
                         </tr>
                     </table>
                 </td>
                 <td>
                     <table ng-if="isMonitored(trade)">
-                        <tr><td>{{trade.tradeStatus.maxPrice}}</td></tr>
-                        <tr><td class="black-bold">{{trade.tradeStatus.lastDate}}</td></tr>
+                        <tr>
+                            <td>{{trade.tradeStatus.maxPrice}}</td>
+                        </tr>
+                        <tr>
+                            <td class="time-black">{{trade.tradeStatus.lastDate}}</td>
+                        </tr>
 
                     </table>
                 <td>
@@ -145,6 +152,10 @@
                         <tr>
                             <td>
                                 <div class="black-bold"> Bid {{defineTradeBid(trade)}}</div>
+                            </td>
+                            <td>
+                                <div id="bid-status-{{$index}}" class="bid-status"> Status
+                                    <bid-status/></div>
                             </td>
                         </tr>
                     </table>

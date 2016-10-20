@@ -7,12 +7,15 @@ import com.liberty.model.Nation;
 import com.liberty.service.ImageService;
 import com.mongodb.gridfs.GridFSDBFile;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
@@ -96,7 +99,7 @@ public class ImageServiceImpl implements ImageService {
 
   @Override
   public void saveLeagueImage(League league) {
-    if (getClubImage(league.getId()).isPresent()) {
+    if (getLeagueImage(league.getId()).isPresent()) {
       log.info("Image for " + league.getName() + " league was stored before");
       return;
     }
@@ -110,18 +113,33 @@ public class ImageServiceImpl implements ImageService {
 
   @Override
   public void saveNationImage(Nation nation) {
-    if (getClubImage(nation.getId()).isPresent()) {
-      log.info("Image for " + nation.getName() + " nation was stored before");
-      return;
-    }
+    try {
 
-    if (nation.getImageUrls() == null || nation.getImageUrls().small == null) {
-      return;
+      if (getNationImage(nation.getId()).isPresent()) {
+        log.info("Image for " + nation.getName() + " nation was stored before");
+        return;
+      }
+
+      if (nation.getImageUrls() == null || nation.getImageUrls().small == null) {
+        return;
+      }
+      String imageUrl = nation.getImageUrls().small.toString();
+      log.info("Trying to request : " + imageUrl);
+      InputStream imageStream = readImage(imageUrl);
+      template.store(imageStream, getNationFileName(nation.getId()), "image/png");
+      log.info("Stored image for nation : " + nation.getName());
+      if(!getNationImage(nation.getId()).isPresent()) {
+        saveNationImage(nation);
+      }
+    }catch (Exception e){
+      log.error(e.getMessage());
     }
-    log.info("Trying to request : " + nation.getImageUrls().small.toString());
-    InputStream inputStream = RequestHelper.executeRequest(nation.getImageUrls().small.toString());
-    template.store(inputStream, getNationFileName(nation.getId()), "image/png");
-    log.info("Stored image for nation : " + nation.getName());
+  }
+
+  private InputStream readImage(String imageUrl) throws IOException {
+    InputStream inputStream = RequestHelper.executeRequest(imageUrl);
+    byte[] bytes = IOUtils.toByteArray(inputStream);
+    return new ByteArrayInputStream(bytes);
   }
 
   private String getFileName(long playerId) {

@@ -36,4 +36,19 @@
         }
     });
 
+    module.directive('bidStatus', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/bid-status.html'
+        }
+    });
+
+    module.directive('contracts', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/contracts.html'
+        }
+    });
+
+
 })();

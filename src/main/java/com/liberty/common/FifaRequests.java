@@ -193,9 +193,9 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
-  private void status(AuctionInfo auctionInfo) {
+  private void status(Long tradeId) {
     try {
-      HttpPost request = createRequest(String.format(getStatusUrl(), auctionInfo.getTradeId()));
+      HttpPost request = createRequest(String.format(getStatusUrl(), tradeId));
       log.info(request.toString());
       Optional<String> execute = execute(request);
       Optional<BidResponse> buy = JsonHelper.toEntity(execute.get(), BidResponse.class);
@@ -206,8 +206,8 @@ public class FifaRequests extends BaseFifaRequests {
 
   public boolean buy(AuctionInfo auctionInfo) {
     try {
-      status(auctionInfo);
       Long tradeId = auctionInfo.getTradeId();
+      status(tradeId);
       log.info("Trying to bid : " + tradeId + " for " + auctionInfo.getBuyNowPrice());
       HttpPost request = createBidRequest(String.format(getBidUrl(), tradeId));
       Bid bid = new Bid((long) auctionInfo.getBuyNowPrice());
@@ -234,6 +234,7 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   public BidStatus makeBid(long tradeId, long bidPrice) {
+    status(tradeId);
     log.info("Trying to bid : " + bidPrice + " for " + tradeId);
     HttpPost request = createBidRequest(String.format(getBidUrl(), tradeId));
     Bid bid = new Bid(bidPrice);
@@ -257,10 +258,11 @@ public class FifaRequests extends BaseFifaRequests {
         bidStatus.setStatus(BidStatus.Status.FAIL);
         bidStatus.setErrorCode(tradeStatus.getCode());
       }
+      bidStatus.setInfo(tradeStatus);
       return bidStatus;
     } catch (Exception e) {
       log.error("Error bod for " + tradeId);
-      return new BidStatus(BidStatus.Status.FAIL, ErrorCode.CATCH_ERROR, tradeId);
+      return new BidStatus(BidStatus.Status.FAIL, ErrorCode.CATCH_ERROR, tradeId, null);
     }
   }
 
@@ -360,7 +362,7 @@ public class FifaRequests extends BaseFifaRequests {
     params.add("num=12");
     params.add("start=" + searchRequest.getPage() * 12);
     if (searchRequest.getQuality() != null) {
-      if(searchRequest.getQuality().equals("rare")){
+      if (searchRequest.getQuality().equals("rare")) {
         params.add("rare=SP");
       } else {
         params.add("lev=" + searchRequest.getQuality());
@@ -387,7 +389,7 @@ public class FifaRequests extends BaseFifaRequests {
     if (searchRequest.getNationId() != null) {
       params.add("nat=" + searchRequest.getNationId());
     }
-    if(searchRequest.getPlayerId() != null) {
+    if (searchRequest.getPlayerId() != null) {
       params.add("maskedDefId=" + searchRequest.getPlayerId());
     }
     return String.join("&", params);

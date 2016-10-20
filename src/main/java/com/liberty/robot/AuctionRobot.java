@@ -16,7 +16,6 @@ import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -29,13 +28,13 @@ import lombok.extern.slf4j.Slf4j;
  * Date: 15.10.2016
  * Time: 14:14
  */
-@Component
+//@Component
 @Slf4j
 public class AuctionRobot {
 
   @Autowired
   private TradeService tradeService;
-
+// TODO: if no trade status than remove if not win
   @Autowired
   private PlayerProfileRepository profileRepository;
 
