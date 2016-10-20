@@ -31,12 +31,21 @@
             <label for="name" class="col-md-6">Name</label>
             <input type="text" id="name" ng-model="player.name" class="col-md-6"> <br>
         </div>
+        <div class="col-md-4">
+            <button ng-click="updatePlayer()" class="btn btn-primary"> Update info</button>
+        </div>
         <div class="col-md-8">
             <label for="maxPrice" class="col-md-6">Max price</label>
             <input type="number" id="maxPrice" ng-model="player.maxPrice" class="col-md-6"> <br>
         </div>
-        <div class="col-md-2">
-            <button ng-click="updatePlayer()" class="btn btn-primary"> Update info</button>
+
+        <div class="col-md-4">
+            <button ng-if="!player.enabled" class="btn btn-success"
+                    ng-click="changeAutoBuyStatus(player.id, true)">Enable
+            </button>
+            <button ng-if="player.enabled" class="btn btn-danger"
+                    ng-click="changeAutoBuyStatus(player.id, false)">Disable
+            </button>
         </div>
     </div>
     <div class="col-md-12" id="price-chart"></div>

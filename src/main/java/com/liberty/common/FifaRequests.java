@@ -335,7 +335,7 @@ public class FifaRequests extends BaseFifaRequests {
 
   public void removeFromTargets(Long tradeId) {
     String url = String.format(FifaExternalEndpoints.WATCHLIST_WITH_IDS_URL, tradeId);
-    HttpPost request = createRequest(url);
+    HttpPost request = createDeleteRequest(url);
     execute(request);
   }
 

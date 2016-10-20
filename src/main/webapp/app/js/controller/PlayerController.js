@@ -1,5 +1,5 @@
 fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParams,
-                                                 PlayerAutoBuy, MinPrice, PlayerUpdate) {
+                                                 PlayerAutoBuy, MinPrice, PlayerUpdate, AutoBuyPlayer) {
     $scope.id = $stateParams.id;
 
     $scope.onLoaded = function (result) {
@@ -82,6 +82,14 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
 
     $scope.getPlayerInfo = function () {
         PlayerAutoBuy.get({id: $scope.id}, $scope.onLoaded, $rootScope.onError);
+    };
+
+    $scope.changeAutoBuyStatus = function (id, enabled) {
+        AutoBuyPlayer.save({}, {
+            id: id, enabled: enabled
+        }, function () {
+            $scope.player.enabled = enabled;
+        }, $rootScope.onError);
     };
 
     $scope.getPlayerInfo();

@@ -13,9 +13,11 @@ import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.TradeService;
+import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -28,15 +30,18 @@ import lombok.extern.slf4j.Slf4j;
  * Date: 15.10.2016
  * Time: 14:14
  */
-//@Component
+@Component
 @Slf4j
 public class AuctionRobot {
 
   @Autowired
   private TradeService tradeService;
-// TODO: if no trade status than remove if not win
+  // TODO: if no trade status than remove if not win
   @Autowired
   private PlayerProfileRepository profileRepository;
+
+  @Autowired
+  private LogController logController;
 
   @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
@@ -45,7 +50,9 @@ public class AuctionRobot {
   public void trade() {
     log.debug("Trying to run robot trade");
     List<AuctionInfo> targets = tradeService.getTransferTargets();
-    log.debug("Found " + targets.size() + " transfer targets...");
+    if (targets.size() > 0) {
+      logController.info("Found " + targets.size() + " transfer targets...");
+    }
     List<AuctionInfo> expired = new ArrayList<>();
     List<AuctionInfo> won = new ArrayList<>();
     List<AuctionInfo> active = new ArrayList<>();
@@ -61,7 +68,9 @@ public class AuctionRobot {
         active.add(info);
       }
     }
-    log.debug("Trying to process " + active.size() + " active targets...");
+    if (targets.size() > 0) {
+      log.debug("Trying to process " + active.size() + " active targets...");
+    }
     active.forEach(x -> {
       processItem(x);
       DelayHelper.waitStrict(33);
@@ -77,7 +86,7 @@ public class AuctionRobot {
   }
 
   private void processWonItems(List<AuctionInfo> won) {
-    log.info("You have " + won.size() + " won items");
+    logController.info("You have " + won.size() + " won items");
   }
 
   private void processItem(AuctionInfo info) {
@@ -85,10 +94,7 @@ public class AuctionRobot {
     Long playerId = info.getItemData().getAssetId();
     Integer currentBid = info.getCurrentBid();
 //    PlayerProfile profile = getProfile(playerId);
-    if (playerId == null) {
-      int i = 0;
-      log.debug("Id null");
-    }
+
     PlayerTradeStatus tradeStatus = getPlayerTrade(playerId);
     if (tradeStatus == null) {
       log.error("Can not trade " + playerId + " player. There is no PlayerTradeStatus item.");

@@ -1,10 +1,14 @@
 fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticResource, Tradepile,
-    Suggestions) {
+    Suggestions, LeagueResource) {
     $scope.stompClient = null;
     $rootScope.logs = [];
     $rootScope.autoScroll = true;
 
-
+    $rootScope.loadLeagues = function(){
+       LeagueResource.get({}, function(res){
+           $rootScope.leaguesMap = res;
+         }, $rootScope.onError);
+    };
 
     $scope.logConfig = {
         autoHideScrollbar: false,
@@ -23,6 +27,11 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         });
     };
 
+    $rootScope.toTime = function(time){
+        var minutes = "0" + Math.floor(time / 60);
+        var seconds = "0" + (time - minutes * 60);
+        return minutes.substr(-2) + ":" + seconds.substr(-2);
+    }
     $rootScope.onError = function (error) {
         console.log("Error ", error);
     };
@@ -106,12 +115,16 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.$apply();
     };
 
-     $rootScope.updateTradepile = function(){
-         Tradepile.get({}, $rootScope.onUpdateTradepile, $rootScope.onError);
-     };
+    $rootScope.updateTradepile = function() {
+        Tradepile.get({}, $rootScope.onUpdateTradepile, $rootScope.onError);
+    };
+
+    $rootScope.getLeagueName = function(id) {
+       return $rootScope.leaguesMap[id].abbrName;
+    }
 
     $scope.connect();
     $rootScope.updateStats();
     $rootScope.updateTradepile();
-
+    $rootScope.loadLeagues();
 });

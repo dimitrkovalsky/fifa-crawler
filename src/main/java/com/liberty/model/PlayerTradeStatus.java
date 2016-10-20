@@ -38,6 +38,8 @@ public class PlayerTradeStatus {
 
   private Integer sellStartPrice;
 
+  private Integer rareflag;
+
   private Integer minMarketPrice;
 
   private Integer sellBuyNowPrice;
@@ -45,6 +47,8 @@ public class PlayerTradeStatus {
   private LocalDateTime innerDate;
 
   private String lastUpdate;
+
+  private String lastDate;
 
   private boolean enabled = true;
 

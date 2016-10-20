@@ -61,7 +61,7 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Player Id</th>
+                <th>Player</th>
                 <th>Name</th>
                 <th>Rating</th>
                 <th>Status</th>
@@ -78,13 +78,25 @@
             </tr>
             </thead>
             <tbody ng-repeat="trade in trades track by $index">
-            <tr ng-class="{buyRow: isMonitored(trade) && shouldBuy(trade), bidRow: isMonitored(trade)&& shouldBid(trade),badRow: isMonitored(trade) && !shouldBuy(trade) }">
+            <tr ng-class="{buyRow: isMonitored(trade) && shouldBuy(trade),
+                bidRow: isMonitored(trade)&& shouldBid(trade),
+                badRow: isMonitored(trade) && !shouldBuy(trade),
+                rareRow: trade.auctionInfo.itemData.rareflag > 1 }">
                 <td>
 
-                    <search-row/>
-                    <contracts/>
+                    <table>
+                        <tr>
+                            <td>
+                                <search-row/>
+                            </td>
+                            <td>
+                                <contracts/>
+                            </td>
+                        </tr>
+                    </table>
 
                 </td>
+
                 <td>
                     <table>
                         <tr>
@@ -100,9 +112,32 @@
                         </tr>
                     </table>
                 </td>
-                <td>{{trade.profile.rating}}</td>
                 <td>
-                    <trade-status/>
+                    <table>
+                        <tr>
+                            <td>
+                                {{trade.profile.rating}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{getLeagueName(trade.profile.leagueId)}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <trade-status/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>{{trade.auctionInfo.itemData.preferredPosition}}</td>
+                        </tr>
+                    </table>
                 </td>
                 <td>{{trade.auctionInfo.tradeState}}</td>
 
@@ -153,16 +188,29 @@
                             <td>
                                 <div class="black-bold"> Bid {{defineTradeBid(trade)}}</div>
                             </td>
-                            <td>
-                                <div id="bid-status-{{$index}}" class="bid-status"> Status
-                                    <bid-status/></div>
-                            </td>
+
                         </tr>
                     </table>
 
 
                 </td>
-                <td>{{trade.auctionInfo.expires}} seconds</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                {{toTime(trade.auctionInfo.expires)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="bid-status-{{$index}}" class="bid-status">
+                                    <bid-status/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
 
             </tr>
             </tbody>

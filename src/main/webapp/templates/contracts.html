@@ -1,1 +1,14 @@
-<div>Con{{trade.auctionInfo.itemData.contract}}</div>
+
+
+<img ng-if="trade.auctionInfo.itemData.contract==0" src="/app/img/contracts/contract-red.png" style="width: 35px;">
+<div ng-if="trade.auctionInfo.itemData.contract==0" class="red-bold">{{trade.auctionInfo.itemData.contract}}</div>
+
+<img ng-if="trade.auctionInfo.itemData.contract>0 && trade.auctionInfo.itemData.contract<40"
+     src="/app/img/contracts/contract-blue.png" style="width: 35px;">
+<div ng-if="trade.auctionInfo.itemData.contract>0 && trade.auctionInfo.itemData.contract<40" class="blue-bold">{{trade.auctionInfo.itemData
+    .contract}}</div>
+
+<img ng-if="trade.auctionInfo.itemData.contract>0 && trade.auctionInfo.itemData.contract>=40"
+     src="/app/img/contracts/contract-green.png" style="width: 35px;">
+<div ng-if="trade.auctionInfo.itemData.contract>0 && trade.auctionInfo.itemData.contract>=40"
+     class="green-bold">{{trade.auctionInfo.itemData.contract}}</div>

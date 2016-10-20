@@ -83,12 +83,10 @@ fifaApp.factory('Suggestions', function ($resource) {
     });
 });
 
-fifaApp.factory("States", function(){
-    var states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Dakota", "North Carolina", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"];
-
-    return states;
-
+fifaApp.factory('LeagueResource', function ($resource) {
+    return $resource('/api/info/leagues');
 });
+
 
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/market");

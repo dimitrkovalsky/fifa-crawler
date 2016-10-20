@@ -432,6 +432,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   public BidStatus makeBid(Long tradeId, Long price) {
     BidStatus bidStatus = fifaRequests.makeBid(tradeId, price);
+
     System.out.println("Bid response : " + bidStatus);
     return bidStatus;
   }

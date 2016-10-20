@@ -107,20 +107,22 @@ fifaApp.controller('MarketSearchController', function ($rootScope, $scope, Marke
     };
 
     $scope.makeBid = function (trade) {
-        $scope.performBid(trade.auctionInfo.tradeId, $scope.defineTradeBid(trade));
+        $scope.performBid(trade.auctionInfo.tradeId, $scope.defineTradeBid(trade), trade);
     };
 
     $scope.buyNow = function (trade) {
-        $scope.performBid(trade.auctionInfo.tradeId, trade.auctionInfo.buyNowPrice);
+        $scope.performBid(trade.auctionInfo.tradeId, trade.auctionInfo.buyNowPrice, trade);
     };
 
-    $scope.performBid = function (tradeId, bid) {
+    $scope.performBid = function (tradeId, bid, trade) {
         Bid.save({
             tradeId: tradeId,
             bid: bid
         }, function (result) {
             console.log(result);
             $rootScope.addLog("Bid response : " + result);
+            trade.completed = completed;
+            trade.status = result.status;
         }, $rootScope.onError);
     };
 

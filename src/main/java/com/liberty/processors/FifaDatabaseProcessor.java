@@ -67,7 +67,6 @@ public class FifaDatabaseProcessor {
 
 
   public Optional<PlayerProfile> fetchInfo(long id) {
-    PlayerProfile profile = new PlayerProfile();
     try {
       String json = JsonHelper.toJson(new RequestObject(id)).toString();
       String encodedJson = URLEncoder.encode(json, StandardCharsets.UTF_8.name());
