@@ -8,6 +8,7 @@ import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
+import com.liberty.model.market.Watchlist;
 import com.liberty.rest.request.AutobidRequest;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
@@ -66,6 +67,8 @@ public interface TradeService {
   List<PlayerTradeStatus> search(String phrase);
 
   BuyMessage getTradepileInfo();
+
+  Watchlist getWatchlist();
 
   void logBuyOrSell();
 

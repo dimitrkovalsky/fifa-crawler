@@ -24,6 +24,11 @@ public class DelayHelper {
     delay(delay);
   }
 
+  public static void wait(int delay, int deviation) {
+    int time = delay + new Random().nextInt(deviation * 2) - deviation;
+    delay(time);
+  }
+
   private static void delay(int delay) {
     try {
       Thread.sleep(delay);

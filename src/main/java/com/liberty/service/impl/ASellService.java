@@ -6,6 +6,7 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.ItemData;
+import com.liberty.model.market.Watchlist;
 import com.liberty.rest.request.SellRequest;
 import com.liberty.service.PlayerProfileService;
 import com.liberty.service.TradeService;
@@ -117,6 +118,11 @@ public abstract class ASellService extends ATradeService implements TradeService
     int canSell = TRADEPILE_SIZE - getTradePileSize();
     int credits = fifaRequests.getWatchlist().getCredits();
     return new BuyMessage(unassigned, canSell, credits, getPurchasesRemained());
+  }
+
+  @Override
+  public Watchlist getWatchlist() {
+      return fifaRequests.getWatchlist();
   }
 
   @Override

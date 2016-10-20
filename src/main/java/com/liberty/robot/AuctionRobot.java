@@ -7,10 +7,13 @@ import com.liberty.common.ErrorCode;
 import com.liberty.common.TradeState;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
+import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
+import com.liberty.model.market.Watchlist;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
+import com.liberty.rest.request.MarketSearchRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.LogController;
@@ -22,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,9 +38,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuctionRobot {
 
+  public static final int PAGES_TO_SEARCH = 10;
   @Autowired
   private TradeService tradeService;
-  // TODO: if no trade status than remove if not win
+
   @Autowired
   private PlayerProfileRepository profileRepository;
 
@@ -46,8 +51,37 @@ public class AuctionRobot {
   @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
 
+  public void findBids() {
+    Watchlist watchlist = tradeService.getWatchlist();
+    Integer currentCredits = watchlist.getCredits();
+    if (currentCredits == null || currentCredits < 1000) {
+      return;
+    }
+    List<PlayerTradeStatus> toSearch = tradeStatusRepository.findAll().stream()
+        .filter(PlayerTradeStatus::isEnabled)
+        .collect(Collectors.toList());
+
+    for (int i = 0; i < PAGES_TO_SEARCH; i++) {
+      List<TradeInfo> trades = getPage(i);
+      findApplicableTrades(trades, toSearch);
+      DelayHelper.wait(100, 10);
+    }
+  }
+
+  private void findApplicableTrades(List<TradeInfo> trades, List<PlayerTradeStatus> toSearch) {
+
+  }
+
+  private List<TradeInfo> getPage(int page) {
+    MarketSearchRequest request = new MarketSearchRequest();
+    request.setPage(page);
+    request.setQuality("gold");
+
+    return tradeService.search(request);
+  }
+
   @Scheduled(fixedRate = 10_000)
-  public void trade() {
+  public void checkWatchlist() {
     log.debug("Trying to run robot trade");
     List<AuctionInfo> targets = tradeService.getTransferTargets();
     if (targets.size() > 0) {
