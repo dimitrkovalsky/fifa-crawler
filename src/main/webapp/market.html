@@ -4,16 +4,25 @@
 
 
 <div class="col-md-6">
-    <div ng-if="!autoBuyEnabled">
-        <button class="btn btn-success" ng-click="enableAutoBuy(true)">Run Autobuy</button>
-        <input ng-model="purchases" type="number">
+    <div class="btn-group col-md-5">
+            <button ng-if="!robotEnabled" class="btn btn-success" ng-click="enableRobot(true)">Run
+                Robot
+            </button>
+            <button ng-if="robotEnabled" class="btn btn-danger"
+                    ng-click="enableRobot(false)">Stop Robot
+            </button>
+            <button ng-if="!autoBuyEnabled" class="btn btn-success" ng-click="enableAutoBuy(true)">
+                Run Autobuy
+            </button>
+
+            <button ng-if="autoBuyEnabled" class="btn btn-danger"
+                    ng-click="enableAutoBuy(false)">Stop Autobuy
+            </button>
     </div>
+    <input ng-if="!autoBuyEnabled" ng-model="purchases" type="number" class="col-md-2">
 
 
-    <button ng-if="autoBuyEnabled" class="btn btn-danger"
-            ng-click="enableAutoBuy(false)">Stop Autobuy
-    </button>
-    <div>
+    <div class="col-md-12">
         Phishing Token : <strong>{{marketInfo.phishingToken}}</strong><br>
         Session Id : <strong>{{marketInfo.sessionId}}</strong> <br>
         Max Purchases : <strong>{{marketInfo.maxPurchases}}</strong> <br>
@@ -31,9 +40,11 @@
 <div class="container">
     <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="player in $data">
-            <td data-title="'Id'"><small-player/></td>
+            <td data-title="'Id'">
+                <small-player/>
+            </td>
             <td data-title="'Name'" sortable="'name'" filter="{name: 'text'}">
-                <a  href="#/player/{{player.id}}">{{player.name}}</a></td>
+                <a href="#/player/{{player.id}}">{{player.name}}</a></td>
             <td data-title="'Max Buy Now Price'" sortable="'maxPrice'">{{player.maxPrice}}</td>
             <td data-title="'Min Market Price'" sortable="'minMarketPrice'">
                 {{player.minMarketPrice}}

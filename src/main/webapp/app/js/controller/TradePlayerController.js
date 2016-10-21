@@ -58,19 +58,23 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
         $scope.sellPrice = startPrice;
     };
 
-    $scope.sell = function (tradeId) {
-        Trade.save({
-            itemId: tradeId,
+    $scope.sell = function (itemId, tradeId) {
+        var data = {
+            itemId: itemId,
             playerId: $scope.id,
             startPrice: $scope.sellPrice.sellStartPrice,
             buyNow: $scope.sellPrice.sellBuyNowPrice
-        }, $scope.updateSell, $rootScope.onError);
+        };
+        if(tradeId){
+            data.tradeId = tradeId;
+        }
+        Trade.save(data, $scope.updateSell, $rootScope.onError);
     };
 
     $scope.sellAll = function () {
         for (var index in $scope.toSell) {
             if ($scope.toSell[index].id) {
-                 $scope.sell($scope.toSell[index].id);
+                 $scope.sell($scope.toSell[index].id, $scope.toSell[index].tradeId);
             }
         }
     };

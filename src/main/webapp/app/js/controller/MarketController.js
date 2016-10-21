@@ -50,6 +50,7 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
     $scope.onInfoLoad = function (result) {
         $scope.marketInfo = result;
         $scope.autoBuyEnabled = result.autoBuyEnabled;
+        $scope.robotEnabled = result.robotEnabled;
         $rootScope.updateStats();
     };
 
@@ -72,7 +73,13 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
           data.purchases =  $scope.purchases;
         }
         AutoBuy.save(data, $scope.updateInfo, $rootScope.onError);
-        $scope.updateInfo();
+    };
+
+    $scope.enableRobot = function (enabled) {
+        var data = {};
+        data.robotEnabled = enabled;
+
+        AutoBuy.save(data, $scope.updateInfo, $rootScope.onError);
     };
 
     $scope.onAllUpdated = function () {

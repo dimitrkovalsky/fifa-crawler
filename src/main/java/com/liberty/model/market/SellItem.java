@@ -21,10 +21,18 @@ public class SellItem {
     itemData.add(data);
   }
 
+  public SellItem(long id, long tradeId) {
+    ItemData data = new ItemData();
+    data.setId(id);
+    data.setTradeId(tradeId);
+    itemData.add(data);
+  }
+
   @Data
   public static class ItemData {
 
     Long id;
+    Long tradeId;
     String pile = "trade";
     Boolean success;
   }

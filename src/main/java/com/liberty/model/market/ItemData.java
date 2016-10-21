@@ -55,4 +55,10 @@ public class ItemData {
   private Long stadiumid;
   private Long capacity;
   private Object trainingItem;
+
+
+  private boolean fromTargets = false;
+  // used to sell item from transfer target
+  private Long tradeId;
+
 }

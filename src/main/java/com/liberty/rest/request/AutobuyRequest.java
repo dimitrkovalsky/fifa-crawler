@@ -10,5 +10,6 @@ import lombok.Data;
 public class AutobuyRequest {
 
   private Boolean enabled;
+  private Boolean robotEnabled;
   private Integer purchases;
 }

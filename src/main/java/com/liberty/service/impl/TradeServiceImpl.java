@@ -281,6 +281,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     info.setPhishingToken(fifaRequests.getPhishingTokenForCheck());
     info.setSessionId(fifaRequests.getSessionForCheck());
     info.setAutoBuyEnabled(autoBuyEnabled);
+
     return info;
   }
 
@@ -308,6 +309,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public void autoBuy(AutobuyRequest request) {
+    if (request.getEnabled() == null) {
+      return;
+    }
     this.autoBuyEnabled = request.getEnabled();
     if (autoBuyEnabled) {
       purchases = 0;
@@ -433,7 +437,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   public BidStatus makeBid(Long tradeId, Long price) {
     BidStatus bidStatus = fifaRequests.makeBid(tradeId, price);
 
-    System.out.println("Bid response : " + bidStatus);
+    System.out.println("Bid response status: " + bidStatus.getStatus());
     return bidStatus;
   }
 

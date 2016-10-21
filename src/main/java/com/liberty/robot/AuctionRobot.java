@@ -20,10 +20,13 @@ import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +36,18 @@ import lombok.extern.slf4j.Slf4j;
  * Date: 15.10.2016
  * Time: 14:14
  */
-//@Component
+@Component
 @Slf4j
 public class AuctionRobot {
 
-  public static final int PAGES_TO_SEARCH = 10;
+  private static final int PAGES_TO_SEARCH = 50;
+
+  private static final int BID_LIMIT = 8;
+  private static final int WIN_ITEMS_LIMIT = 8;
+  private static final int MAX_EXPIRATION_TIME = 300;
+  private int wonItems;
+  private boolean disabled;
+
   @Autowired
   private TradeService tradeService;
 
@@ -50,7 +60,18 @@ public class AuctionRobot {
   @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
 
+  @Scheduled(fixedRate = 100_000)
   public void findBids() {
+    if (disabled) {
+      logController.info("Auction Robot disabled");
+      return;
+    }
+    log.debug("Robot trying to find applicable bids");
+    if (wonItems > WIN_ITEMS_LIMIT) {
+      log.debug("Robot findBids exceeded limit of won items");
+      return;
+    }
+    int bids = 0;
     Watchlist watchlist = tradeService.getWatchlist();
     Integer currentCredits = watchlist.getCredits();
     if (currentCredits == null || currentCredits < 1000) {
@@ -59,28 +80,30 @@ public class AuctionRobot {
     List<PlayerTradeStatus> toSearch = tradeStatusRepository.findAll().stream()
         .filter(PlayerTradeStatus::isEnabled)
         .collect(Collectors.toList());
-
+    Map<Long, PlayerTradeStatus> statusMap = toSearch.stream()
+        .collect(Collectors.toMap(PlayerTradeStatus::getId, Function.identity()));
     for (int i = 0; i < PAGES_TO_SEARCH; i++) {
       List<TradeInfo> trades = getPage(i);
-      findApplicableTrades(trades, toSearch);
+      bids += findApplicableTrades(trades, statusMap);
+      if (bids > BID_LIMIT) {
+        log.debug("Robot exceeded bid limit. Current bids : " + bids);
+        return;
+      }
+      if (disabled) {
+        log.info("Auction robot is disabled");
+        return;
+      }
+      log.info("Robot processed " + i + " pages");
       DelayHelper.wait(100, 10);
     }
   }
 
-  private void findApplicableTrades(List<TradeInfo> trades, List<PlayerTradeStatus> toSearch) {
-
-  }
-
-  private List<TradeInfo> getPage(int page) {
-    MarketSearchRequest request = new MarketSearchRequest();
-    request.setPage(page);
-    request.setQuality("gold");
-
-    return tradeService.search(request);
-  }
-
   @Scheduled(fixedRate = 10_000)
   public void checkWatchlist() {
+    if (disabled) {
+      log.info("Auction Robot disabled");
+      return;
+    }
     log.debug("Trying to run robot trade");
     List<AuctionInfo> targets = tradeService.getTransferTargets();
     if (targets.size() > 0) {
@@ -104,6 +127,11 @@ public class AuctionRobot {
     if (targets.size() > 0) {
       log.debug("Trying to process " + active.size() + " active targets...");
     }
+    wonItems = won.size();
+    if (wonItems > WIN_ITEMS_LIMIT) {
+      logController.info("Robot exceeded limit of won items");
+      return;
+    }
     active.forEach(x -> {
       processItem(x);
       DelayHelper.waitStrict(33);
@@ -118,22 +146,60 @@ public class AuctionRobot {
     DelayHelper.wait(2000);
   }
 
+  private int findApplicableTrades(List<TradeInfo> trades, Map<Long, PlayerTradeStatus> statuses) {
+    int found = 0;
+    for (TradeInfo trade : trades) {
+      AuctionInfo auctionInfo = trade.getAuctionInfo();
+      Long playerId = auctionInfo.getItemData().getAssetId();
+      PlayerTradeStatus tradeStatus = statuses.get(playerId);
+      if (tradeStatus == null) {
+        continue;
+      }
+      Integer maxPrice = tradeStatus.getMaxPrice();
+      if (shouldBid(auctionInfo, maxPrice)) {
+        log.info("Robot found applicable item to bid : " + tradeStatus.getName() +
+            " for " + defineBid(auctionInfo));
+        if (processItem(auctionInfo)) {
+          found++;
+        }
+        DelayHelper.wait(60, 5);
+      }
+    }
+    return found;
+  }
+
+  private boolean shouldBid(AuctionInfo info, Integer maxPrice) {
+    long bid = defineBid(info);
+    return bid <= maxPrice && info.getExpires() <= MAX_EXPIRATION_TIME;
+  }
+
+  private List<TradeInfo> getPage(int page) {
+    MarketSearchRequest request = new MarketSearchRequest();
+    request.setPage(page);
+    request.setQuality("gold");
+
+    return tradeService.search(request);
+  }
+
   private void processWonItems(List<AuctionInfo> won) {
     logController.info("You have " + won.size() + " won items");
   }
 
-  private void processItem(AuctionInfo info) {
+  private boolean processItem(AuctionInfo info) {
     log.debug("Trying to process " + info.getTradeId() + " trade");
     Long playerId = info.getItemData().getAssetId();
-    Integer currentBid = info.getCurrentBid();
+    if (playerId == null) {
+      log.error("Bad item : " + info.getTradeId());
+      return false;
+    }
 //    PlayerProfile profile = getProfile(playerId);
 
     PlayerTradeStatus tradeStatus = getPlayerTrade(playerId);
     if (tradeStatus == null) {
       log.error("Can not trade " + playerId + " player. There is no PlayerTradeStatus item.");
-      return;
+      return false;
     }
-    long nextBid = BoundHelper.defineNextBid(currentBid);
+    long nextBid = defineBid(info);
     if (nextBid <= tradeStatus.getMaxPrice()) {
       if (!isMyBid(info)) {
         BidStatus bidStatus = tradeService.makeBid(info.getTradeId(), nextBid);
@@ -143,12 +209,22 @@ public class AuctionRobot {
         }
         log.info("Robot made bid for " + tradeStatus.getName() +
             ". Status : " + bidStatus.getStatus());
+        return true;
       } else {
         log.info("My bid for " + tradeStatus.getName() + " is highest");
       }
     } else {
       tradeService.removeFromTargets(info.getTradeId());
     }
+    return false;
+  }
+
+  private int defineBid(AuctionInfo info) {
+    Integer currentBid = info.getCurrentBid();
+    if (currentBid == null || currentBid == 0) {
+      return info.getStartingBid();
+    }
+    return BoundHelper.defineNextBid(currentBid);
   }
 
   private void makeHigherBid(AuctionInfo info) {
@@ -170,5 +246,16 @@ public class AuctionRobot {
 
   private PlayerProfile getProfile(Long playerId) {
     return profileRepository.findOne(playerId);
+  }
+
+  public boolean isDisabled() {
+    return disabled;
+  }
+
+
+  public void setEnabled(Boolean enabled) {
+    if (enabled != null) {
+      disabled = !enabled;
+    }
   }
 }

@@ -11,9 +11,9 @@ public class AuthRequest {
   String nucleusPersonaPlatform = "pc";
   int priorityLevel = 4;
   Identification Identification = new Identification();
-  String gameSku = "FFA16PCC";
+  String gameSku = "FFA17PCC";
   String locale = "en-US";
-  String sku = "FUT16WEB";
+  String sku = "FUT17WEB";
   String method = "authcode";
   Integer clientVersion = 1;
   Boolean isReadOnly = false;

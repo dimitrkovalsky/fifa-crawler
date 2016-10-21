@@ -1,6 +1,7 @@
 package com.liberty.rest;
 
 import com.liberty.model.Statistic;
+import com.liberty.robot.AuctionRobot;
 import com.liberty.service.StatisticService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,13 @@ public class StatisticResource {
   @Autowired
   private StatisticService statisticService;
 
+  @Autowired
+  private AuctionRobot auctionRobot;
+
   @RequestMapping(method = RequestMethod.GET)
   public Statistic get() {
-    return statisticService.getGeneralStatistic();
+    Statistic generalStatistic = statisticService.getGeneralStatistic();
+    generalStatistic.setRobotEnabled(!auctionRobot.isDisabled());
+    return generalStatistic;
   }
 }

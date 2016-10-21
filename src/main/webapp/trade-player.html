@@ -4,6 +4,9 @@
     google.charts.setOnLoadCallback(draw);
 
 
+
+
+
 </script>
 
 <div class="page-header">
@@ -68,14 +71,21 @@
         </thead>
         <tbody ng-repeat="trade in toSell">
         <tr>
-            <td>{{trade.id}}</td>
+            <td>{{trade .id}}
+                <span ng-if="trade.fromTargets">
+                    <strong>
+                        <small>targets</small>
+                    </strong>
+                </span>
+            </td>
             <td>{{trade.lastSalePrice}}</td>
             <td>
                 <span ng-if="trade.contract>=40" class="show">{{trade.contract}}</span>
                 <span ng-if="trade.contract<40">{{trade.contract}}</span>
             </td>
             <td>
-                <button class="btn btn-default" ng-click="sell(trade.id)"> Sell</button>
+                <button class="btn btn-default" ng-click="sell(trade.id, trade.tradeId)"> Sell
+                </button>
             </td>
         </tr>
         </tbody>

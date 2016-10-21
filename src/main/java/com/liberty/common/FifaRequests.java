@@ -266,9 +266,23 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
+  /**
+   * Used to sell item from transfer targets
+   */
+  public boolean item(Long itemId, Long tradeId) {
+    SellItem toSell = new SellItem(itemId, tradeId);
+
+    return executeItemRequest(toSell);
+  }
+
   public boolean item(Long itemId) {
-    HttpPost request = createPutRequest(getItemUrl());
     SellItem toSell = new SellItem(itemId);
+
+    return executeItemRequest(toSell);
+  }
+
+  private boolean executeItemRequest(SellItem toSell) {
+    HttpPost request = createPutRequest(getItemUrl());
 
     try {
       request.setEntity(new StringEntity(JsonHelper.toJsonString(toSell)));
@@ -282,7 +296,7 @@ public class FifaRequests extends BaseFifaRequests {
     Optional<SellItem> trade = JsonHelper.toEntity(json, SellItem.class);
     return trade.get().getItemData().get(0).getSuccess();
   }
-
+          // TODO: fix bug
   public boolean auctionHouse(Long id, int startPrice, int buyNow) {
     HttpPost request = createPostRequest(getAuctionHouseUrl());
     AuctionInfo toSell = new AuctionInfo();

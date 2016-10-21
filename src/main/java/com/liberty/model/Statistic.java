@@ -11,6 +11,7 @@ public class Statistic {
 
   private long players;
   private long autoBuy;
+  private boolean robotEnabled;
   private boolean enabled;
   private int credits;
 }

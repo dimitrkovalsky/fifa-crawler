@@ -8,6 +8,7 @@ import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;
 import com.liberty.rest.request.SearchRequest;
+import com.liberty.robot.AuctionRobot;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,14 @@ public class MarketResource {
   @Autowired
   private TradeService tradeService;
 
+  @Autowired
+  private AuctionRobot auctionRobot;
+
   @RequestMapping(path = "/info", method = RequestMethod.GET)
   public MarketInfo getInfo() {
-    return tradeService.getMarketInfo();
+    MarketInfo marketInfo = tradeService.getMarketInfo();
+    marketInfo.setRobotEnabled(!auctionRobot.isDisabled());
+    return marketInfo;
   }
 
   @RequestMapping(path = "/info", method = RequestMethod.POST)
@@ -45,6 +51,7 @@ public class MarketResource {
   @RequestMapping(path = "/autobuy", method = RequestMethod.POST)
   public void autoBuy(@RequestBody AutobuyRequest request) {
     tradeService.autoBuy(request);
+    auctionRobot.setEnabled(request.getRobotEnabled());
   }
 
   @RequestMapping(path = "/autobuy/player", method = RequestMethod.POST)

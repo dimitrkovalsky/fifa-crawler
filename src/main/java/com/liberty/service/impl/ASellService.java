@@ -1,5 +1,6 @@
 package com.liberty.service.impl;
 
+import com.liberty.common.BidState;
 import com.liberty.common.TradeState;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
@@ -48,7 +49,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     if (byState.containsKey(TradeState.EXPIRED)) {
       fifaRequests.relistAll();
     }
-    tradePile = fifaRequests.getTradePile();
+   // tradePile = fifaRequests.getTradePile();
     return tradePile.size();
   }
 
@@ -59,6 +60,7 @@ public abstract class ASellService extends ATradeService implements TradeService
       request.setStartPrice(x.getStartingBid());
       request.setItemId(x.getItemData().getId());
       request.setPlayerId(x.getTradeId());
+      // TODO: check data from transfer targets
       sell(request);
       try {
         Thread.sleep(2000);
@@ -68,9 +70,24 @@ public abstract class ASellService extends ATradeService implements TradeService
     });
   }
 
+  public List<ItemData> getWonTransferTargets() {
+    return getTransferTargets().stream().filter(info -> {
+      if (info.getTradeState().equals(TradeState.CLOSED) &&
+          info.getBidState().equals(BidState.HIGHEST)) {
+        return true;
+      }
+      return false;
+    }).map(x -> {
+      ItemData itemData = x.getItemData();
+      itemData.setFromTargets(true);
+      itemData.setTradeId(x.getTradeId());
+      return itemData;
+    }).collect(Collectors.toList());
+  }
+
   @Override
   public List<GroupedToSell> getUnassigned() {
-    List<ItemData> unassigned = fifaRequests.getUnassigned();
+    List<ItemData> unassigned = getAllUnassigned();
     Map<Long, List<ItemData>> map =
         unassigned.stream().collect(Collectors.groupingBy(ItemData::getAssetId));
 
@@ -90,12 +107,29 @@ public abstract class ASellService extends ATradeService implements TradeService
     return result;
   }
 
+  /**
+   * Returns all unassigned items. From unassigned and from transfer targets.
+   */
+  private List<ItemData> getAllUnassigned() {
+    List<ItemData> unassigned = fifaRequests.getUnassigned();
+    unassigned.addAll(getWonTransferTargets());
+    return unassigned;
+  }
+
   @Override
   public synchronized void sell(SellRequest request) {
-    if (fifaRequests.item(request.getItemId())) {
+    boolean itemResult;
+    if (request.getTradeId() == null) {
+      itemResult = fifaRequests.item(request.getItemId());
+    } else {
+      itemResult = fifaRequests.item(request.getItemId(), request.getTradeId());
+    }
+
+    if (itemResult) {
       boolean success = fifaRequests
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
       if (success) {
+        items(request);
         logBuyOrSell();
         try {
 
@@ -112,9 +146,23 @@ public abstract class ASellService extends ATradeService implements TradeService
     }
   }
 
+  private void items(SellRequest request) {
+    List<AuctionInfo> tradePile = fifaRequests.getTradePile();
+//    List<AuctionInfo> collect =
+//        tradePile.stream().filter(x -> x.getTradeId().equals(0L))
+//            .collect(Collectors.toList());
+//    AuctionInfo auctionInfo = collect.get(0);
+//    if(auctionInfo != null) {
+//      fifaRequests.auctionHouse(auctionInfo.getItemData().getId(), request.getStartPrice(), request
+//          .getBuyNow
+//          ());
+//    }
+
+  }
+
   @Override
   public BuyMessage getTradepileInfo() {
-    int unassigned = fifaRequests.getUnassigned().size();
+    int unassigned = getAllUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
     int credits = fifaRequests.getWatchlist().getCredits();
     return new BuyMessage(unassigned, canSell, credits, getPurchasesRemained());
@@ -122,12 +170,12 @@ public abstract class ASellService extends ATradeService implements TradeService
 
   @Override
   public Watchlist getWatchlist() {
-      return fifaRequests.getWatchlist();
+    return fifaRequests.getWatchlist();
   }
 
   @Override
   public void logBuyOrSell() {
-    int unassigned = fifaRequests.getUnassigned().size();
+    int unassigned = getAllUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
     int credits = fifaRequests.getWatchlist().getCredits();
     logController.logBuy(unassigned, canSell, credits, getPurchasesRemained());

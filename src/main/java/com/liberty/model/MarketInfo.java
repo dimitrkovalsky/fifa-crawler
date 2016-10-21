@@ -12,4 +12,5 @@ public class MarketInfo {
   private String sessionId;
   private String phishingToken;
   private Boolean autoBuyEnabled;
+  private Boolean robotEnabled;
 }
