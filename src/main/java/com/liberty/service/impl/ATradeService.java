@@ -34,13 +34,13 @@ public abstract class ATradeService {
   @Autowired
   protected PlayerTradeStatusRepository tradeRepository;
 
+  protected FifaRequests fifaRequests = new FifaRequests();
+
   public List<PlayerTradeStatus> search(String phrase) {
     return tradeRepository.findByName(phrase)
         .stream().limit(5)
         .collect(Collectors.toList());
   }
-
-  protected FifaRequests fifaRequests = new FifaRequests();
 
   protected void buyPlayers(TradeStatus tradeStatus, PlayerTradeStatus playerTradeStatus) {
 

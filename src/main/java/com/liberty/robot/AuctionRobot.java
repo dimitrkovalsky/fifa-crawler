@@ -20,7 +20,6 @@ import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * Date: 15.10.2016
  * Time: 14:14
  */
-@Component
+//@Component
 @Slf4j
 public class AuctionRobot {
 
