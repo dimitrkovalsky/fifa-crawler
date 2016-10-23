@@ -21,7 +21,8 @@ public interface FifaExternalEndpoints {
   String BID_URL = MAIN_PATH + "/trade/%s/bid";
   String ITEM_URL = MAIN_PATH + "/item";
   String ITEMS_URL = MAIN_PATH + "/purchased/items";
-  String AUCTION_HOUSE_URL = MAIN_PATH + "/auctionhouse";
+  String AUCTION_HOUSE_URL = "https://utas.external.s2.fut.ea.com/ut/game/fifa17/auctionhouse";
+
   String STATUS_URL = MAIN_PATH + "/trade/status?tradeIds=%s";
   String REMOVE_SOLD = MAIN_PATH + "/trade/sold";
   String RELIST = MAIN_PATH + "/auctionhouse/relist";

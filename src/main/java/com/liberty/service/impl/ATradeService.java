@@ -34,7 +34,11 @@ public abstract class ATradeService {
   @Autowired
   protected PlayerTradeStatusRepository tradeRepository;
 
-  protected FifaRequests fifaRequests = new FifaRequests();
+  protected FifaRequests fifaRequests = new FifaRequests(this::onError);
+
+  private void onError(String msg) {
+    logController.error(msg);
+  }
 
   public List<PlayerTradeStatus> search(String phrase) {
     return tradeRepository.findByName(phrase)

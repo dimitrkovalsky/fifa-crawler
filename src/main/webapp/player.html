@@ -6,15 +6,43 @@
 </script>
 
 <div class="page-header">
-    <h1>{{player.name}}</h1>
+    <table>
+        <tr>
+            <td>
+                <h1>{{player.name}}</h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-12">
+                    <tags-with-button></tags-with-button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="margin-left: 20px; margin-top: 10px">
+                    <select ng-model="selectedTag" class="dropdown">
+                        <option ng-repeat="tag in getAvailableTags()" value="{{tag}}">{{tag}}
+                        </option>
+                    </select>
+                    <button class="btn btn-default" ng-disabled="selectedTag==''"
+                            ng-click="addTag()">Add tag
+                    </button>
+                </div>
+            </td>
+        </tr>
+    </table>
+
 </div>
 <div class="col-md-6" style="height:100px">
     <div class="col-md-5">
         <span>Max price : {{player.maxPrice}} </span>
         <button ng-click="updatePrice()" class="btn btn-default">Refresh market</button>
-        <button ng-if="isNew" class="btn btn-info" ng-click="addToMonitoring()">Monitor
-        </button>
+        <button ng-if="isNew" class="btn btn-info" ng-click="addToMonitoring()">Monitor</button>
+
     </div>
+
 
     <div class="col-md-2">
         <img style="height: 81px; padding-bottom: 45px;" ng-show="isLoading"

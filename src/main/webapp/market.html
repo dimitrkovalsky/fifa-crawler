@@ -5,19 +5,19 @@
 
 <div class="col-md-6">
     <div class="btn-group col-md-5">
-            <button ng-if="!robotEnabled" class="btn btn-success" ng-click="enableRobot(true)">Run
-                Robot
-            </button>
-            <button ng-if="robotEnabled" class="btn btn-danger"
-                    ng-click="enableRobot(false)">Stop Robot
-            </button>
-            <button ng-if="!autoBuyEnabled" class="btn btn-success" ng-click="enableAutoBuy(true)">
-                Run Autobuy
-            </button>
+        <button ng-if="!robotEnabled" class="btn btn-success" ng-click="enableRobot(true)">Run
+            Robot
+        </button>
+        <button ng-if="robotEnabled" class="btn btn-danger"
+                ng-click="enableRobot(false)">Stop Robot
+        </button>
+        <button ng-if="!autoBuyEnabled" class="btn btn-success" ng-click="enableAutoBuy(true)">
+            Run Autobuy
+        </button>
 
-            <button ng-if="autoBuyEnabled" class="btn btn-danger"
-                    ng-click="enableAutoBuy(false)">Stop Autobuy
-            </button>
+        <button ng-if="autoBuyEnabled" class="btn btn-danger"
+                ng-click="enableAutoBuy(false)">Stop Autobuy
+        </button>
     </div>
     <input ng-if="!autoBuyEnabled" ng-model="purchases" type="number" class="col-md-2">
 
@@ -44,7 +44,11 @@
                 <small-player/>
             </td>
             <td data-title="'Name'" sortable="'name'" filter="{name: 'text'}">
-                <a href="#/player/{{player.id}}">{{player.name}}</a></td>
+                <table>
+                    <a href="#/player/{{player.id}}">{{player.name}}</a> <br>
+                    <tags/>
+                </table>
+            </td>
             <td data-title="'Max Buy Now Price'" sortable="'maxPrice'">{{player.maxPrice}}</td>
             <td data-title="'Min Market Price'" sortable="'minMarketPrice'">
                 {{player.minMarketPrice}}

@@ -142,7 +142,23 @@
                 <td>{{trade.auctionInfo.tradeState}}</td>
 
                 <td>{{trade.auctionInfo.currentBid}}</td>
-                <td>{{trade.auctionInfo.startingBid}}</td>
+                <td>
+                    <table>
+                        <tr>
+                            {{trade.auctionInfo.startingBid}}</td>
+                        </tr>
+                        <tr ng-if="trade.tradeStatus && trade.tradeStatus.enabled==false">
+                            <td>
+                                <div class="red-bold">disabled</div>
+                            </td>
+                        </tr>
+                        <tr ng-if="trade.tradeStatus && trade.tradeStatus.enabled==true">
+                            <td>
+                                <div class="dark-green-bold">enabled</div>
+                            </td>
+                        </tr>
+                    </table>
+
                 <td>
                     <table>
                         <tr>

@@ -57,7 +57,7 @@ public class ItemData {
   private Object trainingItem;
 
 
-  private boolean fromTargets = false;
+  private Boolean fromTargets;
   // used to sell item from transfer target
   private Long tradeId;
 

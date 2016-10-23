@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static com.liberty.common.DateHelper.getDurationString;
+
 /**
  * User: Dimitr
  * Date: 15.10.2016
@@ -42,8 +44,8 @@ public class AuctionRobot {
 
   private static final int PAGES_TO_SEARCH = 50;
 
-  private static final int BID_LIMIT = 8;
-  private static final int WIN_ITEMS_LIMIT = 8;
+  private static final int BID_LIMIT = 20;
+  private static final int WIN_ITEMS_LIMIT = 20;
   private static final int MAX_EXPIRATION_TIME = 300;
   private int wonItems;
   private boolean disabled;
@@ -93,8 +95,19 @@ public class AuctionRobot {
         log.info("Auction robot is disabled");
         return;
       }
-      log.info("Robot processed " + i + " pages");
+      logPageProcessed(i + 1, trades);
       DelayHelper.wait(100, 10);
+    }
+  }
+
+  private void logPageProcessed(int page, List<TradeInfo> trades) {
+    log.info("Robot processed " + page + " pages");
+    if (page % 10 == 0) {
+      logController.info("Auction Bot processed : " + page + " pages");
+    }
+    if (page % PAGES_TO_SEARCH == 0) {
+      logController.info("Last item expiration time : " + getDurationString(trades.get(trades.size() - 1)
+          .getAuctionInfo().getExpires()));
     }
   }
 
@@ -182,7 +195,7 @@ public class AuctionRobot {
   }
 
   private void processWonItems(List<AuctionInfo> won) {
-    logController.info("You have " + won.size() + " won items");
+    logController.info("You have won " + won.size() + " items");
   }
 
   private boolean processItem(AuctionInfo info) {
@@ -192,7 +205,6 @@ public class AuctionRobot {
       log.error("Bad item : " + info.getTradeId());
       return false;
     }
-//    PlayerProfile profile = getProfile(playerId);
 
     PlayerTradeStatus tradeStatus = getPlayerTrade(playerId);
     if (tradeStatus == null) {

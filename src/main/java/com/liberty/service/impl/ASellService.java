@@ -129,7 +129,6 @@ public abstract class ASellService extends ATradeService implements TradeService
       boolean success = fifaRequests
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
       if (success) {
-        items(request);
         logBuyOrSell();
         try {
 

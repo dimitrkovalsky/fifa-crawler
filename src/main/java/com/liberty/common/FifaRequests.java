@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,8 +47,15 @@ import static com.liberty.common.UrlResolver.getWatchlistUrl;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
+  public static final long NUCLEUS_PERSONA_ID = 228045231L;
   private String sessionId = null;
   private String phishingToken = null;
+
+  private Consumer<String> onError;
+
+  public FifaRequests(Consumer<String> onError) {
+    this.onError = onError;
+  }
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(getTradeLineUrl());
@@ -92,12 +100,18 @@ public class FifaRequests extends BaseFifaRequests {
       FifaError fifaError = objectMapper.readValue(json, FifaError.class);
       log.error("FIFA ERROR : " + fifaError.getReason());
       if (fifaError.getCode() == FifaError.ErrorCode.SESSION_EXPIRED) {
+        logError("Error happened...");
         return updateSession();
       }
       return true;
     } catch (Exception ignored) {
+
       return false;
     }
+  }
+
+  private void logError(String msg) {
+    onError.accept(msg);
   }
 
   /**
@@ -113,7 +127,7 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   private String getAuthRequest() {
-    AuthRequest request = new AuthRequest(2311254984L, 228045231L);
+    AuthRequest request = new AuthRequest(2311254984L, NUCLEUS_PERSONA_ID);
     return JsonHelper.toJson(request).toString();
   }
 
@@ -296,7 +310,7 @@ public class FifaRequests extends BaseFifaRequests {
     Optional<SellItem> trade = JsonHelper.toEntity(json, SellItem.class);
     return trade.get().getItemData().get(0).getSuccess();
   }
-          // TODO: fix bug
+
   public boolean auctionHouse(Long id, int startPrice, int buyNow) {
     HttpPost request = createPostRequest(getAuctionHouseUrl());
     AuctionInfo toSell = new AuctionInfo();
@@ -307,7 +321,8 @@ public class FifaRequests extends BaseFifaRequests {
     itemData.setId(id);
     toSell.setItemData(itemData);
     try {
-      request.setEntity(new StringEntity(JsonHelper.toJsonString(toSell)));
+      String json = JsonHelper.toJsonString(toSell);
+      request.setEntity(new StringEntity(json));
       execute(request);
       return true;
     } catch (Exception e) {

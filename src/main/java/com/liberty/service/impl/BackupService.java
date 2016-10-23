@@ -26,25 +26,31 @@ public class BackupService {
   private static String BACKUP_PATH = System.getProperty("user.dir") +
       "\\src\\main\\resources\\players.json";
 
-  //private static String BACKUP_PATH = "D:\\players.json";
+
+  private static String BACKUP_PATH_CURRENT = BACKUP_PATH + ".bak";
 
   @Autowired
   private PlayerTradeStatusRepository statusRepository;
 
   public void backup() throws IOException {
+    backup(BACKUP_PATH);
+    System.exit(0);
+  }
+
+  private void backup(String path) throws IOException {
+
     List<PlayerTradeStatus> players = statusRepository.findAll();
     ObjectMapper mapper = getObjectMapper();
 
 
-    mapper.writerWithDefaultPrettyPrinter().writeValue(new File(BACKUP_PATH), players);
+    mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), players);
     System.out.println("Backup completed... ");
-    System.out.println("Data stored in " + BACKUP_PATH);
-    System.exit(1);
+    System.out.println("Data stored in " + path);
   }
 
   private ObjectMapper getObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
-    JavaTimeModule javaTimeModule=new JavaTimeModule();
+    JavaTimeModule javaTimeModule = new JavaTimeModule();
     // Hack time module to allow 'Z' at the end of string (i.e. javascript json's)
     javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
         DateTimeFormatter.ISO_DATE_TIME));
@@ -54,6 +60,7 @@ public class BackupService {
   }
 
   public void restore() throws IOException {
+    backup(BACKUP_PATH_CURRENT);
     ObjectMapper mapper = getObjectMapper();
 
     List<PlayerTradeStatus> players = mapper

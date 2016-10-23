@@ -42,7 +42,6 @@ public class CrawlerServiceImpl implements CrawlerService {
   @Override
   public void fetchData(Long playerId) {
     PlayerProfile profile = profileRepository.findOne(playerId);
-    // TODO: Fix club and nation fetch if profile was saved;
     if (profile == null) {
       Optional<PlayerProfile> maybeProfile = processor.fetchInfo(playerId);
       if (!maybeProfile.isPresent()) {

@@ -1,10 +1,11 @@
-fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParams,
+fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParams, Tags,
                                                  PlayerAutoBuy, MinPrice, PlayerUpdate, AutoBuyPlayer) {
     $scope.id = $stateParams.id;
+    $scope.selectedTag = "";
 
     $scope.onLoaded = function (result) {
         $scope.player = result.tradeStatus;
-        $scope.profile = result.profile
+        $scope.profile = result.profile;
         if ($scope.player == null) {
             $scope.isNew = true;
             $scope.player = {};
@@ -47,6 +48,7 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
             var title = counter + " players";
             var data = new google.visualization.arrayToDataTable(matrix);
             var subtitle = "Price distribution";
+
             var options = {
                 chart: {
                     title: title,
@@ -57,7 +59,6 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
             };
 
             var chart = new google.charts.Bar(document.getElementById('price-chart'));
-
             chart.draw(data, options);
         }
     };
@@ -92,6 +93,32 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
         }, $rootScope.onError);
     };
 
+    $scope.addTag = function () {
+        Tags.save({
+            playerId: $scope.player.id,
+            tag: $scope.selectedTag
+        }, $scope.getPlayerInfo, $rootScope.onError);
+    };
+
+    $scope.removeTag = function (tag) {
+        Tags.delete({
+            playerId: $scope.player.id,
+            tag: tag
+        }, $scope.getPlayerInfo, $rootScope.onError);
+    };
+
+    $scope.getAvailableTags = function () {
+        var tags = [];
+        angular.forEach($rootScope.tags, function (value, key) {
+            if ($scope.player && $scope.player.tags && $scope.player.tags.indexOf(value) > -1) {
+            } else {
+                tags.push(value);
+            }
+        });
+        return tags;
+    };
+
     $scope.getPlayerInfo();
+
     MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
 });

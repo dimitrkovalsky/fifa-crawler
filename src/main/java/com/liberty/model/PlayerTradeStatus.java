@@ -3,12 +3,15 @@ package com.liberty.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import static com.liberty.common.DateHelper.toReadableString;
 
 /**
  * User: Dimitr Date: 03.06.2016 Time: 20:08
@@ -52,25 +55,10 @@ public class PlayerTradeStatus {
 
   private boolean enabled = true;
 
+  private Set<String> tags = new HashSet<>();
+
   public String getLastDate() {
-    if (innerDate == null) {
-      return "Match time ago";
-    }
-
-    LocalDateTime now = LocalDateTime.now();
-    Duration duration = Duration.between(innerDate, now);
-    long days = duration.toDays();
-    long hours = duration.toHours();
-    long minutes = duration.toMinutes();
-    if (minutes < 60) {
-      return minutes + " minutes ago";
-    } else if (hours < 24) {
-      return String.format("%s hours %s minutes ago", (int) minutes / 60, minutes - hours * 60);
-    } else if (days == 0) {
-      return hours + " hours ago";
-    }
-
-    return String.format("%s days %s hours ago", (int) hours / 24, hours - days * 24);
+    return toReadableString(innerDate);
   }
 
   public void updateDate() {

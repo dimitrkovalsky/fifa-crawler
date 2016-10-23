@@ -23,6 +23,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @EnableMongoRepositories("com.liberty.repositories")
 public class Config extends AbstractMongoConfiguration  {
 
+  public static final int POOL_SIZE = 5;
+
   @Override
   protected String getDatabaseName() {
     return "fifa17";
@@ -43,8 +45,10 @@ public class Config extends AbstractMongoConfiguration  {
     return "com.liberty.model";
   }
 
-  @Bean()
+  @Bean
   public ThreadPoolTaskScheduler taskScheduler() {
-    return new ThreadPoolTaskScheduler();
+    ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+    scheduler.setPoolSize(POOL_SIZE);
+    return scheduler;
   }
 }

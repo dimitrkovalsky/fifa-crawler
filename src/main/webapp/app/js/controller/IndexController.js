@@ -1,19 +1,30 @@
 fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticResource, Tradepile,
-    Suggestions, LeagueResource) {
+                                                Suggestions, LeagueResource, Tags) {
     $scope.stompClient = null;
     $rootScope.logs = [];
     $rootScope.autoScroll = true;
+    $rootScope.tags = [];
 
-    $rootScope.loadLeagues = function(){
-       LeagueResource.get({}, function(res){
-           $rootScope.leaguesMap = res;
-         }, $rootScope.onError);
+    $rootScope.loadLeagues = function () {
+        LeagueResource.get({}, function (res) {
+            $rootScope.leaguesMap = res;
+        }, $rootScope.onError);
+    };
+
+    $rootScope.loadTags = function () {
+        Tags.query({}, function (result) {
+            $rootScope.tags = [];
+            angular.forEach(result, function (value, key) {
+                $rootScope.tags.push(value.name);
+            });
+            console.log("Tags loaded : " + $rootScope.tags);
+        }, $rootScope.onError);
     };
 
     $scope.logConfig = {
         autoHideScrollbar: false,
         theme: 'light',
-        advanced:{
+        advanced: {
             updateOnContentResize: true
         },
         setHeight: 200,
@@ -27,11 +38,12 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         });
     };
 
-    $rootScope.toTime = function(time){
+    $rootScope.toTime = function (time) {
         var minutes = "0" + Math.floor(time / 60);
         var seconds = "0" + (time - minutes * 60);
         return minutes.substr(-2) + ":" + seconds.substr(-2);
-    }
+    };
+
     $rootScope.onError = function (error) {
         console.log("Error ", error);
     };
@@ -54,7 +66,7 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         if ($rootScope.logs.length > 10) {
             $rootScope.logs.shift();
         }
-        switch(msg.messageType) {
+        switch (msg.messageType) {
             case 'log': {
                 $rootScope.addLog(msg);
                 break;
@@ -67,7 +79,7 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         }
     };
 
-    $rootScope.addLog = function(msg) {
+    $rootScope.addLog = function (msg) {
         $rootScope.logs.push(msg);
         $rootScope.$apply();
         if ($rootScope.autoScroll) {
@@ -76,11 +88,11 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         }
     };
 
-    $rootScope.onUpdateTradepile = function(msg) {
+    $rootScope.onUpdateTradepile = function (msg) {
         $rootScope.unassigned = msg.unassigned;
         $rootScope.canSell = msg.canSell;
         $rootScope.purchasesRemained = msg.purchasesRemained;
-        if($scope.stats){
+        if ($scope.stats) {
             $scope.stats.credits = msg.credits;
         }
         document.title = "Fifa (" + $rootScope.unassigned + ")";
@@ -88,17 +100,17 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
     };
 
     $rootScope.favicon = new Favico({
-        animation :'slide',
-        position : 'up',
-        bgColor : '#5CB85C',
-        textColor : '#ff0'
+        animation: 'slide',
+        position: 'up',
+        bgColor: '#5CB85C',
+        textColor: '#ff0'
     });
 
-    $rootScope.updateFavicon = function(badge) {
+    $rootScope.updateFavicon = function (badge) {
         $rootScope.favicon.badge(badge);
     };
 
-    $rootScope.onScroll = function(){
+    $rootScope.onScroll = function () {
         $rootScope.autoScroll = false;
     };
 
@@ -115,16 +127,17 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         $rootScope.$apply();
     };
 
-    $rootScope.updateTradepile = function() {
+    $rootScope.updateTradepile = function () {
         Tradepile.get({}, $rootScope.onUpdateTradepile, $rootScope.onError);
     };
 
-    $rootScope.getLeagueName = function(id) {
-       return $rootScope.leaguesMap[id].abbrName;
-    }
+    $rootScope.getLeagueName = function (id) {
+        return $rootScope.leaguesMap[id].abbrName;
+    };
 
     $scope.connect();
     $rootScope.updateStats();
     $rootScope.updateTradepile();
     $rootScope.loadLeagues();
+    $rootScope.loadTags();
 });

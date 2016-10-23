@@ -53,6 +53,10 @@ fifaApp.factory('Search', function ($resource) {
     return $resource('/api/market/search/');
 });
 
+fifaApp.factory('Tags', function ($resource) {
+    return $resource('/api/tags/:tag');
+});
+
 fifaApp.factory('Trade', function ($resource) {
     return $resource('/api/trade/');
 });

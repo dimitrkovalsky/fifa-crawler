@@ -50,5 +50,17 @@
         }
     });
 
+    module.directive('tags', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/tags.html'
+        }
+    });
 
+    module.directive('tagsWithButton', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/tags-with-button.html'
+        }
+    });
 })();

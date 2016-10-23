@@ -17,8 +17,8 @@ public class AuthRequest {
   String method = "authcode";
   Integer clientVersion = 1;
   Boolean isReadOnly = false;
-  long nuc = 2311254984L;
-  long nucleusPersonaId = 228045231L;
+  long nuc;
+  long nucleusPersonaId;
   String nucleusPersonaDisplayName = "dimitrkovalsky";
 
   public AuthRequest(long nuc, long nucleusPersonaId) {

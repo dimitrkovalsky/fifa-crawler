@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.liberty.common.BoundHelper.defineLowBound;
@@ -50,6 +51,9 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   public static final int ITERATION_LIMIT = 35;
 
   private boolean autoBuyEnabled = true;
+
+  // TODO: add rest to change active tag
+  private Optional<String> activeTag = Optional.empty();
 
   @Autowired
   private PlayerStatisticRepository statisticRepository;
@@ -76,11 +80,11 @@ public class TradeServiceImpl extends ASellService implements TradeService {
           if (price != null && price != 0) {
             p.setEnabled(true);
             if (price <= 1000) {
-              p.setMaxPrice(price - 100);
-            } else if (price <= 2000) {
               p.setMaxPrice(price - 200);
-            } else if (price <= 3000) {
+            } else if (price <= 2000) {
               p.setMaxPrice(price - 300);
+            } else if (price <= 3000) {
+              p.setMaxPrice(price - 400);
             } else if (price <= 4000) {
               p.setMaxPrice(price - 500);
             } else if (price <= 5000) {
@@ -106,7 +110,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       return;
     }
     List<PlayerTradeStatus> players = tradeRepository.findAll().stream()
-        .filter(PlayerTradeStatus::isEnabled)
+        .filter(filterPlayersToAutoBuy())
         .collect(Collectors.toList());
     Collections.shuffle(players, new Random(System.currentTimeMillis()));
     logController.info("Monitor : " + players.size() + " players");
@@ -133,6 +137,15 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       }
       sleep();
     }
+  }
+
+  private Predicate<PlayerTradeStatus> filterPlayersToAutoBuy() {
+    return p -> {
+      if (activeTag.isPresent()) {
+        return p.isEnabled() && p.getTags().contains(activeTag.get());
+      }
+      return p.isEnabled();
+    };
   }
 
   private boolean checkMarket(PlayerTradeStatus playerTradeStatus) {
