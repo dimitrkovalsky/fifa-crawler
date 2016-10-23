@@ -25,7 +25,7 @@ public class Runner {
 //    service.saveOthers();
    // initTags(context);
     TagService tagService = context.getBean(TagService.class);
-    tagService.markTags();
+    tagService.executeUpdate();
     System.exit(0);
   }
 

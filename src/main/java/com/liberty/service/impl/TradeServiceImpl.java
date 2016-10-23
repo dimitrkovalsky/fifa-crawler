@@ -464,7 +464,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public List<TradeInfo> search(MarketSearchRequest searchRequest) {
+  public synchronized List<TradeInfo> search(MarketSearchRequest searchRequest) {
     Optional<TradeStatus> search = fifaRequests.search(searchRequest);
     if (!search.isPresent()) {
       return Collections.emptyList();

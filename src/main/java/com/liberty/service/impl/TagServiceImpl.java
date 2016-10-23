@@ -53,7 +53,7 @@ public class TagServiceImpl implements TagService {
   public void executeUpdate() {
     String tag = "medium";
 //    markTags();
-    fetchMarketPrices(tag);
+ //   fetchMarketPrices(tag);
     enableByTag(tag);
     updatePrices(tag);
   }

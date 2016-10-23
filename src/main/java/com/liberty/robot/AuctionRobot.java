@@ -183,13 +183,15 @@ public class AuctionRobot {
 
   private boolean shouldBid(AuctionInfo info, Integer maxPrice) {
     long bid = defineBid(info);
-    return bid <= maxPrice && info.getExpires() <= MAX_EXPIRATION_TIME;
+    return bid <= maxPrice && info.getExpires() <= MAX_EXPIRATION_TIME && (info.getItemData()
+        .getContract() > 0 || bid + 1000 <= maxPrice);
   }
 
   private List<TradeInfo> getPage(int page) {
     MarketSearchRequest request = new MarketSearchRequest();
     request.setPage(page);
     request.setQuality("gold");
+//    request.setMinPrice(1500);
 
     return tradeService.search(request);
   }
@@ -198,7 +200,7 @@ public class AuctionRobot {
     logController.info("You have won " + won.size() + " items");
   }
 
-  private boolean processItem(AuctionInfo info) {
+  private synchronized boolean processItem(AuctionInfo info) {
     log.debug("Trying to process " + info.getTradeId() + " trade");
     Long playerId = info.getItemData().getAssetId();
     if (playerId == null) {

@@ -9,6 +9,7 @@ import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;
 import com.liberty.rest.request.SearchRequest;
 import com.liberty.robot.AuctionRobot;
+import com.liberty.service.TagService;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class MarketResource {
 
   @Autowired
   private TradeService tradeService;
+
+  @Autowired
+  private TagService tagService;
 
   @Autowired
   private AuctionRobot auctionRobot;
@@ -94,6 +98,7 @@ public class MarketResource {
   public PlayerStatistic findMin(@RequestBody IdRequest request) {
     if (request.getId().equals(-1L)) {
       tradeService.findMinPriceAll();
+//      tagService.executeUpdate();
       return null;
     }
     return tradeService.findMinPrice(request.getId());
