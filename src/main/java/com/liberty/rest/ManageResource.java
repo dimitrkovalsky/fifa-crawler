@@ -1,5 +1,6 @@
 package com.liberty.rest;
 
+import com.liberty.rest.request.AuthRequest;
 import com.liberty.rest.request.TokenUpdateRequest;
 import com.liberty.service.TradeService;
 
@@ -27,8 +28,17 @@ public class ManageResource {
   @CrossOrigin(origins = "*")
   @RequestMapping(path = "/token", method = RequestMethod.POST)
   public void update(@RequestBody TokenUpdateRequest request) {
-    tradeService.updateTokens(request.getSessionId(), request.getToken(), request.getExternal());
-    log.info("Updating tokens " + request);
+    tradeService.updateTokens(request.getSessionId(), request.getToken(), request.getExternal(),
+        request.getCookies());
+    log.info("Updating tokens . Session : " + request.getSessionId() + ". Token : " + request
+        .getToken());
+  }
+
+  @CrossOrigin(origins = "*")
+  @RequestMapping(path = "/auth", method = RequestMethod.POST)
+  public void onAuth(@RequestBody AuthRequest request) {
+    tradeService.updateAuth(request.getSid(), request.getCookies());
+    log.info("");
   }
 
 }

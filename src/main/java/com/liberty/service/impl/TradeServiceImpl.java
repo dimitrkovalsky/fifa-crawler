@@ -16,6 +16,7 @@ import com.liberty.rest.request.AutobidRequest;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.MarketSearchRequest;
+import com.liberty.rest.request.TokenUpdateRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
@@ -306,7 +307,8 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public void updateTokens(String sessionId, String phishingToken, Boolean external) {
+  public void updateTokens(String sessionId, String phishingToken, Boolean external,
+                           List<TokenUpdateRequest.Cookie> cookies) {
     if (external != null) {
       UrlResolver.externalUrl = external;
     }
@@ -318,6 +320,16 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       fifaRequests.setSessionId(sessionId);
       logController.info("Updated sessionId to " + sessionId);
     }
+    fifaRequests.updateCookies(cookies);
+  }
+
+  @Override
+  public void updateAuth(String sessionId, List<TokenUpdateRequest.Cookie> cookies) {
+    if (!sessionId.equals(fifaRequests.getSessionForCheck())) {
+      fifaRequests.setSessionId(sessionId);
+      logController.info("Updated sessionId to " + sessionId);
+    }
+    fifaRequests.updateAuthCookies(cookies);
   }
 
   @Override

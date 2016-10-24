@@ -7,6 +7,10 @@
 
 
 
+
+
+
+
 </script>
 
 <div class="page-header">
@@ -67,6 +71,7 @@
             <th>Bought for</th>
             <th>contracts</th>
             <th>Actions</th>
+            <th>Profit</th>
         </tr>
         </thead>
         <tbody ng-repeat="trade in toSell">
@@ -86,6 +91,18 @@
             <td>
                 <button class="btn btn-default" ng-click="sell(trade.id, trade.tradeId)"> Sell
                 </button>
+            </td>
+            <td>
+                <div ng-class="{greenBold: calculateProfit(trade, sellPrice.sellStartPrice)>0,
+                redBold: calculateProfit(trade, sellPrice.sellStartPrice)<0}">
+                    {{calculateProfit(trade, sellPrice.sellStartPrice)
+                    }}
+                </div>
+                -
+                <div ng-class="{greenBold: calculateProfit(trade, sellPrice.sellBuyNowPrice)>0,
+                 redBold: calculateProfit(trade, sellPrice.sellBuyNowPrice)<0}">
+                    {{calculateProfit(trade, sellPrice.sellBuyNowPrice)}}
+                </div>
             </td>
         </tr>
         </tbody>

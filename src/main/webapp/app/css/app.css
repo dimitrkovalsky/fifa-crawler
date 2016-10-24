@@ -233,6 +233,10 @@ b, strong {
     color:#16d416; font-weight: bold;
 }
 
+.greenBold {
+    color:#16d416; font-weight: bold;
+}
+
 .dark-green-bold {
     color: #149b14; font-weight: bold;
 }
@@ -254,6 +258,10 @@ b, strong {
 }
 
 .red-bold {
+    color:#ff4747; font-weight: bold;
+}
+
+.redBold {
     color:#ff4747; font-weight: bold;
 }
 

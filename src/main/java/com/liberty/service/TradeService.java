@@ -14,6 +14,7 @@ import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.MarketSearchRequest;
 import com.liberty.rest.request.SellRequest;
+import com.liberty.rest.request.TokenUpdateRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.websockets.BuyMessage;
 
@@ -44,7 +45,10 @@ public interface TradeService {
 
   void setMarketInfo(MarketInfo info);
 
-  void updateTokens(String sessionId, String phishingToken, Boolean external);
+  void updateTokens(String sessionId, String phishingToken, Boolean external,
+                    List<TokenUpdateRequest.Cookie> cookies);
+
+  void updateAuth(String sessionId, List<TokenUpdateRequest.Cookie> cookies);
 
   void autoBuy(AutobuyRequest run);
 

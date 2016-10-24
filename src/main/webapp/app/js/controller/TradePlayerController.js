@@ -86,6 +86,11 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
         MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
     };
 
+    $scope.calculateProfit = function(trade, sellPrice) {
+        var diff = sellPrice - trade.lastSalePrice;
+        return Math.floor(diff - diff * 0.05);
+    };
+
 
     $scope.filterPlayers($scope.id);
 

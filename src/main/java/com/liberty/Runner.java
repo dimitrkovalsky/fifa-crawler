@@ -23,7 +23,7 @@ public class Runner {
 //    CrawlerService service = context.getBean(CrawlerService.class);
 //
 //    service.saveOthers();
-   // initTags(context);
+//    initTags(context);
     TagService tagService = context.getBean(TagService.class);
     tagService.executeUpdate();
     System.exit(0);
