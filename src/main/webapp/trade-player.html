@@ -93,16 +93,16 @@
                 </button>
             </td>
             <td>
-                <div ng-class="{greenBold: calculateProfit(trade, sellPrice.sellStartPrice)>0,
+                <span ng-class="{greenBold: calculateProfit(trade, sellPrice.sellStartPrice)>0,
                 redBold: calculateProfit(trade, sellPrice.sellStartPrice)<0}">
                     {{calculateProfit(trade, sellPrice.sellStartPrice)
                     }}
-                </div>
+                </span>
                 -
-                <div ng-class="{greenBold: calculateProfit(trade, sellPrice.sellBuyNowPrice)>0,
+                <span ng-class="{greenBold: calculateProfit(trade, sellPrice.sellBuyNowPrice)>0,
                  redBold: calculateProfit(trade, sellPrice.sellBuyNowPrice)<0}">
                     {{calculateProfit(trade, sellPrice.sellBuyNowPrice)}}
-                </div>
+                </span>
             </td>
         </tr>
         </tbody>
