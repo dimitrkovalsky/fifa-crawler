@@ -3,7 +3,7 @@ package com.liberty.rest;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerTradeStatus;
-import com.liberty.model.market.PlayerStatistic;
+import com.liberty.model.PlayerStatistic;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;

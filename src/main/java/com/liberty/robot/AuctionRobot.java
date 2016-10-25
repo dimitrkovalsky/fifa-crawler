@@ -16,6 +16,7 @@ import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.rest.request.MarketSearchRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.TradeService;
+import com.liberty.service.TransactionService;
 import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,9 @@ public class AuctionRobot {
 
   @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
+
+  @Autowired
+  private TransactionService transactionService;
 
   @Scheduled(fixedRate = 100_000)
   public void findBids() {
@@ -197,6 +201,8 @@ public class AuctionRobot {
   }
 
   private void processWonItems(List<AuctionInfo> won) {
+    won.forEach(i-> transactionService.logBuyByRobot(i));
+
     logController.info("You have won " + won.size() + " items");
   }
 

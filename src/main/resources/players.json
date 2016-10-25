@@ -10,7 +10,7 @@
   "sellBuyNowPrice" : 2900,
   "innerDate" : "2016-10-24T11:45:28.409",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -25,7 +25,7 @@
   "sellBuyNowPrice" : 2500,
   "innerDate" : "2016-10-24T11:45:28.437",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -40,7 +40,7 @@
   "sellBuyNowPrice" : 2000,
   "innerDate" : "2016-10-24T11:45:28.438",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -55,7 +55,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.439",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -70,7 +70,7 @@
   "sellBuyNowPrice" : 1600,
   "innerDate" : "2016-10-24T11:45:28.441",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -85,7 +85,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.442",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -100,22 +100,22 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.443",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 121944,
   "boughtAmount" : 0,
   "name" : "Schweinsteiger",
-  "maxPrice" : 2200,
+  "maxPrice" : 1700,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 2400,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "innerDate" : "2016-10-24T11:45:28.444",
+  "sellBuyNowPrice" : 2600,
+  "innerDate" : "2016-10-25T15:35:11.215",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "4 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -130,7 +130,7 @@
   "sellBuyNowPrice" : 6000,
   "innerDate" : "2016-10-24T11:45:28.447",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -145,7 +145,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.449",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -160,7 +160,7 @@
   "sellBuyNowPrice" : 3900,
   "innerDate" : "2016-10-24T11:45:28.450",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -175,7 +175,7 @@
   "sellBuyNowPrice" : 2400,
   "innerDate" : "2016-10-24T12:21:53.346",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 9 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -190,7 +190,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.453",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -205,7 +205,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:46:59.248",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 44 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -220,7 +220,7 @@
   "sellBuyNowPrice" : 2500,
   "innerDate" : "2016-10-24T11:46:02.731",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -235,7 +235,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.456",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -250,7 +250,7 @@
   "sellBuyNowPrice" : 3300,
   "innerDate" : "2016-10-24T11:45:28.457",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -265,7 +265,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.458",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -280,7 +280,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.459",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -295,7 +295,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.460",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -310,7 +310,7 @@
   "sellBuyNowPrice" : 3100,
   "innerDate" : "2016-10-24T11:45:28.461",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -325,7 +325,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.462",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -340,7 +340,7 @@
   "sellBuyNowPrice" : 800,
   "innerDate" : "2016-10-24T11:45:28.463",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -355,7 +355,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.464",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -370,7 +370,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.467",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -385,7 +385,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.468",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "cheap" ]
 }, {
@@ -400,22 +400,22 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.469",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 178224,
   "boughtAmount" : 0,
   "name" : "Hernández",
-  "maxPrice" : 4300,
+  "maxPrice" : 3500,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 4700,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "innerDate" : "2016-10-24T11:45:28.471",
+  "sellBuyNowPrice" : 4900,
+  "innerDate" : "2016-10-25T15:29:51.148",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "9 minutes ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -430,7 +430,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.472",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -445,7 +445,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.473",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -460,7 +460,7 @@
   "sellBuyNowPrice" : 3300,
   "innerDate" : "2016-10-24T11:45:28.474",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -475,7 +475,7 @@
   "sellBuyNowPrice" : 2300,
   "innerDate" : "2016-10-24T12:20:18.868",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 11 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -490,7 +490,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.477",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -505,7 +505,7 @@
   "sellBuyNowPrice" : 5300,
   "innerDate" : "2016-10-24T11:45:28.478",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -520,7 +520,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.479",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -535,7 +535,7 @@
   "sellBuyNowPrice" : 1600,
   "innerDate" : "2016-10-24T16:18:43.322",
   "lastUpdate" : null,
-  "lastDate" : "1 hours 12 minutes ago",
+  "lastDate" : "23 hours 20 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -550,7 +550,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.480",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "cheap" ]
 }, {
@@ -559,13 +559,13 @@
   "name" : "Kurzawa",
   "maxPrice" : 1300,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1500,
+  "sellStartPrice" : 1600,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 1700,
+  "sellBuyNowPrice" : 1800,
   "innerDate" : "2016-10-24T11:45:28.483",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -580,7 +580,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.484",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -595,7 +595,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.485",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -610,7 +610,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.485",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "expensive" ]
 }, {
@@ -625,7 +625,7 @@
   "sellBuyNowPrice" : 1900,
   "innerDate" : "2016-10-24T11:45:28.486",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -640,7 +640,7 @@
   "sellBuyNowPrice" : 2200,
   "innerDate" : "2016-10-24T11:45:28.487",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -655,7 +655,7 @@
   "sellBuyNowPrice" : 1400,
   "innerDate" : "2016-10-24T11:45:28.487",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -670,7 +670,7 @@
   "sellBuyNowPrice" : 2000,
   "innerDate" : "2016-10-24T11:57:05.786",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 34 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -685,7 +685,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.489",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -700,7 +700,7 @@
   "sellBuyNowPrice" : 1900,
   "innerDate" : "2016-10-24T11:45:28.490",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -715,7 +715,7 @@
   "sellBuyNowPrice" : 100,
   "innerDate" : "2016-10-24T11:45:28.490",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -730,7 +730,7 @@
   "sellBuyNowPrice" : 2500,
   "innerDate" : "2016-10-24T11:45:28.492",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -745,7 +745,7 @@
   "sellBuyNowPrice" : 2100,
   "innerDate" : "2016-10-24T11:45:28.493",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -760,22 +760,22 @@
   "sellBuyNowPrice" : 1400,
   "innerDate" : "2016-10-24T11:45:28.494",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 211117,
   "boughtAmount" : 12,
   "name" : "Alli",
-  "maxPrice" : 1300,
+  "maxPrice" : 1000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 1500,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "innerDate" : "2016-10-24T11:45:28.495",
+  "sellBuyNowPrice" : 1700,
+  "innerDate" : "2016-10-25T15:30:23.647",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "9 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -790,7 +790,7 @@
   "sellBuyNowPrice" : 1900,
   "innerDate" : "2016-10-24T11:45:28.515",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -805,7 +805,7 @@
   "sellBuyNowPrice" : 1600,
   "innerDate" : "2016-10-24T11:45:28.517",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -820,7 +820,7 @@
   "sellBuyNowPrice" : 2000,
   "innerDate" : "2016-10-24T11:45:28.518",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -835,7 +835,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.519",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -850,7 +850,7 @@
   "sellBuyNowPrice" : 1900,
   "innerDate" : "2016-10-24T11:45:28.519",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -865,7 +865,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.520",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -880,7 +880,7 @@
   "sellBuyNowPrice" : 1000,
   "innerDate" : "2016-10-24T11:45:28.521",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -895,7 +895,7 @@
   "sellBuyNowPrice" : 2800,
   "innerDate" : "2016-10-24T11:45:28.522",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -910,7 +910,7 @@
   "sellBuyNowPrice" : 1800,
   "innerDate" : "2016-10-24T11:45:28.522",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -925,22 +925,22 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.523",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 152554,
   "boughtAmount" : 3,
   "name" : "Clichy",
-  "maxPrice" : 1400,
+  "maxPrice" : 1100,
   "lastBuyPrice" : null,
   "sellStartPrice" : 1800,
   "rareflag" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2000,
-  "innerDate" : "2016-10-24T11:45:28.524",
+  "innerDate" : "2016-10-25T15:33:41.756",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "6 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -955,7 +955,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.525",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -970,7 +970,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.526",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -985,7 +985,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.527",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1000,7 +1000,7 @@
   "sellBuyNowPrice" : 1400,
   "innerDate" : "2016-10-24T11:45:28.528",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1015,23 +1015,23 @@
   "sellBuyNowPrice" : 1400,
   "innerDate" : "2016-10-24T11:45:28.528",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 143745,
   "boughtAmount" : 0,
   "name" : "Turan",
-  "maxPrice" : 4000,
+  "maxPrice" : 3400,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "rareflag" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
-  "innerDate" : "2016-10-24T11:45:28.529",
+  "innerDate" : "2016-10-25T15:21:42.485",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
-  "enabled" : false,
+  "lastDate" : "18 minutes ago",
+  "enabled" : true,
   "tags" : [ "medium" ]
 }, {
   "id" : 183855,
@@ -1045,7 +1045,7 @@
   "sellBuyNowPrice" : 1600,
   "innerDate" : "2016-10-24T11:45:28.530",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1060,7 +1060,7 @@
   "sellBuyNowPrice" : 1800,
   "innerDate" : "2016-10-24T16:18:14.987",
   "lastUpdate" : null,
-  "lastDate" : "1 hours 13 minutes ago",
+  "lastDate" : "23 hours 21 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1075,7 +1075,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.532",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1090,7 +1090,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.533",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1105,7 +1105,7 @@
   "sellBuyNowPrice" : 1100,
   "innerDate" : "2016-10-24T11:45:28.534",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1120,7 +1120,7 @@
   "sellBuyNowPrice" : 1500,
   "innerDate" : "2016-10-24T11:45:28.535",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1135,7 +1135,7 @@
   "sellBuyNowPrice" : 2000,
   "innerDate" : "2016-10-24T11:45:28.536",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1150,7 +1150,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.537",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1165,7 +1165,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.538",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1180,7 +1180,7 @@
   "sellBuyNowPrice" : 2900,
   "innerDate" : "2016-10-24T11:45:28.539",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1195,7 +1195,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.540",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1210,7 +1210,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.541",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1225,7 +1225,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.542",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1240,7 +1240,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.543",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1255,7 +1255,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.543",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1270,7 +1270,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.544",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1285,7 +1285,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.545",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1300,7 +1300,7 @@
   "sellBuyNowPrice" : 2600,
   "innerDate" : "2016-10-24T11:45:28.546",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1315,7 +1315,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.547",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1330,7 +1330,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.548",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -1345,7 +1345,7 @@
   "sellBuyNowPrice" : 1500,
   "innerDate" : "2016-10-24T16:17:44.677",
   "lastUpdate" : null,
-  "lastDate" : "1 hours 13 minutes ago",
+  "lastDate" : "23 hours 21 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1360,7 +1360,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.561",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1375,7 +1375,7 @@
   "sellBuyNowPrice" : 1800,
   "innerDate" : "2016-10-24T11:45:28.563",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1390,7 +1390,7 @@
   "sellBuyNowPrice" : 2400,
   "innerDate" : "2016-10-24T11:45:28.565",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1405,7 +1405,7 @@
   "sellBuyNowPrice" : 1200,
   "innerDate" : "2016-10-24T11:45:28.566",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1420,7 +1420,7 @@
   "sellBuyNowPrice" : 1500,
   "innerDate" : "2016-10-24T11:45:28.568",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1435,7 +1435,7 @@
   "sellBuyNowPrice" : 1700,
   "innerDate" : "2016-10-24T11:45:28.568",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1450,7 +1450,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.569",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1465,7 +1465,7 @@
   "sellBuyNowPrice" : 2700,
   "innerDate" : "2016-10-24T11:45:28.569",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1480,7 +1480,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.570",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -1495,7 +1495,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.570",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1510,7 +1510,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.571",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1525,7 +1525,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.572",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1540,7 +1540,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.572",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1555,7 +1555,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.573",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1570,7 +1570,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.575",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1585,7 +1585,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.576",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1600,22 +1600,22 @@
   "sellBuyNowPrice" : 1600,
   "innerDate" : "2016-10-24T12:23:25.618",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 7 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 192774,
   "boughtAmount" : 0,
   "name" : "Manolas",
-  "maxPrice" : 6000,
+  "maxPrice" : 5000,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 6400,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
-  "innerDate" : "2016-10-24T11:45:28.577",
+  "sellBuyNowPrice" : 6600,
+  "innerDate" : "2016-10-25T15:30:51.049",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "8 minutes ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1630,7 +1630,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.578",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1645,7 +1645,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.579",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1654,13 +1654,13 @@
   "name" : "Juanfran",
   "maxPrice" : 2100,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 2400,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 2600,
   "innerDate" : "2016-10-24T11:45:28.580",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1675,7 +1675,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.582",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1690,7 +1690,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.583",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1705,7 +1705,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.584",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1720,7 +1720,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.585",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1735,7 +1735,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.586",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -1750,7 +1750,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.587",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1765,7 +1765,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.588",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1780,7 +1780,7 @@
   "sellBuyNowPrice" : 1400,
   "innerDate" : "2016-10-24T11:45:28.589",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1795,7 +1795,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.590",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1810,7 +1810,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.591",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1825,7 +1825,7 @@
   "sellBuyNowPrice" : 1900,
   "innerDate" : "2016-10-24T11:45:28.592",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1840,7 +1840,7 @@
   "sellBuyNowPrice" : 1100,
   "innerDate" : "2016-10-24T11:45:28.593",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1849,13 +1849,13 @@
   "name" : "Marquinhos",
   "maxPrice" : 1400,
   "lastBuyPrice" : null,
-  "sellStartPrice" : null,
+  "sellStartPrice" : 1600,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : null,
+  "sellBuyNowPrice" : 1800,
   "innerDate" : "2016-10-24T11:45:28.594",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1870,7 +1870,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.595",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1885,7 +1885,7 @@
   "sellBuyNowPrice" : 1600,
   "innerDate" : "2016-10-24T16:17:02.918",
   "lastUpdate" : null,
-  "lastDate" : "1 hours 14 minutes ago",
+  "lastDate" : "23 hours 22 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1900,23 +1900,23 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.597",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 208333,
   "boughtAmount" : 0,
   "name" : "Can",
-  "maxPrice" : 4500,
+  "maxPrice" : 3300,
   "lastBuyPrice" : null,
   "sellStartPrice" : null,
   "rareflag" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : null,
-  "innerDate" : "2016-10-24T11:45:28.598",
+  "innerDate" : "2016-10-25T15:28:59.846",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
-  "enabled" : false,
+  "lastDate" : "10 minutes ago",
+  "enabled" : true,
   "tags" : [ "medium" ]
 }, {
   "id" : 206273,
@@ -1930,7 +1930,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.600",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1945,7 +1945,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.601",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1960,7 +1960,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.602",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -1975,7 +1975,7 @@
   "sellBuyNowPrice" : null,
   "innerDate" : "2016-10-24T11:45:28.603",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -1990,7 +1990,7 @@
   "sellBuyNowPrice" : 2200,
   "innerDate" : "2016-10-24T11:45:28.603",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2005,7 +2005,7 @@
   "sellBuyNowPrice" : 3900,
   "innerDate" : "2016-10-24T11:45:28.604",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2020,7 +2020,7 @@
   "sellBuyNowPrice" : 1800,
   "innerDate" : "2016-10-24T11:45:28.604",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2035,7 +2035,7 @@
   "sellBuyNowPrice" : 4200,
   "innerDate" : "2016-10-24T11:45:28.605",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -2050,7 +2050,7 @@
   "sellBuyNowPrice" : 5200,
   "innerDate" : "2016-10-24T11:45:28.605",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -2065,7 +2065,7 @@
   "sellBuyNowPrice" : 7500,
   "innerDate" : "2016-10-24T11:45:28.605",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -2080,7 +2080,7 @@
   "sellBuyNowPrice" : 5200,
   "innerDate" : "2016-10-24T11:45:28.606",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -2089,13 +2089,13 @@
   "name" : "Bonaventura",
   "maxPrice" : 750,
   "lastBuyPrice" : null,
-  "sellStartPrice" : 1500,
+  "sellStartPrice" : 1000,
   "rareflag" : null,
   "minMarketPrice" : null,
-  "sellBuyNowPrice" : 1700,
+  "sellBuyNowPrice" : 1200,
   "innerDate" : "2016-10-24T11:45:28.606",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2110,7 +2110,7 @@
   "sellBuyNowPrice" : 4900,
   "innerDate" : "2016-10-24T11:45:28.607",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "medium" ]
 }, {
@@ -2125,7 +2125,7 @@
   "sellBuyNowPrice" : 7700,
   "innerDate" : "2016-10-24T11:45:28.608",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "rich" ]
 }, {
@@ -2140,7 +2140,7 @@
   "sellBuyNowPrice" : 2800,
   "innerDate" : "2016-10-24T11:45:28.608",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2155,7 +2155,7 @@
   "sellBuyNowPrice" : 1500,
   "innerDate" : "2016-10-24T11:45:28.609",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2170,7 +2170,7 @@
   "sellBuyNowPrice" : 2600,
   "innerDate" : "2016-10-24T11:45:28.609",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2185,7 +2185,7 @@
   "sellBuyNowPrice" : 5500,
   "innerDate" : "2016-10-24T11:45:28.610",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : false,
   "tags" : [ "medium" ]
 }, {
@@ -2200,7 +2200,7 @@
   "sellBuyNowPrice" : 1700,
   "innerDate" : "2016-10-24T11:45:28.611",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2215,7 +2215,7 @@
   "sellBuyNowPrice" : 1300,
   "innerDate" : "2016-10-24T11:45:28.612",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2230,22 +2230,22 @@
   "sellBuyNowPrice" : 900,
   "innerDate" : "2016-10-24T11:45:28.614",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
   "id" : 177358,
   "boughtAmount" : 6,
   "name" : "Schneiderlin",
-  "maxPrice" : 1800,
+  "maxPrice" : 1400,
   "lastBuyPrice" : null,
   "sellStartPrice" : 2100,
   "rareflag" : null,
   "minMarketPrice" : null,
   "sellBuyNowPrice" : 2300,
-  "innerDate" : "2016-10-24T12:22:41.818",
+  "innerDate" : "2016-10-25T15:33:07.459",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 8 minutes ago",
+  "lastDate" : "6 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2260,7 +2260,7 @@
   "sellBuyNowPrice" : 1200,
   "innerDate" : "2016-10-24T11:45:28.617",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 }, {
@@ -2275,7 +2275,367 @@
   "sellBuyNowPrice" : 2000,
   "innerDate" : "2016-10-24T11:45:28.617",
   "lastUpdate" : null,
-  "lastDate" : "5 hours 45 minutes ago",
+  "lastDate" : "1 days 3 hours ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 49369,
+  "boughtAmount" : 0,
+  "name" : "Fernando Torres",
+  "maxPrice" : 750,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:16:45.187",
+  "lastUpdate" : null,
+  "lastDate" : "22 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 188943,
+  "boughtAmount" : 0,
+  "name" : "Trapp",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:17:32.101",
+  "lastUpdate" : null,
+  "lastDate" : "22 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 201535,
+  "boughtAmount" : 0,
+  "name" : "Varane",
+  "maxPrice" : 6000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:18:50.850",
+  "lastUpdate" : null,
+  "lastDate" : "20 minutes ago",
+  "enabled" : false,
+  "tags" : [ "medium" ]
+}, {
+  "id" : 225508,
+  "boughtAmount" : 0,
+  "name" : "Bailly",
+  "maxPrice" : 15000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:19:14.483",
+  "lastUpdate" : null,
+  "lastDate" : "20 minutes ago",
+  "enabled" : false,
+  "tags" : [ "expensive" ]
+}, {
+  "id" : 108080,
+  "boughtAmount" : 0,
+  "name" : "Lichtsteiner",
+  "maxPrice" : 1400,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:20:14.378",
+  "lastUpdate" : null,
+  "lastDate" : "19 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 165580,
+  "boughtAmount" : 0,
+  "name" : "Diego Alves",
+  "maxPrice" : 800,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:20:22.848",
+  "lastUpdate" : null,
+  "lastDate" : "19 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 183498,
+  "boughtAmount" : 0,
+  "name" : "Parolo",
+  "maxPrice" : 2000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:20:37.607",
+  "lastUpdate" : null,
+  "lastDate" : "19 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 181820,
+  "boughtAmount" : 0,
+  "name" : "Jovetić",
+  "maxPrice" : 800,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:20:29.045",
+  "lastUpdate" : null,
+  "lastDate" : "19 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 198009,
+  "boughtAmount" : 0,
+  "name" : "Perin",
+  "maxPrice" : 3500,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:21:34.133",
+  "lastUpdate" : null,
+  "lastDate" : "18 minutes ago",
+  "enabled" : true,
+  "tags" : [ "medium" ]
+}, {
+  "id" : 171897,
+  "boughtAmount" : 0,
+  "name" : "Guardado",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:22:14.873",
+  "lastUpdate" : null,
+  "lastDate" : "17 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 200215,
+  "boughtAmount" : 0,
+  "name" : "Rode",
+  "maxPrice" : 900,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:23:16.985",
+  "lastUpdate" : null,
+  "lastDate" : "16 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 203042,
+  "boughtAmount" : 0,
+  "name" : "Butland",
+  "maxPrice" : 1400,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:23:43.673",
+  "lastUpdate" : null,
+  "lastDate" : "15 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 171688,
+  "boughtAmount" : 0,
+  "name" : "Fábio Coentrão",
+  "maxPrice" : 750,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:24:13.297",
+  "lastUpdate" : null,
+  "lastDate" : "15 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 173221,
+  "boughtAmount" : 0,
+  "name" : "Candreva",
+  "maxPrice" : 1800,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:24:28.541",
+  "lastUpdate" : null,
+  "lastDate" : "15 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 170481,
+  "boughtAmount" : 0,
+  "name" : "Garay",
+  "maxPrice" : 850,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:24:38.925",
+  "lastUpdate" : null,
+  "lastDate" : "15 minutes ago",
+  "enabled" : true,
+  "tags" : [ ]
+}, {
+  "id" : 176769,
+  "boughtAmount" : 0,
+  "name" : "Jonas",
+  "maxPrice" : 1300,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:25:31.703",
+  "lastUpdate" : null,
+  "lastDate" : "14 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 7763,
+  "boughtAmount" : 0,
+  "name" : "Pirlo",
+  "maxPrice" : 1600,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:26:12.298",
+  "lastUpdate" : null,
+  "lastDate" : "13 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 167628,
+  "boughtAmount" : 0,
+  "name" : "Ruffier",
+  "maxPrice" : 3000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:25:44.399",
+  "lastUpdate" : null,
+  "lastDate" : "13 minutes ago",
+  "enabled" : true,
+  "tags" : [ "medium" ]
+}, {
+  "id" : 195859,
+  "boughtAmount" : 0,
+  "name" : "Ings",
+  "maxPrice" : 750,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:26:02.556",
+  "lastUpdate" : null,
+  "lastDate" : "13 minutes ago",
+  "enabled" : false,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 137677,
+  "boughtAmount" : 0,
+  "name" : "Vorm",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "lastDate" : "Match time ago",
+  "enabled" : false,
+  "tags" : [ ]
+}, {
+  "id" : 113422,
+  "boughtAmount" : 0,
+  "name" : "David Villa",
+  "maxPrice" : 2000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : null,
+  "lastUpdate" : null,
+  "lastDate" : "Match time ago",
+  "enabled" : false,
+  "tags" : [ ]
+}, {
+  "id" : 184431,
+  "boughtAmount" : 0,
+  "name" : "Giovinco",
+  "maxPrice" : 850,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:27:36.876",
+  "lastUpdate" : null,
+  "lastDate" : "12 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 189157,
+  "boughtAmount" : 0,
+  "name" : "Bolasie",
+  "maxPrice" : 800,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:28:11.170",
+  "lastUpdate" : null,
+  "lastDate" : "11 minutes ago",
+  "enabled" : true,
+  "tags" : [ "cheap" ]
+}, {
+  "id" : 53405,
+  "boughtAmount" : 0,
+  "name" : "Maxwell",
+  "maxPrice" : 1000,
+  "lastBuyPrice" : null,
+  "sellStartPrice" : null,
+  "rareflag" : null,
+  "minMarketPrice" : null,
+  "sellBuyNowPrice" : null,
+  "innerDate" : "2016-10-25T15:28:18.966",
+  "lastUpdate" : null,
+  "lastDate" : "11 minutes ago",
   "enabled" : true,
   "tags" : [ "cheap" ]
 } ]

@@ -8,7 +8,7 @@ import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
-import com.liberty.model.market.PlayerStatistic;
+import com.liberty.model.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
