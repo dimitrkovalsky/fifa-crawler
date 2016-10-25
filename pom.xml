@@ -30,8 +30,9 @@
         <selenium-java.version>2.53.0</selenium-java.version>
         <htmlunit-driver.version>2.52.0</htmlunit-driver.version>
         <robotframework.version>3.0</robotframework.version>
+        <akka-actors.version>2.4.11</akka-actors.version>
+        <akka-spring-boot.version>0.3.1</akka-spring-boot.version>
     </properties>
-
 
 
     <dependencies>
@@ -39,6 +40,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>1.3.5.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -132,21 +147,21 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.seleniumhq.selenium</groupId>-->
-            <!--<artifactId>selenium-chrome-driver</artifactId>-->
-            <!--<version>2.53.0</version>-->
+        <!--<groupId>org.seleniumhq.selenium</groupId>-->
+        <!--<artifactId>selenium-chrome-driver</artifactId>-->
+        <!--<version>2.53.0</version>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
-            <!--<groupId>com.opera</groupId>-->
-            <!--<artifactId>operadriver</artifactId>-->
-            <!--<version>1.5</version>-->
+        <!--<groupId>com.opera</groupId>-->
+        <!--<artifactId>operadriver</artifactId>-->
+        <!--<version>1.5</version>-->
         <!--</dependency>-->
 
         <!--<dependency>-->
-            <!--<groupId>net.lightbody.bmp</groupId>-->
-            <!--<artifactId>browsermob-core</artifactId>-->
-            <!--<version>2.1.1</version>-->
+        <!--<groupId>net.lightbody.bmp</groupId>-->
+        <!--<artifactId>browsermob-core</artifactId>-->
+        <!--<version>2.1.1</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -186,7 +201,28 @@
             <version>${log4j.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.11</artifactId>
+            <version>${akka-actors.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.github.scalaspring</groupId>
+            <artifactId>akka-spring-boot_2.11</artifactId>
+            <version>${akka-spring-boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
 
 
     </dependencies>

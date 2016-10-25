@@ -3,6 +3,8 @@ package com.liberty.config;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
+import akka.actor.ActorSystem;
+
+import static com.liberty.config.SpringExtension.SpringExtProvider;
+
 /**
  * Created by Dmytro_Kovalskyi on 28.03.2016.
  */
@@ -21,7 +27,11 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @EnableScheduling
 @EnableWebSocket
 @EnableMongoRepositories("com.liberty.repositories")
-public class Config extends AbstractMongoConfiguration  {
+public class Config extends AbstractMongoConfiguration {
+
+  @Autowired
+  private ApplicationContext applicationContext;
+
 
   public static final int POOL_SIZE = 5;
 
@@ -50,5 +60,13 @@ public class Config extends AbstractMongoConfiguration  {
     ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     scheduler.setPoolSize(POOL_SIZE);
     return scheduler;
+  }
+
+  @Bean
+  public ActorSystem actorSystem() {
+    ActorSystem system = ActorSystem.create("LibertyActorSystem");
+    // initialize the application context in the Akka Spring Extension
+    SpringExtProvider.get(system).initialize(applicationContext);
+    return system;
   }
 }
