@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JsonHelper {
 
   private static ObjectMapper objectMapper = new ObjectMapper();
+
   static {
     objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     objectMapper.registerModule(new JavaTimeModule());
@@ -49,6 +50,15 @@ public class JsonHelper {
       return Optional.of((T) objectMapper.readValue(data, clazz));
     } catch (IOException e) {
       log.error("Unable convert to entry", e);
+      return Optional.empty();
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> Optional<T> toEntitySilently(String data, Class clazz) {
+    try {
+      return Optional.of((T) objectMapper.readValue(data, clazz));
+    } catch (IOException e) {
       return Optional.empty();
     }
   }

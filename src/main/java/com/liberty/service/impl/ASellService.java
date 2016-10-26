@@ -38,20 +38,20 @@ public abstract class ASellService extends ATradeService implements TradeService
 
   @Override
   public int getTradePileSize() {
-    List<AuctionInfo> tradePile = fifaRequests.getTradePile();
+    List<AuctionInfo> tradePile = requestService.getTradePile();
     Map<String, List<AuctionInfo>> byState = tradePile.stream()
         .filter(a -> !a.getTradeId().equals(0L))
         .collect(Collectors.groupingBy(AuctionInfo::getTradeState));
     if (byState.containsKey(TradeState.CLOSED)) {
       logSoldItems(byState.get(TradeState.CLOSED));
-      fifaRequests.removeAllSold();
+      requestService.removeAllSold();
     }
 //    if (byState.containsKey(TradeState.INACTIVE)) {
 //      sellAll(byState.get(TradeState.INACTIVE));
 //    }
     if (byState.containsKey(TradeState.EXPIRED)) {
       logRelistItems(byState.get(TradeState.EXPIRED));
-      fifaRequests.relistAll();
+      requestService.relistAll();
     }
     return tradePile.size();
   }
@@ -128,7 +128,7 @@ public abstract class ASellService extends ATradeService implements TradeService
    * Returns all unassigned items. From unassigned and from transfer targets.
    */
   private List<ItemData> getAllUnassigned() {
-    List<ItemData> unassigned = fifaRequests.getUnassigned();
+    List<ItemData> unassigned = requestService.getUnassigned();
     unassigned.addAll(getWonTransferTargets());
     return unassigned;
   }
@@ -137,13 +137,13 @@ public abstract class ASellService extends ATradeService implements TradeService
   public synchronized void sell(SellRequest request) {
     boolean itemResult;
     if (request.getTradeId() == null) {
-      itemResult = fifaRequests.item(request.getItemId());
+      itemResult = requestService.item(request.getItemId());
     } else {
-      itemResult = fifaRequests.item(request.getItemId(), request.getTradeId());
+      itemResult = requestService.item(request.getItemId(), request.getTradeId());
     }
 
     if (itemResult) {
-      Optional<AuctionHouseResponse> auctionResult = fifaRequests
+      Optional<AuctionHouseResponse> auctionResult = requestService
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
       if (auctionResult.isPresent()) {
         transactionService.logPlaceToMarket(request.getPlayerId(), request.getItemId(),
@@ -168,20 +168,20 @@ public abstract class ASellService extends ATradeService implements TradeService
   public BuyMessage getTradepileInfo() {
     int unassigned = getAllUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
-    int credits = fifaRequests.getWatchlist().getCredits();
+    int credits = requestService.getWatchlist().getCredits();
     return new BuyMessage(unassigned, canSell, credits, getPurchasesRemained());
   }
 
   @Override
   public Watchlist getWatchlist() {
-    return fifaRequests.getWatchlist();
+    return requestService.getWatchlist();
   }
 
   @Override
   public void logBuyOrSell() {
     int unassigned = getAllUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
-    int credits = fifaRequests.getWatchlist().getCredits();
+    int credits = requestService.getWatchlist().getCredits();
     logController.logBuy(unassigned, canSell, credits, getPurchasesRemained());
   }
 

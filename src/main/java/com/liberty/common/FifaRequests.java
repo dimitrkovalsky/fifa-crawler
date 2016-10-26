@@ -18,17 +18,18 @@ import com.liberty.rest.response.BidStatus;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import lombok.extern.slf4j.Slf4j;
 
 import static com.liberty.common.ErrorCode.NOT_ALLOWED;
+import static com.liberty.common.FifaCrawlerState.FAILED;
 import static com.liberty.common.FifaEndpoints.AUTH;
 import static com.liberty.common.UrlResolver.getAuctionHouseUrl;
 import static com.liberty.common.UrlResolver.getBidUrl;
@@ -40,6 +41,7 @@ import static com.liberty.common.UrlResolver.getSearchUrl;
 import static com.liberty.common.UrlResolver.getStatusUrl;
 import static com.liberty.common.UrlResolver.getTradeLineUrl;
 import static com.liberty.common.UrlResolver.getWatchlistUrl;
+import static org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id;
 
 /**
  * User: Dimitr Date: 02.06.2016 Time: 7:34
@@ -48,65 +50,94 @@ import static com.liberty.common.UrlResolver.getWatchlistUrl;
 public class FifaRequests extends BaseFifaRequests {
 
   public static final long NUCLEUS_PERSONA_ID = 228045231L;
-  private String sessionId = null;
-  private String phishingToken = null;
+  private volatile String sessionId = null;
+  private volatile String phishingToken = null;
+
+  private enum FifaRequestStatus {
+    OK, SESSION_EXPIRED, FAILED
+  }
 
   private Consumer<String> onError;
 
-  public FifaRequests(Consumer<String> onError) {
+  private Consumer<FifaCrawlerState> onStateChange;
+
+  public FifaRequests(Consumer<String> onError, Consumer<FifaCrawlerState> onStateChange) {
     this.onError = onError;
+    this.onStateChange = onStateChange;
   }
 
   public List<AuctionInfo> getTradePile() {
     HttpPost request = createRequest(getTradeLineUrl());
-    String json = execute(request).get();
-    if (isError(json)) {
+    Optional<String> executionResult = execute(request);
+
+    if (!executionResult.isPresent()) {
       return Collections.emptyList();
     }
-    Optional<TradeStatus> trade = JsonHelper.toEntity(json, TradeStatus.class);
+    String json = executionResult.get();
+    FifaRequestStatus status = getStatus(json);
 
-    return trade.get().getAuctionInfo();
-  }
-
-  public Watchlist getWatchlist() {
-    HttpPost request = createRequest(getWatchlistUrl());
-    String json = execute(request).get();
-    if (isError(json)) {
-      log.error("Expired session...");
-      return null;
+    if (status == FifaRequestStatus.FAILED) {
+      return Collections.emptyList();
+    } else if (status == FifaRequestStatus.OK) {
+      Optional<TradeStatus> entity = JsonHelper.toEntity(json, TradeStatus.class);
+      return entity.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
+    } else if (status == FifaRequestStatus.SESSION_EXPIRED) {
+      return getTradePile();
+    } else {
+      return Collections.emptyList();
     }
-    Optional<Watchlist> watchlist = JsonHelper.toEntity(json, Watchlist.class);
-
-    return watchlist.get();
   }
 
-  public Optional<TradeStatus> searchPlayer(long id, int maxPrice, int page) throws IOException {
+  public Optional<Watchlist> getWatchlist() {
+    HttpPost request = createRequest(getWatchlistUrl());
+    Optional<String> execute = execute(request);
+
+    return processResult(execute, Watchlist.class, this::getWatchlist);
+  }
+
+
+  private <T, U> Optional<T> processResult(Optional<String> executionResult,
+                                           Class<U> resultEntity,
+                                           Supplier<Optional<T>> onSessionExpired) {
+    if (!executionResult.isPresent()) {
+      return Optional.empty();
+    }
+    String json = executionResult.get();
+    FifaRequestStatus status = getStatus(json);
+
+    if (status == FifaRequestStatus.FAILED) {
+      return Optional.empty();
+    } else if (status == FifaRequestStatus.OK) {
+      return JsonHelper.toEntity(json, resultEntity);
+    } else if (status == FifaRequestStatus.SESSION_EXPIRED) {
+      return onSessionExpired.get();
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  public Optional<TradeStatus> searchPlayer(long id, int maxPrice, int page) {
     HttpPost request = createRequest(String.format(getSearchUrl(), page, id, maxPrice));
     Optional<String> execute = execute(request);
-    if (!execute.isPresent()) {
-      log.error("Player not found");
-      return Optional.empty();
-    }
-    String json = execute.get();
-    if (isError(json)) {
-      return Optional.empty();
-    }
-    return JsonHelper.toEntity(json, TradeStatus.class);
+
+    return processResult(execute, TradeStatus.class, () -> searchPlayer(id, maxPrice, page));
   }
 
-  private boolean isError(String json) {
+
+  private FifaRequestStatus getStatus(String json) {
     ObjectMapper objectMapper = JsonHelper.getObjectMapper();
     try {
       FifaError fifaError = objectMapper.readValue(json, FifaError.class);
-      log.error("FIFA ERROR : " + fifaError.getReason());
       if (fifaError.getCode() == FifaError.ErrorCode.SESSION_EXPIRED) {
-        logError("Error happened...");
-        return updateSession();
+        logError("Session expired...");
+        updateSession();
+        return FifaRequestStatus.SESSION_EXPIRED;
+      } else {
+        log.error("FIFA ERROR : " + fifaError.getReason());
+        return FifaRequestStatus.FAILED;
       }
-      return true;
     } catch (Exception ignored) {
-
-      return false;
+      return FifaRequestStatus.OK;
     }
   }
 
@@ -182,7 +213,7 @@ public class FifaRequests extends BaseFifaRequests {
     }
   }
 
-  public Optional<String> auth() {
+  private Optional<String> auth() {
     try {
       HttpPost request = createAuthRequest(AUTH);
       String authRequest = getAuthRequest();
@@ -194,17 +225,23 @@ public class FifaRequests extends BaseFifaRequests {
       if (!result.isPresent()) {
         return Optional.empty();
       }
-      Optional<AuthResponse> response = JsonHelper.toEntity(result.get(), AuthResponse.class);
+      Optional<AuthResponse> response =
+          JsonHelper.toEntitySilently(result.get(), AuthResponse.class);
       if (!response.isPresent()) {
+        setFailAuth();
         return Optional.empty();
       }
       log.info("Retrieved session >>> " + response.get());
       String sid = response.get().getSid();
       return Optional.ofNullable(sid);
     } catch (Exception e) {
-      log.error(e.getMessage());
+      log.error("On auth can not parse response ");
       return Optional.empty();
     }
+  }
+
+  private void setFailAuth() {
+    onStateChange.accept(FAILED);
   }
 
   private void status(Long tradeId) {
@@ -303,12 +340,24 @@ public class FifaRequests extends BaseFifaRequests {
     } catch (UnsupportedEncodingException e) {
       log.error(e.getMessage());
     }
-    String json = execute(request).get();
-    if (isError(json)) {
+    Optional<String> executionResult = execute(request);
+
+    if (!executionResult.isPresent()) {
       return false;
     }
-    Optional<SellItem> trade = JsonHelper.toEntity(json, SellItem.class);
-    return trade.get().getItemData().get(0).getSuccess();
+    String json = executionResult.get();
+    FifaRequestStatus status = getStatus(json);
+
+    if (status == FifaRequestStatus.FAILED) {
+      return false;
+    } else if (status == FifaRequestStatus.OK) {
+      Optional<SellItem> entity = JsonHelper.toEntity(json, SellItem.class);
+      return entity.isPresent();
+    } else if (status == FifaRequestStatus.SESSION_EXPIRED) {
+      return executeItemRequest(toSell);
+    } else {
+      return false;
+    }
   }
 
   public Optional<AuctionHouseResponse> auctionHouse(Long id, int startPrice, int buyNow) {

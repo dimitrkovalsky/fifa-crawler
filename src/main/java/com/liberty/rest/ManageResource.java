@@ -2,6 +2,7 @@ package com.liberty.rest;
 
 import com.liberty.rest.request.AuthRequest;
 import com.liberty.rest.request.TokenUpdateRequest;
+import com.liberty.service.RequestService;
 import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ManageResource {
   @Autowired
   private TradeService tradeService;
 
+  @Autowired
+  private RequestService requestService;
+
   @CrossOrigin(origins = "*")
   @RequestMapping(path = "/token", method = RequestMethod.POST)
   public void update(@RequestBody TokenUpdateRequest request) {
@@ -37,7 +41,7 @@ public class ManageResource {
   @CrossOrigin(origins = "*")
   @RequestMapping(path = "/auth", method = RequestMethod.POST)
   public void onAuth(@RequestBody AuthRequest request) {
-    tradeService.updateAuth(request.getSid(), request.getCookies());
+    requestService.updateAuthTokens(request.getSid(), request.getCookies());
     log.info("Updated Auth. Session : " + request.getSid());
   }
 

@@ -48,8 +48,6 @@ public interface TradeService {
   void updateTokens(String sessionId, String phishingToken, Boolean external,
                     List<TokenUpdateRequest.Cookie> cookies);
 
-  void updateAuth(String sessionId, List<TokenUpdateRequest.Cookie> cookies);
-
   void autoBuy(AutobuyRequest run);
 
   void deleteFromAutoBuy(Long id);

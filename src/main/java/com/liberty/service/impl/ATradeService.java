@@ -1,10 +1,10 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.FifaRequests;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerTradeStatusRepository;
+import com.liberty.service.RequestService;
 import com.liberty.service.TransactionService;
 import com.liberty.websockets.LogController;
 
@@ -36,13 +36,11 @@ public abstract class ATradeService {
   protected TransactionService transactionService;
 
   @Autowired
+  protected RequestService requestService;
+
+  @Autowired
   protected PlayerTradeStatusRepository tradeRepository;
 
-  protected FifaRequests fifaRequests = new FifaRequests(this::onError);
-
-  private void onError(String msg) {
-    logController.error(msg);
-  }
 
   public List<PlayerTradeStatus> search(String phrase) {
     return tradeRepository.findByName(phrase)
@@ -72,7 +70,7 @@ public abstract class ATradeService {
 
   protected boolean buyOne(AuctionInfo auctionInfo, PlayerTradeStatus playerTradeStatus) {
     logController.info("Found min player : " + auctionInfo.getBuyNowPrice());
-    boolean success = fifaRequests.buy(auctionInfo);
+    boolean success = requestService.buy(auctionInfo);
     if (!success) {
       failed = false;
       return success;

@@ -5,10 +5,10 @@ import com.liberty.common.UrlResolver;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
-import com.liberty.model.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
@@ -47,7 +47,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
 @Service
 public class TradeServiceImpl extends ASellService implements TradeService {
 
-  public static final int DEFAULT_LOW_BOUND = 4000;
+  public static final int DEFAULT_LOW_BOUND = 10000;
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
   public static final int ITERATION_LIMIT = 35;
 
@@ -152,7 +152,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   private boolean checkMarket(PlayerTradeStatus playerTradeStatus) {
     try {
       sleep();
-      Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerTradeStatus.getId(),
+      Optional<TradeStatus> maybe = requestService.searchPlayer(playerTradeStatus.getId(),
           playerTradeStatus.getMaxPrice(), 0);
       if (!maybe.isPresent()) {
         return false;
@@ -190,7 +190,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + all.size());
-      sleep(7000);
+      sleep(17000);
     });
   }
 
@@ -280,7 +280,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   private List<AuctionInfo> findPlayers(long playerId, Integer lowBound, int page) {
     try {
-      Optional<TradeStatus> maybe = fifaRequests.searchPlayer(playerId, lowBound, page);
+      Optional<TradeStatus> maybe = requestService.searchPlayer(playerId, lowBound, page);
       return maybe.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
     } catch (Exception e) {
       logController.error(e.getMessage());
@@ -292,8 +292,8 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   public MarketInfo getMarketInfo() {
     MarketInfo info = new MarketInfo();
     info.setMaxPurchases(maxPurchaseAmount);
-    info.setPhishingToken(fifaRequests.getPhishingTokenForCheck());
-    info.setSessionId(fifaRequests.getSessionForCheck());
+    info.setPhishingToken(requestService.getPhishingTokenForCheck());
+    info.setSessionId(requestService.getSessionForCheck());
     info.setAutoBuyEnabled(autoBuyEnabled);
 
     return info;
@@ -302,8 +302,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   public void setMarketInfo(MarketInfo info) {
 //    this.maxPurchaseAmount = info.getMaxPurchases();
-    fifaRequests.setPhishingToken(info.getPhishingToken());
-    fifaRequests.setSessionId(info.getSessionId());
+    requestService.updateCredentials(info.getSessionId(), info.getPhishingToken());
   }
 
   @Override
@@ -312,24 +311,8 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     if (external != null) {
       UrlResolver.externalUrl = external;
     }
-    if (!phishingToken.equals(fifaRequests.getPhishingTokenForCheck())) {
-      fifaRequests.setPhishingToken(phishingToken);
-      logController.info("Updated phishingToken to " + phishingToken);
-    }
-    if (!sessionId.equals(fifaRequests.getSessionForCheck())) {
-      fifaRequests.setSessionId(sessionId);
-      logController.info("Updated sessionId to " + sessionId);
-    }
-    fifaRequests.updateCookies(cookies);
-  }
+    requestService.updateTokens(sessionId, phishingToken, cookies);
 
-  @Override
-  public void updateAuth(String sessionId, List<TokenUpdateRequest.Cookie> cookies) {
-    if (!sessionId.equals(fifaRequests.getSessionForCheck())) {
-      fifaRequests.setSessionId(sessionId);
-      logController.info("Updated sessionId to " + sessionId);
-    }
-    fifaRequests.updateAuthCookies(cookies);
   }
 
   @Override
@@ -439,7 +422,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public List<AuctionInfo> getTransferTargets() {
-    return fifaRequests.getWatchlist().getAuctionInfo();
+    return requestService.getWatchlist().getAuctionInfo();
   }
 
   @Override
@@ -450,17 +433,17 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public void removeFromTargets(Long tradeId) {
-    fifaRequests.removeFromTargets(tradeId);
+    requestService.removeFromTargets(tradeId);
   }
 
   @Override
   public TradeStatus getTradeStatus(Long tradeId) {
-    return fifaRequests.getTradeStatus(tradeId);
+    return requestService.getTradeStatus(tradeId);
   }
 
   @Override
   public BidStatus makeBid(Long tradeId, Long price) {
-    BidStatus bidStatus = fifaRequests.makeBid(tradeId, price);
+    BidStatus bidStatus = requestService.makeBid(tradeId, price);
 
     System.out.println("Bid response status: " + bidStatus.getStatus());
     return bidStatus;
@@ -477,7 +460,7 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public synchronized List<TradeInfo> search(MarketSearchRequest searchRequest) {
-    Optional<TradeStatus> search = fifaRequests.search(searchRequest);
+    Optional<TradeStatus> search = requestService.search(searchRequest);
     if (!search.isPresent()) {
       return Collections.emptyList();
     }
