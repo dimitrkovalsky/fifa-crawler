@@ -71,6 +71,8 @@ public class Config extends AbstractMongoConfiguration {
     return system;
   }
 
+
+
   @Bean
   public com.typesafe.config.Config akkaConfiguration() {
     return ConfigFactory.load();
