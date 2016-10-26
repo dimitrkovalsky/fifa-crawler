@@ -182,15 +182,15 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public void findMinPriceAll() {
-    List<PlayerTradeStatus> all = tradeRepository.findAll();
-    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
-
+    List<PlayerTradeStatus> fetched = tradeRepository.findAll();
+    Collections.sort(fetched, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
+    List<PlayerTradeStatus> all = fetched.stream().skip(50).collect(Collectors.toList());
     final int[] counter = {0};
     all.forEach(p -> {
       findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + all.size());
-      sleep(7000);
+      sleep(15000);
     });
   }
 

@@ -10,11 +10,10 @@ import akka.actor.IndirectActorProducer;
  */
 public class SpringActorProducer implements IndirectActorProducer {
 
-  final ApplicationContext applicationContext;
-  final String actorBeanName;
+  final private ApplicationContext applicationContext;
+  final private String actorBeanName;
 
-  public SpringActorProducer(ApplicationContext applicationContext,
-                             String actorBeanName) {
+  public SpringActorProducer(ApplicationContext applicationContext, String actorBeanName) {
     this.applicationContext = applicationContext;
     this.actorBeanName = actorBeanName;
   }

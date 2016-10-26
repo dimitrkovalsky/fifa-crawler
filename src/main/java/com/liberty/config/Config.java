@@ -2,6 +2,7 @@ package com.liberty.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.typesafe.config.ConfigFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -17,8 +18,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 import akka.actor.ActorSystem;
 
-import static com.liberty.config.SpringExtension.SpringExtProvider;
-
 /**
  * Created by Dmytro_Kovalskyi on 28.03.2016.
  */
@@ -31,6 +30,9 @@ public class Config extends AbstractMongoConfiguration {
 
   @Autowired
   private ApplicationContext applicationContext;
+
+  @Autowired
+  private SpringExtension springExtension;
 
 
   public static final int POOL_SIZE = 5;
@@ -65,8 +67,12 @@ public class Config extends AbstractMongoConfiguration {
   @Bean
   public ActorSystem actorSystem() {
     ActorSystem system = ActorSystem.create("LibertyActorSystem");
-    // initialize the application context in the Akka Spring Extension
-    SpringExtProvider.get(system).initialize(applicationContext);
+    springExtension.initialize(applicationContext);
     return system;
+  }
+
+  @Bean
+  public com.typesafe.config.Config akkaConfiguration() {
+    return ConfigFactory.load();
   }
 }

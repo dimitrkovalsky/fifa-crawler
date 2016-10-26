@@ -1,6 +1,7 @@
 package com.liberty;
 
 import com.liberty.config.Config;
+import com.liberty.config.SpringExtension;
 import com.liberty.model.Tag;
 import com.liberty.repositories.TagRepository;
 
@@ -14,8 +15,6 @@ import java.util.Set;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 
-import static com.liberty.config.SpringExtension.SpringExtProvider;
-
 /**
  * @author Dmytro_Kovalskyi.
  * @since 16.05.2016.
@@ -26,17 +25,16 @@ public class Runner {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
     // CrawlerService service = context.getBean(CrawlerService.class);
 //
-    context.scan("com.liberty");
-    context.refresh();
+
 
     // get hold of the actor system
     ActorSystem system = context.getBean(ActorSystem.class);
+    SpringExtension springExtension = context.getBean(SpringExtension.class);
     // use the Spring Extension to create props for a named actor bean
-    ActorRef counter = system.actorOf(
-        SpringExtProvider.get(system).props("consoleActor"), "console");
+    ActorRef consoleActor = system.actorOf(springExtension.props("consoleActor"), "console-actor");
 
     // tell it to count three times
-    counter.tell("Hello", null);
+    consoleActor.tell("Hello", null);
 
     //  service.fetchAllPlayers();
 //    initTags(context);

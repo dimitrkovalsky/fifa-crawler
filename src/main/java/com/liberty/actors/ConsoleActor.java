@@ -1,6 +1,7 @@
 package com.liberty.actors;
 
-import javax.inject.Named;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import akka.actor.UntypedActor;
 
@@ -8,7 +9,8 @@ import akka.actor.UntypedActor;
  * @author Dmytro_Kovalskyi.
  * @since 25.10.2016.
  */
-@Named("consoleActor")
+@Component
+@Scope("prototype")
 public class ConsoleActor extends UntypedActor {
 
 
