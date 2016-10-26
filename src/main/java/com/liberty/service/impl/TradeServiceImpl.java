@@ -8,7 +8,7 @@ import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
-import com.liberty.model.market.PlayerStatistic;
+import com.liberty.model.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
@@ -182,15 +182,15 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   @Override
   public void findMinPriceAll() {
-    List<PlayerTradeStatus> fetched = tradeRepository.findAll();
-    Collections.sort(fetched, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
-    List<PlayerTradeStatus> all = fetched.stream().skip(50).collect(Collectors.toList());
+    List<PlayerTradeStatus> all = tradeRepository.findAll();
+    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
+
     final int[] counter = {0};
     all.forEach(p -> {
       findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + all.size());
-      sleep(15000);
+      sleep(7000);
     });
   }
 

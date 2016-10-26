@@ -3,7 +3,7 @@ package com.liberty;
 import com.liberty.config.Config;
 import com.liberty.model.Tag;
 import com.liberty.repositories.TagRepository;
-import com.liberty.service.TagService;
+import com.liberty.service.CrawlerService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -20,12 +20,12 @@ public class Runner {
 
   public static void main(String[] args) throws IOException {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-//    CrawlerService service = context.getBean(CrawlerService.class);
+    CrawlerService service = context.getBean(CrawlerService.class);
 //
-//    service.saveOthers();
+//    service.fetchAllPlayers();
 //    initTags(context);
-    TagService tagService = context.getBean(TagService.class);
-    tagService.executeUpdate();
+//    TagService tagService = context.getBean(TagService.class);
+//    tagService.executeUpdate();
     System.exit(0);
   }
 
