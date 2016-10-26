@@ -1,9 +1,9 @@
 package com.liberty;
 
 import com.liberty.config.Config;
-import com.liberty.config.SpringExtension;
 import com.liberty.model.Tag;
 import com.liberty.repositories.TagRepository;
+import com.liberty.service.TagService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,9 +12,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-
 /**
  * @author Dmytro_Kovalskyi.
  * @since 16.05.2016.
@@ -22,25 +19,14 @@ import akka.actor.ActorSystem;
 public class Runner {
 
   public static void main(String[] args) throws IOException {
-    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-    // CrawlerService service = context.getBean(CrawlerService.class);
+    ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+//    CrawlerService service = context.getBean(CrawlerService.class);
 //
-
-
-    // get hold of the actor system
-    ActorSystem system = context.getBean(ActorSystem.class);
-    SpringExtension springExtension = context.getBean(SpringExtension.class);
-    // use the Spring Extension to create props for a named actor bean
-    ActorRef consoleActor = system.actorOf(springExtension.props("consoleActor"), "console-actor");
-
-    // tell it to count three times
-    consoleActor.tell("Hello", null);
-
-    //  service.fetchAllPlayers();
+//    service.saveOthers();
 //    initTags(context);
-//    TagService tagService = context.getBean(TagService.class);
-//    tagService.executeUpdate();
-    // System.exit(0);
+    TagService tagService = context.getBean(TagService.class);
+    tagService.executeUpdate();
+    System.exit(0);
   }
 
   private static void initTags(ApplicationContext context) {

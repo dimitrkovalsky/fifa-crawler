@@ -6,7 +6,7 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.GroupedToSell;
-import com.liberty.model.PlayerStatistic;
+import com.liberty.model.market.PlayerStatistic;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.model.market.Watchlist;
 import com.liberty.rest.request.AutobidRequest;

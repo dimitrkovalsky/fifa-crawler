@@ -1,12 +1,11 @@
 package com.liberty.service.impl;
 
-import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.Statistic;
 import com.liberty.model.market.AuctionInfo;
+import com.liberty.model.market.PlayerStatistic;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-import com.liberty.service.HistoryService;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.BuyMessage;
@@ -41,9 +40,6 @@ public class StatisticServiceImpl implements StatisticService {
   @Autowired
   private PlayerStatisticRepository statisticRepository;
 
-  @Autowired
-  private HistoryService historyService;
-
   @Override
   public Statistic getGeneralStatistic() {
     Statistic statistic = new Statistic();
@@ -67,14 +63,12 @@ public class StatisticServiceImpl implements StatisticService {
     updateStats(playerId, toStatistic.stream().collect(Collectors.toList()), stats);
   }
 
-  private PlayerStatistic updateStatistic(long playerId, Integer lowBound) {
+  private void updateStatistic(long playerId, Integer lowBound) {
     PlayerStatistic toSave = new PlayerStatistic();
     toSave.setId(playerId);
     toSave.setLastPrice(lowBound);
     toSave.setInnerDate(LocalDateTime.now());
     statisticRepository.save(toSave);
-    historyService.logPriceChange(toSave);
-    return toSave;
   }
 
   private void updateStats(long playerId, List<AuctionInfo> toStatistic,
@@ -90,7 +84,6 @@ public class StatisticServiceImpl implements StatisticService {
       toSave.setPrices(prices);
       toSave.setInnerDate(LocalDateTime.now());
       statisticRepository.save(toSave);
-      historyService.logPriceChange(toSave);
     });
   }
 

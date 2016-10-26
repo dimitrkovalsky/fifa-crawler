@@ -5,7 +5,6 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-import com.liberty.service.TransactionService;
 import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,6 @@ public abstract class ATradeService {
 
   @Autowired
   protected LogController logController;
-
-  @Autowired
-  protected TransactionService transactionService;
 
   @Autowired
   protected PlayerTradeStatusRepository tradeRepository;
@@ -79,8 +75,6 @@ public abstract class ATradeService {
     }
     logController.info(
         "Success bought " + playerTradeStatus.getName() + " for " + auctionInfo.getBuyNowPrice());
-    transactionService.logBuy(playerTradeStatus.getId(), auctionInfo.getItemData().getId(),
-        auctionInfo.getTradeId(), auctionInfo.getBuyNowPrice());
     purchases++;
     PlayerTradeStatus one = tradeRepository.findOne(playerTradeStatus.getId());
     if (one == null) {

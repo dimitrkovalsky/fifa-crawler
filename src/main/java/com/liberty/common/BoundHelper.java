@@ -2,7 +2,7 @@ package com.liberty.common;
 
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
-import com.liberty.model.PlayerStatistic;
+import com.liberty.model.market.PlayerStatistic;
 
 import static com.liberty.service.impl.TradeServiceImpl.DEFAULT_LOW_BOUND;
 

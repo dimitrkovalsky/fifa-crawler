@@ -1,5 +1,7 @@
 package com.liberty.websockets;
 
+import com.liberty.model.MonitoringResult;
+
 import org.apache.log4j.lf5.LogLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -27,6 +29,9 @@ public class LogController {
     return 0;
   }
 
+  public void onPriceChanged(MonitoringResult monitoringResult) {
+    log.info("Changed : " + monitoringResult);
+  }
 
   public void info(String toLog) {
     log.info(toLog);

@@ -1,6 +1,5 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.AuctionHouseResponse;
 import com.liberty.common.BidState;
 import com.liberty.common.TradeState;
 import com.liberty.model.PlayerProfile;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -43,31 +41,16 @@ public abstract class ASellService extends ATradeService implements TradeService
         .filter(a -> !a.getTradeId().equals(0L))
         .collect(Collectors.groupingBy(AuctionInfo::getTradeState));
     if (byState.containsKey(TradeState.CLOSED)) {
-      logSoldItems(byState.get(TradeState.CLOSED));
       fifaRequests.removeAllSold();
     }
 //    if (byState.containsKey(TradeState.INACTIVE)) {
 //      sellAll(byState.get(TradeState.INACTIVE));
 //    }
     if (byState.containsKey(TradeState.EXPIRED)) {
-      logRelistItems(byState.get(TradeState.EXPIRED));
       fifaRequests.relistAll();
     }
+   // tradePile = fifaRequests.getTradePile();
     return tradePile.size();
-  }
-
-  private void logRelistItems(List<AuctionInfo> auctionInfos) {
-    auctionInfos.forEach(a -> {
-      transactionService.logRelistOperation(a.getItemData().getAssetId(), a.getItemData().getId(), a
-          .getTradeId(), a.getStartingBid(), a.getBuyNowPrice());
-    });
-  }
-
-  private void logSoldItems(List<AuctionInfo> auctionInfos) {
-    auctionInfos.forEach(a -> {
-      transactionService.logSell(a.getItemData().getAssetId(), a.getItemData().getId(), a
-          .getTradeId(), a.getCurrentBid());
-    });
   }
 
   private void sellAll(List<AuctionInfo> auctionInfos) {
@@ -77,7 +60,7 @@ public abstract class ASellService extends ATradeService implements TradeService
       request.setStartPrice(x.getStartingBid());
       request.setItemId(x.getItemData().getId());
       request.setPlayerId(x.getTradeId());
-      // TODO: check data from transfer targets . Record transactions.
+      // TODO: check data from transfer targets
       sell(request);
       try {
         Thread.sleep(2000);
@@ -143,13 +126,12 @@ public abstract class ASellService extends ATradeService implements TradeService
     }
 
     if (itemResult) {
-      Optional<AuctionHouseResponse> auctionResult = fifaRequests
+      boolean success = fifaRequests
           .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
-      if (auctionResult.isPresent()) {
-        transactionService.logPlaceToMarket(request.getPlayerId(), request.getItemId(),
-            auctionResult.get().getId(), request.getStartPrice(), request.getBuyNow());
+      if (success) {
         logBuyOrSell();
         try {
+
           PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
           logController.info("Success placed to market : " + player.getName() + " startPrice: " +
               request.getStartPrice() + " buyNow: " + request.getBuyNow());
@@ -163,6 +145,19 @@ public abstract class ASellService extends ATradeService implements TradeService
     }
   }
 
+  private void items(SellRequest request) {
+    List<AuctionInfo> tradePile = fifaRequests.getTradePile();
+//    List<AuctionInfo> collect =
+//        tradePile.stream().filter(x -> x.getTradeId().equals(0L))
+//            .collect(Collectors.toList());
+//    AuctionInfo auctionInfo = collect.get(0);
+//    if(auctionInfo != null) {
+//      fifaRequests.auctionHouse(auctionInfo.getItemData().getId(), request.getStartPrice(), request
+//          .getBuyNow
+//          ());
+//    }
+
+  }
 
   @Override
   public BuyMessage getTradepileInfo() {

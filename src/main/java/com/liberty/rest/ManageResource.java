@@ -38,7 +38,7 @@ public class ManageResource {
   @RequestMapping(path = "/auth", method = RequestMethod.POST)
   public void onAuth(@RequestBody AuthRequest request) {
     tradeService.updateAuth(request.getSid(), request.getCookies());
-    log.info("Updated Auth. Session : " + request.getSid());
+    log.info("");
   }
 
 }

@@ -1,5 +1,7 @@
 package com.liberty.model;
 
+import com.liberty.model.market.PlayerStatistic;
+
 import java.util.List;
 
 import lombok.Data;

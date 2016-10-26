@@ -4,7 +4,7 @@ import com.liberty.common.DelayHelper;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.Tag;
-import com.liberty.model.PlayerStatistic;
+import com.liberty.model.market.PlayerStatistic;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.repositories.TagRepository;

@@ -311,7 +311,7 @@ public class FifaRequests extends BaseFifaRequests {
     return trade.get().getItemData().get(0).getSuccess();
   }
 
-  public Optional<AuctionHouseResponse> auctionHouse(Long id, int startPrice, int buyNow) {
+  public boolean auctionHouse(Long id, int startPrice, int buyNow) {
     HttpPost request = createPostRequest(getAuctionHouseUrl());
     AuctionInfo toSell = new AuctionInfo();
     toSell.setStartingBid(startPrice);
@@ -323,15 +323,12 @@ public class FifaRequests extends BaseFifaRequests {
     try {
       String json = JsonHelper.toJsonString(toSell);
       request.setEntity(new StringEntity(json));
-      Optional<String> executionResult = execute(request);
-      if (!executionResult.isPresent()) {
-        return Optional.empty();
-      }
-      return JsonHelper.toEntity(executionResult.get(), AuctionHouseResponse.class);
+      execute(request);
+      return true;
     } catch (Exception e) {
       log.error(e.getMessage());
     }
-    return Optional.empty();
+    return false;
   }
 
   public void removeAllSold() {
