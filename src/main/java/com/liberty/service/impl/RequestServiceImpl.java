@@ -81,7 +81,8 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   public Watchlist getWatchlist() {
-    return execute(() -> fifaRequests.getWatchlist());
+    Optional<Watchlist> result = execute(() -> fifaRequests.getWatchlist());
+    return result.orElse(new Watchlist());
   }
 
   @Override
@@ -143,7 +144,8 @@ public class RequestServiceImpl implements RequestService {
 
   @Override
   public TradeStatus getTradeStatus(Long tradeId) {
-    return execute(() -> fifaRequests.getTradeStatus(tradeId));
+    Optional<TradeStatus> execute = execute(() -> fifaRequests.getTradeStatus(tradeId));
+    return execute.orElse(new TradeStatus());
   }
 
   @Override

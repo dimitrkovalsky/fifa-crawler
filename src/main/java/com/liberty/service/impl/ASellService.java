@@ -168,7 +168,11 @@ public abstract class ASellService extends ATradeService implements TradeService
   public BuyMessage getTradepileInfo() {
     int unassigned = getAllUnassigned().size();
     int canSell = TRADEPILE_SIZE - getTradePileSize();
-    int credits = requestService.getWatchlist().getCredits();
+    Integer availableCredits = requestService.getWatchlist().getCredits();
+    int credits = 0;
+    if (availableCredits != null) {
+      credits = availableCredits;
+    }
     return new BuyMessage(unassigned, canSell, credits, getPurchasesRemained());
   }
 

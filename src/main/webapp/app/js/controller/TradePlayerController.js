@@ -88,7 +88,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
 
     $scope.calculateProfit = function(trade, sellPrice) {
         var diff = sellPrice - trade.lastSalePrice;
-        return Math.floor(diff - diff * 0.05);
+        return Math.floor(diff - sellPrice * 0.05);
     };
 
 

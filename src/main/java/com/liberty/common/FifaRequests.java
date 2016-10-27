@@ -1,12 +1,10 @@
 package com.liberty.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liberty.model.AuthRequest;
 import com.liberty.model.AuthResponse;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.Bid;
 import com.liberty.model.market.BidResponse;
-import com.liberty.model.market.FifaError;
 import com.liberty.model.market.ItemData;
 import com.liberty.model.market.Items;
 import com.liberty.model.market.SellItem;
@@ -20,11 +18,9 @@ import org.apache.http.entity.StringEntity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +37,6 @@ import static com.liberty.common.UrlResolver.getSearchUrl;
 import static com.liberty.common.UrlResolver.getStatusUrl;
 import static com.liberty.common.UrlResolver.getTradeLineUrl;
 import static com.liberty.common.UrlResolver.getWatchlistUrl;
-import static org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id;
 
 /**
  * User: Dimitr Date: 02.06.2016 Time: 7:34
@@ -49,17 +44,11 @@ import static org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id;
 @Slf4j
 public class FifaRequests extends BaseFifaRequests {
 
-  public static final long NUCLEUS_PERSONA_ID = 228045231L;
-  private volatile String sessionId = null;
-  private volatile String phishingToken = null;
-
-  private enum FifaRequestStatus {
-    OK, SESSION_EXPIRED, FAILED
-  }
-
   private Consumer<String> onError;
 
   private Consumer<FifaCrawlerState> onStateChange;
+
+  private RequestResultProcessor processor = new RequestResultProcessor(this::updateSession);
 
   public FifaRequests(Consumer<String> onError, Consumer<FifaCrawlerState> onStateChange) {
     this.onError = onError;
@@ -70,76 +59,26 @@ public class FifaRequests extends BaseFifaRequests {
     HttpPost request = createRequest(getTradeLineUrl());
     Optional<String> executionResult = execute(request);
 
-    if (!executionResult.isPresent()) {
-      return Collections.emptyList();
-    }
-    String json = executionResult.get();
-    FifaRequestStatus status = getStatus(json);
-
-    if (status == FifaRequestStatus.FAILED) {
-      return Collections.emptyList();
-    } else if (status == FifaRequestStatus.OK) {
-      Optional<TradeStatus> entity = JsonHelper.toEntity(json, TradeStatus.class);
-      return entity.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
-    } else if (status == FifaRequestStatus.SESSION_EXPIRED) {
-      return getTradePile();
-    } else {
-      return Collections.emptyList();
-    }
+    return processor.processListResult(executionResult, TradeStatus.class,
+        TradeStatus::getAuctionInfo, this::getTradePile);
   }
 
   public Optional<Watchlist> getWatchlist() {
     HttpPost request = createRequest(getWatchlistUrl());
     Optional<String> execute = execute(request);
 
-    return processResult(execute, Watchlist.class, this::getWatchlist);
+    return processor.processResult(execute, Watchlist.class, this::getWatchlist);
   }
 
-
-  private <T, U> Optional<T> processResult(Optional<String> executionResult,
-                                           Class<U> resultEntity,
-                                           Supplier<Optional<T>> onSessionExpired) {
-    if (!executionResult.isPresent()) {
-      return Optional.empty();
-    }
-    String json = executionResult.get();
-    FifaRequestStatus status = getStatus(json);
-
-    if (status == FifaRequestStatus.FAILED) {
-      return Optional.empty();
-    } else if (status == FifaRequestStatus.OK) {
-      return JsonHelper.toEntity(json, resultEntity);
-    } else if (status == FifaRequestStatus.SESSION_EXPIRED) {
-      return onSessionExpired.get();
-    } else {
-      return Optional.empty();
-    }
-  }
 
   public Optional<TradeStatus> searchPlayer(long id, int maxPrice, int page) {
     HttpPost request = createRequest(String.format(getSearchUrl(), page, id, maxPrice));
     Optional<String> execute = execute(request);
 
-    return processResult(execute, TradeStatus.class, () -> searchPlayer(id, maxPrice, page));
+    return processor.processResult(execute, TradeStatus.class, () -> searchPlayer(id, maxPrice,
+        page));
   }
 
-
-  private FifaRequestStatus getStatus(String json) {
-    ObjectMapper objectMapper = JsonHelper.getObjectMapper();
-    try {
-      FifaError fifaError = objectMapper.readValue(json, FifaError.class);
-      if (fifaError.getCode() == FifaError.ErrorCode.SESSION_EXPIRED) {
-        logError("Session expired...");
-        updateSession();
-        return FifaRequestStatus.SESSION_EXPIRED;
-      } else {
-        log.error("FIFA ERROR : " + fifaError.getReason());
-        return FifaRequestStatus.FAILED;
-      }
-    } catch (Exception ignored) {
-      return FifaRequestStatus.OK;
-    }
-  }
 
   private void logError(String msg) {
     onError.accept(msg);
@@ -162,64 +101,13 @@ public class FifaRequests extends BaseFifaRequests {
     return JsonHelper.toJson(request).toString();
   }
 
-  public String getSessionId() {
-    if (sessionId == null) {
-      log.error("sessionId is null. Waiting until session will be updated");
-      try {
-        synchronized (this) {
-          this.wait();
-        }
-      } catch (InterruptedException e) {
-        log.error(e.getMessage());
-      }
-    }
-    return sessionId;
-  }
-
-  /**
-   * Returns current session id not blocked.
-   */
-  public String getSessionForCheck() {
-    return sessionId;
-  }
-
-  public String getPhishingTokenForCheck() {
-    return sessionId;
-  }
-
-  public String getPhishingToken() {
-    if (phishingToken == null) {
-      log.error("phishingToken is null. Waiting to phishingToken will be updated");
-      try {
-        synchronized (this) {
-          this.wait();
-        }
-      } catch (InterruptedException e) {
-        log.error(e.getMessage());
-      }
-    }
-    return phishingToken;
-  }
-
-  public void setPhishingToken(String phishingToken) {
-    this.phishingToken = phishingToken;
-  }
-
-  public void setSessionId(String sessionId) {
-    this.sessionId = sessionId;
-    log.info("Updated session id to " + sessionId);
-    synchronized (this) {
-      this.notifyAll();
-    }
-  }
-
   private Optional<String> auth() {
     try {
       HttpPost request = createAuthRequest(AUTH);
       String authRequest = getAuthRequest();
       StringEntity entity = new StringEntity(authRequest);
       entity.setContentType("application/json;charset=utf-8");
-      log.info("Auth request " + authRequest);
+      log.info("Trying to retrieve new session... ");
       request.setEntity(entity);
       Optional<String> result = execute(request);
       if (!result.isPresent()) {
@@ -245,14 +133,9 @@ public class FifaRequests extends BaseFifaRequests {
   }
 
   private void status(Long tradeId) {
-    try {
-      HttpPost request = createRequest(String.format(getStatusUrl(), tradeId));
-      log.info(request.toString());
-      Optional<String> execute = execute(request);
-      Optional<BidResponse> buy = JsonHelper.toEntity(execute.get(), BidResponse.class);
-    } catch (Exception e) {
-      log.error("Buy status error : " + e.getMessage());
-    }
+    HttpPost request = createRequest(String.format(getStatusUrl(), tradeId));
+    Optional<String> execute = execute(request);
+    processor.processVoidResult(execute, () -> status(tradeId));
   }
 
   public boolean buy(AuctionInfo auctionInfo) {
@@ -264,20 +147,9 @@ public class FifaRequests extends BaseFifaRequests {
       Bid bid = new Bid((long) auctionInfo.getBuyNowPrice());
       String json = JsonHelper.toJsonString(bid);
       request.setEntity(new StringEntity(json));
+
       Optional<String> response = execute(request);
-      if (!response.isPresent()) {
-        return false;
-      }
-      Optional<BidResponse> buy = JsonHelper.toEntity(response.get(), BidResponse.class);
-      if (!buy.isPresent()) {
-        return false;
-      }
-      log.info("Buy response : " + buy.get());
-      if (buy.get().getErrorState() != null) {
-        log.error("Buy error : " + buy.get().getErrorState());
-        return false;
-      }
-      return true;
+      return processor.processBooleanResult(response, BidResponse.class, () -> buy(auctionInfo));
     } catch (Exception e) {
       log.error("Buy error : " + e.getMessage());
       return false;
@@ -342,26 +214,28 @@ public class FifaRequests extends BaseFifaRequests {
     }
     Optional<String> executionResult = execute(request);
 
-    if (!executionResult.isPresent()) {
-      return false;
-    }
-    String json = executionResult.get();
-    FifaRequestStatus status = getStatus(json);
-
-    if (status == FifaRequestStatus.FAILED) {
-      return false;
-    } else if (status == FifaRequestStatus.OK) {
-      Optional<SellItem> entity = JsonHelper.toEntity(json, SellItem.class);
-      return entity.isPresent();
-    } else if (status == FifaRequestStatus.SESSION_EXPIRED) {
-      return executeItemRequest(toSell);
-    } else {
-      return false;
-    }
+    return processor.processBooleanResult(executionResult, SellItem.class, () ->
+        executeItemRequest(toSell));
   }
+
 
   public Optional<AuctionHouseResponse> auctionHouse(Long id, int startPrice, int buyNow) {
     HttpPost request = createPostRequest(getAuctionHouseUrl());
+    AuctionInfo toSell = createAuctionRequest(id, startPrice, buyNow);
+
+    try {
+      String json = JsonHelper.toJsonString(toSell);
+      request.setEntity(new StringEntity(json));
+      Optional<String> executionResult = execute(request);
+      return processor.processResult(executionResult, AuctionHouseResponse.class,
+          () -> auctionHouse(id, startPrice, buyNow));
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
+    return Optional.empty();
+  }
+
+  private AuctionInfo createAuctionRequest(Long id, int startPrice, int buyNow) {
     AuctionInfo toSell = new AuctionInfo();
     toSell.setStartingBid(startPrice);
     toSell.setBuyNowPrice(buyNow);
@@ -369,55 +243,42 @@ public class FifaRequests extends BaseFifaRequests {
     ItemData itemData = new ItemData();
     itemData.setId(id);
     toSell.setItemData(itemData);
-    try {
-      String json = JsonHelper.toJsonString(toSell);
-      request.setEntity(new StringEntity(json));
-      Optional<String> executionResult = execute(request);
-      if (!executionResult.isPresent()) {
-        return Optional.empty();
-      }
-      return JsonHelper.toEntity(executionResult.get(), AuctionHouseResponse.class);
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
-    return Optional.empty();
+    return toSell;
   }
+
 
   public void removeAllSold() {
     HttpPost deleteRequest = createDeleteRequest(getRemoveSold());
-    execute(deleteRequest);
+    processor.processVoidResult(execute(deleteRequest), this::removeAllSold);
   }
-
 
   public void relistAll() {
     HttpPost putRequest = createPutRequest(getRelistUrl());
-    execute(putRequest);
+    processor.processVoidResult(execute(putRequest), this::relistAll);
   }
 
   public List<ItemData> getUnassigned() {
     HttpPost request = createRequest(getGetUnassignedUrl());
-    String json = execute(request).get();
-    if (isError(json)) {
-      return Collections.emptyList();
-    }
-    Optional<Items> trade = JsonHelper.toEntity(json, Items.class);
-    return trade.get().getItemData();
+
+    Optional<String> executionResult = execute(request);
+
+    return processor.processListResult(executionResult, Items.class, Items::getItemData,
+        this::getUnassigned);
   }
 
 
-  public TradeStatus getTradeStatus(long tradeIds) {
+  public Optional<TradeStatus> getTradeStatus(long tradeIds) {
     String url = String.format(getStatusUrl(), tradeIds);
     HttpPost request = createRequest(url);
 
     Optional<String> execute = execute(request);
-    Optional<TradeStatus> status = JsonHelper.toEntity(execute.get(), TradeStatus.class);
-    return status.get();
+    return processor.processResult(execute, TradeStatus.class, () -> getTradeStatus(tradeIds));
   }
 
   public void removeFromTargets(Long tradeId) {
     String url = String.format(FifaExternalEndpoints.WATCHLIST_WITH_IDS_URL, tradeId);
     HttpPost request = createDeleteRequest(url);
-    execute(request);
+    processor.processVoidResult(execute(request), () -> removeFromTargets(tradeId));
   }
 
   public Optional<TradeStatus> search(MarketSearchRequest searchRequest) {
@@ -425,16 +286,7 @@ public class FifaRequests extends BaseFifaRequests {
     String url = String.format(FifaExternalEndpoints.FULL_SEARCH_URL, params);
     HttpPost request = createRequest(url);
     Optional<String> execute = execute(request);
-    if (!execute.isPresent()) {
-      log.error("Players not found");
-      return Optional.empty();
-    }
-    String json = execute.get();
-    if (isError(json)) {
-      return Optional.empty();
-    }
-    return JsonHelper.toEntity(json, TradeStatus.class);
-
+    return processor.processResult(execute, TradeStatus.class, () -> search(searchRequest));
   }
 
   private String getSearchParameters(MarketSearchRequest searchRequest) {

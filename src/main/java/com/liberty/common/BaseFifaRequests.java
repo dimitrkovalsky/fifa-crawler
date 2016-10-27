@@ -28,11 +28,15 @@ import static com.liberty.common.RequestHelper.readResult;
 @Slf4j
 abstract class BaseFifaRequests {
 
+  static final long NUCLEUS_PERSONA_ID = 228045231L;
+  protected volatile String sessionId = null;
+  protected volatile String phishingToken = null;
+
   public static final String REFERER =
       "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=163759";
   public static final String REQUESTED_WITH = "ShockwaveFlash/23.0.0.185";
-  protected String currentCookies = "";
-  protected String authCookies = "";
+  protected volatile String currentCookies = "";
+  protected volatile String authCookies = "";
 
   private String getXsrfToken() {
     return "Xek4krbtHItMDuCvvweV9qs0a9XE6hDoOTNEk54j1IE";
@@ -73,6 +77,57 @@ abstract class BaseFifaRequests {
       log.error(e.getMessage());
     }
     return Optional.ofNullable(result);
+  }
+
+  /**
+   * Returns current session id not blocked.
+   */
+  public String getSessionForCheck() {
+    return sessionId;
+  }
+
+  public String getPhishingTokenForCheck() {
+    return sessionId;
+  }
+
+  public String getPhishingToken() {
+    if (phishingToken == null) {
+      log.error("phishingToken is null. Waiting to phishingToken will be updated");
+      try {
+        synchronized (this) {
+          this.wait();
+        }
+      } catch (InterruptedException e) {
+        log.error(e.getMessage());
+      }
+    }
+    return phishingToken;
+  }
+
+  public void setPhishingToken(String phishingToken) {
+    this.phishingToken = phishingToken;
+  }
+
+  public void setSessionId(String sessionId) {
+    this.sessionId = sessionId;
+    log.info("Updated session id to " + sessionId);
+    synchronized (this) {
+      this.notifyAll();
+    }
+  }
+
+  public String getSessionId() {
+    if (sessionId == null) {
+      log.error("sessionId is null. Waiting until session will be updated");
+      try {
+        synchronized (this) {
+          this.wait();
+        }
+      } catch (InterruptedException e) {
+        log.error(e.getMessage());
+      }
+    }
+    return sessionId;
   }
 
 
@@ -158,9 +213,6 @@ abstract class BaseFifaRequests {
     return request;
   }
 
-  protected abstract String getSessionId();
-
-  protected abstract String getPhishingToken();
 
   public String getNucleusId() {
     return "2311254984";
