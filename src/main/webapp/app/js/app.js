@@ -91,6 +91,22 @@ fifaApp.factory('LeagueResource', function ($resource) {
     return $resource('/api/info/leagues');
 });
 
+fifaApp.factory('ConfigResource', function ($resource) {
+    return $resource('/api/config');
+});
+
+fifaApp.factory('ActivateTag', function ($resource) {
+    return $resource('/api/config/activate');
+});
+
+fifaApp.factory('DeactivateTag', function ($resource) {
+    return $resource('/api/config/deactivate');
+});
+
+fifaApp.factory('PriceUpdate', function ($resource) {
+    return $resource('/api/config/update');
+});
+
 
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/market");
@@ -124,5 +140,10 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/market-search',
             templateUrl: 'market-search.html',
             controller: 'MarketSearchController'
-        });
+        })
+        .state('config', {
+            url: '/config',
+            templateUrl: 'config.html',
+            controller: 'ConfigController'
+        });;
 });

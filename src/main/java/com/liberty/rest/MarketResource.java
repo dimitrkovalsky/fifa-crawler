@@ -2,13 +2,16 @@ package com.liberty.rest;
 
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
-import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.PlayerStatistic;
+import com.liberty.model.PlayerTradeStatus;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
 import com.liberty.rest.request.IdRequest;
 import com.liberty.rest.request.SearchRequest;
 import com.liberty.robot.AuctionRobot;
+import com.liberty.service.PriceService;
+import com.liberty.service.RequestService;
+import com.liberty.service.SearchService;
 import com.liberty.service.TagService;
 import com.liberty.service.TradeService;
 
@@ -35,6 +38,15 @@ public class MarketResource {
   private TradeService tradeService;
 
   @Autowired
+  private PriceService priceService;
+
+  @Autowired
+  private SearchService searchService;
+
+  @Autowired
+  private RequestService requestService;
+
+  @Autowired
   private TagService tagService;
 
   @Autowired
@@ -49,7 +61,7 @@ public class MarketResource {
 
   @RequestMapping(path = "/info", method = RequestMethod.POST)
   public void setInfo(MarketInfo info) {
-    tradeService.setMarketInfo(info);
+    requestService.updateCredentials(info.getSessionId(), info.getPhishingToken());
   }
 
   @RequestMapping(path = "/autobuy", method = RequestMethod.POST)
@@ -76,7 +88,7 @@ public class MarketResource {
 
   @RequestMapping(path = "/search", method = RequestMethod.GET)
   public List<PlayerTradeStatus> getAll(SearchRequest request) {
-    return tradeService.search(request.getPhrase());
+    return searchService.search(request.getPhrase());
   }
 
   @RequestMapping(path = "/player/{id}", method = RequestMethod.GET)
@@ -91,16 +103,16 @@ public class MarketResource {
 
   @RequestMapping(path = "/player/{id}/min", method = RequestMethod.GET)
   public PlayerStatistic getMin(@PathVariable Long id) {
-    return tradeService.getMinPrice(id);
+    return priceService.getMinPrice(id);
   }
 
   @RequestMapping(path = "/player/min", method = RequestMethod.POST)
   public PlayerStatistic findMin(@RequestBody IdRequest request) {
     if (request.getId().equals(-1L)) {
-      tradeService.findMinPriceAll();
+      priceService.findMinPriceAll();
 //      tagService.executeUpdate();
       return null;
     }
-    return tradeService.findMinPrice(request.getId());
+    return priceService.findMinPrice(request.getId());
   }
 }

@@ -20,9 +20,9 @@ import static com.sun.corba.se.impl.activation.ServerMain.logError;
 @Slf4j
 public class RequestResultProcessor {
 
-  private Runnable onSessionUpdate;
+  private Supplier<Boolean> onSessionUpdate;
 
-  public RequestResultProcessor(Runnable onSessionUpdate) {
+  public RequestResultProcessor(Supplier<Boolean> onSessionUpdate) {
     this.onSessionUpdate = onSessionUpdate;
   }
 
@@ -75,8 +75,11 @@ public class RequestResultProcessor {
       FifaError fifaError = objectMapper.readValue(json, FifaError.class);
       if (fifaError.getCode() == FifaError.ErrorCode.SESSION_EXPIRED) {
         logError("Session expired...");
-        onSessionUpdate.run();
-        return FifaRequestStatus.SESSION_EXPIRED;
+        if (onSessionUpdate.get()) {
+          return FifaRequestStatus.SESSION_EXPIRED;
+        } else {
+          return FifaRequestStatus.FAILED;
+        }
       }
     } catch (Exception ignored) {
 
@@ -92,8 +95,11 @@ public class RequestResultProcessor {
       FifaError fifaError = objectMapper.readValue(json, FifaError.class);
       if (fifaError.getCode() == FifaError.ErrorCode.SESSION_EXPIRED) {
         logError("Session expired...");
-        onSessionUpdate.run();
-        return FifaRequestStatus.SESSION_EXPIRED;
+        if (onSessionUpdate.get()) {
+          return FifaRequestStatus.SESSION_EXPIRED;
+        } else {
+          return FifaRequestStatus.FAILED;
+        }
       } else {
         log.error("FIFA ERROR : " + fifaError);
         return FifaRequestStatus.FAILED;

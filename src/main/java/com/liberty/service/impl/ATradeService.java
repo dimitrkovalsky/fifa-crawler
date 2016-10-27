@@ -42,12 +42,6 @@ public abstract class ATradeService {
   protected PlayerTradeStatusRepository tradeRepository;
 
 
-  public List<PlayerTradeStatus> search(String phrase) {
-    return tradeRepository.findByName(phrase)
-        .stream().limit(5)
-        .collect(Collectors.toList());
-  }
-
   protected void buyPlayers(TradeStatus tradeStatus, PlayerTradeStatus playerTradeStatus) {
 
     List<AuctionInfo> list = foundMinList(tradeStatus);

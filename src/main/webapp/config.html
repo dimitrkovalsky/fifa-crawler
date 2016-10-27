@@ -1,0 +1,33 @@
+<div class="page-header">
+    <h1>Tags</h1>
+</div>
+<div class="container">
+     <button class="btn btn-info" ng-click="updatePrices()">Update Prices</button>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Tag</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="(name, amount) in tagDistribution">
+        <tr>
+            <td>
+                <span class="tag label label-info" ng-if="isActiveTag(name)"> {{name}}</span>
+                <span class="tag label label-default" ng-if="!isActiveTag(name)"> {{name}}</span>
+            </td>
+            <td>{{amount}}</td>
+            <td>
+                <button class="btn btn-success" ng-if="!isActiveTag(name)"
+                        ng-click="enableTag(name)">Activate
+                </button>
+                <button class="btn btn-danger" ng-if="isActiveTag(name)"
+                        ng-click="disableTag(name)"> Deactivate
+                </button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

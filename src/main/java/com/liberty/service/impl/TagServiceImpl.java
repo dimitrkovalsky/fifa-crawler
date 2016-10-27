@@ -2,22 +2,26 @@ package com.liberty.service.impl;
 
 import com.liberty.common.DelayHelper;
 import com.liberty.model.PlayerInfo;
+import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.Tag;
-import com.liberty.model.PlayerStatistic;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.repositories.TagRepository;
+import com.liberty.service.PriceService;
 import com.liberty.service.TagService;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.LogController;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,7 @@ import static com.liberty.common.PriceHelper.defineMaxBuyNowPrice;
 @Slf4j
 public class TagServiceImpl implements TagService {
 
+  public static final String UNTAGGED = "untagged";
   @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
 
@@ -42,6 +47,9 @@ public class TagServiceImpl implements TagService {
 
   @Autowired
   private LogController logController;
+
+  @Autowired
+  private PriceService priceService;
 
   @Autowired
   private TagRepository tagRepository;
@@ -53,7 +61,7 @@ public class TagServiceImpl implements TagService {
   public void executeUpdate() {
     String tag = "medium";
 //    markTags();
- //   fetchMarketPrices(tag);
+    //   fetchMarketPrices(tag);
     enableByTag(tag);
     updatePrices(tag);
   }
@@ -64,7 +72,7 @@ public class TagServiceImpl implements TagService {
 
     final int[] counter = {0};
     byTag.forEach(p -> {
-      tradeService.findMinPrice(p.getId());
+      priceService.findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + byTag.size());
       DelayHelper.wait(7000, 500);
@@ -124,6 +132,12 @@ public class TagServiceImpl implements TagService {
       } else {
         t.setEnabled(false);
       }
+      if (tag.equals(UNTAGGED)) {
+        if (t.getTags().isEmpty()) {
+          counter.incrementAndGet();
+          t.setEnabled(true);
+        }
+      }
       tradeStatusRepository.save(t);
     });
     log.info("Enabled : " + counter.get() + " players for tag : " + tag);
@@ -142,6 +156,21 @@ public class TagServiceImpl implements TagService {
     });
     log.info("Tagged " + all.size() + " players : ");
     tagDistribution.forEach((k, v) -> log.info("[" + k + "] --> " + v + " players"));
+  }
+
+  @Override
+  public Map<String, Integer> getTagDistribution() {
+    Map<String, Integer> tagDistribution = new HashMap<>();
+    List<PlayerTradeStatus> all = tradeStatusRepository.findAll();
+    all.forEach(t -> {
+      t.getTags().forEach(tag -> {
+        addToMap(tagDistribution, tag);
+      });
+      if (t.getTags().isEmpty()) {
+        addToMap(tagDistribution, UNTAGGED);
+      }
+    });
+    return tagDistribution;
   }
 
   private void addToMap(Map<String, Integer> tagDistribution, String tag) {
@@ -212,6 +241,30 @@ public class TagServiceImpl implements TagService {
   @Override
   public List<Tag> getAllTags() {
     return tagRepository.findAll();
+  }
+
+  @Override
+  public void disableByTag(String tag, Set<String> activeTags) {
+    AtomicInteger counter = new AtomicInteger(0);
+    tradeStatusRepository.findAll().forEach(t -> {
+      Collection intersection = CollectionUtils.intersection(t.getTags(), activeTags);
+      if (intersection.isEmpty()) {
+        if (t.isEnabled()) {
+          t.setEnabled(false);
+          counter.incrementAndGet();
+        }
+      }
+      if (tag.equals(UNTAGGED)) {
+        if (t.getTags().isEmpty()) {
+          if (t.isEnabled()) {
+            t.setEnabled(false);
+            counter.incrementAndGet();
+          }
+        }
+      }
+      tradeStatusRepository.save(t);
+    });
+    log.info("Disabled : " + counter.get() + " players for tag : " + tag);
   }
 
 }

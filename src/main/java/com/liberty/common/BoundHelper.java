@@ -1,16 +1,16 @@
 package com.liberty.common;
 
 import com.liberty.model.PlayerProfile;
-import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.PlayerStatistic;
-
-import static com.liberty.service.impl.TradeServiceImpl.DEFAULT_LOW_BOUND;
+import com.liberty.model.PlayerTradeStatus;
 
 /**
  * @author Dmytro_Kovalskyi.
  * @since 21.06.2016.
  */
 public class BoundHelper {
+
+  public static final int DEFAULT_LOW_BOUND = 4000;
 
   public static int getHigherBound(int found, Integer lowBound) {
     if (lowBound < 1000) {
@@ -69,8 +69,7 @@ public class BoundHelper {
     } else {
       lowBound = tradeStatus.getMaxPrice();
     }
-    return 10000;
-//    return lowBound;
+    return lowBound;
   }
 
   public static Integer defineMaxBuyNow(PlayerProfile profile) {

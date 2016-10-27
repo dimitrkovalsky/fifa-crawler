@@ -15,6 +15,7 @@ import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.rest.request.MarketSearchRequest;
 import com.liberty.rest.response.BidStatus;
+import com.liberty.service.SearchService;
 import com.liberty.service.TradeService;
 import com.liberty.service.TransactionService;
 import com.liberty.websockets.LogController;
@@ -53,6 +54,9 @@ public class AuctionRobot {
 
   @Autowired
   private TradeService tradeService;
+
+  @Autowired
+  private SearchService searchService;
 
   @Autowired
   private PlayerProfileRepository profileRepository;
@@ -110,8 +114,9 @@ public class AuctionRobot {
       logController.info("Auction Bot processed : " + page + " pages");
     }
     if (page % PAGES_TO_SEARCH == 0) {
-      logController.info("Last item expiration time : " + getDurationString(trades.get(trades.size() - 1)
-          .getAuctionInfo().getExpires()));
+      logController
+          .info("Last item expiration time : " + getDurationString(trades.get(trades.size() - 1)
+              .getAuctionInfo().getExpires()));
     }
   }
 
@@ -197,11 +202,11 @@ public class AuctionRobot {
     request.setQuality("gold");
 //    request.setMinPrice(1500);
 
-    return tradeService.search(request);
+    return searchService.search(request);
   }
 
   private void processWonItems(List<AuctionInfo> won) {
-    won.forEach(i-> transactionService.logBuyByRobot(i));
+    won.forEach(i -> transactionService.logBuyByRobot(i));
 
     logController.info("You have won " + won.size() + " items");
   }

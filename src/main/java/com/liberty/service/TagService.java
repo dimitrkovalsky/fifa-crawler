@@ -4,6 +4,8 @@ import com.liberty.model.PlayerInfo;
 import com.liberty.model.Tag;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * User: Dimitr
@@ -22,7 +24,11 @@ public interface TagService {
 
   void markTags();
 
+  Map<String, Integer> getTagDistribution();
+
   List<PlayerInfo> getByTag(String tag);
 
   List<Tag> getAllTags();
+
+  void disableByTag(String tag, Set<String> activeTags);
 }

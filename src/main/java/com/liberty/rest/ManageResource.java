@@ -32,8 +32,7 @@ public class ManageResource {
   @CrossOrigin(origins = "*")
   @RequestMapping(path = "/token", method = RequestMethod.POST)
   public void update(@RequestBody TokenUpdateRequest request) {
-    tradeService.updateTokens(request.getSessionId(), request.getToken(), request.getExternal(),
-        request.getCookies());
+    requestService.updateTokens(request.getSessionId(), request.getToken(), request.getCookies());
     log.info("Updating tokens . Session : " + request.getSessionId() + ". Token : " + request
         .getToken());
   }

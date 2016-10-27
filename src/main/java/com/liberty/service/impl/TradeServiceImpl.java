@@ -1,13 +1,10 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.BoundHelper;
-import com.liberty.common.UrlResolver;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
-import com.liberty.model.TradeInfo;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -15,18 +12,19 @@ import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.rest.request.AutobidRequest;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
-import com.liberty.rest.request.MarketSearchRequest;
-import com.liberty.rest.request.TokenUpdateRequest;
 import com.liberty.rest.response.BidStatus;
+import com.liberty.service.ConfigService;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,24 +35,22 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.liberty.common.BoundHelper.defineLowBound;
-import static com.liberty.common.BoundHelper.getHigherBound;
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 /**
  * User: Dimitr Date: 03.06.2016 Time: 20:11
  */
 @Service
-public class TradeServiceImpl extends ASellService implements TradeService {
+public class TradeServiceImpl extends ASellService implements TradeService ,
+    ApplicationListener<ContextRefreshedEvent> {
 
-  public static final int DEFAULT_LOW_BOUND = 10000;
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
   public static final int ITERATION_LIMIT = 35;
 
   private boolean autoBuyEnabled = true;
 
   // TODO: add rest to change active tag
-  private Optional<String> activeTag = Optional.empty();
+  private Set<String> activeTags = new HashSet<>();
 
   @Autowired
   private PlayerStatisticRepository statisticRepository;
@@ -65,38 +61,25 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Autowired
   private PlayerProfileRepository profileRepository;
 
+  @Autowired
+  private ConfigService configService;
+
+  private void init() {
+    activeTags = configService.getMarketConfig().getActiveTags();
+  }
 
   @Override
   public void removeAllPlayers() {
     tradeRepository.deleteAll();
   }
 
-  @Override
-  public void updatePrices() {
-    Map<Long, Integer> pricesMap = getMinPricesMap();
-    tradeRepository.findAll().stream()
-        .map(p -> {
-          p.setEnabled(false);
-          Integer price = pricesMap.get(p.getId());
-          if (price != null && price != 0) {
-            p.setEnabled(true);
-            if (price <= 1000) {
-              p.setMaxPrice(price - 200);
-            } else if (price <= 2000) {
-              p.setMaxPrice(price - 300);
-            } else if (price <= 3000) {
-              p.setMaxPrice(price - 400);
-            } else if (price <= 4000) {
-              p.setMaxPrice(price - 500);
-            } else if (price <= 5000) {
-              p.setMaxPrice(price - 700);
-            } else {
-              p.setEnabled(false);
-            }
-          }
-          p.updateDate();
-          return p;
-        }).forEach(tradeRepository::save);
+  @Autowired
+  public Set<String> getActiveTags() {
+    return activeTags;
+  }
+
+  public void setActiveTags(Set<String> activeTags) {
+    this.activeTags = activeTags;
   }
 
   @Override
@@ -142,8 +125,8 @@ public class TradeServiceImpl extends ASellService implements TradeService {
 
   private Predicate<PlayerTradeStatus> filterPlayersToAutoBuy() {
     return p -> {
-      if (activeTag.isPresent()) {
-        return p.isEnabled() && p.getTags().contains(activeTag.get());
+      if (!activeTags.isEmpty()) {
+        return p.isEnabled() && !CollectionUtils.intersection(p.getTags(), activeTags).isEmpty();
       }
       return p.isEnabled();
     };
@@ -181,114 +164,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public void findMinPriceAll() {
-    List<PlayerTradeStatus> all = tradeRepository.findAll();
-    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
-
-    final int[] counter = {0};
-    all.forEach(p -> {
-      findMinPrice(p.getId());
-      counter[0]++;
-      logController.info("Updated market price for " + counter[0] + " / " + all.size());
-      sleep(17000);
-    });
-  }
-
-  @Override
-  public PlayerStatistic findMinPrice(long playerId) {
-    PlayerStatistic playerStatistic = statisticRepository.findOne(playerId);
-    PlayerTradeStatus tradeStatus = tradeRepository.findOne(playerId);
-    PlayerProfile profile = playerProfileService.findOne(playerId);
-    if (playerStatistic == null) {
-      playerStatistic = new PlayerStatistic();
-      playerStatistic.setId(playerId);
-    }
-    if (tradeStatus == null) {
-      tradeStatus = createNewTrade(profile);
-    }
-    Integer lowBound = defineLowBound(playerStatistic, tradeStatus);
-
-    int iteration = 0;
-    Set<AuctionInfo> toStatistic = new HashSet<>();
-
-    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(profile)) {
-      iteration++;
-      logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
-      try {
-        Thread.sleep(200);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      List<AuctionInfo> players = findPlayers(playerId, lowBound, 0);
-      if (players.size() == 0) {
-        lowBound = getHigherBound(0, lowBound);
-      } else if (players.size() >= 12) {
-        players.addAll(findNextPagesPlayers(playerId, lowBound));
-        toStatistic.addAll(players);
-        lowBound = getHigherBound(0, lowBound);
-      } else {
-        toStatistic.addAll(players);
-        lowBound = getHigherBound(0, lowBound);
-      }
-      logController.info("Found " + toStatistic.size() + " players");
-
-      if (iteration >= ITERATION_LIMIT) {
-        logController.info("Exceeded iteration limit");
-        break;
-      }
-    }
-
-    statisticService.collectStatistic(playerId, lowBound, toStatistic);
-
-    logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
-    return getMinPrice(playerId);
-  }
-
-  private boolean isMaxBound(PlayerProfile profile) {
-    return false;
-  }
-
-  private PlayerTradeStatus createNewTrade(PlayerProfile profile) {
-    PlayerTradeStatus tradeStatus = new PlayerTradeStatus(profile.getId(), profile.getName(),
-        BoundHelper.defineMaxBuyNow(profile));
-    tradeStatus.setEnabled(false);
-    tradeRepository.save(tradeStatus);
-    tradeStatus.updateDate();
-    return tradeStatus;
-  }
-
-  private List<AuctionInfo> findNextPagesPlayers(long playerId, Integer lowBound) {
-    boolean completed = false;
-    int page = 1;
-    List<AuctionInfo> players = new ArrayList<>();
-    while (!completed) {
-      List<AuctionInfo> found = findPlayers(playerId, lowBound, page * 12);
-      if (found.size() < 12) {
-        completed = true;
-      } else {
-        try {
-          Thread.sleep(250);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-      }
-      players.addAll(found);
-      page++;
-    }
-    return players;
-  }
-
-  private List<AuctionInfo> findPlayers(long playerId, Integer lowBound, int page) {
-    try {
-      Optional<TradeStatus> maybe = requestService.searchPlayer(playerId, lowBound, page);
-      return maybe.map(TradeStatus::getAuctionInfo).orElse(Collections.emptyList());
-    } catch (Exception e) {
-      logController.error(e.getMessage());
-      return Collections.emptyList();
-    }
-  }
-
-  @Override
   public MarketInfo getMarketInfo() {
     MarketInfo info = new MarketInfo();
     info.setMaxPurchases(maxPurchaseAmount);
@@ -297,22 +172,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     info.setAutoBuyEnabled(autoBuyEnabled);
 
     return info;
-  }
-
-  @Override
-  public void setMarketInfo(MarketInfo info) {
-//    this.maxPurchaseAmount = info.getMaxPurchases();
-    requestService.updateCredentials(info.getSessionId(), info.getPhishingToken());
-  }
-
-  @Override
-  public void updateTokens(String sessionId, String phishingToken, Boolean external,
-                           List<TokenUpdateRequest.Cookie> cookies) {
-    if (external != null) {
-      UrlResolver.externalUrl = external;
-    }
-    requestService.updateTokens(sessionId, phishingToken, cookies);
-
   }
 
   @Override
@@ -334,10 +193,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     statisticRepository.delete(id);
   }
 
-  @Override
-  public PlayerStatistic getMinPrice(Long id) {
-    return statisticRepository.findOne(id);
-  }
 
   @Override
   public List<PlayerInfo> getAllToAutoBuy() {
@@ -367,16 +222,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     return infos;
   }
 
-  private Map<Long, Integer> getMinPricesMap() {
-    List<PlayerStatistic> stats = statisticRepository.findAll();
-    Map<Long, Integer> idMinPrice = new HashMap<>();
-    stats.forEach(s -> {
-      if (!s.getPrices().isEmpty()) {
-        idMinPrice.put(s.getId(), s.getPrices().get(0).getPrice());
-      }
-    });
-    return idMinPrice;
-  }
 
   private Map<Long, PlayerStatistic> getStatsMap() {
     List<PlayerStatistic> stats = statisticRepository.findAll();
@@ -385,11 +230,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
       idMinStats.put(s.getId(), s);
     });
     return idMinStats;
-  }
-
-  @Override
-  public PlayerTradeStatus getOnePlayer(Long id) {
-    return tradeRepository.findOne(id);
   }
 
   @Override
@@ -430,7 +270,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
     expired.forEach(x -> removeFromTargets(x.getTradeId()));
   }
 
-
   @Override
   public void removeFromTargets(Long tradeId) {
     requestService.removeFromTargets(tradeId);
@@ -459,37 +298,6 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   }
 
   @Override
-  public synchronized List<TradeInfo> search(MarketSearchRequest searchRequest) {
-    Optional<TradeStatus> search = requestService.search(searchRequest);
-    if (!search.isPresent()) {
-      return Collections.emptyList();
-    }
-
-    List<AuctionInfo> auctionInfo = search.get().getAuctionInfo();
-    Set<Long> ids = auctionInfo.stream()
-        .map(x -> x.getItemData().getAssetId())
-        .collect(Collectors.toSet());
-    Map<Long, PlayerProfile> profiles = findProfiles(ids);
-    Map<Long, PlayerTradeStatus> tradeStatuses = findTradeStatuses(ids);
-    return auctionInfo.stream()
-        .map(a -> new TradeInfo(a, tradeStatuses.get(a.getItemData().getAssetId()),
-            profiles.get(a.getItemData().getAssetId())))
-        .collect(Collectors.toList());
-  }
-
-  private Map<Long, PlayerTradeStatus> findTradeStatuses(Set<Long> ids) {
-    Map<Long, PlayerTradeStatus> map = new HashMap<>();
-    tradeRepository.findAll(ids).forEach(x -> map.put(x.getId(), x));
-    return map;
-  }
-
-  private Map<Long, PlayerProfile> findProfiles(Set<Long> ids) {
-    Map<Long, PlayerProfile> map = new HashMap<>();
-    profileRepository.findAll(ids).forEach(x -> map.put(x.getId(), x));
-    return map;
-  }
-
-  @Override
   public void addToAutoBid(AutobidRequest bidRequest) {
     Long playerId = bidRequest.getPlayerId();
     PlayerTradeStatus playerTradeStatus = tradeRepository.findOne(playerId);
@@ -514,5 +322,10 @@ public class TradeServiceImpl extends ASellService implements TradeService {
   @Override
   protected Integer getPurchasesRemained() {
     return maxPurchaseAmount - purchases;
+  }
+
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    init();
   }
 }

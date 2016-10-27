@@ -1,7 +1,7 @@
 package com.liberty;
 
 import com.liberty.config.Config;
-import com.liberty.service.TradeService;
+import com.liberty.service.PriceService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,8 +16,8 @@ public class UpdatePricesRunner {
 
   public static void main(String[] args) throws IOException {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-    TradeService tradeService = context.getBean(TradeService.class);
-    tradeService.updatePrices();
+    PriceService priceService = context.getBean(PriceService.class);
+    priceService.updatePrices();
     System.out.println("Prices updated successfully");
     System.exit(1);
   }

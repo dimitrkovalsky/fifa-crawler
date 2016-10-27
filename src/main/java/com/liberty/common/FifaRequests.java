@@ -90,10 +90,10 @@ public class FifaRequests extends BaseFifaRequests {
   private boolean updateSession() {
     Optional<String> auth = auth();
     if (!auth.isPresent()) {
-      return true;
+      return false;
     }
     sessionId = auth.get();
-    return false;
+    return true;
   }
 
   private String getAuthRequest() {
