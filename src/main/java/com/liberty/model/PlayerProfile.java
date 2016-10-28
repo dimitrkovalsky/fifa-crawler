@@ -1,6 +1,7 @@
 package com.liberty.model;
 
 import com.liberty.processors.pojo.Attributes;
+import com.liberty.processors.pojo.Items;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -54,6 +55,8 @@ public class PlayerProfile {
   public Long baseId;
 
   public Integer rating;
+
+  public Items fullInfo;
 
   private Date updated = new Date();
 }

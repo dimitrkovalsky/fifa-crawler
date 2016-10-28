@@ -112,7 +112,7 @@ public class FifaDatabaseProcessor {
     profile.setQuality(item.getQuality());
     profile.setSpecialType(item.isSpecialType());
     profile.setPosition(item.getPosition());
-
+    profile.setFullInfo(item);
     addClubsAndLeagues(item);
     return Optional.of(profile);
   }
@@ -166,7 +166,7 @@ public class FifaDatabaseProcessor {
       imageService.saveNationImage(n);
       log.debug("Stored image for " + n.getName());
     });
-  // clubRepository.findAll().forEach(n -> imageService.saveClubImage(n));
+    // clubRepository.findAll().forEach(n -> imageService.saveClubImage(n));
 //    leagueRepository.findAll().forEach(n -> imageService.saveLeagueImage(n));
   }
 
