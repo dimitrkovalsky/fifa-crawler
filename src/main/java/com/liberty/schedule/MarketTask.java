@@ -23,7 +23,7 @@ public class MarketTask {
   @Autowired
   private LogController logController;
 
-  @Scheduled(fixedRate = 200000)
+  @Scheduled(fixedRate = 200_000)
   public void monitor() {
    // fillDatabase();
     logController.info("Trying to check market");
