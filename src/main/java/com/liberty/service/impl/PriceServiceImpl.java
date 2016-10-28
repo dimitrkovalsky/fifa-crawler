@@ -5,11 +5,13 @@ import com.liberty.common.DelayHelper;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
+import com.liberty.model.PriceHistory;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
+import com.liberty.repositories.PriceHistoryRepository;
 import com.liberty.service.PriceService;
 import com.liberty.service.RequestService;
 import com.liberty.service.StatisticService;
@@ -66,6 +68,10 @@ public class PriceServiceImpl implements PriceService {
 
   @Autowired
   private StatisticService statisticService;
+
+
+  @Autowired
+  private PriceHistoryRepository historyRepository;
 
   @Override
   public void findMinPriceAll() {
@@ -195,7 +201,10 @@ public class PriceServiceImpl implements PriceService {
 
   @Override
   public PlayerStatistic getMinPrice(Long id) {
-    return statisticRepository.findOne(id);
+    PriceHistory history = historyRepository.findOne(id);
+    PlayerStatistic statistic = statisticRepository.findOne(id);
+    statistic.setHistory(history.getHistory());
+    return statistic;
   }
 
   @Override

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class PlayerStatistic {
 
   private List<PriceDistribution> prices = new ArrayList<>();
 
+  private Map<Long, Map<Integer, Integer>> history;
 
   @Data
   @AllArgsConstructor
