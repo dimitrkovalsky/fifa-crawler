@@ -19,7 +19,7 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
     $scope.onStatsLoaded = function (result) {
         $scope.isLoading = false;
         $scope.playerPrice = result;
-        $scope.draw($scope.playerPrice.prices);
+        $scope.draw($scope.playerPrice.prices, result.history);
         $scope.getPlayerInfo();
     };
 
@@ -29,13 +29,14 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
         PlayerUpdate.save({id: id, maxPrice: 1000}, $scope.getPlayerInfo, $rootScope.onError);
     };
 
-    $scope.draw = function (prices) {
+    $scope.draw = function (prices, history) {
         if (!$scope.chartLoaded()) {
             setTimeout(function () {
-                $scope.draw(prices);
+                $scope.draw(prices, history);
             }, 1000);
         } else {
             drawChart();
+            drawHistory();
         }
         function drawChart() {
             var matrix = [];
@@ -60,6 +61,43 @@ fifaApp.controller('PlayerController', function ($rootScope, $scope, $stateParam
 
             var chart = new google.charts.Bar(document.getElementById('price-chart'));
             chart.draw(data, options);
+        }
+
+        function drawHistory() {
+              var data = new google.visualization.DataTable();
+              data.addColumn('datetime', 'Date');
+              data.addColumn('number', 'Median');
+              data.addColumn('number', 'Min');
+
+               angular.forEach(history, function (value, key) {
+                   data.addRow([new Date(key*1), value.median, value.minPrice]);
+               });
+
+
+               var options = {
+                   chart: {
+                       title: "Price History"
+                   },
+                   hAxis: {
+                      title: 'Time',
+                      logScale: false
+                   },
+                   vAxis: {
+                     title: 'Price',
+                     logScale: false
+                   },
+                   width: 900,
+                   height: 400,
+                   pointSize: 7,
+                   explorer: {
+                        axis: 'horizontal',
+                        actions: ['dragToZoom', 'rightClickToReset']
+                    }
+
+               };
+
+               var chart = new google.visualization.AreaChart(document.getElementById('history-chart'));
+               chart.draw(data, options);
         }
     };
 

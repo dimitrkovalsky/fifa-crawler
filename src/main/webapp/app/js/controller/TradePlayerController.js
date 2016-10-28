@@ -13,7 +13,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
     $scope.onStatsLoaded = function (result) {
         $scope.isLoading = false;
         $scope.playerPrice = result;
-        $scope.draw($scope.playerPrice.prices);
+        $scope.draw($scope.playerPrice.prices, result.history);
     };
 
     $scope.updatePrice = function () {

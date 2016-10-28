@@ -5,17 +5,15 @@ import com.liberty.common.DelayHelper;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
-import com.liberty.model.PriceHistory;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-import com.liberty.repositories.PriceHistoryRepository;
+import com.liberty.service.HistoryService;
 import com.liberty.service.PriceService;
 import com.liberty.service.RequestService;
 import com.liberty.service.StatisticService;
-import com.liberty.service.TransactionService;
 import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +49,6 @@ public class PriceServiceImpl implements PriceService {
   protected LogController logController;
 
   @Autowired
-  protected TransactionService transactionService;
-
-  @Autowired
   protected RequestService requestService;
 
   @Autowired
@@ -71,7 +66,7 @@ public class PriceServiceImpl implements PriceService {
 
 
   @Autowired
-  private PriceHistoryRepository historyRepository;
+  private HistoryService historyService;
 
   @Override
   public void findMinPriceAll() {
@@ -201,9 +196,10 @@ public class PriceServiceImpl implements PriceService {
 
   @Override
   public PlayerStatistic getMinPrice(Long id) {
-    PriceHistory history = historyRepository.findOne(id);
+    Map<Long, HistoryServiceImpl.HistoryPoint> historyGraph = historyService.getHistoryGraph(id);
+
     PlayerStatistic statistic = statisticRepository.findOne(id);
-    statistic.setHistory(history.getHistory());
+    statistic.setHistory(historyGraph);
     return statistic;
   }
 

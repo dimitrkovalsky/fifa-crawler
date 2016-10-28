@@ -2,6 +2,7 @@ package com.liberty.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.liberty.common.Views;
+import com.liberty.service.impl.HistoryServiceImpl;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,7 +33,7 @@ public class PlayerStatistic {
 
   private List<PriceDistribution> prices = new ArrayList<>();
 
-  private Map<Long, Map<Integer, Integer>> history;
+  private Map<Long, HistoryServiceImpl.HistoryPoint> history;
 
   @Data
   @AllArgsConstructor
