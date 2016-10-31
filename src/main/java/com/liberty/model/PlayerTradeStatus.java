@@ -64,4 +64,8 @@ public class PlayerTradeStatus {
   public void updateDate() {
     innerDate = LocalDateTime.now();
   }
+
+  public void addTag(String tag) {
+    tags.add(tag);
+  }
 }

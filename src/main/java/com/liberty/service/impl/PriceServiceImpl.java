@@ -2,6 +2,7 @@ package com.liberty.service.impl;
 
 import com.liberty.common.BoundHelper;
 import com.liberty.common.DelayHelper;
+import com.liberty.common.PriceHelper;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
@@ -101,7 +102,7 @@ public class PriceServiceImpl implements PriceService {
       all = beforeFilter;
     }
 
-    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
+    Collections.shuffle(all);
 
     final int[] counter = {0};
     all.forEach(p -> {
@@ -124,7 +125,7 @@ public class PriceServiceImpl implements PriceService {
     if (tradeStatus == null) {
       tradeStatus = createNewTrade(profile);
     }
-    Integer lowBound = defineLowBound(playerStatistic, tradeStatus);
+    Integer lowBound = defineLowBound(playerStatistic, tradeStatus, profile);
 
     int iteration = 0;
     Set<AuctionInfo> toStatistic = new HashSet<>();
@@ -215,25 +216,11 @@ public class PriceServiceImpl implements PriceService {
   @Override
   public void updatePrices() {
     Map<Long, Integer> pricesMap = getMinPricesMap();
-    tradeRepository.findAll().stream()
+    tradeRepository.findAll().stream().filter(PlayerTradeStatus::isEnabled)
         .map(p -> {
-          p.setEnabled(false);
           Integer price = pricesMap.get(p.getId());
           if (price != null && price != 0) {
-            p.setEnabled(true);
-            if (price <= 1000) {
-              p.setMaxPrice(price - 200);
-            } else if (price <= 2000) {
-              p.setMaxPrice(price - 300);
-            } else if (price <= 3000) {
-              p.setMaxPrice(price - 400);
-            } else if (price <= 4000) {
-              p.setMaxPrice(price - 500);
-            } else if (price <= 5000) {
-              p.setMaxPrice(price - 700);
-            } else {
-              p.setEnabled(false);
-            }
+            p.setMaxPrice(PriceHelper.defineMaxBuyNowPrice(price));
           }
           p.updateDate();
           return p;

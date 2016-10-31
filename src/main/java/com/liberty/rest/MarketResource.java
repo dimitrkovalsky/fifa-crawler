@@ -20,11 +20,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * User: Dimitr Date: 16.06.2016 Time: 8:47
@@ -81,9 +86,13 @@ public class MarketResource {
   }
 
   @RequestMapping(path = "/player", method = RequestMethod.GET)
-  public List<PlayerInfo> getAll() {
+  public List<PlayerInfo> getAll(@RequestParam(name = "tags") String tags) {
+    if (isEmpty(tags)) {
+      return tradeService.getAllToAutoBuy();
+    }
+    String[] filter = tags.split(",");
+    return tradeService.getAllToAutoBuy(Arrays.stream(filter).collect(Collectors.toSet()));
 
-    return tradeService.getAllToAutoBuy();
   }
 
   @RequestMapping(path = "/search", method = RequestMethod.GET)

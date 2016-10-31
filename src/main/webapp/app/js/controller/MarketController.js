@@ -1,6 +1,8 @@
 fifaApp.controller('MarketController', function ($rootScope, $scope, NgTableParams, MarketInfo,
                                                  PlayerAutoBuy, AutoBuy, AutoBuyPlayer, MinPrice) {
     $scope.purchases = 10;
+    $scope.filterTags = [];
+
     $scope.onPlayersLoaded = function (result) {
         $scope.players = [];
         angular.forEach(result, function(value, key){
@@ -44,7 +46,8 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
 
     $scope.getAllPlayers = function () {
         console.log("Getting all players...");
-        PlayerAutoBuy.query({}, $scope.onPlayersLoaded, $rootScope.onError);
+        var queryString = $scope.filterTags.join();
+        PlayerAutoBuy.query({tags: queryString}, $scope.onPlayersLoaded, $rootScope.onError);
     };
 
     $scope.onInfoLoad = function (result) {
@@ -89,6 +92,27 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
     $scope.updateAllPrices = function () {
         $scope.isLoading = true;
         MinPrice.save({id: -1}, $scope.onAllUpdated, $rootScope.onError);
+    };
+
+    $scope.filterByTag = function (tag) {
+        if(!$scope.isActiveTag(tag)){
+            $scope.filterTags.push(tag);
+            $scope.getAllPlayers();
+        }
+    };
+
+    $scope.removeTag = function(tag) {
+       var index = $scope.filterTags.indexOf(tag);
+       if (index > -1) {
+           $scope.filterTags.splice(index, 1);
+       }
+
+       $scope.getAllPlayers();
+    }
+
+    $scope.isActiveTag = function(tag) {
+       return $scope.filterTags.indexOf(tag) >= 0
+
     };
 
     $scope.updateInfo();

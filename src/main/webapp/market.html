@@ -37,6 +37,18 @@
              src="app/img/preloader.gif">
     </div>
 </div>
+<div class="col-md-12" style="margin: 15px;">
+    <span style="cursor: pointer"
+          ng-repeat="tag in tags">
+        <span class="tag label label-info" ng-if="isActiveTag(tag)">
+            <span ng-click="filterByTag(tag)"> {{tag}}</span>
+            <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"
+                  ng-if="isActiveTag(tag)" ng-click="removeTag(tag)"></i></a>
+        </span>
+         <span class="tag label label-default" ng-click="filterByTag(tag)"
+               ng-if="!isActiveTag(tag)"> {{tag}}</span>
+    </span>
+</div>
 <div class="container">
     <table ng-table="tableParams" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="player in $data">

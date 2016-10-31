@@ -3,7 +3,7 @@ package com.liberty;
 import com.liberty.config.Config;
 import com.liberty.model.Tag;
 import com.liberty.repositories.TagRepository;
-import com.liberty.service.CrawlerService;
+import com.liberty.service.ClassificationService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -20,13 +20,20 @@ public class Runner {
 
   public static void main(String[] args) throws IOException {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-    CrawlerService service = context.getBean(CrawlerService.class);
+    ClassificationService service = context.getBean(ClassificationService.class);
 //    service.fetchAllPlayers();
 //
 //    service.fetchAllPlayers();
 //    initTags(context);
 //    TagService tagService = context.getBean(TagService.class);
 //    tagService.executeUpdate();
+//    initTags(context);
+//    service.bestPremierLeague();
+//    service.bestPremierLeague();
+//    service.bestGermanLeague();
+//    service.bestSpainLeague();
+//    service.bestItalyLeague();
+    service.mostBalanced();
     System.exit(0);
   }
 
@@ -39,6 +46,15 @@ public class Runner {
     tags.add(new Tag("expensive"));
     tags.add(new Tag("top"));
     tags.add(new Tag("inform"));
+    tags.add(new Tag("BPL Fast"));
+    tags.add(new Tag("BPL Shot"));
+    tags.add(new Tag("GER Fast"));
+    tags.add(new Tag("GER Shot"));
+    tags.add(new Tag("ESP Fast"));
+    tags.add(new Tag("ESP Shot"));
+    tags.add(new Tag("ITALY Fast"));
+    tags.add(new Tag("ITALY Shot"));
+    tags.add(new Tag("custom"));
 
     tagRepository.deleteAll();
     tagRepository.save(tags);

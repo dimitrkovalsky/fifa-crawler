@@ -41,7 +41,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
  * User: Dimitr Date: 03.06.2016 Time: 20:11
  */
 @Service
-public class TradeServiceImpl extends ASellService implements TradeService ,
+public class TradeServiceImpl extends ASellService implements TradeService,
     ApplicationListener<ContextRefreshedEvent> {
 
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
@@ -220,6 +220,17 @@ public class TradeServiceImpl extends ASellService implements TradeService ,
 
 
     return infos;
+  }
+
+  @Override
+  public List<PlayerInfo> getAllToAutoBuy(Set<String> tags) {
+    return getAllToAutoBuy().stream().filter(x -> !containsTag(tags, x))
+        .collect(Collectors.toList());
+  }
+
+  private boolean containsTag(Set<String> tags, PlayerInfo playerInfo) {
+    return CollectionUtils.isEmpty(CollectionUtils.intersection(playerInfo.getTradeStatus().getTags(),
+        tags));
   }
 
 

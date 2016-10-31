@@ -40,6 +40,8 @@ public interface TradeService {
 
   List<PlayerInfo> getAllToAutoBuy();
 
+  List<PlayerInfo> getAllToAutoBuy(Set<String> tags);
+
   PlayerInfo getPlayerInfo(Long id);
 
   void updateAutoBuy(BuyRequest request);

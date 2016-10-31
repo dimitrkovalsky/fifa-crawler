@@ -17,4 +17,6 @@ public interface PlayerProfileRepository extends MongoRepository<PlayerProfile, 
 
   @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
   List<PlayerProfile> findByName(String phrase);
+
+  List<PlayerProfile> findAllByLeagueId(Long leagueId);
 }

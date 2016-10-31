@@ -50,7 +50,7 @@ public class AuctionRobot {
   private static final int WIN_ITEMS_LIMIT = 20;
   private static final int MAX_EXPIRATION_TIME = 300;
   private int wonItems;
-  private boolean disabled;
+  private boolean disabled = true;
 
   @Autowired
   private TradeService tradeService;
@@ -70,7 +70,7 @@ public class AuctionRobot {
   @Autowired
   private TransactionService transactionService;
 
-//  @Scheduled(fixedRate = 100_000)
+  @Scheduled(fixedRate = 100_000)
   public void findBids() {
     if (disabled) {
       logController.info("Auction Robot disabled");
@@ -104,7 +104,7 @@ public class AuctionRobot {
         return;
       }
       logPageProcessed(i + 1, trades);
-      DelayHelper.wait(100, 10);
+      DelayHelper.wait(300, 10);
     }
   }
 
@@ -120,7 +120,7 @@ public class AuctionRobot {
     }
   }
 
-//  @Scheduled(fixedRate = 10_000)
+  @Scheduled(fixedRate = 10_000)
   public void checkWatchlist() {
     if (disabled) {
       log.info("Auction Robot disabled");
@@ -200,7 +200,7 @@ public class AuctionRobot {
     MarketSearchRequest request = new MarketSearchRequest();
     request.setPage(page);
     request.setQuality("gold");
-//    request.setMinPrice(1500);
+    request.setMinPrice(1500);
 
     return searchService.search(request);
   }

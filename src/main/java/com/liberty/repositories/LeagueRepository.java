@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LeagueRepository extends MongoRepository<League, Long> {
 
+  League findOneByAbbrName(String abbrName);
 }
