@@ -74,11 +74,20 @@ public class PriceServiceImpl implements PriceService {
     Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
 
     final int[] counter = {0};
+
     all.forEach(p -> {
       findMinPrice(p.getId());
       counter[0]++;
       logController.info("Updated market price for " + counter[0] + " / " + all.size());
       DelayHelper.wait(17000, 1000);
+      if (all.size() > 30) {
+        if (counter[0] % 10 == 0) {
+          DelayHelper.wait(20000, 3333);
+        }
+        if (counter[0] % 50 == 0) {
+          DelayHelper.wait(100000, 5555);
+        }
+      }
     });
   }
 

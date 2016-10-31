@@ -70,7 +70,7 @@ public class AuctionRobot {
   @Autowired
   private TransactionService transactionService;
 
-  @Scheduled(fixedRate = 100_000)
+//  @Scheduled(fixedRate = 100_000)
   public void findBids() {
     if (disabled) {
       logController.info("Auction Robot disabled");
@@ -120,7 +120,7 @@ public class AuctionRobot {
     }
   }
 
-  @Scheduled(fixedRate = 10_000)
+//  @Scheduled(fixedRate = 10_000)
   public void checkWatchlist() {
     if (disabled) {
       log.info("Auction Robot disabled");
