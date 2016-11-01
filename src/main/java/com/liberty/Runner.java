@@ -33,7 +33,7 @@ public class Runner {
 //    service.bestGermanLeague();
 //    service.bestSpainLeague();
 //    service.bestItalyLeague();
-    service.mostBalanced();
+    service.bestWingers();
     System.exit(0);
   }
 

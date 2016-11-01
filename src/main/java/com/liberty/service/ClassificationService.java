@@ -12,6 +12,12 @@ public interface ClassificationService {
 
   void mostBalanced();
 
+  void bestRBLB();
+
+  void bestCB();
+
+  void bestWingers();
+
   void bestGermanLeague();
 
   void bestSpainLeague();

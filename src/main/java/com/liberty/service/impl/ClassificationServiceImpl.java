@@ -12,8 +12,10 @@ import com.liberty.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +75,60 @@ public class ClassificationServiceImpl implements ClassificationService {
     List<PlayerProfile> balances = filterByAllStat(bottomBound, profiles);
     //  List<PlayerProfile> shot = filterByStat("SHO", 80, fast);
     logFound(balances, true, "ALL stats > " + bottomBound);
+
+  }
+
+  @Override
+  public void bestRBLB() {
+    List<PlayerProfile> profiles = profileRepository.findAll();
+
+
+    profiles = filterByPosition(profiles, "RB", "LB");
+    logFound(profiles, "RB and LB");
+    List<PlayerProfile> bestBacks = filterByStat("PAC", 90, profiles);
+    logFound(profiles, "PAC > 80");
+    bestBacks = filterByStat("DEF", 60, bestBacks);
+    logFound(profiles, "DEF > 60");
+    bestBacks = filterByStat("PHY", 60, bestBacks);
+    logFound(profiles, "PHY > 60");
+
+    logFound(bestBacks, true, "BEST BACKS");
+
+  }
+
+  @Override
+  public void bestCB() {
+    List<PlayerProfile> profiles = profileRepository.findAll();
+
+
+    profiles = filterByPosition(profiles, "CB");
+    logFound(profiles, "RB and LB");
+    List<PlayerProfile> bestBacks = filterByStat("PAC", 70, profiles);
+    logFound(profiles, "PAC > 70");
+    bestBacks = filterByStat("DEF", 80, bestBacks);
+    logFound(profiles, "DEF > 80");
+    bestBacks = filterByStat("PHY", 80, bestBacks);
+    logFound(profiles, "PHY > 80");
+
+    logFound(bestBacks, true, "BEST CB");
+
+  }
+
+  @Override
+  public void bestWingers() {
+    List<PlayerProfile> profiles = profileRepository.findAll();
+
+
+    profiles = filterByPosition(profiles, "LW", "RW", "RM", "LM");
+    logFound(profiles, "RM and LM");
+    List<PlayerProfile> bestBacks = filterByStat("PAC", 85, profiles);
+    logFound(profiles, "PAC > 85");
+    bestBacks = filterByStat("DRI", 80, bestBacks);
+    logFound(profiles, "DRI > 80");
+    bestBacks = filterByStat("SHO", 80, bestBacks);
+    logFound(profiles, "SHO > 80");
+
+    logFound(bestBacks, true, "best wingers");
 
   }
 
@@ -162,6 +218,14 @@ public class ClassificationServiceImpl implements ClassificationService {
     return profiles.stream()
         .filter(x -> getAttributeValue(statName, x.getAttributes()) >= bottomBound)
         .collect(Collectors.toList());
+  }
+
+  private List<PlayerProfile> filterByPosition(List<PlayerProfile> profiles, String... positions) {
+    Set<String> positionSet = Arrays.stream(positions).collect(Collectors.toSet());
+    List<PlayerProfile> collect = profiles.stream()
+        .filter(x -> positionSet.contains(x.getPosition()))
+        .collect(Collectors.toList());
+    return collect;
   }
 
   private List<PlayerProfile> filterByAllStat(Integer bottomBound, List<PlayerProfile> profiles) {

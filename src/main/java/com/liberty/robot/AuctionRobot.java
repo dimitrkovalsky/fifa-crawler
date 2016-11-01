@@ -50,7 +50,7 @@ public class AuctionRobot {
   private static final int WIN_ITEMS_LIMIT = 20;
   private static final int MAX_EXPIRATION_TIME = 300;
   private int wonItems;
-  private boolean disabled = true;
+  private boolean disabled = false;
 
   @Autowired
   private TradeService tradeService;
@@ -191,9 +191,19 @@ public class AuctionRobot {
   }
 
   private boolean shouldBid(AuctionInfo info, Integer maxPrice) {
-    long bid = defineBid(info);
-    return bid <= maxPrice && info.getExpires() <= MAX_EXPIRATION_TIME && (info.getItemData()
-        .getContract() > 0 || bid + 1000 <= maxPrice);
+    try {
+
+      long bid = defineBid(info);
+      if (maxPrice == null) {
+        System.err.println("Max price can not be null for : " + info.getItemData().getName());
+        return false;
+      }
+      return bid <= maxPrice && info.getExpires() <= MAX_EXPIRATION_TIME && (info.getItemData()
+          .getContract() > 0 || bid + 1000 <= maxPrice);
+    } catch (Exception e){
+      log.error(e.getMessage());
+      return false;
+    }
   }
 
   private List<TradeInfo> getPage(int page) {
