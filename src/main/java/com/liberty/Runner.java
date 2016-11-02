@@ -4,6 +4,7 @@ import com.liberty.config.Config;
 import com.liberty.model.Tag;
 import com.liberty.repositories.TagRepository;
 import com.liberty.service.ClassificationService;
+import com.liberty.service.CrawlerService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -21,21 +22,17 @@ public class Runner {
   public static void main(String[] args) throws IOException {
     ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
     ClassificationService service = context.getBean(ClassificationService.class);
+    CrawlerService crawlerService = context.getBean(CrawlerService.class);
 //    service.fetchAllPlayers();
 //
 //    service.fetchAllPlayers();
-    initTags(context);
+//    initTags(context);
 //    TagService tagService = context.getBean(TagService.class);
 //    tagService.executeUpdate();
-//    initTags(context);
-//    service.bestPremierLeague();
-//    service.bestPremierLeague();
-//    service.bestGermanLeague();
-//    service.bestSpainLeague();
-//    service.bestItalyLeague();
-//    service.bestWingers();
+    crawlerService.findProfilesBySquad(119532L);
     System.exit(0);
   }
+
 
   private static void initTags(ApplicationContext context) {
     TagRepository tagRepository = context.getBean(TagRepository.class);
@@ -55,6 +52,7 @@ public class Runner {
     tags.add(new Tag("ITALY Fast"));
     tags.add(new Tag("ITALY Shot"));
     tags.add(new Tag("custom"));
+    tags.add(new Tag("silver"));
     tags.add(new Tag("LB"));
     tags.add(new Tag("RB"));
 

@@ -4,6 +4,7 @@ import com.liberty.model.FifaPlayerSuggestion;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.processors.FifaDatabaseProcessor;
+import com.liberty.processors.FutheadPlayerProcessor;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.service.CrawlerService;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +41,8 @@ public class CrawlerServiceImpl implements CrawlerService {
 
   @Autowired
   private ImageService imageService;
+
+  private FutheadPlayerProcessor futheadPlayerProcessor = new FutheadPlayerProcessor();
 
   @Override
   public void fetchData(Long playerId) {
@@ -87,4 +92,16 @@ public class CrawlerServiceImpl implements CrawlerService {
     trades.forEach(t -> fetchData(t.getId()));
   }
 
+  @Override
+  public List<PlayerProfile> findProfilesBySquad(Long squadId) {
+    List<Long> ids = futheadPlayerProcessor.getPlayerIds(squadId);
+    Iterable<PlayerProfile> profiles = profileRepository.findAll(ids);
+    profiles.forEach(x -> System.out.println(x.getName()));
+    return toList(profiles);
+  }
+
+  private static <T> List<T> toList(final Iterable<T> iterable) {
+    return StreamSupport.stream(iterable.spliterator(), false)
+        .collect(Collectors.toList());
+  }
 }
