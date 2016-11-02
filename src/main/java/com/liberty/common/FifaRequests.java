@@ -325,6 +325,9 @@ public class FifaRequests extends BaseFifaRequests {
     if (searchRequest.getPlayerId() != null) {
       params.add("maskedDefId=" + searchRequest.getPlayerId());
     }
+    if (searchRequest.getPosition() != null) {
+      params.add("pos=" + searchRequest.getPosition());
+    }
     return String.join("&", params);
   }
 

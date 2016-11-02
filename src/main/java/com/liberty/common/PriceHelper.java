@@ -1,11 +1,16 @@
 package com.liberty.common;
 
+import com.liberty.model.PlayerProfile;
+
 /**
  * User: Dimitr
  * Date: 23.10.2016
  * Time: 13:55
  */
 public class PriceHelper {
+
+  public static final int DEFAULT_SILVER_PRICE = 800;
+  public static final int DEFAULT_BRONZE_PRICE = 500;
 
   public static int defineMaxBuyNowPrice(Integer minMarketPrice) {
     if (minMarketPrice <= 1000) {
@@ -37,5 +42,19 @@ public class PriceHelper {
     } else {
       return minMarketPrice - 100000;
     }
+  }
+
+  public static Integer defineMaxBuyNowPrice(Integer price, PlayerProfile profile) {
+    Integer potentialPrice = defineMaxBuyNowPrice(price);
+    if(profile == null){
+      return potentialPrice;
+    }
+    if (profile.getQuality().equals("silver") && potentialPrice > 1000) {
+      return DEFAULT_SILVER_PRICE;
+    }
+    if (profile.getQuality().equals("bronze") && potentialPrice > 1000) {
+      return DEFAULT_BRONZE_PRICE;
+    }
+    return potentialPrice;
   }
 }

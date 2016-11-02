@@ -116,8 +116,10 @@ public class ClassificationServiceImpl implements ClassificationService {
 
   @Override
   public void bestWingers() {
-    List<PlayerProfile> profiles = profileRepository.findAll();
 
+    List<PlayerProfile> profiles = profileRepository.findAll();
+    Set<String> position = profiles.stream().map(PlayerProfile::getPosition).collect(Collectors
+        .toSet());
 
     profiles = filterByPosition(profiles, "LW", "RW", "RM", "LM");
     logFound(profiles, "RM and LM");
@@ -129,6 +131,8 @@ public class ClassificationServiceImpl implements ClassificationService {
     logFound(profiles, "SHO > 80");
 
     logFound(bestBacks, true, "best wingers");
+
+    System.out.println(position);
 
   }
 

@@ -119,7 +119,10 @@ public class MarketResource {
   public PlayerStatistic findMin(@RequestBody IdRequest request) {
     if (request.getId().equals(-1L)) {
       priceService.findMinPriceAll();
-//      tagService.executeUpdate();
+      return null;
+    }
+    if (request.getId().equals(-100L)) {
+      priceService.findMinPriceUnassigned();
       return null;
     }
     return priceService.findMinPrice(request.getId());

@@ -19,7 +19,8 @@
                 ng-click="enableAutoBuy(false)">Stop Autobuy
         </button>
     </div>
-    <input ng-if="!autoBuyEnabled" ng-model="purchases" type="number" class="col-md-2">
+
+    <input ng-if="!autoBuyEnabled" ng-model="tradeInfo.maxPurchases" class="col-md-2">
 
 
     <div class="col-md-12">
@@ -37,7 +38,7 @@
              src="app/img/preloader.gif">
     </div>
 </div>
-<div class="col-md-12" style="margin: 15px;">
+<div class="col-md-11" style="margin: 15px;">
     <span style="cursor: pointer"
           ng-repeat="tag in tags">
         <span class="tag label label-info" ng-if="isActiveTag(tag)">

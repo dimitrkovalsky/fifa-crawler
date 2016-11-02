@@ -8,6 +8,7 @@ import com.liberty.repositories.LeagueRepository;
 import com.liberty.repositories.NationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +52,13 @@ public class InfoResource {
 
   @RequestMapping(value = "/clubs", method = RequestMethod.GET)
   public Map<Long, Club> getClubs() {
+    Map<Long, Club> map = new HashMap<>();
+    clubRepository.findAll().forEach(x -> map.put(x.getId(), x));
+    return map;
+  }
+
+  @RequestMapping(value = "/clubs/{{league}}", method = RequestMethod.GET)
+  public Map<Long, Club> getClubsByLeague(@PathVariable Long league) {
     Map<Long, Club> map = new HashMap<>();
     clubRepository.findAll().forEach(x -> map.put(x.getId(), x));
     return map;

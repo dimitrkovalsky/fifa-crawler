@@ -17,6 +17,7 @@ public class MarketSearchRequest {
   private Integer maxPrice;
   private Integer minBuyNowPrice;
   private Integer maxBuyNowPrice;
+  private String position;
   private String quality;
 
 }

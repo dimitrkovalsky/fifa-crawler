@@ -1,3 +1,5 @@
-<span class="tag label label-info"  ng-repeat="tag in player.tags">
+<span class="tag label label-info" ng-repeat="tag in player.tags">
   <span>{{tag}}</span>
+   <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"
+         ng-click="removePlayerTag(tag, player.id)"></i></a>
 </span>

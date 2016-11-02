@@ -1,6 +1,8 @@
 fifaApp.controller('MarketController', function ($rootScope, $scope, NgTableParams, MarketInfo,
-                                                 PlayerAutoBuy, AutoBuy, AutoBuyPlayer, MinPrice) {
-    $scope.purchases = 10;
+                                                 PlayerAutoBuy, AutoBuy, AutoBuyPlayer, MinPrice,
+                                                  Tags) {
+    $scope.tradeInfo = {};
+    $scope.tradeInfo.maxPurchases = 10;
     $scope.filterTags = [];
 
     $scope.onPlayersLoaded = function (result) {
@@ -73,9 +75,12 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
         var data = {};
         data.enabled = enabled;
         if(enabled){
-          data.purchases =  $scope.purchases;
+          data.purchases =  $scope.tradeInfo.maxPurchases;
         }
-        AutoBuy.save(data, $scope.updateInfo, $rootScope.onError);
+        AutoBuy.save(data, function() {
+            $scope.updateInfo()
+        }, $rootScope.onError);
+
     };
 
     $scope.enableRobot = function (enabled) {
@@ -112,8 +117,14 @@ fifaApp.controller('MarketController', function ($rootScope, $scope, NgTablePara
 
     $scope.isActiveTag = function(tag) {
        return $scope.filterTags.indexOf(tag) >= 0
-
     };
+
+   $scope.removePlayerTag = function (tag, playerId) {
+       Tags.delete({
+           playerId: playerId,
+           tag: tag
+       }, $scope.getAllPlayers, $rootScope.onError);
+   };
 
     $scope.updateInfo();
     $scope.getAllPlayers();

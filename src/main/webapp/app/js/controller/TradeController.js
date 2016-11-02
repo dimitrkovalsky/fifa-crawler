@@ -1,4 +1,4 @@
-fifaApp.controller('TradeController', function ($rootScope, $scope, Trade) {
+fifaApp.controller('TradeController', function ($rootScope, $scope, Trade, MinPrice) {
 
 
     $scope.onLoaded = function (result) {
@@ -10,6 +10,15 @@ fifaApp.controller('TradeController', function ($rootScope, $scope, Trade) {
             value.id = value.playerId;
         });
     };
+
+     $scope.onAllUpdated = function () {
+         $scope.isLoading = false;
+     };
+
+     $scope.updateAllPrices = function () {
+         $scope.isLoading = true;
+         MinPrice.save({id: -100}, $scope.onAllUpdated, $rootScope.onError);
+     };
 
     Trade.query({}, $scope.onLoaded, $rootScope.onError);
     $rootScope.updateTradepile();

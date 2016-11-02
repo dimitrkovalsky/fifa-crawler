@@ -24,7 +24,7 @@ public class Runner {
 //    service.fetchAllPlayers();
 //
 //    service.fetchAllPlayers();
-//    initTags(context);
+    initTags(context);
 //    TagService tagService = context.getBean(TagService.class);
 //    tagService.executeUpdate();
 //    initTags(context);
@@ -33,7 +33,7 @@ public class Runner {
 //    service.bestGermanLeague();
 //    service.bestSpainLeague();
 //    service.bestItalyLeague();
-    service.bestWingers();
+//    service.bestWingers();
     System.exit(0);
   }
 
@@ -55,6 +55,8 @@ public class Runner {
     tags.add(new Tag("ITALY Fast"));
     tags.add(new Tag("ITALY Shot"));
     tags.add(new Tag("custom"));
+    tags.add(new Tag("LB"));
+    tags.add(new Tag("RB"));
 
     tagRepository.deleteAll();
     tagRepository.save(tags);

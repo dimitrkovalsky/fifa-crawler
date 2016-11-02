@@ -7,6 +7,7 @@ import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
+import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
@@ -15,6 +16,7 @@ import com.liberty.service.HistoryService;
 import com.liberty.service.PriceService;
 import com.liberty.service.RequestService;
 import com.liberty.service.StatisticService;
+import com.liberty.service.TradeService;
 import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +57,9 @@ public class PriceServiceImpl implements PriceService {
 
   @Autowired
   protected PlayerTradeStatusRepository tradeRepository;
+
+  @Autowired
+  protected TradeService tradeService;
 
   @Autowired
   private PlayerProfileRepository playerProfileService;
@@ -219,12 +225,26 @@ public class PriceServiceImpl implements PriceService {
     tradeRepository.findAll().stream().filter(PlayerTradeStatus::isEnabled)
         .map(p -> {
           Integer price = pricesMap.get(p.getId());
+          PlayerProfile profile = playerProfileService.findOne(p.getId());
           if (price != null && price != 0) {
-            p.setMaxPrice(PriceHelper.defineMaxBuyNowPrice(price));
+            p.setMaxPrice(PriceHelper.defineMaxBuyNowPrice(price, profile));
           }
           p.updateDate();
           return p;
         }).forEach(tradeRepository::save);
+  }
+
+  @Override
+  public void findMinPriceUnassigned() {
+    List<GroupedToSell> unassigned = tradeService.getUnassigned();
+    log.info("Trying to update prices for " + unassigned.size() + " players");
+    AtomicInteger counter = new AtomicInteger();
+    for (GroupedToSell grouped : unassigned) {
+      findMinPrice(grouped.getPlayerId());
+
+      log.info("Updated prices for " + counter.incrementAndGet() + " / " + unassigned.size());
+      DelayHelper.wait(1000, 200);
+    }
   }
 
   private Map<Long, Integer> getMinPricesMap() {

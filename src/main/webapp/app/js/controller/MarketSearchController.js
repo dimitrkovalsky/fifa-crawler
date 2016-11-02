@@ -5,6 +5,11 @@ fifaApp.controller('MarketSearchController', function ($rootScope, $scope, Marke
     $scope.search.page = 0;
     $scope.resultPresent = false;
 
+    $scope.filterProps = {};
+    $scope.filterProps.position = "-";
+    $scope.positions = ["-","ST", "LM", "CF", "GK", "RW", "CM", "LW", "CDM", "CAM", "RB", "LB",
+    "LWB", "RM", "RWB", "CB"]
+
     $scope.suggestions = [];
 
     $rootScope.readSuggestions = function () {
@@ -67,6 +72,12 @@ fifaApp.controller('MarketSearchController', function ($rootScope, $scope, Marke
     };
 
     $scope.performSearch = function () {
+        if($scope.filterProps.leagueId){
+            $scope.search.leagueId = parseInt($scope.filterProps.leagueId);
+        }
+        if($scope.filterProps.position && $scope.filterProps.position != "-") {
+           $scope.search.position = $scope.filterProps.position;
+        }
         MarketSearch.save($scope.search, $scope.onSearchResult, $rootScope.onError);
     };
 

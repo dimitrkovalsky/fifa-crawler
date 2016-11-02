@@ -1,6 +1,15 @@
 <div class="page-header">
     <h1>Trades</h1>
 </div>
+<div class="col-md-6">
+    <div class="col-md-2">
+        <button ng-click="updateAllPrices()" class="btn btn-info"> Update All</button>
+    </div>
+    <div class="col-md-2">
+        <img style="height: 81px; padding-bottom: 45px;" ng-show="isLoading"
+             src="app/img/preloader.gif">
+    </div>
+</div>
 <div class="container">
     <table class="table">
         <thead>

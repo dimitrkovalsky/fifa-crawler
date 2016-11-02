@@ -16,6 +16,17 @@
     <div class="col-md-4">
         <div id="magicsuggest"></div>
     </div>
+
+    <div class="col-md-2">
+        <select class="form-control" id="league" ng-model="filterProps.leagueId">
+            <option value="{{key}}" ng-repeat="(key, value) in leaguesMap">{{value.name}}</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <select class="form-control"  ng-model="filterProps.position">
+            <option value="{{value}}" ng-repeat="value in positions">{{value}}</option>
+        </select>
+    </div>
 </form>
 
 <form class="col-md-12">
