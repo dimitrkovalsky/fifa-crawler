@@ -31,4 +31,6 @@ public interface TagService {
   List<Tag> getAllTags();
 
   void disableByTag(String tag, Set<String> activeTags);
+
+  void addNewTag(String tag);
 }

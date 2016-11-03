@@ -267,4 +267,15 @@ public class TagServiceImpl implements TagService {
     log.info("Disabled : " + counter.get() + " players for tag : " + tag);
   }
 
+  @Override
+  public void addNewTag(String tag) {
+    Tag oldTag = tagRepository.findOneByName(tag);
+    if (oldTag != null) {
+      log.error("Can not create new tag for : " + tag + ". Tag already exists");
+      return;
+    }
+    tagRepository.save(new Tag(tag));
+    log.info("Successfully created new tag : " + tag);
+  }
+
 }

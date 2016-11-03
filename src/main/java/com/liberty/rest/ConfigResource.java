@@ -1,8 +1,10 @@
 package com.liberty.rest;
 
+import com.liberty.rest.request.NewTagRequest;
 import com.liberty.rest.request.StringRequest;
 import com.liberty.rest.response.ConfigResponse;
 import com.liberty.service.ConfigService;
+import com.liberty.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,9 @@ public class ConfigResource {
   @Autowired
   private ConfigService configService;
 
+  @Autowired
+  private TagService tagService;
+
   @RequestMapping(method = RequestMethod.GET)
   public ConfigResponse get() {
     Map<String, Integer> tagDistribution = configService.getTagDistribution();
@@ -48,4 +53,10 @@ public class ConfigResource {
   public void updateActive() {
     configService.updateActivePlayersPrices();
   }
+
+  @RequestMapping(path = "/tag/add", method = RequestMethod.POST)
+  public void addTag(@RequestBody NewTagRequest request) {
+    tagService.addNewTag(request.getTag());
+  }
+
 }

@@ -1,0 +1,19 @@
+package com.liberty.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+/**
+ * @author Dmytro_Kovalskyi.
+ * @since 03.11.2016.
+ */
+@Data
+@AllArgsConstructor
+public class SquadPlayer {
+
+  private Long playerId;
+  private PlayerProfile profile;
+  private Integer minPrice;
+
+
+}

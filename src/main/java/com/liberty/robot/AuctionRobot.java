@@ -210,8 +210,8 @@ public class AuctionRobot {
     MarketSearchRequest request = new MarketSearchRequest();
     request.setPage(page);
     request.setQuality("gold");
-//    request.setMinPrice(1500);
-    request.setMaxPrice(400);
+//    request.setMinPrice(600);
+//    request.setMaxPrice(400);
     return searchService.search(request);
   }
 

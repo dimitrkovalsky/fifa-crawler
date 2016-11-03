@@ -15,6 +15,13 @@
         }
     });
 
+    module.directive('squadPlayer', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/squad-player.html'
+        }
+    });
+
     module.directive('searchRow', function () {
         return {
             restrict: 'E',

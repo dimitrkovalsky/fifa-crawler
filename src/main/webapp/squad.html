@@ -1,0 +1,43 @@
+<div class="page-header">
+    <h1>Squad</h1>
+</div>
+<div class="container">
+    <div class="input-group col-md-5">
+        <input type="number" placeholder="Squad Id" ng-model="squadId"/>
+
+        <button class="btn btn-default" type="button" ng-click="loadSquad()">
+            Scan Squad
+        </button>
+    </div>
+
+    <div ng-if="loaded">
+        Full Price : <strong> {{squad.minPrice}}</strong>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Rating</th>
+            <th>Club</th>
+            <th>League</th>
+            <th>Nation</th>
+            <th>Min Price</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="player in squad.players">
+        <tr>
+            <td>
+                <squad-player/>
+            </td>
+            <td><a href="#/player/{{player.playerId}}">{{player.profile.name}}</a></td>
+            <td>{{player.profile.rating}}</td>
+            <td><img src="/api/images/club/{{player.profile.clubId}}"></td>
+            <td>{{getLeagueName(player.profile.leagueId)}}
+            </td>
+            <td><img src="/api/images/nation/{{player.profile.nationId}}"></td>
+            <td>{{player.minPrice}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

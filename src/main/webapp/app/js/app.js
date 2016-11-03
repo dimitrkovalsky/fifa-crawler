@@ -81,6 +81,10 @@ fifaApp.factory('MinPrice', function ($resource) {
     return $resource('/api/market/player/:id/min/');
 });
 
+fifaApp.factory('Squads', function ($resource) {
+    return $resource('/api/squad/:id/', {id : '@id'});
+});
+
 fifaApp.factory('Suggestions', function ($resource) {
     return $resource('/app/res/fifa-players.json',{},{
        getData: {method:'GET', isArray: false}
@@ -140,6 +144,11 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/market-search',
             templateUrl: 'market-search.html',
             controller: 'MarketSearchController'
+        })
+        .state('squad', {
+            url: '/squad',
+            templateUrl: 'squad.html',
+            controller: 'SquadController'
         })
         .state('config', {
             url: '/config',

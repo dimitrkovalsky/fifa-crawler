@@ -1,6 +1,7 @@
 package com.liberty.common;
 
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.PlayerStatistic;
 
 /**
  * User: Dimitr
@@ -46,7 +47,7 @@ public class PriceHelper {
 
   public static Integer defineMaxBuyNowPrice(Integer price, PlayerProfile profile) {
     Integer potentialPrice = defineMaxBuyNowPrice(price);
-    if(profile == null){
+    if (profile == null) {
       return potentialPrice;
     }
     if (profile.getQuality().equals("silver") && potentialPrice > 1000) {
@@ -56,5 +57,17 @@ public class PriceHelper {
       return DEFAULT_BRONZE_PRICE;
     }
     return potentialPrice;
+  }
+
+  public static int getMinPrice(PlayerStatistic statistic) {
+    if (statistic == null) {
+      return 0;
+    }
+    statistic.getPrices().sort((o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
+    if (!statistic.getPrices().isEmpty()) {
+      return statistic.getPrices().get(0).getPrice();
+    } else {
+      return 0;
+    }
   }
 }
