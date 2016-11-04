@@ -13,7 +13,7 @@ public class SquadPlayer {
 
   private Long playerId;
   private PlayerProfile profile;
-  private Integer minPrice;
+  private PlayerStatistic.PriceDistribution minPrice;
 
 
 }

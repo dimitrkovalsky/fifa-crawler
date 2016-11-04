@@ -1,7 +1,5 @@
 package com.liberty.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.liberty.common.Views;
 import com.liberty.service.impl.HistoryServiceImpl;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,7 +24,6 @@ public class PlayerStatistic {
 
   private LocalDateTime innerDate;
 
-  @JsonView(Views.Internal.class)
   public String getDate() {
     return toReadableString(innerDate);
   }

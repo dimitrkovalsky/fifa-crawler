@@ -1,6 +1,6 @@
 package com.liberty.service;
 
-import com.liberty.model.Squad;
+import com.liberty.model.FullSquad;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -8,5 +8,9 @@ import com.liberty.model.Squad;
  */
 public interface SquadBuilderService {
 
-  Squad fetchPricesForSquad(Long squadId);
+  FullSquad fetchPricesForSquad(Long squadId);
+
+  FullSquad updateSquad(Long squadId);
+
+  void buySquad(Long squadId);
 }

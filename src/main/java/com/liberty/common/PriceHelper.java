@@ -59,15 +59,15 @@ public class PriceHelper {
     return potentialPrice;
   }
 
-  public static int getMinPrice(PlayerStatistic statistic) {
+  public static PlayerStatistic.PriceDistribution getMinPrice(PlayerStatistic statistic) {
     if (statistic == null) {
-      return 0;
+      return new PlayerStatistic.PriceDistribution(0, 0);
     }
     statistic.getPrices().sort((o1, o2) -> o1.getPrice().compareTo(o2.getPrice()));
     if (!statistic.getPrices().isEmpty()) {
-      return statistic.getPrices().get(0).getPrice();
+      return statistic.getPrices().get(0);
     } else {
-      return 0;
+      return new PlayerStatistic.PriceDistribution(0, 0);
     }
   }
 }

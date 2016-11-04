@@ -79,6 +79,34 @@ public class ClassificationServiceImpl implements ClassificationService {
   }
 
   @Override
+  public void notRar() {
+    List<PlayerProfile> profiles =profileRepository.findAll();
+
+    profiles = profiles.stream().filter(x -> x.getColor().equals("gold")).collect(Collectors.toList
+        ());
+
+    logFound(profiles, "GOLD");
+    profiles = profiles.stream().filter(x -> x.getRating() >= 80)
+        .collect(Collectors.toList());
+    logFound(profiles,true, "GOLD");
+    addTagWithPrice(profiles, "not rar", 350);
+  }
+
+  @Override
+  public void lbNotRar() {
+    List<PlayerProfile> profiles = getProfilesByLeague("RUS 1");
+
+
+    profiles = filterByPosition(profiles, "LB");
+    logFound(profiles, "LB");
+    profiles = profiles.stream().filter(x -> x.getColor().equals("gold")).collect(Collectors.toList
+        ());
+
+    logFound(profiles, true, "LB");
+    addTagWithPrice(profiles, "LB", 350);
+  }
+
+  @Override
   public void bestRBLB() {
     List<PlayerProfile> profiles = profileRepository.findAll();
 
@@ -191,6 +219,18 @@ public class ClassificationServiceImpl implements ClassificationService {
         one = createTrade(p);
       }
 
+      one.addTag(tag);
+      tradeStatusRepository.save(one);
+    });
+  }
+
+  private void addTagWithPrice(List<PlayerProfile> profiles, String tag, int price) {
+    profiles.forEach(p -> {
+      PlayerTradeStatus one = tradeStatusRepository.findOne(p.getId());
+      if (one == null) {
+        one = createTrade(p);
+      }
+      one.setMaxPrice(price);
       one.addTag(tag);
       tradeStatusRepository.save(one);
     });

@@ -1,17 +1,28 @@
 package com.liberty.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
 
-/**
- * @author Dmytro_Kovalskyi.
- * @since 03.11.2016.
- */
-@Data
-public class Squad {
+import static com.liberty.common.DateHelper.toReadableString;
 
-  private Long squadId;
-  private Integer minPrice;
-  private List<SquadPlayer> players;
+@Data
+@Document(collection = "squads")
+public class Squad implements Serializable {
+
+  @Id
+  private Long id;
+
+  private List<Long> playerIds;
+
+  private LocalDateTime innerDate;
+
+  public String getDate() {
+    return toReadableString(innerDate);
+  }
 }

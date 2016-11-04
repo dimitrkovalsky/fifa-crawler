@@ -1,6 +1,6 @@
 package com.liberty.rest;
 
-import com.liberty.model.Squad;
+import com.liberty.model.FullSquad;
 import com.liberty.service.SquadBuilderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class SquadResource {
 
 
   @RequestMapping(path = "/{squadId}", method = RequestMethod.GET)
-  public Squad getSquad(@PathVariable Long squadId) {
+  public FullSquad getSquad(@PathVariable Long squadId) {
     return squadService.fetchPricesForSquad(squadId);
   }
 

@@ -211,7 +211,7 @@ public class AuctionRobot {
     request.setPage(page);
     request.setQuality("gold");
 //    request.setMinPrice(600);
-//    request.setMaxPrice(400);
+    request.setMaxPrice(400);
     return searchService.search(request);
   }
 

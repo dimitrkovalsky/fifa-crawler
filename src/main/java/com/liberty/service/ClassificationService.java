@@ -12,6 +12,10 @@ public interface ClassificationService {
 
   void mostBalanced();
 
+  void notRar();
+
+  void lbNotRar();
+
   void bestRBLB();
 
   void bestCB();

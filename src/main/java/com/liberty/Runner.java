@@ -26,10 +26,10 @@ public class Runner {
 //    service.fetchAllPlayers();
 //
 //    service.fetchAllPlayers();
-//    initTags(context);
+    initTags(context);
 //    TagService tagService = context.getBean(TagService.class);
 //    tagService.executeUpdate();
-    crawlerService.findProfilesBySquad(119532L);
+//    service.notRar();
     System.exit(0);
   }
 
@@ -55,6 +55,7 @@ public class Runner {
     tags.add(new Tag("silver"));
     tags.add(new Tag("LB"));
     tags.add(new Tag("RB"));
+    tags.add(new Tag("not rar"));
 
     tagRepository.deleteAll();
     tagRepository.save(tags);
