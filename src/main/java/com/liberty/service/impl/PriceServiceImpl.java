@@ -263,7 +263,9 @@ public class PriceServiceImpl implements PriceService {
     Map<Long, PriceHelper.HistoryPoint> historyGraph = historyService.getHistoryGraph(id);
 
     PlayerStatistic statistic = statisticRepository.findOne(id);
-    statistic.setHistory(historyGraph);
+    if (statistic != null) {
+      statistic.setHistory(historyGraph);
+    }
     return statistic;
   }
 
