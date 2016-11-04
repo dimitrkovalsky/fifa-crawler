@@ -1,6 +1,7 @@
 package com.liberty.processors;
 
 import com.liberty.common.RequestHelper;
+import com.liberty.model.Squad;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -40,6 +41,45 @@ public class FutheadPlayerProcessor {
 
     }
     return Optional.empty();
+  }
+
+
+  public Squad fetchBaseSquadInfo(Long squadId) {
+    String url = SQUAD_URL + squadId;
+    String content = RequestHelper.executeRequestAndGetResult(url);
+    Document document = Jsoup.parse(content);
+    String toFetch = "";
+    String squadName = "";
+    String groupName = "";
+    int nameEnd;
+    try {
+
+      Elements nodes = document.select(".futhead").select(".small-head");
+      if (nodes == null || nodes.isEmpty()) {
+        nodes = document.select(".futhead").select(".has-small");
+        toFetch = nodes.get(0).toString();
+        int nameStart = toFetch.indexOf("has-small");
+        nameEnd = toFetch.indexOf("<small>");
+        squadName = toFetch.substring(nameStart + 12, nameEnd).trim();
+      } else {
+        toFetch = nodes.get(0).toString();
+        int nameStart = toFetch.indexOf("small-head");
+        nameEnd = toFetch.indexOf("<small>");
+        squadName = toFetch.substring(nameStart + 13, nameEnd).trim();
+
+      }
+      if (!squadName.isEmpty() && squadName.contains(">")) {
+        squadName = squadName.substring(squadName.indexOf(">" + 1));
+      }
+      String groupString = toFetch.substring(nameEnd + 8, toFetch.indexOf("</small>"));
+      groupName = groupString.substring(groupString.indexOf(">") + 1).trim();
+    } catch (Exception e) {
+      log.error("Can not parse futhead : " + e.getMessage());
+    }
+    Squad squad = new Squad();
+    squad.setSquadGroup(groupName);
+    squad.setSquadName(squadName);
+    return squad;
   }
 
 

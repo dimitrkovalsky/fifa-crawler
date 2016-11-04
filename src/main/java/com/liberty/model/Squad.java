@@ -22,6 +22,10 @@ public class Squad implements Serializable {
 
   private LocalDateTime innerDate;
 
+  private String squadGroup;
+
+  private String squadName;
+
   public String getDate() {
     return toReadableString(innerDate);
   }

@@ -1,7 +1,7 @@
 package com.liberty.service;
 
+import com.liberty.common.PriceHelper;
 import com.liberty.model.PlayerStatistic;
-import com.liberty.service.impl.HistoryServiceImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -18,5 +18,5 @@ public interface HistoryService {
 
   void logPriceChange(PlayerStatistic statistic);
 
-  Map<Long, HistoryServiceImpl.HistoryPoint> getHistoryGraph(Long playerId);
+  Map<Long, PriceHelper.HistoryPoint> getHistoryGraph(Long playerId);
 }

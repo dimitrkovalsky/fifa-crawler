@@ -26,10 +26,15 @@ public class Runner {
 //    service.fetchAllPlayers();
 //
 //    service.fetchAllPlayers();
-    initTags(context);
+   initTags(context);
 //    TagService tagService = context.getBean(TagService.class);
 //    tagService.executeUpdate();
-//    service.notRar();
+//
+//   FutheadPlayerProcessor processor = new FutheadPlayerProcessor();
+//    Squad squad = processor.fetchBaseSquadInfo(114690L);
+//    System.out.println(squad);
+//   service.lbNotRar();
+//   service.update();
     System.exit(0);
   }
 
@@ -56,6 +61,8 @@ public class Runner {
     tags.add(new Tag("LB"));
     tags.add(new Tag("RB"));
     tags.add(new Tag("not rar"));
+    tags.add(new Tag("rblb"));
+    tags.add(new Tag("SBC"));
 
     tagRepository.deleteAll();
     tagRepository.save(tags);

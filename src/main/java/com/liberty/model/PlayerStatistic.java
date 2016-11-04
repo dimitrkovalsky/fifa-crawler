@@ -1,6 +1,6 @@
 package com.liberty.model;
 
-import com.liberty.service.impl.HistoryServiceImpl;
+import com.liberty.common.PriceHelper;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -30,7 +30,7 @@ public class PlayerStatistic {
 
   private List<PriceDistribution> prices = new ArrayList<>();
 
-  private Map<Long, HistoryServiceImpl.HistoryPoint> history;
+  private Map<Long, PriceHelper.HistoryPoint> history;
 
   @Data
   @AllArgsConstructor

@@ -3,6 +3,15 @@ package com.liberty.common;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * User: Dimitr
  * Date: 23.10.2016
@@ -69,5 +78,33 @@ public class PriceHelper {
     } else {
       return new PlayerStatistic.PriceDistribution(0, 0);
     }
+  }
+
+  public static HistoryPoint getHistoryPoint(Map<Integer, Integer> priceDistribution) {
+    DescriptiveStatistics stats = new DescriptiveStatistics();
+    priceDistribution.forEach((k, v) -> {
+      for (int i = 0; i < v; i++) {
+        stats.addValue(k);
+      }
+    });
+
+    return new HistoryPoint((long) stats.getMin(), (long) stats.getPercentile(50));
+  }
+
+  @Data
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class HistoryPoint {
+
+    private Long minPrice;
+    private Long median;
+  }
+
+  public static Long getMedian(PlayerStatistic price) {
+
+    HistoryPoint historyPoint = getHistoryPoint(price.getPrices().stream().collect(Collectors.toMap(
+        PlayerStatistic.PriceDistribution::getPrice,
+        PlayerStatistic.PriceDistribution::getAmount)));
+    return historyPoint.getMedian();
   }
 }

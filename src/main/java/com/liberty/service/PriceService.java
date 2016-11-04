@@ -14,6 +14,8 @@ public interface PriceService {
 
   PlayerStatistic findMinPrice(long playerId);
 
+  PlayerStatistic findMinPriceForSBC(long playerId);
+
   PlayerStatistic getMinPrice(Long id);
 
   void updatePrices();

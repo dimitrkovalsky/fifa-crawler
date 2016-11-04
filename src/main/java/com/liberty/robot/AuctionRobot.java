@@ -90,6 +90,7 @@ public class AuctionRobot {
     List<PlayerTradeStatus> toSearch = tradeStatusRepository.findAll().stream()
         .filter(PlayerTradeStatus::isEnabled)
         .collect(Collectors.toList());
+    log.info("Robot trying to find any from " + toSearch.size() + " players");
     Map<Long, PlayerTradeStatus> statusMap = toSearch.stream()
         .collect(Collectors.toMap(PlayerTradeStatus::getId, Function.identity()));
     for (int i = 0; i < PAGES_TO_SEARCH; i++) {
@@ -104,8 +105,16 @@ public class AuctionRobot {
         return;
       }
       logPageProcessed(i + 1, trades);
+      if (exceededExpirationTime(trades.get(trades.size() - 1))) {
+        log.info("Exceeded max expiration time");
+        break;
+      }
       DelayHelper.wait(300, 10);
     }
+  }
+
+  private boolean exceededExpirationTime(TradeInfo tradeInfo) {
+    return tradeInfo.getAuctionInfo().getExpires() > MAX_EXPIRATION_TIME;
   }
 
   private void logPageProcessed(int page, List<TradeInfo> trades) {
@@ -200,7 +209,7 @@ public class AuctionRobot {
       }
       return bid <= maxPrice && info.getExpires() <= MAX_EXPIRATION_TIME && (info.getItemData()
           .getContract() > 0 || bid + 1000 <= maxPrice);
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error(e.getMessage());
       return false;
     }
@@ -210,8 +219,8 @@ public class AuctionRobot {
     MarketSearchRequest request = new MarketSearchRequest();
     request.setPage(page);
     request.setQuality("gold");
-//    request.setMinPrice(600);
-    request.setMaxPrice(400);
+    // request.setMinPrice(600);
+    request.setMaxPrice(350);
     return searchService.search(request);
   }
 

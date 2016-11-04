@@ -14,6 +14,7 @@ public class SquadPlayer {
   private Long playerId;
   private PlayerProfile profile;
   private PlayerStatistic.PriceDistribution minPrice;
+  private Long median;
 
 
 }

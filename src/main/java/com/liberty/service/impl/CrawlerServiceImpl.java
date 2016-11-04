@@ -3,6 +3,7 @@ package com.liberty.service.impl;
 import com.liberty.model.FifaPlayerSuggestion;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
+import com.liberty.model.Squad;
 import com.liberty.processors.FifaDatabaseProcessor;
 import com.liberty.processors.FutheadPlayerProcessor;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -98,6 +99,11 @@ public class CrawlerServiceImpl implements CrawlerService {
     Iterable<PlayerProfile> profiles = profileRepository.findAll(ids);
     profiles.forEach(x -> System.out.println(x.getName()));
     return toList(profiles);
+  }
+
+  @Override
+  public Squad fetchBaseSquadInfo(Long squadId) {
+    return futheadPlayerProcessor.fetchBaseSquadInfo(squadId);
   }
 
   private static <T> List<T> toList(final Iterable<T> iterable) {

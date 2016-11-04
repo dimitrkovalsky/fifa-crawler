@@ -62,21 +62,32 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
   @Override
   public FullSquad updateSquad(Long squadId) {
     List<PlayerProfile> profilesBySquad = crawlerService.findProfilesBySquad(squadId);
-    log.info("Found " + profilesBySquad.size() + " players for squad " + squadId);
+    Squad squadInfo = crawlerService.fetchBaseSquadInfo(squadId);
+    log.info("Found " + profilesBySquad.size() + " players for squad " + squadId + " (" +
+        squadInfo.getSquadName() + ")");
     FullSquad fullSquad = new FullSquad();
     fullSquad.setSquadId(squadId);
     List<SquadPlayer> players = new ArrayList<>();
-    int squadPrice = 0;
+    long squadMinPrice = 0;
+    long squadMedian = 0;
+    int playerCount = 0;
     for (PlayerProfile profile : profilesBySquad) {
-      PlayerStatistic price = priceService.findMinPrice(profile.getId());
+      PlayerStatistic price = priceService.findMinPriceForSBC(profile.getId());
       PlayerStatistic.PriceDistribution minPrice = PriceHelper.getMinPrice(price);
-      squadPrice += minPrice.getPrice();
-      players.add(new SquadPlayer(profile.getId(), profile, minPrice));
+      long median = PriceHelper.getMedian(price);
+      squadMedian += median;
+      squadMinPrice += minPrice.getPrice();
+      players.add(new SquadPlayer(profile.getId(), profile, minPrice, median));
+      playerCount++;
+      log.info("Updated " + playerCount + " / " + profilesBySquad.size() + " players from squad "
+          + squadInfo.getSquadName());
       DelayHelper.wait(7000, 777);
     }
     fullSquad.setPlayers(players);
-    fullSquad.setPrice(new HistoryServiceImpl.HistoryPoint((long) squadPrice, 0L));
+    fullSquad.setPrice(new PriceHelper.HistoryPoint(squadMinPrice, squadMedian));
     fullSquad.setDate(DateHelper.toReadableString(LocalDateTime.now()));
+    fullSquad.setSquadName(squadInfo.getSquadName());
+    fullSquad.setSquadGroup(squadInfo.getSquadGroup());
     saveSquad(fullSquad);
     updateHistory(fullSquad);
     return fullSquad;
@@ -91,6 +102,7 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
     }
 
     statistic.getHistory().put(System.currentTimeMillis(), fullSquad.getPrice());
+    squadStatisticRepository.save(statistic);
   }
 
   @Override
@@ -110,6 +122,8 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
     List<Long> ids = fullSquad.getPlayers().stream()
         .map(SquadPlayer::getPlayerId)
         .collect(Collectors.toList());
+    squad.setSquadGroup(fullSquad.getSquadGroup());
+    squad.setSquadName(fullSquad.getSquadName());
     squad.setPlayerIds(ids);
     squadRepository.save(squad);
   }
@@ -117,17 +131,20 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
   private FullSquad useStoredSquad(Squad stored) {
     FullSquad squad = new FullSquad();
     squad.setSquadId(stored.getId());
-    int squadPrice = 0;
+    long squadMinPrice = 0;
+    long squadMedian = 0;
     List<SquadPlayer> players = new ArrayList<>();
     for (Long id : stored.getPlayerIds()) {
       PlayerProfile profile = profileRepository.findOne(id);
-      PlayerStatistic minPrice = priceService.getMinPrice(id);
-      PlayerStatistic.PriceDistribution minDistribution = PriceHelper.getMinPrice(minPrice);
-      players.add(new SquadPlayer(id, profile, minDistribution));
-      squadPrice += minDistribution.getPrice();
+      PlayerStatistic price = priceService.getMinPrice(id);
+      PlayerStatistic.PriceDistribution minPrice = PriceHelper.getMinPrice(price);
+      long median = PriceHelper.getMedian(price);
+      squadMedian += median;
+      squadMinPrice += minPrice.getPrice();
+      players.add(new SquadPlayer(profile.getId(), profile, minPrice, median));
     }
     squad.setPlayers(players);
-    squad.setPrice(new HistoryServiceImpl.HistoryPoint((long) squadPrice, 0L));
+    squad.setPrice(new PriceHelper.HistoryPoint(squadMinPrice, squadMedian));
     squad.setDate(stored.getDate());
     return squad;
   }

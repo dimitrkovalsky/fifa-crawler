@@ -1,17 +1,37 @@
 <div class="page-header">
     <h1>Squad</h1>
 </div>
+
+
+<div class="col-md-2">
+
+    <div ng-repeat="s in squads">
+        <a href="http://www.futhead.com/squad-building-challenges/squads/{{s.id}}" target="_blank">
+            {{s.squadName}} </a>
+        <small>{{s.squadGroup}}</small>
+        <span class="glyphicon glyphicon-chevron-right" style="cursor:pointer"
+              ng-click="loadStoredSquad(s.id)"></span>
+    </div>
+</div>
+
 <div class="container">
-    <div class="input-group col-md-5">
+    <div class="input-group col-md-8">
         <input type="number" placeholder="Squad Id" ng-model="squadId"/>
 
         <button class="btn btn-default" type="button" ng-click="loadSquad()">
             Scan Squad
         </button>
+
+        <button class="btn btn-default" type="button" ng-click="reloadSquad()"
+                ng-disabled="!loaded">
+            Rescan Squad
+        </button>
+        <span><strong>{{squad.date}}</strong></span>
     </div>
 
     <div ng-if="loaded">
-        Full Price : <strong> {{squad.price.minPrice}}</strong>
+        Full Price Min: <strong> {{squad.price.minPrice}}</strong> <br>
+        Full Price Median: <strong> {{squad.price.median}}</strong>
     </div>
     <table class="table">
         <thead>
@@ -23,6 +43,8 @@
             <th>League</th>
             <th>Nation</th>
             <th>Min Price</th>
+            <th>Min Amount</th>
+            <th>Median</th>
         </tr>
         </thead>
         <tbody ng-repeat="player in squad.players">
@@ -36,7 +58,9 @@
             <td>{{getLeagueName(player.profile.leagueId)}}
             </td>
             <td><img src="/api/images/nation/{{player.profile.nationId}}"></td>
-            <td>{{player.minPrice}}</td>
+            <td>{{player.minPrice.price}}</td>
+            <td>{{player.minPrice.amount}}</td>
+            <td>{{player.median}}</td>
         </tr>
         </tbody>
     </table>

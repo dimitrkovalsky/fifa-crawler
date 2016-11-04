@@ -1,6 +1,7 @@
 package com.liberty.service.impl;
 
 import com.liberty.model.League;
+import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.processors.pojo.Attributes;
@@ -8,6 +9,7 @@ import com.liberty.repositories.LeagueRepository;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.service.ClassificationService;
+import com.liberty.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class ClassificationServiceImpl implements ClassificationService {
 
   @Autowired
   private PlayerProfileRepository profileRepository;
+
+  @Autowired
+  private TagService tagService;
 
   @Autowired
   private LeagueRepository leagueRepository;
@@ -80,7 +85,7 @@ public class ClassificationServiceImpl implements ClassificationService {
 
   @Override
   public void notRar() {
-    List<PlayerProfile> profiles =profileRepository.findAll();
+    List<PlayerProfile> profiles = profileRepository.findAll();
 
     profiles = profiles.stream().filter(x -> x.getColor().equals("gold")).collect(Collectors.toList
         ());
@@ -88,13 +93,13 @@ public class ClassificationServiceImpl implements ClassificationService {
     logFound(profiles, "GOLD");
     profiles = profiles.stream().filter(x -> x.getRating() >= 80)
         .collect(Collectors.toList());
-    logFound(profiles,true, "GOLD");
+    logFound(profiles, true, "GOLD");
     addTagWithPrice(profiles, "not rar", 350);
   }
 
   @Override
   public void lbNotRar() {
-    List<PlayerProfile> profiles = getProfilesByLeague("RUS 1");
+    List<PlayerProfile> profiles = getProfilesByLeague("ITA 1");
 
 
     profiles = filterByPosition(profiles, "LB");
@@ -104,6 +109,30 @@ public class ClassificationServiceImpl implements ClassificationService {
 
     logFound(profiles, true, "LB");
     addTagWithPrice(profiles, "LB", 350);
+  }
+
+  @Override
+  public void update() {
+
+//    List<PlayerTradeStatus> rb = tagService.getByTag("RB").stream()
+//        .map(PlayerInfo::getTradeStatus)
+//        .collect(Collectors.toList());
+//
+//    rb.forEach(x -> {
+//      x.addTag("rblb");
+//      x.setMaxPrice(350);
+//      tradeStatusRepository.save(x);
+//    });
+
+    List<PlayerTradeStatus> lb = tagService.getByTag("LB").stream()
+        .map(PlayerInfo::getTradeStatus)
+        .collect(Collectors.toList());
+
+    lb.forEach(x -> {
+      x.addTag("rblb");
+      x.setMaxPrice(350);
+      tradeStatusRepository.save(x);
+    });
   }
 
   @Override

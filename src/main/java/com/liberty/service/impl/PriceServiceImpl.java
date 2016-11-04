@@ -136,7 +136,8 @@ public class PriceServiceImpl implements PriceService {
     int iteration = 0;
     Set<AuctionInfo> toStatistic = new HashSet<>();
 
-    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(profile)) {
+    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(lowBound,
+        profile)) {
       iteration++;
       logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
       DelayHelper.wait(250, 20);
@@ -165,8 +166,55 @@ public class PriceServiceImpl implements PriceService {
     return getMinPrice(playerId);
   }
 
-  private boolean isMaxBound(PlayerProfile profile) {
-    return false;
+  @Override
+  public PlayerStatistic findMinPriceForSBC(long playerId) {
+    PlayerStatistic playerStatistic = statisticRepository.findOne(playerId);
+    PlayerTradeStatus tradeStatus = tradeRepository.findOne(playerId);
+    PlayerProfile profile = playerProfileService.findOne(playerId);
+    if (playerStatistic == null) {
+      playerStatistic = new PlayerStatistic();
+      playerStatistic.setId(playerId);
+    }
+    if (tradeStatus == null) {
+      tradeStatus = createNewTrade(profile);
+    }
+    Integer lowBound = 10000;
+
+    int iteration = 0;
+    Set<AuctionInfo> toStatistic = new HashSet<>();
+
+    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(lowBound,
+        profile)) {
+      iteration++;
+      logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
+      DelayHelper.wait(250, 20);
+      List<AuctionInfo> players = findPlayers(playerId, lowBound, 0);
+      if (players.size() == 0) {
+        lowBound = getHigherBound(0, lowBound);
+      } else if (players.size() >= 12) {
+        players.addAll(findNextPagesPlayers(playerId, lowBound));
+        toStatistic.addAll(players);
+        lowBound = getHigherBound(0, lowBound);
+      } else {
+        toStatistic.addAll(players);
+        lowBound = getHigherBound(0, lowBound);
+      }
+      logController.info("Found " + toStatistic.size() + " players");
+
+      if (iteration >= ITERATION_LIMIT) {
+        logController.info("Exceeded iteration limit");
+        break;
+      }
+    }
+
+    statisticService.collectStatistic(playerId, lowBound, toStatistic);
+
+    logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
+    return getMinPrice(playerId);
+  }
+
+  private boolean isMaxBound(Integer lowBound, PlayerProfile profile) {
+    return lowBound > 10_000;
   }
 
 
@@ -212,7 +260,7 @@ public class PriceServiceImpl implements PriceService {
 
   @Override
   public PlayerStatistic getMinPrice(Long id) {
-    Map<Long, HistoryServiceImpl.HistoryPoint> historyGraph = historyService.getHistoryGraph(id);
+    Map<Long, PriceHelper.HistoryPoint> historyGraph = historyService.getHistoryGraph(id);
 
     PlayerStatistic statistic = statisticRepository.findOne(id);
     statistic.setHistory(historyGraph);

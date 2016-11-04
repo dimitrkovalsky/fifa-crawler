@@ -1,6 +1,7 @@
 package com.liberty.service;
 
 import com.liberty.model.PlayerProfile;
+import com.liberty.model.Squad;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface CrawlerService {
   void fetchAllTrades();
 
   List<PlayerProfile> findProfilesBySquad(Long squadId);
+
+  Squad fetchBaseSquadInfo(Long squadId);
 }

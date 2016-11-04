@@ -1,6 +1,6 @@
 package com.liberty.model;
 
-import com.liberty.service.impl.HistoryServiceImpl;
+import com.liberty.common.PriceHelper;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,5 +21,5 @@ public class SquadStatistic {
 
   @Id
   private Long id;
-  private Map<Long, HistoryServiceImpl.HistoryPoint> history = new HashMap<>();
+  private Map<Long, PriceHelper.HistoryPoint> history = new HashMap<>();
 }
