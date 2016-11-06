@@ -85,6 +85,15 @@ fifaApp.factory('Squads', function ($resource) {
     return $resource('/api/squad/:id/', {id : '@id'});
 });
 
+fifaApp.factory('SquadsBuy', function ($resource) {
+    return $resource('/api/squad/buy');
+});
+
+
+fifaApp.factory('SquadsBuyAll', function ($resource) {
+    return $resource('/api/squad/buyall');
+});
+
 fifaApp.factory('Suggestions', function ($resource) {
     return $resource('/app/res/fifa-players.json',{},{
        getData: {method:'GET', isArray: false}
@@ -154,5 +163,5 @@ fifaApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/config',
             templateUrl: 'config.html',
             controller: 'ConfigController'
-        });;
+        });
 });

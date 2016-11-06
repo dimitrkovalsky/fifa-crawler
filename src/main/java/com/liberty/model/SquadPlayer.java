@@ -17,5 +17,6 @@ public class SquadPlayer {
   private Long median;
   private boolean inClub;
   private PlayerTradeStatus tradeStatus;
+  private String lastUpdate;
 
 }

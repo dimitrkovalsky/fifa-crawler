@@ -21,19 +21,21 @@ import com.liberty.service.PriceService;
 import com.liberty.service.RequestService;
 import com.liberty.service.SquadBuilderService;
 import com.liberty.service.TradeService;
+import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
-import static java.util.function.UnaryOperator.identity;
+import static com.liberty.common.DateHelper.toReadableString;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -62,6 +64,9 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
   private RequestService requestService;
 
   @Autowired
+  private LogController logController;
+
+  @Autowired
   private PlayerTradeStatusRepository tradeStatusRepository;
 
 
@@ -69,8 +74,11 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
   private TradeService tradeService;
 
   private Map<Long, ItemData> getMyPlayers() {
-    return requestService.getMyPlayers().stream()
-        .collect(Collectors.toMap(ItemData::getAssetId, identity()));
+    Map<Long, ItemData> map = new HashMap<>();
+
+    requestService.getMyPlayers().forEach(x -> map.put(x.getAssetId(), x));
+    tradeService.getUnassigned().forEach(x -> map.put(x.getPlayerId(), x.getItems().get(0)));
+    return map;
   }
 
   @Override
@@ -100,18 +108,20 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
       PlayerStatistic price = priceService.findMinPriceForSBC(profile.getId());
       PlayerStatistic.PriceDistribution minPrice = PriceHelper.getMinPrice(price);
       long median = PriceHelper.getMedian(price);
+      String lastUpdate = DateHelper.toReadableString(price.getInnerDate());
       squadMedian += median;
       squadMinPrice += minPrice.getPrice();
       players.add(new SquadPlayer(profile.getId(), profile, minPrice, median, myPlayers
-          .containsKey(profile.getId()), tradeStatusRepository.findOne(profile.getId())));
+          .containsKey(profile.getId()), tradeStatusRepository.findOne(profile.getId()), lastUpdate));
       playerCount++;
-      log.info("Updated " + playerCount + " / " + profilesBySquad.size() + " players from squad "
+      logController.info("Updated " + playerCount + " / " + profilesBySquad.size() + " players " +
+          "from squad "
           + squadInfo.getSquadName());
       DelayHelper.wait(7000, 777);
     }
     fullSquad.setPlayers(players);
     fullSquad.setPrice(new PriceHelper.HistoryPoint(squadMinPrice, squadMedian));
-    fullSquad.setDate(DateHelper.toReadableString(LocalDateTime.now()));
+    fullSquad.setDate(toReadableString(LocalDateTime.now()));
     fullSquad.setSquadName(squadInfo.getSquadName());
     fullSquad.setSquadGroup(squadInfo.getSquadGroup());
     saveSquad(fullSquad);
@@ -166,10 +176,11 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
       PlayerStatistic price = priceService.getMinPrice(id);
       PlayerStatistic.PriceDistribution minPrice = PriceHelper.getMinPrice(price);
       long median = PriceHelper.getMedian(price);
+      String lastUpdate = DateHelper.toReadableString(price.getInnerDate());
       squadMedian += median;
       squadMinPrice += minPrice.getPrice();
       players.add(new SquadPlayer(profile.getId(), profile, minPrice, median, myPlayers
-          .containsKey(profile.getId()), tradeStatusRepository.findOne(profile.getId())));
+          .containsKey(profile.getId()), tradeStatusRepository.findOne(profile.getId()), lastUpdate));
     }
     squad.setPlayers(players);
     squad.setPrice(new PriceHelper.HistoryPoint(squadMinPrice, squadMedian));

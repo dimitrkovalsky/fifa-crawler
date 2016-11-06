@@ -26,11 +26,18 @@
                 ng-disabled="!loaded">
             Rescan Squad
         </button>
+        <button ng-disabled="!loaded" class="btn btn-success"
+                ng-click="buyAll()"> Buy All
+        </button>
+        <div class="col-md-2">
+            <img style="height: 81px; padding-bottom: 45px;" ng-show="isLoading"
+                 src="app/img/preloader.gif">
+        </div>
         <span><strong>{{squad.date}}</strong></span>
     </div>
 
     <div ng-if="loaded">
-        Full Price Min: <strong> {{squad.price.minPrice}}</strong> <br>
+        Full Price Min: <strong>{{squad.price.minPrice}}</strong> <br>
         Full Price Median: <strong> {{squad.price.median}}</strong>
     </div>
     <table class="table">
@@ -45,14 +52,18 @@
             <th>Min Price</th>
             <th>Min Amount</th>
             <th>Median</th>
+            <th>Last update</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody ng-repeat="player in squad.players">
-        <tr>
+        <tr ng-class="{buyRow:player.inClub}">
             <td>
                 <squad-player/>
             </td>
-            <td><a href="#/player/{{player.playerId}}">{{player.profile.name}}</a>
+            <td><a href="#/player/{{player.playerId}}">{{player.profile.name}}<br>
+                <squad-tags/>
+            </a>
             </td>
             <td>{{player.profile.rating}}</td>
             <td><img src="/api/images/club/{{player.profile.clubId}}"></td>
@@ -62,6 +73,15 @@
             <td>{{player.minPrice.price}}</td>
             <td>{{player.minPrice.amount}}</td>
             <td>{{player.median}}</td>
+            <td>{{player.lastUpdate}}</td>
+            <td>
+                <button ng-if="!player.inClub" class="btn btn-success"
+                        ng-click="buySingle(player)"> Buy
+                </button>
+                <button class="btn btn-info"
+                        ng-click="reloadPrice(player)"> Refresh
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>

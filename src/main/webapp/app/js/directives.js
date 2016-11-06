@@ -63,6 +63,12 @@
             templateUrl: 'templates/tags.html'
         }
     });
+    module.directive('squadTags', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/squad-tags.html'
+        }
+    });
 
     module.directive('tagsWithButton', function () {
         return {

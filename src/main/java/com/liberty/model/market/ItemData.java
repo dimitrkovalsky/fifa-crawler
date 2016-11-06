@@ -55,6 +55,7 @@ public class ItemData {
   private Long stadiumid;
   private Long capacity;
   private Object trainingItem;
+  private Object loans;
 
 
   private Boolean fromTargets;

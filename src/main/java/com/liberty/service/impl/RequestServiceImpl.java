@@ -127,11 +127,13 @@ public class RequestServiceImpl implements RequestService {
     return execute(() -> {
       int page = 0;
       List<ItemData> allPlayers = new ArrayList<>();
+      List<ItemData> players;
       do {
-        List<ItemData> players = fifaRequests.getMyPlayers(page);
+        players = fifaRequests.getMyPlayers(page);
         allPlayers.addAll(players);
         page++;
-      } while (allPlayers.size() >= 96);
+        DelayHelper.wait(300, 20);
+      } while (players.size() >= 96);
       return allPlayers;
     });
   }
