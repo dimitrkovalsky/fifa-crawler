@@ -9,12 +9,18 @@ import com.liberty.model.PlayerStatistic;
 import com.liberty.model.Squad;
 import com.liberty.model.SquadPlayer;
 import com.liberty.model.SquadStatistic;
+import com.liberty.model.market.ItemData;
 import com.liberty.repositories.PlayerProfileRepository;
+import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.repositories.SquadRepository;
 import com.liberty.repositories.SquadStatisticRepository;
+import com.liberty.rest.request.BuyAllPlayersRequest;
+import com.liberty.rest.request.BuySinglePlayerRequest;
 import com.liberty.service.CrawlerService;
 import com.liberty.service.PriceService;
+import com.liberty.service.RequestService;
 import com.liberty.service.SquadBuilderService;
+import com.liberty.service.TradeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +28,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.function.UnaryOperator.identity;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -49,6 +58,21 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
   @Autowired
   private SquadStatisticRepository squadStatisticRepository;
 
+  @Autowired
+  private RequestService requestService;
+
+  @Autowired
+  private PlayerTradeStatusRepository tradeStatusRepository;
+
+
+  @Autowired
+  private TradeService tradeService;
+
+  private Map<Long, ItemData> getMyPlayers() {
+    return requestService.getMyPlayers().stream()
+        .collect(Collectors.toMap(ItemData::getAssetId, identity()));
+  }
+
   @Override
   public FullSquad fetchPricesForSquad(Long squadId) {
     Squad stored = squadRepository.findOne(squadId);
@@ -71,13 +95,15 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
     long squadMinPrice = 0;
     long squadMedian = 0;
     int playerCount = 0;
+    Map<Long, ItemData> myPlayers = getMyPlayers();
     for (PlayerProfile profile : profilesBySquad) {
       PlayerStatistic price = priceService.findMinPriceForSBC(profile.getId());
       PlayerStatistic.PriceDistribution minPrice = PriceHelper.getMinPrice(price);
       long median = PriceHelper.getMedian(price);
       squadMedian += median;
       squadMinPrice += minPrice.getPrice();
-      players.add(new SquadPlayer(profile.getId(), profile, minPrice, median));
+      players.add(new SquadPlayer(profile.getId(), profile, minPrice, median, myPlayers
+          .containsKey(profile.getId()), tradeStatusRepository.findOne(profile.getId())));
       playerCount++;
       log.info("Updated " + playerCount + " / " + profilesBySquad.size() + " players from squad "
           + squadInfo.getSquadName());
@@ -133,6 +159,7 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
     squad.setSquadId(stored.getId());
     long squadMinPrice = 0;
     long squadMedian = 0;
+    Map<Long, ItemData> myPlayers = getMyPlayers();
     List<SquadPlayer> players = new ArrayList<>();
     for (Long id : stored.getPlayerIds()) {
       PlayerProfile profile = profileRepository.findOne(id);
@@ -141,11 +168,31 @@ public class SquadBuilderServiceImpl implements SquadBuilderService {
       long median = PriceHelper.getMedian(price);
       squadMedian += median;
       squadMinPrice += minPrice.getPrice();
-      players.add(new SquadPlayer(profile.getId(), profile, minPrice, median));
+      players.add(new SquadPlayer(profile.getId(), profile, minPrice, median, myPlayers
+          .containsKey(profile.getId()), tradeStatusRepository.findOne(profile.getId())));
     }
     squad.setPlayers(players);
     squad.setPrice(new PriceHelper.HistoryPoint(squadMinPrice, squadMedian));
     squad.setDate(stored.getDate());
     return squad;
+  }
+
+  @Override
+  public boolean buyPlayer(BuySinglePlayerRequest request) {
+    return tradeService.buyPlayer(request.getPlayerId(), request.getMaxPrice(), request
+        .getPlayerName());
+  }
+
+  @Override
+  public void buyAllPlayers(BuyAllPlayersRequest request) {
+    log.info("Trying to buy " + request.getPlayers().size() + " players");
+    int count = 0;
+    for (BuySinglePlayerRequest playerRequest : request.getPlayers()) {
+      boolean success = buyPlayer(playerRequest);
+      count++;
+      log.info("Bought " + count + " / " + request.getPlayers().size() + " players");
+      if (!success)
+        break;
+    }
   }
 }

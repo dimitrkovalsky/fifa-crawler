@@ -130,7 +130,7 @@ public class TagServiceImpl implements TagService {
         t.setEnabled(true);
         counter.incrementAndGet();
       } else {
-        t.setEnabled(false);
+       // t.setEnabled(false);
       }
       if (tag.equals(UNTAGGED)) {
         if (t.getTags().isEmpty()) {

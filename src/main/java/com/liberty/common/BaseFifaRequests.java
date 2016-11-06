@@ -33,7 +33,7 @@ abstract class BaseFifaRequests {
   protected volatile String phishingToken = null;
 
   public static final String REFERER =
-      "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=163759";
+      "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=164055";
   public static final String REQUESTED_WITH = "ShockwaveFlash/23.0.0.185";
   protected volatile String currentCookies = "";
   protected volatile String authCookies = "";

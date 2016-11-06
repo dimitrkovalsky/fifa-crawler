@@ -29,4 +29,5 @@ public interface FifaExternalEndpoints {
   String GET_UNASSIGNED = MAIN_PATH + "/purchased/items";
   String WATCHLIST_URL = MAIN_PATH + "/watchlist";
   String WATCHLIST_WITH_IDS_URL = MAIN_PATH + "/watchlist?tradeId=%d";
+  String MY_PLAYERS = MAIN_PATH + "/club?type=1&level=10&start=%d&count=96";
 }

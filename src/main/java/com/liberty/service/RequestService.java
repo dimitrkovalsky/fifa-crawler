@@ -30,6 +30,8 @@ public interface RequestService {
 
   boolean item(Long itemId);
 
+  List<ItemData> getMyPlayers();
+
   boolean item(Long itemId, Long tradeId);
 
   Optional<AuctionHouseResponse> auctionHouse(Long itemId, Integer startPrice, Integer buyNow);

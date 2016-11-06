@@ -3,6 +3,8 @@ package com.liberty.rest;
 import com.liberty.model.FullSquad;
 import com.liberty.model.Squad;
 import com.liberty.repositories.SquadRepository;
+import com.liberty.rest.request.BuyAllPlayersRequest;
+import com.liberty.rest.request.BuySinglePlayerRequest;
 import com.liberty.rest.request.SquadRequest;
 import com.liberty.service.SquadBuilderService;
 
@@ -41,6 +43,16 @@ public class SquadResource {
   @RequestMapping(method = RequestMethod.POST)
   public FullSquad forceUpdate(@RequestBody SquadRequest request) {
     return squadService.updateSquad(request.getSquadId());
+  }
+
+  @RequestMapping(path = "/buy", method = RequestMethod.POST)
+  public boolean buyOne(@RequestBody BuySinglePlayerRequest request) {
+    return squadService.buyPlayer(request);
+  }
+
+  @RequestMapping(path = "/buyall", method = RequestMethod.POST)
+  public void buyAll(@RequestBody BuyAllPlayersRequest request) {
+    squadService.buyAllPlayers(request);
   }
 
 

@@ -110,7 +110,7 @@ public abstract class ATradeService {
     Toolkit.getDefaultToolkit().beep();
   }
 
-  private List<AuctionInfo> foundMinList(TradeStatus tradeStatus) {
+  protected List<AuctionInfo> foundMinList(TradeStatus tradeStatus) {
     return tradeStatus.getAuctionInfo().stream()
         .filter(a -> a.getItemData().getContract() > 0)
         .sorted(getAuctionInfoComparator().reversed())

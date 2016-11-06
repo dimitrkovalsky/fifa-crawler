@@ -15,11 +15,15 @@ import com.liberty.service.RequestService;
 import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import lombok.Data;
 
 import static com.liberty.common.FifaCrawlerState.FAILED;
 import static com.liberty.common.FifaCrawlerState.READY;
@@ -46,6 +50,19 @@ public class RequestServiceImpl implements RequestService {
 
   private void onStatusChange(FifaCrawlerState state) {
     currentState = state;
+  }
+
+  private int requestCount;
+
+  private long requestStarted = System.currentTimeMillis();
+
+  private void logRequest() {
+
+  }
+
+  @Scheduled(fixedDelay = 300_000)
+  private void resetRequestCount() {
+
   }
 
   private <T> T execute(Supplier<T> function) {
@@ -103,6 +120,20 @@ public class RequestServiceImpl implements RequestService {
   @Override
   public boolean buy(AuctionInfo auctionInfo) {
     return execute(() -> fifaRequests.buy(auctionInfo));
+  }
+
+  @Override
+  public List<ItemData> getMyPlayers() {
+    return execute(() -> {
+      int page = 0;
+      List<ItemData> allPlayers = new ArrayList<>();
+      do {
+        List<ItemData> players = fifaRequests.getMyPlayers(page);
+        allPlayers.addAll(players);
+        page++;
+      } while (allPlayers.size() >= 96);
+      return allPlayers;
+    });
   }
 
   @Override
@@ -188,5 +219,10 @@ public class RequestServiceImpl implements RequestService {
       fifaRequests.updateCookies(cookies);
     }
     currentState = READY;
+  }
+
+  @Data
+  private static class RequestRecord {
+
   }
 }

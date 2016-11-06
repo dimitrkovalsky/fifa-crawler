@@ -63,6 +63,15 @@ public class FifaRequests extends BaseFifaRequests {
         TradeStatus::getAuctionInfo, this::getTradePile);
   }
 
+  public List<ItemData> getMyPlayers(int page) {
+    String url = String.format(FifaExternalEndpoints.MY_PLAYERS, page * 96);
+    HttpPost request = createRequest(url);
+    Optional<String> executionResult = execute(request);
+
+    return processor.processListResult(executionResult, Items.class,
+        Items::getItemData, () -> getMyPlayers(page));
+  }
+
   public Optional<Watchlist> getWatchlist() {
     HttpPost request = createRequest(getWatchlistUrl());
     Optional<String> execute = execute(request);

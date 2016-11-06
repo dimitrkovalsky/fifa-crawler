@@ -30,6 +30,8 @@ public interface TradeService {
 
   void checkMarket();
 
+  boolean buyPlayer(long playerId, int maxPrice, String playerName);
+
   void addToAutoBuy(String name, long id, int maxPrice);
 
   MarketInfo getMarketInfo();

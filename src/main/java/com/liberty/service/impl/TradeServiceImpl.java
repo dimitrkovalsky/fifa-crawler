@@ -73,7 +73,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
     tradeRepository.deleteAll();
   }
 
-  @Autowired
+  @Override
   public Set<String> getActiveTags() {
     return activeTags;
   }
@@ -154,6 +154,33 @@ public class TradeServiceImpl extends ASellService implements TradeService,
       return false;
     }
     return true;
+  }
+
+  @Override
+  public boolean buyPlayer(long playerId, int maxPrice, String playerName) {
+    Optional<TradeStatus> maybe = requestService.searchPlayer(playerId, maxPrice, 0);
+    if (!maybe.isPresent()) {
+      return false;
+    }
+    TradeStatus tradeStatus = maybe.get();
+    int found = tradeStatus.getAuctionInfo().size();
+    logController.info("Found " + found + " players for " + playerName + " maxPrice : " + maxPrice);
+    if (found <= 0) {
+      return false;
+    }
+
+    List<AuctionInfo> list = foundMinList(tradeStatus);
+    if (list.isEmpty()) {
+      logController.error("Can not find trades for " + playerName);
+      return false;
+    }
+    boolean success = requestService.buy(list.get(0));
+    if (success) {
+      logController.info("Success bought player for " + playerName);
+    } else {
+      logController.error("Can not buy player for " + playerName);
+    }
+    return success;
   }
 
   @Override

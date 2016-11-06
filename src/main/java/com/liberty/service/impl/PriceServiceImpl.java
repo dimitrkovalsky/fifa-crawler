@@ -293,7 +293,7 @@ public class PriceServiceImpl implements PriceService {
       findMinPrice(grouped.getPlayerId());
 
       log.info("Updated prices for " + counter.incrementAndGet() + " / " + unassigned.size());
-      DelayHelper.wait(1000, 200);
+      DelayHelper.wait(7000, 200);
     }
   }
 

@@ -15,6 +15,7 @@ public class SquadPlayer {
   private PlayerProfile profile;
   private PlayerStatistic.PriceDistribution minPrice;
   private Long median;
-
+  private boolean inClub;
+  private PlayerTradeStatus tradeStatus;
 
 }
