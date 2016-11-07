@@ -45,7 +45,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
     ApplicationListener<ContextRefreshedEvent> {
 
   public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
-  public static final int ITERATION_LIMIT = 15;
+  public static final int ITERATION_LIMIT = 30;
 
   private boolean autoBuyEnabled = true;
 
@@ -197,7 +197,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
     info.setPhishingToken(requestService.getPhishingTokenForCheck());
     info.setSessionId(requestService.getSessionForCheck());
     info.setAutoBuyEnabled(autoBuyEnabled);
-
+    info.setRate(requestService.getRequestRate());
     return info;
   }
 
@@ -256,8 +256,9 @@ public class TradeServiceImpl extends ASellService implements TradeService,
   }
 
   private boolean containsTag(Set<String> tags, PlayerInfo playerInfo) {
-    return CollectionUtils.isEmpty(CollectionUtils.intersection(playerInfo.getTradeStatus().getTags(),
-        tags));
+    return CollectionUtils
+        .isEmpty(CollectionUtils.intersection(playerInfo.getTradeStatus().getTags(),
+            tags));
   }
 
 

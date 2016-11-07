@@ -40,6 +40,11 @@ public class SquadResource {
     return squadService.fetchPricesForSquad(squadId);
   }
 
+  @RequestMapping(path = "/{squadId}", method = RequestMethod.DELETE)
+  public void removeSquad(@PathVariable Long squadId) {
+    squadRepository.delete(squadId);
+  }
+
   @RequestMapping(method = RequestMethod.POST)
   public FullSquad forceUpdate(@RequestBody SquadRequest request) {
     return squadService.updateSquad(request.getSquadId());

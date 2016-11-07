@@ -14,4 +14,5 @@ public class Statistic {
   private boolean robotEnabled;
   private boolean enabled;
   private int credits;
+  private int rate;
 }

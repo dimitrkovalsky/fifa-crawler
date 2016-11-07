@@ -16,6 +16,8 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
+            <th>Position</th>
+            <th>League</th>
             <th>Players</th>
             <th>Max Price</th>
         </tr>
@@ -24,6 +26,8 @@
         <tr>
             <td><small-player/></td>
             <td><a href="#/trade-player/{{player.playerId}}">{{player.tradeStatus.name}}</a></td>
+            <td>{{player.profile.position}}</td>
+            <td>{{getLeagueName(player.profile.leagueId)}}</td>
             <td>{{player.items.length}}</td>
             <td>{{player.tradeStatus.maxPrice}}</td>
         </tr>

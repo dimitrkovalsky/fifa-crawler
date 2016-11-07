@@ -6,6 +6,8 @@
 <div class="col-md-2">
 
     <div ng-repeat="s in squads">
+        <span class="glyphicon glyphicon-remove" style="cursor:pointer"
+              ng-click="removeSquad(s.id)"></span>
         <a href="http://www.futhead.com/squad-building-challenges/squads/{{s.id}}" target="_blank">
             {{s.squadName}} </a>
         <small>{{s.squadGroup}}</small>

@@ -24,6 +24,7 @@
 <script>
     google.charts.load('current', {'packages': ['corechart', 'bar', 'line'],  'language': 'uk'});
 
+
 </script>
 
 <link id="favicon" rel="icon" href="/favicon.ico"/>
@@ -31,7 +32,8 @@
 <link rel="stylesheet" href="app/lib/bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="app/lib/table/ng-table.min.css">
 <link rel="stylesheet" href="app/lib/jquery/jquery.typeahead.min.css">
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+<link rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
 
 <link rel="stylesheet" href="app/css/app.css">
 
@@ -76,23 +78,24 @@
                 </a>
             </li>
             <li>
-                <a href="#/search"    class="top-level-menu">
+                <a href="#/search" class="top-level-menu">
                     <span class="glyphicon glyphicon-search"></span>
                     Search</a>
             </li>
             <li>
-                <a href="#/market-search"    class="top-level-menu">
+                <a href="#/market-search" class="top-level-menu">
                     <span class="glyphicon glyphicon-th-large"></span>
                     Market Search</a>
             </li>
             <li>
-                <a href="#/config"    class="top-level-menu">
+                <a href="#/config" class="top-level-menu">
                     <span class="glyphicon glyphicon-briefcase"></span>
                     Config</a>
             </li>
             <li>
-                <a href="#/squad"    class="top-level-menu">
-                    <span class="glyphicon glyphicon-fire" style="color: rgba(113, 21, 255, 0.96)"></span>
+                <a href="#/squad" class="top-level-menu">
+                    <span class="glyphicon glyphicon-fire"
+                          style="color: rgba(113, 21, 255, 0.96)"></span>
                     SBC</a>
             </li>
             <li>
@@ -107,10 +110,12 @@
             <li> Players : <strong>{{stats.players}} &nbsp;&nbsp</strong></li>
             <li> Auto Buy : <strong>{{stats.autoBuy}}</strong></li>
             <br>
-            <li> Processor : <strong>{{stats.enabled}}</strong></li>
+            <li> Processor : <strong>{{stats.enabled}}&nbsp;&nbsp</strong></li>
             <li> Robot : <strong>{{stats.robotEnabled}}</strong></li>
             <br>
-            <li> Credits : <strong style="color:#20b510">{{stats.credits}}</strong></li>
+            <li> Credits : <strong style="color:#20b510">{{stats.credits}}&nbsp;&nbsp</strong></li>
+            <li ng-click="updateStats()"> Rate : <strong
+                    style="color:#3F51B5; cursor:pointer">{{stats .rate}}</strong></li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->

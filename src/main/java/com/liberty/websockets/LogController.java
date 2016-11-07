@@ -53,4 +53,8 @@ public class LogController {
   public void logBuy(int unassigned, int canSell, int credits, int purchasesRemained) {
     send(new BuyMessage(unassigned, canSell, credits, purchasesRemained));
   }
+
+  public void sendRate(int rate) {
+    send(new RateMessage(rate));
+  }
 }

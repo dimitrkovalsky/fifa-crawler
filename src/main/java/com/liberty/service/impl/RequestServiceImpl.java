@@ -4,10 +4,12 @@ import com.liberty.common.AuctionHouseResponse;
 import com.liberty.common.DelayHelper;
 import com.liberty.common.FifaCrawlerState;
 import com.liberty.common.FifaRequests;
+import com.liberty.model.RequestRate;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.ItemData;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.model.market.Watchlist;
+import com.liberty.repositories.RequestRateRepository;
 import com.liberty.rest.request.MarketSearchRequest;
 import com.liberty.rest.request.TokenUpdateRequest;
 import com.liberty.rest.response.BidStatus;
@@ -19,11 +21,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import lombok.Data;
 
 import static com.liberty.common.FifaCrawlerState.FAILED;
 import static com.liberty.common.FifaCrawlerState.READY;
@@ -42,6 +43,9 @@ public class RequestServiceImpl implements RequestService {
   @Autowired
   private LogController logController;
 
+  @Autowired
+  private RequestRateRepository requestRateRepository;
+
   private FifaRequests fifaRequests = new FifaRequests(this::onError, this::onStatusChange);
 
   private void onError(String msg) {
@@ -54,21 +58,39 @@ public class RequestServiceImpl implements RequestService {
 
   private int requestCount;
 
-  private long requestStarted = System.currentTimeMillis();
+  private int rate = 0;
+  private int arrayIndex = 0;
+  private int[] rateArray = new int[30];
 
   private void logRequest() {
-
+    requestCount++;
   }
 
-  @Scheduled(fixedDelay = 300_000)
+  @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
   private void resetRequestCount() {
+     RequestRate requestRate = new RequestRate();
+    requestRate.setRequestPerMinute(rate);
+    requestRate.setTimestamp(System.currentTimeMillis());
+    requestRateRepository.save(requestRate);
+  }
 
+  @Scheduled(fixedDelay = 2_000, initialDelay = 2_000)
+  private void recordRequestCount() {
+    rateArray[arrayIndex] = requestCount;
+    arrayIndex++;
+    if(arrayIndex >= 30 ){
+      arrayIndex = 0;
+    }
+    rate = Arrays.stream(rateArray).sum();
+    logController.sendRate(rate);
+    requestCount = 0;
   }
 
   private <T> T execute(Supplier<T> function) {
     waitReady();
     currentState = WORKING;
     T result = function.get();
+    logRequest();
     currentState = READY;
     return result;
   }
@@ -77,6 +99,7 @@ public class RequestServiceImpl implements RequestService {
     waitReady();
     currentState = WORKING;
     function.run();
+    logRequest();
     currentState = READY;
   }
 
@@ -223,8 +246,9 @@ public class RequestServiceImpl implements RequestService {
     currentState = READY;
   }
 
-  @Data
-  private static class RequestRecord {
-
+  @Override
+  public int getRequestRate() {
+    return rate;
   }
+
 }

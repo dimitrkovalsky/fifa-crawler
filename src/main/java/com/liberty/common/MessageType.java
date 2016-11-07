@@ -7,4 +7,5 @@ package com.liberty.common;
 public interface MessageType {
   String LOG_MESSAGE = "log";
   String BOUGHT_PLAYER = "bought";
+  String RATE = "rate";
 }

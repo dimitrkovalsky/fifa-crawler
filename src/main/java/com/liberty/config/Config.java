@@ -23,7 +23,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @EnableMongoRepositories("com.liberty.repositories")
 public class Config extends AbstractMongoConfiguration  {
 
-  public static final int POOL_SIZE = 5;
+  public static final int POOL_SIZE = 10;
 
   @Override
   protected String getDatabaseName() {

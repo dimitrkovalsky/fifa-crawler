@@ -7,6 +7,7 @@ import com.liberty.model.market.AuctionInfo;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.service.HistoryService;
+import com.liberty.service.RequestService;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.BuyMessage;
@@ -44,6 +45,9 @@ public class StatisticServiceImpl implements StatisticService {
   @Autowired
   private HistoryService historyService;
 
+  @Autowired
+  private RequestService requestService;
+
   @Override
   public Statistic getGeneralStatistic() {
     Statistic statistic = new Statistic();
@@ -54,6 +58,7 @@ public class StatisticServiceImpl implements StatisticService {
     statistic.setEnabled(tradeService.getMarketInfo().getAutoBuyEnabled());
     BuyMessage tradepileInfo = tradeService.getTradepileInfo();
     statistic.setCredits(tradepileInfo.getCredits());
+    statistic.setRate(requestService.getRequestRate());
     return statistic;
   }
 

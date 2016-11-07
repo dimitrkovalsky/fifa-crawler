@@ -25,6 +25,10 @@ fifaApp.controller('SquadController', function ($rootScope, $scope, Squads, Squa
         $scope.loadSquad();
     };
 
+    $scope.removeSquad = function(id) {
+        Squads.delete({id: id}, $scope.loadAllSquads, $rootScope.onError);
+    }
+
     $scope.reloadSquad = function () {
         $scope.isLoading = true;
         Squads.save({squadId: $scope.squadId}, $scope.onLoaded, $rootScope.onError);

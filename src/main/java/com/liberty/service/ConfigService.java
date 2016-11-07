@@ -23,4 +23,6 @@ public interface ConfigService {
 
   void updateActivePlayersPrices();
 
+  void cleanHistory();
+
 }

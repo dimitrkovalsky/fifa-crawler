@@ -70,6 +70,8 @@ public class AuctionRobot {
   @Autowired
   private TransactionService transactionService;
 
+  private RobotBidStrategy bidStrategy = new RobotBidStrategy.CheapPlayers();
+
   @Scheduled(fixedRate = 100_000)
   public void findBids() {
     if (disabled) {
@@ -216,12 +218,8 @@ public class AuctionRobot {
   }
 
   private List<TradeInfo> getPage(int page) {
-    MarketSearchRequest request = new MarketSearchRequest();
-    request.setPage(page);
-    request.setQuality("gold");
-    //request.setMinPrice(600);
-   // request.setMaxPrice(350);
-    return searchService.search(request);
+    MarketSearchRequest searchRequest = bidStrategy.buildRequest(page);
+    return searchService.search(searchRequest);
   }
 
   private void processWonItems(List<AuctionInfo> won) {

@@ -74,6 +74,9 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
             case 'bought' :
                 $rootScope.updateTradepile(msg);
                 break;
+            case 'rate':
+                $rootScope.updateRate(msg);
+                break
             default :
                 console.log("Unrecognized message type : " + msg);
         }
@@ -87,6 +90,14 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
             elem.scrollTop = elem.scrollHeight;
         }
     };
+
+    $rootScope.updateRate= function(msg) {
+       if ($scope.stats) {
+           $scope.stats.rate = msg.rate;
+           $scope.$apply();
+       }
+
+    }
 
     $rootScope.onUpdateTradepile = function (msg) {
         $rootScope.unassigned = msg.unassigned;
