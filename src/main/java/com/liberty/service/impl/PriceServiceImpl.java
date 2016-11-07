@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -78,8 +77,8 @@ public class PriceServiceImpl implements PriceService {
   @Override
   public void findMinPriceAll() {
     List<PlayerTradeStatus> all = tradeRepository.findAll();
-    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
-
+//    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
+   // Could be null max price
     final int[] counter = {0};
 
     all.forEach(p -> {

@@ -26,12 +26,12 @@ public class NoActivitySchedule {
   @Autowired
   private NoActivityService noActivityService;
 
-  private boolean enabled = true;
+  private boolean enabled = false;
 
   @Autowired
   private LogController logController;
 
-  @Scheduled(fixedRate = 180_000, initialDelay = 120_000)
+  @Scheduled(fixedRate = 120_000, initialDelay = 120_000)
   public void monitor() {
     if (!enabled) {
       return;

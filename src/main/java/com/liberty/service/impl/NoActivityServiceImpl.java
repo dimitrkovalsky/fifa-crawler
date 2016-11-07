@@ -23,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoActivityServiceImpl implements NoActivityService {
 
-  public static final String TAG_TO_UPDATE = "cheap";
+  public static final String TAG_TO_UPDATE = "medium";
   public static final int TO_UPDATE_PLAYERS_AMOUNT = 5;
   public static final int REQUEST_PER_MINUTE = 30;
-  private int currentSkip = 110;
+  private int currentSkip = 0;
   private boolean completed = false;
 
   @Autowired
@@ -53,9 +53,11 @@ public class NoActivityServiceImpl implements NoActivityService {
     List<PlayerInfo> toUpdate = players.stream().skip(currentSkip).limit(TO_UPDATE_PLAYERS_AMOUNT)
         .collect(Collectors.toList());
     for (PlayerInfo info : toUpdate) {
-      priceService.findMinPrice(info.getProfile().getId());
+      if (info.getProfile() != null) {
+        priceService.findMinPrice(info.getProfile().getId());
+      }
       currentSkip++;
-      if (requestService.getRequestRate() >= REQUEST_PER_MINUTE) {
+      if (requestService.getRequestRate() >= REQUEST_PER_MINUTE * 2) {
         break;
       }
       DelayHelper.wait(2000, 100);
