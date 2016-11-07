@@ -4,6 +4,7 @@ import com.liberty.common.DelayHelper;
 import com.liberty.model.PlayerInfo;
 import com.liberty.service.NoActivityService;
 import com.liberty.service.PriceService;
+import com.liberty.service.RequestService;
 import com.liberty.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,12 @@ public class NoActivityServiceImpl implements NoActivityService {
 
   public static final String TAG_TO_UPDATE = "cheap";
   public static final int TO_UPDATE_PLAYERS_AMOUNT = 5;
-  private int currentSkip = 95;
+  public static final int REQUEST_PER_MINUTE = 30;
+  private int currentSkip = 110;
   private boolean completed = false;
+
+  @Autowired
+  private RequestService requestService;
 
   @Autowired
   private TagService tagService;
@@ -47,12 +52,16 @@ public class NoActivityServiceImpl implements NoActivityService {
 
     List<PlayerInfo> toUpdate = players.stream().skip(currentSkip).limit(TO_UPDATE_PLAYERS_AMOUNT)
         .collect(Collectors.toList());
-    toUpdate.forEach(x -> {
-      priceService.findMinPrice(x.getProfile().getId());
+    for (PlayerInfo info : toUpdate) {
+      priceService.findMinPrice(info.getProfile().getId());
+      currentSkip++;
+      if (requestService.getRequestRate() >= REQUEST_PER_MINUTE) {
+        break;
+      }
       DelayHelper.wait(2000, 100);
-    });
+    }
     log.info("[NoActivityServiceImpl] Successfully updated players from skip : " + currentSkip);
-    currentSkip += TO_UPDATE_PLAYERS_AMOUNT;
+
   }
 
 }

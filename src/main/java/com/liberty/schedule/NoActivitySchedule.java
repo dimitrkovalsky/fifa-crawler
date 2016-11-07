@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static com.liberty.service.impl.NoActivityServiceImpl.REQUEST_PER_MINUTE;
+
 /**
  * @author Dmytro_Kovalskyi.
  * @since 19.05.2016.
@@ -29,13 +31,13 @@ public class NoActivitySchedule {
   @Autowired
   private LogController logController;
 
-  @Scheduled(fixedRate = 120_000, initialDelay = 120_000)
+  @Scheduled(fixedRate = 180_000, initialDelay = 120_000)
   public void monitor() {
     if (!enabled) {
       return;
     }
 
-    if (requestService.getRequestRate() < 30) {
+    if (requestService.getRequestRate() < REQUEST_PER_MINUTE) {
       log.info("Trying to update player prices...");
       noActivityService.updatePlayerPrices();
     } else {
