@@ -57,7 +57,7 @@ public class NoActivityServiceImpl implements NoActivityService {
         priceService.findMinPrice(info.getProfile().getId());
       }
       currentSkip++;
-      if (requestService.getRequestRate() >= REQUEST_PER_MINUTE * 2) {
+      if (requestService.getRequestRate() >= REQUEST_PER_MINUTE) {
         break;
       }
       DelayHelper.wait(2000, 100);
