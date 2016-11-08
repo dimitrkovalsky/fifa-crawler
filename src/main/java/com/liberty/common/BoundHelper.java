@@ -66,7 +66,7 @@ public class BoundHelper {
       } else {
         return DEFAULT_LOW_BOUND;
       }
-    } else if (stats.getLastPrice() - tradeStatus.getMaxPrice() >= 2000) {
+    } else if (stats.getLastPrice() - tradeStatus.getMaxPrice() <= 2000) {
       lowBound = stats.getLastPrice();
     } else if (tradeStatus.getMaxPrice() <= 5000) {
       lowBound = tradeStatus.getMaxPrice();

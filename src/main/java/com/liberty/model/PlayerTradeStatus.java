@@ -55,6 +55,9 @@ public class PlayerTradeStatus {
 
   private boolean enabled = true;
 
+  private boolean autoSellEnabled = false;
+
+
   private Set<String> tags = new HashSet<>();
 
   public String getLastDate() {

@@ -1,7 +1,9 @@
 package com.liberty.schedule;
 
+import com.liberty.robot.AuctionRobot;
 import com.liberty.service.NoActivityService;
 import com.liberty.service.RequestService;
+import com.liberty.service.TradeService;
 import com.liberty.websockets.LogController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,12 @@ public class NoActivitySchedule {
   @Autowired
   private NoActivityService noActivityService;
 
+  @Autowired
+  private AuctionRobot robot;
+
+  @Autowired
+  private TradeService tradeService;
+
   private boolean enabled = true;
 
   @Autowired
@@ -34,6 +42,10 @@ public class NoActivitySchedule {
   @Scheduled(fixedRate = 120_000, initialDelay = 120_000)
   public void monitor() {
     if (!enabled) {
+      return;
+    }
+    if (tradeService.isActive() || !robot.isDisabled()) {
+      log.info("Can not run no activity service. Trade service or Auction Robot is active.");
       return;
     }
 

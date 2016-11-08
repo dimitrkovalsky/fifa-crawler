@@ -23,7 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoActivityServiceImpl implements NoActivityService {
 
-  public static final String TAG_TO_UPDATE = "custom";
+  public static final String[] tags = {"custom", "medium"};
+  private int currentTagIndex = 0;
   public static final int TO_UPDATE_PLAYERS_AMOUNT = 5;
   public static final int REQUEST_PER_MINUTE = 30;
   private int currentSkip = 0;
@@ -42,19 +43,23 @@ public class NoActivityServiceImpl implements NoActivityService {
 
   @Override
   public void updatePlayerPrices() {
+    String tag = tags[currentTagIndex];
     if (completed) {
-      log.info("Completed price update for tag : " + TAG_TO_UPDATE);
+      log.info("Completed price update for tag : " + tag);
       completedCount++;
       if (completedCount >= 15) {
         completed = false;
         completedCount = 0;
         currentSkip = 0;
-
+        currentTagIndex++;
+        if(currentTagIndex >= tags.length){
+          currentTagIndex = 0;
+        }
       } else {
         return;
       }
     }
-    List<PlayerInfo> players = tagService.getByTag(TAG_TO_UPDATE);
+    List<PlayerInfo> players = tagService.getByTag(tag);
     if (currentSkip >= players.size()) {
       completed = true;
       return;

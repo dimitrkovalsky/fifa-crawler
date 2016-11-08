@@ -82,6 +82,12 @@ public class TradeServiceImpl extends ASellService implements TradeService,
     this.activeTags = activeTags;
   }
 
+
+  @Override
+  public boolean isActive() {
+    return autoBuyEnabled && !failed;
+  }
+
   @Override
   public void checkMarket() {
     if (!autoBuyEnabled || failed) {

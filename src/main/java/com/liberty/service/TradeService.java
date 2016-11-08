@@ -28,6 +28,8 @@ public interface TradeService {
 
   List<GroupedToSell> getUnassigned();
 
+  boolean isActive();
+
   void checkMarket();
 
   boolean buyPlayer(long playerId, int maxPrice, String playerName);
