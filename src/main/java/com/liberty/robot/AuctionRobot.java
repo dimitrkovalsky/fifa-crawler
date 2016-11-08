@@ -70,7 +70,7 @@ public class AuctionRobot {
   @Autowired
   private TransactionService transactionService;
 
-  private RobotBidStrategy bidStrategy = new RobotBidStrategy.CheapPlayers();
+  private RobotBidStrategy bidStrategy = new RobotBidStrategy.GoldMediumPlayers();
 
   @Scheduled(fixedRate = 100_000)
   public void findBids() {
