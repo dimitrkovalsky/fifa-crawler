@@ -12,28 +12,15 @@ import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-import com.liberty.service.HistoryService;
-import com.liberty.service.PriceService;
-import com.liberty.service.RequestService;
-import com.liberty.service.StatisticService;
-import com.liberty.service.TradeService;
+import com.liberty.service.*;
 import com.liberty.websockets.LogController;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import lombok.extern.slf4j.Slf4j;
 
 import static com.liberty.common.BoundHelper.defineLowBound;
 import static com.liberty.common.BoundHelper.getHigherBound;
@@ -281,6 +268,21 @@ public class PriceServiceImpl implements PriceService {
           p.updateDate();
           return p;
         }).forEach(tradeRepository::save);
+  }
+
+  @Override
+  public void updatePricesBigReward() {
+    Map<Long, Integer> pricesMap = getMinPricesMap();
+    tradeRepository.findAll().stream().filter(PlayerTradeStatus::isEnabled)
+            .map(p -> {
+              Integer price = pricesMap.get(p.getId());
+              PlayerProfile profile = playerProfileService.findOne(p.getId());
+              if (price != null && price != 0) {
+                p.setMaxPrice(PriceHelper.defineMaxBuyNowPriceBigReward(price, profile));
+              }
+              p.updateDate();
+              return p;
+            }).forEach(tradeRepository::save);
   }
 
   @Override

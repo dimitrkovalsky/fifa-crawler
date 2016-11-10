@@ -8,17 +8,19 @@ import com.liberty.model.PlayerStatistic;
  */
 public interface PriceService {
 
-  void findMinPriceAll();
+    void findMinPriceAll();
 
-  void updatePriceDistribution(boolean enabled);
+    void updatePriceDistribution(boolean enabled);
 
-  PlayerStatistic findMinPrice(long playerId);
+    PlayerStatistic findMinPrice(long playerId);
 
-  PlayerStatistic findMinPriceForSBC(long playerId);
+    PlayerStatistic findMinPriceForSBC(long playerId);
 
-  PlayerStatistic getMinPrice(Long id);
+    PlayerStatistic getMinPrice(Long id);
 
-  void updatePrices();
+    void updatePrices();
 
-  void findMinPriceUnassigned();
+    void updatePricesBigReward();
+
+    void findMinPriceUnassigned();
 }
