@@ -57,6 +57,7 @@ public class Runner {
     tags.add(new Tag("ITALY Fast"));
     tags.add(new Tag("ITALY Shot"));
     tags.add(new Tag("custom"));
+    tags.add(new Tag("TOTW"));
     tags.add(new Tag("silver"));
     tags.add(new Tag("LB"));
     tags.add(new Tag("RB"));
