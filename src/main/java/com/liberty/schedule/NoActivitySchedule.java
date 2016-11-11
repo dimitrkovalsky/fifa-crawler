@@ -34,7 +34,7 @@ public class NoActivitySchedule {
   @Autowired
   private TradeService tradeService;
 
-  private boolean enabled = false;
+  private boolean enabled = true;
 
   @Autowired
   private LogController logController;
