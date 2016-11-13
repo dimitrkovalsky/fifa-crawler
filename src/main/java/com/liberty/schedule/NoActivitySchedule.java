@@ -2,6 +2,7 @@ package com.liberty.schedule;
 
 import com.liberty.robot.AuctionRobot;
 import com.liberty.service.NoActivityService;
+import com.liberty.service.PriceService;
 import com.liberty.service.RequestService;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.LogController;
@@ -34,6 +35,9 @@ public class NoActivitySchedule {
   @Autowired
   private TradeService tradeService;
 
+  @Autowired
+  private PriceService priceService;
+
   private boolean enabled = true;
 
   @Autowired
@@ -44,8 +48,9 @@ public class NoActivitySchedule {
     if (!enabled) {
       return;
     }
-    if (tradeService.isActive() || !robot.isDisabled()) {
-      log.info("Can not run no activity service. Trade service or Auction Robot is active.");
+    if (tradeService.isActive() || !robot.isDisabled() || priceService.isWorking()) {
+      log.info("Can not run no activity service. Trade service or Price service or Auction Robot " +
+          "is active.");
       return;
     }
 

@@ -8,7 +8,9 @@ import com.liberty.model.PlayerStatistic;
  */
 public interface PriceService {
 
-    void findMinPriceAll();
+  boolean isWorking();
+
+  void findMinPriceAll();
 
     void updatePriceDistribution(boolean enabled);
 

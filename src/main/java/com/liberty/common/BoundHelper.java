@@ -16,11 +16,11 @@ public class BoundHelper {
     if (lowBound < 1000) {
       return lowBound + 50;
     } else if (lowBound <= 3000) {
-      return lowBound + 100;
+      return lowBound + 200;
     } else if (lowBound <= 5000) {
-      return lowBound + 300;
-    } else if (lowBound < 10000) {
       return lowBound + 500;
+    } else if (lowBound < 10000) {
+      return lowBound + 1000;
     } else if (lowBound < 50000) {
       return lowBound + 1500;
     } else if (lowBound < 100000) {

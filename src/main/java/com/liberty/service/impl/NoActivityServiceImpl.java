@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoActivityServiceImpl implements NoActivityService {
 
-  public static final String[] tags = {"custom", "medium"};
+  public static final String[] tags = {"custom", "medium", "cheap"};
   private int currentTagIndex = 0;
   public static final int TO_UPDATE_PLAYERS_AMOUNT = 5;
   public static final int REQUEST_PER_MINUTE = 30;

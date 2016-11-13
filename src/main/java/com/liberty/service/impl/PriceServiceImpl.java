@@ -12,15 +12,29 @@ import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-import com.liberty.service.*;
+import com.liberty.service.HistoryService;
+import com.liberty.service.PriceService;
+import com.liberty.service.RequestService;
+import com.liberty.service.StatisticService;
+import com.liberty.service.TradeService;
+import com.liberty.service.strategy.PriceUpdateStrategy;
 import com.liberty.websockets.LogController;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import lombok.extern.slf4j.Slf4j;
 
 import static com.liberty.common.BoundHelper.defineLowBound;
 import static com.liberty.common.BoundHelper.getHigherBound;
@@ -61,11 +75,22 @@ public class PriceServiceImpl implements PriceService {
   @Autowired
   private HistoryService historyService;
 
+  @Autowired
+  private PriceUpdateStrategy updateStrategy;
+
+  private boolean working;
+
+  @Override
+  public boolean isWorking() {
+    return working;
+  }
+
   @Override
   public void findMinPriceAll() {
     List<PlayerTradeStatus> all = tradeRepository.findAll();
 //    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
-   // Could be null max price
+    // Could be null max price
+    working = true;
     final int[] counter = {0};
 
     all.forEach(p -> {
@@ -82,6 +107,7 @@ public class PriceServiceImpl implements PriceService {
         }
       }
     });
+    working = false;
   }
 
   @Override
@@ -107,6 +133,17 @@ public class PriceServiceImpl implements PriceService {
 
   @Override
   public PlayerStatistic findMinPrice(long playerId) {
+    PlayerTradeStatus tradeStatus = getTradeStatus(playerId);
+
+    Set<AuctionInfo> toStatistic = updateStrategy.findPlayers(tradeStatus);
+    int lowBound = updateStrategy.getLastBound();
+
+    statisticService.collectStatistic(playerId, lowBound, toStatistic);
+
+    return getMinPrice(playerId);
+  }
+
+  private PlayerTradeStatus getTradeStatus(long playerId) {
     PlayerStatistic playerStatistic = statisticRepository.findOne(playerId);
     PlayerTradeStatus tradeStatus = tradeRepository.findOne(playerId);
     PlayerProfile profile = playerProfileService.findOne(playerId);
@@ -117,39 +154,7 @@ public class PriceServiceImpl implements PriceService {
     if (tradeStatus == null) {
       tradeStatus = createNewTrade(profile);
     }
-    Integer lowBound = defineLowBound(playerStatistic, tradeStatus, profile);
-
-    int iteration = 0;
-    Set<AuctionInfo> toStatistic = new HashSet<>();
-
-    while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(lowBound,
-        profile)) {
-      iteration++;
-      logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
-      DelayHelper.wait(250, 20);
-      List<AuctionInfo> players = findPlayers(playerId, lowBound, 0);
-      if (players.size() == 0) {
-        lowBound = getHigherBound(0, lowBound);
-      } else if (players.size() >= 12) {
-        players.addAll(findNextPagesPlayers(playerId, lowBound));
-        toStatistic.addAll(players);
-        lowBound = getHigherBound(0, lowBound);
-      } else {
-        toStatistic.addAll(players);
-        lowBound = getHigherBound(0, lowBound);
-      }
-      logController.info("Found " + toStatistic.size() + " players");
-
-      if (iteration >= ITERATION_LIMIT) {
-        logController.info("Exceeded iteration limit");
-        break;
-      }
-    }
-
-    statisticService.collectStatistic(playerId, lowBound, toStatistic);
-
-    logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
-    return getMinPrice(playerId);
+    return tradeStatus;
   }
 
   @Override
@@ -274,15 +279,15 @@ public class PriceServiceImpl implements PriceService {
   public void updatePricesBigReward() {
     Map<Long, Integer> pricesMap = getMinPricesMap();
     tradeRepository.findAll().stream().filter(PlayerTradeStatus::isEnabled)
-            .map(p -> {
-              Integer price = pricesMap.get(p.getId());
-              PlayerProfile profile = playerProfileService.findOne(p.getId());
-              if (price != null && price != 0) {
-                p.setMaxPrice(PriceHelper.defineMaxBuyNowPriceBigReward(price, profile));
-              }
-              p.updateDate();
-              return p;
-            }).forEach(tradeRepository::save);
+        .map(p -> {
+          Integer price = pricesMap.get(p.getId());
+          PlayerProfile profile = playerProfileService.findOne(p.getId());
+          if (price != null && price != 0) {
+            p.setMaxPrice(PriceHelper.defineMaxBuyNowPriceBigReward(price, profile));
+          }
+          p.updateDate();
+          return p;
+        }).forEach(tradeRepository::save);
   }
 
   @Override
