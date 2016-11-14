@@ -21,7 +21,7 @@ import static com.liberty.service.impl.NoActivityServiceImpl.REQUEST_PER_MINUTE;
  */
 @Component
 @Slf4j
-public class NoActivitySchedule {
+public class NoActivityTask {
 
   @Autowired
   private RequestService requestService;

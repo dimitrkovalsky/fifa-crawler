@@ -64,6 +64,7 @@ public class Runner {
     tags.add(new Tag("not rar"));
     tags.add(new Tag("rblb"));
     tags.add(new Tag("SBC"));
+    tags.add(new Tag("Miner"));
 
     tagRepository.deleteAll();
     tagRepository.save(tags);

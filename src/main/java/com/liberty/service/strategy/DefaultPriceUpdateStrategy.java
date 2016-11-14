@@ -29,7 +29,7 @@ import static com.liberty.service.impl.TradeServiceImpl.STATISTIC_PLAYER_COLLECT
  * Time: 19:20
  */
 @Component
-public class DefaultStrategy implements PriceUpdateStrategy {
+public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
 
   public static final int DEFAULT_PRICE = 4000;
 

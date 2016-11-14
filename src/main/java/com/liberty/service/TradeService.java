@@ -3,10 +3,7 @@ package com.liberty.service;
 import com.liberty.model.MarketInfo;
 import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerTradeStatus;
-import com.liberty.model.market.AuctionInfo;
-import com.liberty.model.market.GroupedToSell;
-import com.liberty.model.market.TradeStatus;
-import com.liberty.model.market.Watchlist;
+import com.liberty.model.market.*;
 import com.liberty.rest.request.AutobidRequest;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
@@ -52,7 +49,9 @@ public interface TradeService {
 
   void updatePlayer(PlayerTradeStatus request);
 
-  void sell(SellRequest request);
+    List<ItemData> getAllUnassigned();
+
+    void sell(SellRequest request);
 
   BuyMessage getTradepileInfo();
 
@@ -73,4 +72,8 @@ public interface TradeService {
   void addToAutoBid(AutobidRequest bidRequest);
 
   Set<String> getActiveTags();
+
+  void disableAll();
+
+  void enablePlayer(Long id, Integer maxPrice, String minerTag);
 }

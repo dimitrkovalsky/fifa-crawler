@@ -127,7 +127,8 @@ public abstract class ASellService extends ATradeService implements TradeService
   /**
    * Returns all unassigned items. From unassigned and from transfer targets.
    */
-  private List<ItemData> getAllUnassigned() {
+  @Override
+  public List<ItemData> getAllUnassigned() {
     List<ItemData> unassigned = requestService.getUnassigned();
     unassigned.addAll(getWonTransferTargets());
     return unassigned;

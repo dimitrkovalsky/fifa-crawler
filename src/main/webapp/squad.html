@@ -77,11 +77,11 @@
             <td>{{player.median}}</td>
             <td>{{player.lastUpdate}}</td>
             <td>
-                <button ng-if="!player.inClub" class="btn btn-success"
-                        ng-click="buySingle(player)"> Buy
+                <button ng-if="!player.inClub" class="btn btn-success" ng-click="buySingle(player)"> Buy
                 </button>
-                <button class="btn btn-info"
-                        ng-click="reloadPrice(player)"> Refresh
+                <button class="btn btn-info" ng-click="reloadPrice(player)"> Refresh
+                </button>
+                <button class="btn btn-default" ng-if="tagMissed(player)" ng-click="addTag(player)"> Add Tag
                 </button>
             </td>
         </tr>

@@ -12,31 +12,17 @@ import com.liberty.model.market.TradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-import com.liberty.service.HistoryService;
-import com.liberty.service.PriceService;
-import com.liberty.service.RequestService;
-import com.liberty.service.StatisticService;
-import com.liberty.service.TradeService;
+import com.liberty.service.*;
 import com.liberty.service.strategy.PriceUpdateStrategy;
 import com.liberty.websockets.LogController;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import lombok.extern.slf4j.Slf4j;
-
-import static com.liberty.common.BoundHelper.defineLowBound;
 import static com.liberty.common.BoundHelper.getHigherBound;
 import static com.liberty.service.impl.TradeServiceImpl.ITERATION_LIMIT;
 import static com.liberty.service.impl.TradeServiceImpl.STATISTIC_PLAYER_COLLECTION_AMOUNT;
@@ -78,7 +64,7 @@ public class PriceServiceImpl implements PriceService {
   @Autowired
   private PriceUpdateStrategy updateStrategy;
 
-  private boolean working;
+  private volatile boolean working;
 
   @Override
   public boolean isWorking() {
@@ -119,7 +105,7 @@ public class PriceServiceImpl implements PriceService {
     } else {
       all = beforeFilter;
     }
-
+    working = true;
     Collections.shuffle(all);
 
     final int[] counter = {0};
@@ -129,6 +115,8 @@ public class PriceServiceImpl implements PriceService {
       logController.info("Updated price distribution for " + counter[0] + " / " + all.size());
       DelayHelper.wait(17000, 1000);
     });
+
+    working = false;
   }
 
   @Override

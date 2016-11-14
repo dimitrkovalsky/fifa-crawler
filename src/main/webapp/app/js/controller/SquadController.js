@@ -1,5 +1,5 @@
 fifaApp.controller('SquadController', function ($rootScope, $scope, Squads, SquadsBuy,
-                                                SquadsBuyAll, MinPrice) {
+                                                SquadsBuyAll, MinPrice, Tags) {
 
 
     $scope.onLoaded = function (result) {
@@ -62,6 +62,20 @@ fifaApp.controller('SquadController', function ($rootScope, $scope, Squads, Squa
             maxPrice: player.minPrice.price,
             playerName: player.profile.name
         };
+    };
+
+
+    $scope.tagMissed = function(player) {
+       return player.tradeStatus.tags.indexOf("SBC") <= -1
+    };
+
+    $scope.addTag = function(player) {
+         Tags.save({
+             playerId: player.playerId,
+             tag: "SBC"
+         }, function(){
+            player.tradeStatus.tags.push("SBC")
+         }, $rootScope.onError);
     };
 
     $scope.loadAllSquads();
