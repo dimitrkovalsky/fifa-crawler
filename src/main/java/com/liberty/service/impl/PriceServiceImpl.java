@@ -42,7 +42,7 @@ public class PriceServiceImpl implements PriceService {
     protected RequestService requestService;
 
     @Autowired
-    protected PlayerTradeStatusRepository tradeRepository;
+    private PlayerTradeStatusRepository tradeRepository;
 
     @Autowired
     protected TradeService tradeService;
@@ -157,26 +157,25 @@ public class PriceServiceImpl implements PriceService {
         if (tradeStatus == null) {
             tradeStatus = createNewTrade(profile);
         }
-        Integer lowBound = 10000;
+        Integer highBound = 10000;
 
         int iteration = 0;
         Set<AuctionInfo> toStatistic = new HashSet<>();
 
-        while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(lowBound,
-                profile)) {
+        while (toStatistic.size() < STATISTIC_PLAYER_COLLECTION_AMOUNT && !isMaxBound(highBound, profile)) {
             iteration++;
-            logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
+            logController.info("Trying to find " + tradeStatus.getName() + " less than " + highBound);
             DelayHelper.wait(250, 20);
-            List<AuctionInfo> players = findPlayers(playerId, lowBound, 0);
+            List<AuctionInfo> players = findPlayers(playerId, highBound, 0);
             if (players.size() == 0) {
-                lowBound = getHigherBound(0, lowBound);
+                highBound = getHigherBound(0, highBound);
             } else if (players.size() >= 12) {
-                players.addAll(findNextPagesPlayers(playerId, lowBound));
+                players.addAll(findNextPagesPlayers(playerId, highBound));
                 toStatistic.addAll(players);
-                lowBound = getHigherBound(0, lowBound);
+                highBound = getHigherBound(0, highBound);
             } else {
                 toStatistic.addAll(players);
-                lowBound = getHigherBound(0, lowBound);
+                highBound = getHigherBound(0, highBound);
             }
             logController.info("Found " + toStatistic.size() + " players");
 
@@ -186,14 +185,14 @@ public class PriceServiceImpl implements PriceService {
             }
         }
 
-        statisticService.collectStatistic(playerId, lowBound, toStatistic);
+        statisticService.collectStatistic(playerId, highBound, toStatistic);
 
         logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
         return getMinPrice(playerId);
     }
 
-    private boolean isMaxBound(Integer lowBound, PlayerProfile profile) {
-        return lowBound > 10_000;
+    private boolean isMaxBound(Integer highBound, PlayerProfile profile) {
+        return highBound > profile.getPriceLimits().getPc().getMaxPrice(); // TODO: platform dependent
     }
 
 

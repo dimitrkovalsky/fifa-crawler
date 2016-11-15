@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,12 +41,16 @@ public class MinerAdapter {
         return true;
     }
 
+    public List<Long> shouldUpdatePrices() {
+        return Collections.emptyList();
+    }
+
     public List<PlayerTradeStatus> getActivePlayers() {
         long now = System.currentTimeMillis();
         long yesterday = now - 1000 * 60 * 60 * 24;
 //        client.runForceTransactionAnalyse();
         List<PlayerPriceTO> result = client
-                .findPlayersByTransactionsAnalyse(yesterday, now, OrderingTypeTO.MAX_SELLS, 10);
+                .findPlayersByTransactionsAnalyse(yesterday, now, OrderingTypeTO.MIN_RELISTS, 10);
         return result.stream().map(x -> {
             PlayerProfile profile = profileRepository.findOne(x.getPlayerId());
             PlayerTradeStatus status = new PlayerTradeStatus();
@@ -65,6 +70,7 @@ public class MinerAdapter {
     }
 
     public AutomaticSellStrategy.MinerBid defineBid(Long id, Integer lastSalePrice) {
+
         return null;
     }
 }

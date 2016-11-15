@@ -2,6 +2,7 @@ package com.liberty.service.impl;
 
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.service.AutoTradingService;
+import com.liberty.service.NoActivityService;
 import com.liberty.service.TagService;
 import com.liberty.service.TradeService;
 import com.liberty.service.adapters.MinerAdapter;
@@ -29,20 +30,40 @@ public class AutoTradingServiceImpl implements AutoTradingService {
     @Autowired
     private MinerAdapter miner;
 
+    @Autowired
+    private NoActivityService noActivityService;
+
+    private boolean priceValid = false;
+
     @Override
     public void updateActivePlayers() {
         if (!miner.isAlive()) {
             log.error("Can not update active players. Fifa Miner is broken");
             return;
         }
-        List<PlayerTradeStatus> toActivate = miner.getActivePlayers();
-        log.info("Trying to activate " + toActivate.size() + " players");
+        if (priceValid) {
+            List<PlayerTradeStatus> toActivate = miner.getActivePlayers();
+            log.info("Trying to activate " + toActivate.size() + " players");
 
-        tradeService.disableAll();
-        for (PlayerTradeStatus tradeStatus : toActivate) {
-            tradeService.enablePlayer(tradeStatus.getId(), tradeStatus.getMaxPrice(), MINER_TAG);
-            log.info("Activated " + tradeStatus.getName() + " for buy now " + tradeStatus.getMaxPrice());
+            tradeService.disableAll();
+            for (PlayerTradeStatus tradeStatus : toActivate) {
+                tradeService.enablePlayer(tradeStatus.getId(), tradeStatus.getMaxPrice(), MINER_TAG);
+                log.info("Activated " + tradeStatus.getName() + " for buy now " + tradeStatus.getMaxPrice());
+            }
+        } else {
+            log.info("Can not perform active players update. Prices is too old.");
         }
 
     }
+
+
+    public void checkUpdates() {
+        List<Long> ids = miner.shouldUpdatePrices();
+        if (!noActivityService.isUpdateInProgress()) {
+            noActivityService.shouldUpdate(ids, () -> {
+                priceValid = true;
+            });
+        }
+    }
+
 }

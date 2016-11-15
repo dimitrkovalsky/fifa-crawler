@@ -2,10 +2,12 @@ package com.liberty.service.strategy;
 
 import com.liberty.common.BoundHelper;
 import com.liberty.common.DelayHelper;
+import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerStatistic;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
+import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.service.RequestService;
 import com.liberty.websockets.LogController;
@@ -36,7 +38,12 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
     @Autowired
     private LogController logController;
 
-    private int lowBound;
+    @Autowired
+    private PlayerProfileRepository profileRepository;
+
+    private static String PLATFORM = "pc";
+
+    private int highBound;
 
     public Integer getFirsBound(long playerId) {
         PlayerStatistic statistic = statisticRepository.findOne(playerId);
@@ -55,9 +62,16 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
         }
 
         if (bound == 0) {
-            return DEFAULT_PRICE; // TODO: fetch from history
+            bound = DEFAULT_PRICE; // TODO: fetch from history
         }
 
+        PlayerProfile profile = profileRepository.findOne(playerId);
+        int minPrice = profile.getPriceLimits().getPc().getMinPrice();        // TODO: platform dependent
+        int maxPrice = profile.getPriceLimits().getPc().getMaxPrice();
+        if (bound < minPrice)
+            bound = minPrice;
+        if (bound > maxPrice)
+            bound = maxPrice;
         return bound;
     }
 
@@ -69,19 +83,21 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
     @Override
     public Set<AuctionInfo> findPlayers(PlayerTradeStatus tradeStatus) {
         long playerId = tradeStatus.getId();
-        int lowBound = getFirsBound(playerId);
+        int highBound = getFirsBound(playerId);
         int iteration = 0;
         Set<AuctionInfo> toStatistic = new HashSet<>();
-        while (!isCompleted(toStatistic.size(), lowBound)) {
+        PlayerProfile profile = profileRepository.findOne(playerId);
+        int maxPrice = profile.getPriceLimits().getPc().getMaxPrice();  // TODO: platform dependent
+        while (!isCompleted(toStatistic.size(), highBound, maxPrice)) {
             iteration++;
-            logController.info("Trying to find " + tradeStatus.getName() + " less than " + lowBound);
+            logController.info("Trying to find " + tradeStatus.getName() + " less than " + highBound);
 
-            List<AuctionInfo> players = findAllPlayers(playerId, lowBound);
+            List<AuctionInfo> players = findAllPlayers(playerId, highBound);
 
             toStatistic.addAll(players);
             logController.info("Found " + toStatistic.size() + " players");
             DelayHelper.wait(500, 20);
-            lowBound = BoundHelper.getHigherBound(0, lowBound);
+            highBound = BoundHelper.getHigherBound(0, highBound);
 
             if (iteration >= ITERATION_LIMIT) {
                 logController.info("Exceeded iteration limit");
@@ -89,13 +105,13 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
             }
         }
         logController.info("Found " + toStatistic.size() + " players in " + iteration + " iterations");
-        this.lowBound = lowBound;
+        this.highBound = highBound;
         return toStatistic;
     }
 
     @Override
     public int getLastBound() {
-        return lowBound;
+        return highBound;
     }
 
     private List<AuctionInfo> findAllPlayers(long playerId, int lowBound) {
@@ -109,8 +125,8 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
         return players;
     }
 
-    private boolean isCompleted(int size, Integer lowBound) {
-        return size >= STATISTIC_PLAYER_COLLECTION_AMOUNT;
+    private boolean isCompleted(int size, Integer lowBound, int maxPrice) {
+        return size >= STATISTIC_PLAYER_COLLECTION_AMOUNT || lowBound > maxPrice;
     }
 
     private List<AuctionInfo> findNextPagesPlayers(long playerId, Integer lowBound) {

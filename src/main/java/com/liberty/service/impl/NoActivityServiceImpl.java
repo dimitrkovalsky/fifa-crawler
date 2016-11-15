@@ -6,11 +6,15 @@ import com.liberty.service.NoActivityService;
 import com.liberty.service.PriceService;
 import com.liberty.service.RequestService;
 import com.liberty.service.TagService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -39,25 +43,22 @@ public class NoActivityServiceImpl implements NoActivityService {
     @Autowired
     private PriceService priceService;
 
+    private Runnable onPriceUpdated;
+
+    @Getter
+    private boolean updateInProgress;
+
+    private Queue<Long> pendingUpdate;
+
     @Override
     public void updatePlayerPrices() {
-        String tag = tags[currentTagIndex];
-        if (completed) {
-            log.info("Completed price update for tag : " + tag);
-            completedCount++;
-            if (completedCount >= 15) {
-                completed = false;
-                completedCount = 0;
-                currentSkip = 0;
-                currentTagIndex++;
-                if (currentTagIndex >= tags.length) {
-                    currentTagIndex = 0;
-                    return;
-                }
-            } else {
-                return;
-            }
+        if (!CollectionUtils.isEmpty(pendingUpdate)) {
+            updatePending();
+            return;
         }
+        String tag = tags[currentTagIndex];
+        if (checkCompleted(tag)) return;
+
         List<PlayerInfo> players = tagService.getByTag(tag);
         if (currentSkip >= players.size()) {
             completed = true;
@@ -79,6 +80,55 @@ public class NoActivityServiceImpl implements NoActivityService {
         log.info("[NoActivityServiceImpl] Successfully updated players from [ " + tag + "] skip : " + currentSkip
                 + ". Rate => " + requestService.getRequestRate());
 
+    }
+
+    private boolean checkCompleted(String tag) {
+        if (completed) {
+            log.info("Completed price update for tag : " + tag);
+            completedCount++;
+            if (completedCount >= 15) {
+                completed = false;
+                completedCount = 0;
+                currentSkip = 0;
+                currentTagIndex++;
+                if (currentTagIndex >= tags.length) {
+                    currentTagIndex = 0;
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void updatePending() {
+        log.info("Trying to update from pending queue : " + pendingUpdate.size());
+        Long playerId = pendingUpdate.poll();
+        int iteration = 0;
+        while (playerId != null && iteration < TO_UPDATE_PLAYERS_AMOUNT) {
+            priceService.findMinPrice(playerId);
+            iteration++;
+            if (requestService.getRequestRate() >= REQUEST_PER_MINUTE) {
+                break;
+            }
+            DelayHelper.wait(2000, 100);
+        }
+
+        log.info("[NoActivityServiceImpl] Successfully updated " + iteration + " players from pendingQueue .Rate = > "
+                + requestService.getRequestRate());
+        if (pendingUpdate.isEmpty()) {
+            updateInProgress = false;
+            onPriceUpdated.run();
+        }
+    }
+
+    @Override
+    public void shouldUpdate(List<Long> ids, Runnable onComplete) {
+        pendingUpdate = new LinkedList<>();
+        updateInProgress = true;
+        pendingUpdate.addAll(ids);
+        this.onPriceUpdated = onComplete;
     }
 
 }
