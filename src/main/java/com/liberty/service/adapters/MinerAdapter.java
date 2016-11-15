@@ -7,6 +7,7 @@ import com.fifaminer.client.impl.FifaMinerClientBuilder;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
+import com.liberty.service.strategy.AutomaticSellStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,5 +58,13 @@ public class MinerAdapter {
             status.setSellStartPrice(x.getSellPrice());
             return status;
         }).collect(Collectors.toList());
+    }
+
+    public boolean shouldSellPlayer(Long playerId, Integer boughtFor) {
+        return false;
+    }
+
+    public AutomaticSellStrategy.MinerBid defineBid(Long id, Integer lastSalePrice) {
+        return null;
     }
 }
