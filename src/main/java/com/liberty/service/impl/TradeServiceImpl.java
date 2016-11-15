@@ -111,13 +111,14 @@ public class TradeServiceImpl extends ASellService implements TradeService,
                 .filter(filterPlayersToAutoBuy())
                 .collect(Collectors.toList());
         Collections.shuffle(players, new Random(System.currentTimeMillis()));
-        logController.info("Monitor : " + players.size() + " players");
+        logController.info("Monitor : " + players.size() + " players" + " .Rate => " + requestService.getRequestRate());
         if (isEmpty(players)) {
             logController.info("Nothing to buy. Player trade is empty");
             return;
         }
         for (PlayerTradeStatus p : players) {
-            logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice());
+            logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice() + " .Rate => " +
+                    requestService.getRequestRate());
             if (!autoBuyEnabled) {
                 return;
             }
@@ -190,7 +191,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
         }
         boolean success = requestService.buy(list.get(0));
         if (success) {
-            logController.info("Success bought player for " + playerName);
+            logController.info("Success bought player for " + playerName + " .Rate => " + requestService.getRequestRate());
         } else {
             logController.error("Can not buy player for " + playerName);
         }

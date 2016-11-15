@@ -1,5 +1,7 @@
 package com.liberty.websockets;
 
+import com.liberty.service.RequestService;
+
 import org.apache.log4j.lf5.LogLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,6 +22,9 @@ public class LogController {
   @Autowired
   private SimpMessagingTemplate template;
 
+  @Autowired
+  private RequestService requestService;
+
   @SendTo(TOPIC_NAME)
   @MessageMapping("/updates")
   public int onUpdate(String message) {
@@ -29,12 +34,13 @@ public class LogController {
 
 
   public void info(String toLog) {
-    log.info(toLog);
+    log.info(toLog + " .Rate => " + requestService.getRequestRate());
     send(new LogMessage(toLog, LogLevel.INFO));
   }
 
+
   public void error(String toLog) {
-    log.error(toLog);
+    log.error(toLog, " .Rate => " + requestService.getRequestRate());
     send(new LogMessage(toLog, LogLevel.ERROR));
   }
 
