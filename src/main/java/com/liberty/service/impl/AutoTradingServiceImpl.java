@@ -4,7 +4,7 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.service.AutoTradingService;
 import com.liberty.service.TagService;
 import com.liberty.service.TradeService;
-import com.liberty.service.decorators.MinerDecorator;
+import com.liberty.service.adapters.MinerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class AutoTradingServiceImpl implements AutoTradingService {
     private TradeService tradeService;
 
     @Autowired
-    private MinerDecorator miner;
+    private MinerAdapter miner;
 
     private void updateActivePlayers() {
         if (!miner.isAlive()) {
