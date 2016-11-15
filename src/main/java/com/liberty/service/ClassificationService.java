@@ -6,27 +6,27 @@ package com.liberty.service;
  */
 public interface ClassificationService {
 
-  void bestPremierLeague();
+    void bestPremierLeague();
 
-  void bestPhysics();
+    void bestPhysics();
 
-  void mostBalanced();
+    void mostBalanced();
 
-  void notRar();
+    void notRar();
 
-  void lbNotRar();
+    void lbNotRar();
 
-  void update();
+    void update();
 
-  void bestRBLB();
+    void bestRBLB();
 
-  void bestCB();
+    void bestCB();
 
-  void bestWingers();
+    void bestWingers();
 
-  void bestGermanLeague();
+    void bestGermanLeague();
 
-  void bestSpainLeague();
+    void bestSpainLeague();
 
-  void bestItalyLeague();
+    void bestItalyLeague();
 }

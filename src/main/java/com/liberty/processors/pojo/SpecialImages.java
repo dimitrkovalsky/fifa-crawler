@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 
-public class SpecialImages implements Serializable{
+public class SpecialImages implements Serializable {
 
     @JsonProperty("largeTOTWImgUrl")
     public String largeTOTWImgUrl;

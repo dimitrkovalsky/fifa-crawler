@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.liberty.service.impl.ASellService.TRADEPILE_SIZE;
 import static java.util.function.UnaryOperator.identity;
 
 /**
@@ -44,6 +45,15 @@ public class AutoSellServiceImpl implements AutoSellService {
     public void trySell() {
         List<ItemData> unassigned = tradeService.getAllUnassigned();
         log.info("Found " + unassigned.size() + " unassigned players");
+        if (unassigned.isEmpty()) {
+            log.info("There are no unassigned players...");
+            return;
+        }
+        int canSell = TRADEPILE_SIZE - tradeService.getTradePileSize();
+        if (canSell <= 0) {
+            log.info("Can not sell any player. Tradepile is full.");
+            return;
+        }
         List<Long> ids = unassigned.stream().map(ItemData::getAssetId).collect(Collectors.toList());
         Map<Long, PlayerTradeStatus> players = getTradeMap(ids);
         for (ItemData itemData : unassigned) {

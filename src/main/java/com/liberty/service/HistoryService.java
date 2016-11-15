@@ -12,11 +12,11 @@ import java.util.Map;
  */
 public interface HistoryService {
 
-  void logPriceChange(Long playerId, List<PlayerStatistic.PriceDistribution> prices);
+    void logPriceChange(Long playerId, List<PlayerStatistic.PriceDistribution> prices);
 
-  void logPriceChange(Long playerId, Map<Integer, Integer> priceDistribution);
+    void logPriceChange(Long playerId, Map<Integer, Integer> priceDistribution);
 
-  void logPriceChange(PlayerStatistic statistic);
+    void logPriceChange(PlayerStatistic statistic);
 
-  Map<Long, PriceHelper.HistoryPoint> getHistoryGraph(Long playerId);
+    Map<Long, PriceHelper.HistoryPoint> getHistoryGraph(Long playerId);
 }

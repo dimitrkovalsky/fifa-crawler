@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class Statistic {
 
-  private long players;
-  private long autoBuy;
-  private boolean robotEnabled;
-  private boolean enabled;
-  private int credits;
-  private int rate;
+    private long players;
+    private long autoBuy;
+    private boolean robotEnabled;
+    private boolean enabled;
+    private int credits;
+    private int rate;
 }

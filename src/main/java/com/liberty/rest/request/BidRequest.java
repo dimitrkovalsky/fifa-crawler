@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class BidRequest {
 
-  private Long tradeId;
-  private Long bid;
+    private Long tradeId;
+    private Long bid;
 }

@@ -6,6 +6,6 @@ package com.liberty.common;
  */
 public interface ErrorCode {
 
-  int NOT_ALLOWED = 461;
-  int CATCH_ERROR = 1000;
+    int NOT_ALLOWED = 461;
+    int CATCH_ERROR = 1000;
 }

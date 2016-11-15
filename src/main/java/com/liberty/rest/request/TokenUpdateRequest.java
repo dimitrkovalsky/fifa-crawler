@@ -1,8 +1,8 @@
 package com.liberty.rest.request;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -12,19 +12,19 @@ import lombok.Data;
 
 public class TokenUpdateRequest {
 
-  private String sessionId;
-  private String token;
-  private Boolean external = false;
-  private List<Cookie> cookies;
+    private String sessionId;
+    private String token;
+    private Boolean external = false;
+    private List<Cookie> cookies;
 
-  @Data
-  public static class Cookie {
+    @Data
+    public static class Cookie {
 
-    private String name;
-    private String value;
-    private String expires;
-    private Boolean httpOnly;
-    private Boolean secure;
+        private String name;
+        private String value;
+        private String expires;
+        private Boolean httpOnly;
+        private Boolean secure;
 
-  }
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface SearchService {
 
-  List<TradeInfo> search(MarketSearchRequest searchRequest);
+    List<TradeInfo> search(MarketSearchRequest searchRequest);
 
-  List<PlayerTradeStatus> search(String phrase);
+    List<PlayerTradeStatus> search(String phrase);
 }

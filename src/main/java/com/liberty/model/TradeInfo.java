@@ -1,7 +1,6 @@
 package com.liberty.model;
 
 import com.liberty.model.market.AuctionInfo;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TradeInfo {
-  private AuctionInfo auctionInfo;
-  private PlayerTradeStatus tradeStatus;
-  private PlayerProfile profile;
+    private AuctionInfo auctionInfo;
+    private PlayerTradeStatus tradeStatus;
+    private PlayerProfile profile;
 }

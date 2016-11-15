@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class BuySinglePlayerRequest {
 
-  private Long playerId;
-  private Integer maxPrice;
-  private String playerName;
+    private Long playerId;
+    private Integer maxPrice;
+    private String playerName;
 }

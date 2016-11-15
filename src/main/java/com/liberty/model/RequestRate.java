@@ -1,9 +1,8 @@
 package com.liberty.model;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import lombok.Data;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -13,9 +12,9 @@ import lombok.Data;
 @Document(collection = "request_rate")
 public class RequestRate {
 
-  @Id
-  private long timestamp;
+    @Id
+    private long timestamp;
 
-  private int requestPerMinute;
+    private int requestPerMinute;
 
 }

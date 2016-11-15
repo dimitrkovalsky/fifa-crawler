@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 
-public class Headshot implements Serializable{
+public class Headshot implements Serializable {
 
     @JsonProperty("largeImgUrl")
     public String largeImgUrl;

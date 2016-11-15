@@ -2,7 +2,6 @@ package com.liberty;
 
 import com.liberty.config.Config;
 import com.liberty.service.impl.BackupService;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,9 +13,9 @@ import java.io.IOException;
  */
 public class BackupRunner {
 
-  public static void main(String[] args) throws IOException {
-    ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-    BackupService service = context.getBean(BackupService.class);
-    service.backup();
-  }
+    public static void main(String[] args) throws IOException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        BackupService service = context.getBean(BackupService.class);
+        service.backup();
+    }
 }

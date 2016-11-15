@@ -14,23 +14,23 @@ import java.util.Set;
  */
 public interface TagService {
 
-  void executeUpdate();
+    void executeUpdate();
 
-  void addTag(Long playerId, String tag);
+    void addTag(Long playerId, String tag);
 
-  void removeTag(Long playerId, String tag);
+    void removeTag(Long playerId, String tag);
 
-  void enableByTag(String tag);
+    void enableByTag(String tag);
 
-  void markTags();
+    void markTags();
 
-  Map<String, Integer> getTagDistribution();
+    Map<String, Integer> getTagDistribution();
 
-  List<PlayerInfo> getByTag(String tag);
+    List<PlayerInfo> getByTag(String tag);
 
-  List<Tag> getAllTags();
+    List<Tag> getAllTags();
 
-  void disableByTag(String tag, Set<String> activeTags);
+    void disableByTag(String tag, Set<String> activeTags);
 
-  void addNewTag(String tag);
+    void addNewTag(String tag);
 }

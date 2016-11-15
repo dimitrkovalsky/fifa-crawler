@@ -8,14 +8,14 @@ import com.liberty.model.market.AuctionInfo;
  */
 public interface TransactionService {
 
-  void logBuy(Long playerId, Long itemId, Long tradeId, Integer amount);
+    void logBuy(Long playerId, Long itemId, Long tradeId, Integer amount);
 
-  void logSell(Long playerId, Long itemId, Long tradeId, Integer amount);
+    void logSell(Long playerId, Long itemId, Long tradeId, Integer amount);
 
-  void logPlaceToMarket(Long playerId, Long itemId, Long tradeId, Integer startBid, Integer buyNow);
+    void logPlaceToMarket(Long playerId, Long itemId, Long tradeId, Integer startBid, Integer buyNow);
 
-  void logBuyByRobot(AuctionInfo auctionInfo);
+    void logBuyByRobot(AuctionInfo auctionInfo);
 
-  void logRelistOperation(Long playerId, Long itemId, Long tradeId, Integer startBid,
-                          Integer buyNow);
+    void logRelistOperation(Long playerId, Long itemId, Long tradeId, Integer startBid,
+                            Integer buyNow);
 }

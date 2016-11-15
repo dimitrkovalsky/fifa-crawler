@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SizeResponse {
 
-  private int size;
+    private int size;
 }

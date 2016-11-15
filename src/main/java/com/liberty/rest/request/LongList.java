@@ -1,8 +1,8 @@
 package com.liberty.rest.request;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * User: Dimitr Date: 19.05.2016 Time: 23:16
@@ -10,5 +10,5 @@ import lombok.Data;
 @Data
 public class LongList {
 
-  private List<Long> ids;
+    private List<Long> ids;
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class StatsList {
 
-  private Integer value;
-  private Integer index;
+    private Integer value;
+    private Integer index;
 }
 

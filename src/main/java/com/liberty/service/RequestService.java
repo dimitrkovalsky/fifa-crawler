@@ -18,45 +18,45 @@ import java.util.Optional;
  */
 public interface RequestService {
 
-  boolean buy(AuctionInfo auctionInfo);
+    boolean buy(AuctionInfo auctionInfo);
 
-  List<AuctionInfo> getTradePile();
+    List<AuctionInfo> getTradePile();
 
-  void removeAllSold();
+    void removeAllSold();
 
-  void relistAll();
+    void relistAll();
 
-  List<ItemData> getUnassigned();
+    List<ItemData> getUnassigned();
 
-  boolean item(Long itemId);
+    boolean item(Long itemId);
 
-  List<ItemData> getMyPlayers();
+    List<ItemData> getMyPlayers();
 
-  boolean item(Long itemId, Long tradeId);
+    boolean item(Long itemId, Long tradeId);
 
-  Optional<AuctionHouseResponse> auctionHouse(Long itemId, Integer startPrice, Integer buyNow);
+    Optional<AuctionHouseResponse> auctionHouse(Long itemId, Integer startPrice, Integer buyNow);
 
-  Watchlist getWatchlist();
+    Watchlist getWatchlist();
 
-  Optional<TradeStatus> searchPlayer(Long id, Integer maxPrice, int page);
+    Optional<TradeStatus> searchPlayer(Long id, Integer maxPrice, int page);
 
-  String getPhishingTokenForCheck();
+    String getPhishingTokenForCheck();
 
-  String getSessionForCheck();
+    String getSessionForCheck();
 
-  void removeFromTargets(Long tradeId);
+    void removeFromTargets(Long tradeId);
 
-  TradeStatus getTradeStatus(Long tradeId);
+    TradeStatus getTradeStatus(Long tradeId);
 
-  BidStatus makeBid(Long tradeId, Long price);
+    BidStatus makeBid(Long tradeId, Long price);
 
-  Optional<TradeStatus> search(MarketSearchRequest searchRequest);
+    Optional<TradeStatus> search(MarketSearchRequest searchRequest);
 
-  void updateCredentials(String sessionId, String phishingToken);
+    void updateCredentials(String sessionId, String phishingToken);
 
-  void updateAuthTokens(String sessionId, List<TokenUpdateRequest.Cookie> cookies);
+    void updateAuthTokens(String sessionId, List<TokenUpdateRequest.Cookie> cookies);
 
-  void updateTokens(String sessionId, String phishingToken, List<TokenUpdateRequest.Cookie> cookies);
+    void updateTokens(String sessionId, String phishingToken, List<TokenUpdateRequest.Cookie> cookies);
 
-  int getRequestRate();
+    int getRequestRate();
 }

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class Attributes implements Serializable{
+public class Attributes implements Serializable {
 
     @JsonProperty("name")
     public String name;

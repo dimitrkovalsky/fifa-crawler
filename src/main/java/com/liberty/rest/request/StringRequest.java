@@ -9,5 +9,5 @@ import lombok.Data;
 @Data
 public class StringRequest {
 
-  private String string;
+    private String string;
 }

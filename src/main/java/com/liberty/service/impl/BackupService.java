@@ -7,7 +7,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerTradeStatusRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,53 +22,53 @@ import java.util.List;
 @Service
 public class BackupService {
 
-  private static String BACKUP_PATH = System.getProperty("user.dir") +
-      "\\src\\main\\resources\\players.json";
+    private static String BACKUP_PATH = System.getProperty("user.dir") +
+            "\\src\\main\\resources\\players.json";
 
 
-  private static String BACKUP_PATH_CURRENT = BACKUP_PATH + ".bak";
+    private static String BACKUP_PATH_CURRENT = BACKUP_PATH + ".bak";
 
-  @Autowired
-  private PlayerTradeStatusRepository statusRepository;
+    @Autowired
+    private PlayerTradeStatusRepository statusRepository;
 
-  public void backup() throws IOException {
-    backup(BACKUP_PATH);
-    System.exit(0);
-  }
+    public void backup() throws IOException {
+        backup(BACKUP_PATH);
+        System.exit(0);
+    }
 
-  private void backup(String path) throws IOException {
+    private void backup(String path) throws IOException {
 
-    List<PlayerTradeStatus> players = statusRepository.findAll();
-    ObjectMapper mapper = getObjectMapper();
+        List<PlayerTradeStatus> players = statusRepository.findAll();
+        ObjectMapper mapper = getObjectMapper();
 
 
-    mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), players);
-    System.out.println("Backup completed... ");
-    System.out.println("Data stored in " + path);
-  }
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), players);
+        System.out.println("Backup completed... ");
+        System.out.println("Data stored in " + path);
+    }
 
-  private ObjectMapper getObjectMapper() {
-    ObjectMapper mapper = new ObjectMapper();
-    JavaTimeModule javaTimeModule = new JavaTimeModule();
-    // Hack time module to allow 'Z' at the end of string (i.e. javascript json's)
-    javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
-        DateTimeFormatter.ISO_DATE_TIME));
-    mapper.registerModule(javaTimeModule);
-    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    return mapper;
-  }
+    private ObjectMapper getObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        // Hack time module to allow 'Z' at the end of string (i.e. javascript json's)
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(
+                DateTimeFormatter.ISO_DATE_TIME));
+        mapper.registerModule(javaTimeModule);
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper;
+    }
 
-  public void restore() throws IOException {
-    backup(BACKUP_PATH_CURRENT);
-    ObjectMapper mapper = getObjectMapper();
+    public void restore() throws IOException {
+        backup(BACKUP_PATH_CURRENT);
+        ObjectMapper mapper = getObjectMapper();
 
-    List<PlayerTradeStatus> players = mapper
-        .readValue(new File(BACKUP_PATH), new TypeReference<List<PlayerTradeStatus>>() {
-        });
-    statusRepository.deleteAll();
-    statusRepository.save(players);
-    System.out.println("Backup restored...");
-    System.out.println("Data restored from " + BACKUP_PATH);
-    System.exit(1);
-  }
+        List<PlayerTradeStatus> players = mapper
+                .readValue(new File(BACKUP_PATH), new TypeReference<List<PlayerTradeStatus>>() {
+                });
+        statusRepository.deleteAll();
+        statusRepository.save(players);
+        System.out.println("Backup restored...");
+        System.out.println("Data restored from " + BACKUP_PATH);
+        System.exit(1);
+    }
 }

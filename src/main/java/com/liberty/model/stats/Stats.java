@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 public class Stats {
 
-  private Defending defending;
-  private Dribbling dribbling;
-  private Pace pace;
-  private Passing passing;
-  private Shooting shooting;
-  private Physical physical;
+    private Defending defending;
+    private Dribbling dribbling;
+    private Pace pace;
+    private Passing passing;
+    private Shooting shooting;
+    private Physical physical;
 
 }

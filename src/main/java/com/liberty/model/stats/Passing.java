@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 public class Passing {
 
-  private int passing;
-  private int vision;
-  private int crossing;
-  private int freeKick;
-  private int shortPassing;
-  private int longPassing;
-  private int curve;
+    private int passing;
+    private int vision;
+    private int crossing;
+    private int freeKick;
+    private int shortPassing;
+    private int longPassing;
+    private int curve;
 }

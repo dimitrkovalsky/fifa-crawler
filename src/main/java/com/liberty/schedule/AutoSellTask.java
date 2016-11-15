@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AutoSellTask {
 
-  @Autowired
-  private AutoSellService autoSellService;
+    @Autowired
+    private AutoSellService autoSellService;
 
-  @Autowired
-  private LogController logController;
+    @Autowired
+    private LogController logController;
 
-  @Scheduled(fixedRate = 200_000)
-  public void check() {
-    log.info("Trying to sell unassigned players");
-    autoSellService.trySell();
-  }
+    @Scheduled(fixedRate = 200_000, initialDelay = 200_000)
+    public void check() {
+        log.info("Trying to sell unassigned players");
+        autoSellService.trySell();
+    }
 
 }

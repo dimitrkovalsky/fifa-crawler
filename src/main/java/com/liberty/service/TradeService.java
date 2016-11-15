@@ -19,61 +19,61 @@ import java.util.Set;
  */
 public interface TradeService {
 
-  void removeAllPlayers();
+    void removeAllPlayers();
 
-  int getTradePileSize();
+    int getTradePileSize();
 
-  List<GroupedToSell> getUnassigned();
+    List<GroupedToSell> getUnassigned();
 
-  boolean isActive();
+    boolean isActive();
 
-  void checkMarket();
+    void checkMarket();
 
-  boolean buyPlayer(long playerId, int maxPrice, String playerName);
+    boolean buyPlayer(long playerId, int maxPrice, String playerName);
 
-  void addToAutoBuy(String name, long id, int maxPrice);
+    void addToAutoBuy(String name, long id, int maxPrice);
 
-  MarketInfo getMarketInfo();
+    MarketInfo getMarketInfo();
 
-  void autoBuy(AutobuyRequest run);
+    void autoBuy(AutobuyRequest run);
 
-  void deleteFromAutoBuy(Long id);
+    void deleteFromAutoBuy(Long id);
 
-  List<PlayerInfo> getAllToAutoBuy();
+    List<PlayerInfo> getAllToAutoBuy();
 
-  List<PlayerInfo> getAllToAutoBuy(Set<String> tags);
+    List<PlayerInfo> getAllToAutoBuy(Set<String> tags);
 
-  PlayerInfo getPlayerInfo(Long id);
+    PlayerInfo getPlayerInfo(Long id);
 
-  void updateAutoBuy(BuyRequest request);
+    void updateAutoBuy(BuyRequest request);
 
-  void updatePlayer(PlayerTradeStatus request);
+    void updatePlayer(PlayerTradeStatus request);
 
     List<ItemData> getAllUnassigned();
 
     void sell(SellRequest request);
 
-  BuyMessage getTradepileInfo();
+    BuyMessage getTradepileInfo();
 
-  Watchlist getWatchlist();
+    Watchlist getWatchlist();
 
-  void logBuyOrSell();
+    void logBuyOrSell();
 
-  List<AuctionInfo> getTransferTargets();
+    List<AuctionInfo> getTransferTargets();
 
-  void removeExpired(List<AuctionInfo> expired);
+    void removeExpired(List<AuctionInfo> expired);
 
-  void removeFromTargets(Long tradeId);
+    void removeFromTargets(Long tradeId);
 
-  TradeStatus getTradeStatus(Long tradeId);
+    TradeStatus getTradeStatus(Long tradeId);
 
-  BidStatus makeBid(Long tradeId, Long price);
+    BidStatus makeBid(Long tradeId, Long price);
 
-  void addToAutoBid(AutobidRequest bidRequest);
+    void addToAutoBid(AutobidRequest bidRequest);
 
-  Set<String> getActiveTags();
+    Set<String> getActiveTags();
 
-  void disableAll();
+    void disableAll();
 
-  void enablePlayer(Long id, Integer maxPrice, String minerTag);
+    void enablePlayer(Long id, Integer maxPrice, String minerTag);
 }

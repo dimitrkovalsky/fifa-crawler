@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class FifaResponse implements Serializable{
+public class FifaResponse implements Serializable {
 
     @JsonProperty("page")
     public double page;

@@ -1,9 +1,9 @@
 package com.liberty.rest.request;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Data;
 
 /**
  * User: Dimitr
@@ -13,6 +13,6 @@ import lombok.Data;
 @Data
 public class BuyAllPlayersRequest {
 
-  private List<BuySinglePlayerRequest> players = new ArrayList<>();
+    private List<BuySinglePlayerRequest> players = new ArrayList<>();
 
 }

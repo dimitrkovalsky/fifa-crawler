@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public interface StatisticService {
 
-  Statistic getGeneralStatistic();
+    Statistic getGeneralStatistic();
 
-  void collectStatistic(long playerId, int lowBound, Set<AuctionInfo> toStatistic);
+    void collectStatistic(long playerId, int lowBound, Set<AuctionInfo> toStatistic);
 }

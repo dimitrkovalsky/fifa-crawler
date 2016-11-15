@@ -6,5 +6,5 @@ package com.liberty.service;
  */
 public interface NoActivityService {
 
-  void updatePlayerPrices();
+    void updatePlayerPrices();
 }

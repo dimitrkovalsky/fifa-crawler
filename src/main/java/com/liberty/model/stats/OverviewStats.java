@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class OverviewStats {
 
-  private int attackerRating;
-  private int creatorRating;
-  private int defenderRating;
-  private int beastRating;
-  private int headingRating;
-  private int totalStats;
+    private int attackerRating;
+    private int creatorRating;
+    private int defenderRating;
+    private int beastRating;
+    private int headingRating;
+    private int totalStats;
 }

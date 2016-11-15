@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 public class MarketInfo {
 
-  private Integer maxPurchases;
-  private String sessionId;
-  private String phishingToken;
-  private Boolean autoBuyEnabled;
-  private Boolean robotEnabled;
-  private Integer rate;
+    private Integer maxPurchases;
+    private String sessionId;
+    private String phishingToken;
+    private Boolean autoBuyEnabled;
+    private Boolean robotEnabled;
+    private Integer rate;
 }

@@ -15,7 +15,6 @@ import com.liberty.rest.request.TokenUpdateRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.RequestService;
 import com.liberty.websockets.LogController;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,10 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static com.liberty.common.FifaCrawlerState.FAILED;
-import static com.liberty.common.FifaCrawlerState.READY;
-import static com.liberty.common.FifaCrawlerState.TOKEN_NULL;
-import static com.liberty.common.FifaCrawlerState.WORKING;
+import static com.liberty.common.FifaCrawlerState.*;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -38,217 +34,217 @@ import static com.liberty.common.FifaCrawlerState.WORKING;
 @Service
 public class RequestServiceImpl implements RequestService {
 
-  private volatile FifaCrawlerState currentState = TOKEN_NULL;
+    private volatile FifaCrawlerState currentState = TOKEN_NULL;
 
-  @Autowired
-  private LogController logController;
+    @Autowired
+    private LogController logController;
 
-  @Autowired
-  private RequestRateRepository requestRateRepository;
+    @Autowired
+    private RequestRateRepository requestRateRepository;
 
-  private FifaRequests fifaRequests = new FifaRequests(this::onError, this::onStatusChange);
+    private FifaRequests fifaRequests = new FifaRequests(this::onError, this::onStatusChange);
 
-  private void onError(String msg) {
-    logController.error(msg);
-  }
-
-  private void onStatusChange(FifaCrawlerState state) {
-    currentState = state;
-  }
-
-  private int requestCount;
-
-  private int rate = 0;
-  private int arrayIndex = 0;
-  private int[] rateArray = new int[30];
-
-  private void logRequest() {
-    requestCount++;
-  }
-
-  @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
-  private void resetRequestCount() {
-     RequestRate requestRate = new RequestRate();
-    requestRate.setRequestPerMinute(rate);
-    requestRate.setTimestamp(System.currentTimeMillis());
-    requestRateRepository.save(requestRate);
-  }
-
-  @Scheduled(fixedDelay = 2_000, initialDelay = 2_000)
-  private void recordRequestCount() {
-    rateArray[arrayIndex] = requestCount;
-    arrayIndex++;
-    if(arrayIndex >= 30 ){
-      arrayIndex = 0;
+    private void onError(String msg) {
+        logController.error(msg);
     }
-    rate = Arrays.stream(rateArray).sum();
-    logController.sendRate(rate);
-    requestCount = 0;
-  }
 
-  private <T> T execute(Supplier<T> function) {
-    waitReady();
-    currentState = WORKING;
-    T result = function.get();
-    logRequest();
-    currentState = READY;
-    return result;
-  }
-
-  private void execute(Runnable function) {
-    waitReady();
-    currentState = WORKING;
-    function.run();
-    logRequest();
-    currentState = READY;
-  }
-
-  private void waitReady() {
-    int times = 0;
-    while (currentState != READY) {
-      DelayHelper.waitStrict(10);
-      times++;
-      if (currentState == FAILED && times % 1000 == 0) {
-        System.err.println("FAILED thread : " + Thread.currentThread().getName());
-      }
+    private void onStatusChange(FifaCrawlerState state) {
+        currentState = state;
     }
-  }
 
-  @Override
-  public List<AuctionInfo> getTradePile() {
-    return execute(() -> fifaRequests.getTradePile());
-  }
+    private int requestCount;
 
-  @Override
-  public Watchlist getWatchlist() {
-    Optional<Watchlist> result = execute(() -> fifaRequests.getWatchlist());
-    return result.orElse(new Watchlist());
-  }
+    private int rate = 0;
+    private int arrayIndex = 0;
+    private int[] rateArray = new int[30];
 
-  @Override
-  public Optional<TradeStatus> searchPlayer(Long id, Integer maxPrice, int page) {
-    return execute(() -> fifaRequests.searchPlayer(id, maxPrice, page));
-  }
-
-  @Override
-  public String getSessionForCheck() {
-    return fifaRequests.getSessionForCheck();
-  }
-
-  @Override
-  public String getPhishingTokenForCheck() {
-    return fifaRequests.getPhishingTokenForCheck();
-  }
-
-  @Override
-  public boolean buy(AuctionInfo auctionInfo) {
-    return execute(() -> fifaRequests.buy(auctionInfo));
-  }
-
-  @Override
-  public List<ItemData> getMyPlayers() {
-    return execute(() -> {
-      int page = 0;
-      List<ItemData> allPlayers = new ArrayList<>();
-      List<ItemData> players;
-      do {
-        players = fifaRequests.getMyPlayers(page);
-        allPlayers.addAll(players);
-        page++;
-        DelayHelper.wait(300, 20);
-      } while (players.size() >= 96);
-      return allPlayers;
-    });
-  }
-
-  @Override
-  public boolean item(Long itemId, Long tradeId) {
-    return execute(() -> fifaRequests.item(itemId, tradeId));
-  }
-
-  @Override
-  public Optional<AuctionHouseResponse> auctionHouse(Long itemId, Integer startPrice,
-                                                     Integer buyNow) {
-    return execute(() -> fifaRequests.auctionHouse(itemId, startPrice, buyNow));
-  }
-
-  @Override
-  public boolean item(Long itemId) {
-    return execute(() -> fifaRequests.item(itemId));
-  }
-
-  @Override
-  public void removeAllSold() {
-    execute(() -> fifaRequests.removeAllSold());
-  }
-
-  @Override
-  public void relistAll() {
-    execute(() -> fifaRequests.relistAll());
-  }
-
-  @Override
-  public List<ItemData> getUnassigned() {
-    return execute(() -> fifaRequests.getUnassigned());
-  }
-
-  @Override
-  public void removeFromTargets(Long tradeId) {
-    execute(() -> fifaRequests.removeFromTargets(tradeId));
-
-  }
-
-  @Override
-  public TradeStatus getTradeStatus(Long tradeId) {
-    Optional<TradeStatus> execute = execute(() -> fifaRequests.getTradeStatus(tradeId));
-    return execute.orElse(new TradeStatus());
-  }
-
-  @Override
-  public BidStatus makeBid(Long tradeId, Long price) {
-    return execute(() -> fifaRequests.makeBid(tradeId, price));
-  }
-
-  @Override
-  public Optional<TradeStatus> search(MarketSearchRequest searchRequest) {
-    return execute(() -> fifaRequests.search(searchRequest));
-  }
-
-  @Override
-  public void updateCredentials(String sessionId, String phishingToken) {
-    updateTokens(sessionId, phishingToken, null);
-  }
-
-  @Override
-  public void updateAuthTokens(String sessionId, List<TokenUpdateRequest.Cookie> cookies) {
-    if (!sessionId.equals(getSessionForCheck())) {
-      fifaRequests.setSessionId(sessionId);
-      logController.info("Updated sessionId to " + sessionId);
+    private void logRequest() {
+        requestCount++;
     }
-    fifaRequests.updateAuthCookies(cookies);
-    currentState = READY;
-  }
 
-  @Override
-  public void updateTokens(String sessionId, String phishingToken,
-                           List<TokenUpdateRequest.Cookie> cookies) {
-    if (!phishingToken.equals(getPhishingTokenForCheck())) {
-      fifaRequests.setPhishingToken(phishingToken);
-      logController.info("Updated phishingToken to " + phishingToken);
+    @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
+    private void resetRequestCount() {
+        RequestRate requestRate = new RequestRate();
+        requestRate.setRequestPerMinute(rate);
+        requestRate.setTimestamp(System.currentTimeMillis());
+        requestRateRepository.save(requestRate);
     }
-    if (!sessionId.equals(getSessionForCheck())) {
-      fifaRequests.setSessionId(sessionId);
-      logController.info("Updated sessionId to " + sessionId);
-    }
-    if (cookies != null) {
-      fifaRequests.updateCookies(cookies);
-    }
-    currentState = READY;
-  }
 
-  @Override
-  public int getRequestRate() {
-    return rate;
-  }
+    @Scheduled(fixedDelay = 2_000, initialDelay = 2_000)
+    private void recordRequestCount() {
+        rateArray[arrayIndex] = requestCount;
+        arrayIndex++;
+        if (arrayIndex >= 30) {
+            arrayIndex = 0;
+        }
+        rate = Arrays.stream(rateArray).sum();
+        logController.sendRate(rate);
+        requestCount = 0;
+    }
+
+    private <T> T execute(Supplier<T> function) {
+        waitReady();
+        currentState = WORKING;
+        T result = function.get();
+        logRequest();
+        currentState = READY;
+        return result;
+    }
+
+    private void execute(Runnable function) {
+        waitReady();
+        currentState = WORKING;
+        function.run();
+        logRequest();
+        currentState = READY;
+    }
+
+    private void waitReady() {
+        int times = 0;
+        while (currentState != READY) {
+            DelayHelper.waitStrict(10);
+            times++;
+            if (currentState == FAILED && times % 1000 == 0) {
+                System.err.println("FAILED thread : " + Thread.currentThread().getName());
+            }
+        }
+    }
+
+    @Override
+    public List<AuctionInfo> getTradePile() {
+        return execute(() -> fifaRequests.getTradePile());
+    }
+
+    @Override
+    public Watchlist getWatchlist() {
+        Optional<Watchlist> result = execute(() -> fifaRequests.getWatchlist());
+        return result.orElse(new Watchlist());
+    }
+
+    @Override
+    public Optional<TradeStatus> searchPlayer(Long id, Integer maxPrice, int page) {
+        return execute(() -> fifaRequests.searchPlayer(id, maxPrice, page));
+    }
+
+    @Override
+    public String getSessionForCheck() {
+        return fifaRequests.getSessionForCheck();
+    }
+
+    @Override
+    public String getPhishingTokenForCheck() {
+        return fifaRequests.getPhishingTokenForCheck();
+    }
+
+    @Override
+    public boolean buy(AuctionInfo auctionInfo) {
+        return execute(() -> fifaRequests.buy(auctionInfo));
+    }
+
+    @Override
+    public List<ItemData> getMyPlayers() {
+        return execute(() -> {
+            int page = 0;
+            List<ItemData> allPlayers = new ArrayList<>();
+            List<ItemData> players;
+            do {
+                players = fifaRequests.getMyPlayers(page);
+                allPlayers.addAll(players);
+                page++;
+                DelayHelper.wait(300, 20);
+            } while (players.size() >= 96);
+            return allPlayers;
+        });
+    }
+
+    @Override
+    public boolean item(Long itemId, Long tradeId) {
+        return execute(() -> fifaRequests.item(itemId, tradeId));
+    }
+
+    @Override
+    public Optional<AuctionHouseResponse> auctionHouse(Long itemId, Integer startPrice,
+                                                       Integer buyNow) {
+        return execute(() -> fifaRequests.auctionHouse(itemId, startPrice, buyNow));
+    }
+
+    @Override
+    public boolean item(Long itemId) {
+        return execute(() -> fifaRequests.item(itemId));
+    }
+
+    @Override
+    public void removeAllSold() {
+        execute(() -> fifaRequests.removeAllSold());
+    }
+
+    @Override
+    public void relistAll() {
+        execute(() -> fifaRequests.relistAll());
+    }
+
+    @Override
+    public List<ItemData> getUnassigned() {
+        return execute(() -> fifaRequests.getUnassigned());
+    }
+
+    @Override
+    public void removeFromTargets(Long tradeId) {
+        execute(() -> fifaRequests.removeFromTargets(tradeId));
+
+    }
+
+    @Override
+    public TradeStatus getTradeStatus(Long tradeId) {
+        Optional<TradeStatus> execute = execute(() -> fifaRequests.getTradeStatus(tradeId));
+        return execute.orElse(new TradeStatus());
+    }
+
+    @Override
+    public BidStatus makeBid(Long tradeId, Long price) {
+        return execute(() -> fifaRequests.makeBid(tradeId, price));
+    }
+
+    @Override
+    public Optional<TradeStatus> search(MarketSearchRequest searchRequest) {
+        return execute(() -> fifaRequests.search(searchRequest));
+    }
+
+    @Override
+    public void updateCredentials(String sessionId, String phishingToken) {
+        updateTokens(sessionId, phishingToken, null);
+    }
+
+    @Override
+    public void updateAuthTokens(String sessionId, List<TokenUpdateRequest.Cookie> cookies) {
+        if (!sessionId.equals(getSessionForCheck())) {
+            fifaRequests.setSessionId(sessionId);
+            logController.info("Updated sessionId to " + sessionId);
+        }
+        fifaRequests.updateAuthCookies(cookies);
+        currentState = READY;
+    }
+
+    @Override
+    public void updateTokens(String sessionId, String phishingToken,
+                             List<TokenUpdateRequest.Cookie> cookies) {
+        if (!phishingToken.equals(getPhishingTokenForCheck())) {
+            fifaRequests.setPhishingToken(phishingToken);
+            logController.info("Updated phishingToken to " + phishingToken);
+        }
+        if (!sessionId.equals(getSessionForCheck())) {
+            fifaRequests.setSessionId(sessionId);
+            logController.info("Updated sessionId to " + sessionId);
+        }
+        if (cookies != null) {
+            fifaRequests.updateCookies(cookies);
+        }
+        currentState = READY;
+    }
+
+    @Override
+    public int getRequestRate() {
+        return rate;
+    }
 
 }

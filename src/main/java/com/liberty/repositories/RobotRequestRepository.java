@@ -1,7 +1,6 @@
 package com.liberty.repositories;
 
 import com.liberty.model.RobotRequest;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

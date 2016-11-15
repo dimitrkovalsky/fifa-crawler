@@ -52,6 +52,7 @@ public class NoActivityServiceImpl implements NoActivityService {
                 currentTagIndex++;
                 if (currentTagIndex >= tags.length) {
                     currentTagIndex = 0;
+                    return;
                 }
             } else {
                 return;
@@ -75,8 +76,8 @@ public class NoActivityServiceImpl implements NoActivityService {
             }
             DelayHelper.wait(2000, 100);
         }
-        log.info("[NoActivityServiceImpl] Successfully updated players from skip : " + currentSkip
-                + " .Rate => " + requestService.getRequestRate());
+        log.info("[NoActivityServiceImpl] Successfully updated players from [ " + tag + "] skip : " + currentSkip
+                + ". Rate => " + requestService.getRequestRate());
 
     }
 

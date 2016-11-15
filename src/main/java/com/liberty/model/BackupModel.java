@@ -1,8 +1,8 @@
 package com.liberty.model;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -11,6 +11,6 @@ import lombok.Data;
 @Data
 public class BackupModel {
 
-  private List<PlayerTradeStatus> tradeStatuses;
-  private List<PlayerStatistic> statistics;
+    private List<PlayerTradeStatus> tradeStatuses;
+    private List<PlayerStatistic> statistics;
 }

@@ -1,8 +1,8 @@
 package com.liberty.model.market;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * User: Dimitr Date: 20.06.2016 Time: 21:22
@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 public class Items {
 
-  private List<ItemData> itemData;
-  private List<DuplicateItem> duplicateItemIdList;
+    private List<ItemData> itemData;
+    private List<DuplicateItem> duplicateItemIdList;
 
-  @Data
-  public static class DuplicateItem {
-      private Long itemId;
-      private Long duplicateItemId;
-  }
+    @Data
+    public static class DuplicateItem {
+        private Long itemId;
+        private Long duplicateItemId;
+    }
 }

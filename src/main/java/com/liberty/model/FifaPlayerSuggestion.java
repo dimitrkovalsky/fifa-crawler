@@ -1,7 +1,6 @@
 package com.liberty.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 /**
@@ -11,21 +10,21 @@ import lombok.Data;
 @Data
 public class FifaPlayerSuggestion {
 
-  @JsonProperty("id")
-  private Long id;
+    @JsonProperty("id")
+    private Long id;
 
-  @JsonProperty("c")
-  private String title;
+    @JsonProperty("c")
+    private String title;
 
-  @JsonProperty("f")
-  private String firstName;
+    @JsonProperty("f")
+    private String firstName;
 
-  @JsonProperty("l")
-  private String lastName;
+    @JsonProperty("l")
+    private String lastName;
 
-  @JsonProperty("r")
-  private Integer rating;
+    @JsonProperty("r")
+    private Integer rating;
 
-  @JsonProperty("n")
-  private Integer nationId;
+    @JsonProperty("n")
+    private Integer nationId;
 }

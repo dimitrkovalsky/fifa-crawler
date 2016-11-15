@@ -11,18 +11,18 @@ import java.util.Set;
  */
 public interface ConfigService {
 
-  Map<String, Integer> getTagDistribution();
+    Map<String, Integer> getTagDistribution();
 
-  Set<String> getActiveTags();
+    Set<String> getActiveTags();
 
-  void deactivateTag(String tag);
+    void deactivateTag(String tag);
 
-  MarketConfig getMarketConfig();
+    MarketConfig getMarketConfig();
 
-  void activateTag(String tag);
+    void activateTag(String tag);
 
-  void updateActivePlayersPrices();
+    void updateActivePlayersPrices();
 
-  void cleanHistory();
+    void cleanHistory();
 
 }

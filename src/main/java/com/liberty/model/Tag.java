@@ -1,13 +1,12 @@
 package com.liberty.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * User: Dimitr
@@ -19,13 +18,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Tag implements Serializable {
 
-  @Id
-  private ObjectId id;
+    @Id
+    private ObjectId id;
 
-  private String name;
+    private String name;
 
 
-  public Tag(String name) {
-    this.name = name;
-  }
+    public Tag(String name) {
+        this.name = name;
+    }
 }

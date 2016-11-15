@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liberty.model.Club;
 import com.liberty.model.League;
 import com.liberty.model.Nation;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
 
-import lombok.Data;
-
 @Data
-public class Items implements Serializable{
+public class Items implements Serializable {
 
     @JsonProperty("commonName")
     private String commonName;

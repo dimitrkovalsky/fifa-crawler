@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class Defending {
 
-  private int defending;
-  private int interceptions;
-  private int heading;
-  private int marking;
-  private int standingTackle;
-  private int slidingTackle;
+    private int defending;
+    private int interceptions;
+    private int heading;
+    private int marking;
+    private int standingTackle;
+    private int slidingTackle;
 }

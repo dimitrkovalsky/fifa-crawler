@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Physical {
 
-  private int physical;
-  private int jumping;
-  private int stamina;
-  private int strength;
-  private int aggression;
+    private int physical;
+    private int jumping;
+    private int stamina;
+    private int strength;
+    private int aggression;
 }

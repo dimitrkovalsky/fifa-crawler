@@ -13,19 +13,19 @@ import java.util.Optional;
  */
 public interface ImageService {
 
-  void saveImage(String url, long playerId);
+    void saveImage(String url, long playerId);
 
-  Optional<GridFSDBFile> getImage(long playerId);
+    Optional<GridFSDBFile> getImage(long playerId);
 
-  Optional<GridFSDBFile> getClubImage(long clubId);
+    Optional<GridFSDBFile> getClubImage(long clubId);
 
-  Optional<GridFSDBFile> getLeagueImage(long leagueId);
+    Optional<GridFSDBFile> getLeagueImage(long leagueId);
 
-  Optional<GridFSDBFile> getNationImage(long nationId);
+    Optional<GridFSDBFile> getNationImage(long nationId);
 
-  void saveClubImage(Club club);
+    void saveClubImage(Club club);
 
-  void saveLeagueImage(League league);
+    void saveLeagueImage(League league);
 
-  void saveNationImage(Nation nation);
+    void saveNationImage(Nation nation);
 }

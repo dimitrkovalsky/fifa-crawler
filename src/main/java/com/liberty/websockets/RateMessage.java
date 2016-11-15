@@ -1,7 +1,6 @@
 package com.liberty.websockets;
 
 import com.liberty.common.MessageType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,10 +12,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class RateMessage extends BaseMessage {
 
-  private Integer rate;
+    private Integer rate;
 
-  @Override
-  public String getMessageType() {
-    return MessageType.RATE;
-  }
+    @Override
+    public String getMessageType() {
+        return MessageType.RATE;
+    }
 }

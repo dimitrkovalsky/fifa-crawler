@@ -5,5 +5,5 @@ package com.liberty.common;
  * @since 25.10.2016.
  */
 public enum TransactionType {
-  BOUGHT_CARD, BOUGHT_BY_ROBOT, SELL_CARD, PLACED_TO_MARKET, RELIST
+    BOUGHT_CARD, BOUGHT_BY_ROBOT, SELL_CARD, PLACED_TO_MARKET, RELIST
 }

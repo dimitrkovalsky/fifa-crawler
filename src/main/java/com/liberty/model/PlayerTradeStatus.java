@@ -1,15 +1,15 @@
 package com.liberty.model;
 
+import com.liberty.common.PriceStrategy;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import static com.liberty.common.DateHelper.toReadableString;
 
@@ -22,53 +22,56 @@ import static com.liberty.common.DateHelper.toReadableString;
 @NoArgsConstructor
 public class PlayerTradeStatus {
 
-  public PlayerTradeStatus(Long id, String name, Integer maxPrice) {
-    this.id = id;
-    this.name = name;
-    this.maxPrice = maxPrice;
-  }
+    public PlayerTradeStatus(Long id, String name, Integer maxPrice) {
+        this.id = id;
+        this.name = name;
+        this.maxPrice = maxPrice;
+    }
 
-  @Id
-  private Long id;
+    @Id
+    private Long id;
 
-  private int boughtAmount;
+    private int boughtAmount;
 
-  private String name;
+    private String name;
 
-  private Integer maxPrice;
+    private Integer maxPrice;
 
-  private Long lastBuyPrice;
+    private Long lastBuyPrice;
 
-  private Integer sellStartPrice;
+    private Integer sellStartPrice;
 
-  private Integer rareflag;
+    private Integer rareflag;
 
-  private Integer minMarketPrice;
+    private Integer minMarketPrice;
 
-  private Integer sellBuyNowPrice;
+    private Integer sellBuyNowPrice;
 
-  private LocalDateTime innerDate;
+    private LocalDateTime innerDate;
 
-  private String lastUpdate;
+    private String lastUpdate;
 
-  private String lastDate;
+    private String lastDate;
 
-  private boolean enabled = true;
+    private boolean enabled = true;
 
-  private boolean autoSellEnabled = false;
+    private boolean autoSellEnabled = false;
 
+    private String bidPriceStrategy = PriceStrategy.MANUAL.toString();
+    private String buyPriceStrategy = PriceStrategy.MANUAL.toString();
+    private String sellPriceStrategy = PriceStrategy.MANUAL.toString();
 
-  private Set<String> tags = new HashSet<>();
+    private Set<String> tags = new HashSet<>();
 
-  public String getLastDate() {
-    return toReadableString(innerDate);
-  }
+    public String getLastDate() {
+        return toReadableString(innerDate);
+    }
 
-  public void updateDate() {
-    innerDate = LocalDateTime.now();
-  }
+    public void updateDate() {
+        innerDate = LocalDateTime.now();
+    }
 
-  public void addTag(String tag) {
-    tags.add(tag);
-  }
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
 }

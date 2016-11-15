@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface PriceUpdateStrategy {
 
-  Set<AuctionInfo> findPlayers(PlayerTradeStatus tradeStatus);
+    Set<AuctionInfo> findPlayers(PlayerTradeStatus tradeStatus);
 
-  int getLastBound();
+    int getLastBound();
 }

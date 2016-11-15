@@ -6,5 +6,5 @@ package com.liberty.websockets;
  */
 public abstract class BaseMessage {
 
-  public abstract String getMessageType();
+    public abstract String getMessageType();
 }

@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlayerInfo {
 
-  private PlayerTradeStatus tradeStatus;
-  private PlayerProfile profile;
+    private PlayerTradeStatus tradeStatus;
+    private PlayerProfile profile;
 }

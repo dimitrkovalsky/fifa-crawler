@@ -9,5 +9,5 @@ import lombok.Data;
 @Data
 public class SearchRequest {
 
-  private String phrase;
+    private String phrase;
 }

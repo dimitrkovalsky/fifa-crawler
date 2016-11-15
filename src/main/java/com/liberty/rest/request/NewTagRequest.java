@@ -9,5 +9,5 @@ import lombok.Data;
 @Data
 public class NewTagRequest {
 
-  private String tag;
+    private String tag;
 }

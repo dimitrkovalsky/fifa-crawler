@@ -1,9 +1,9 @@
 package com.liberty.model.market;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Data;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 public class Watchlist {
 
-  private List<AuctionInfo> auctionInfo = new ArrayList<>();
-  private List<Object> duplicateItemIdList;
-  private Integer credits;
-  private Integer total;
+    private List<AuctionInfo> auctionInfo = new ArrayList<>();
+    private List<Object> duplicateItemIdList;
+    private Integer credits;
+    private Integer total;
 }

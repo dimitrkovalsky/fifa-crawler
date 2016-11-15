@@ -9,5 +9,5 @@ import lombok.Data;
 @Data
 public class SquadRequest {
 
-  private Long squadId;
+    private Long squadId;
 }

@@ -1,10 +1,10 @@
 package com.liberty.rest.response;
 
-import java.util.Map;
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -14,6 +14,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class ConfigResponse {
 
-  private Map<String, Integer> tags;
-  private Set<String> activeTags;
+    private Map<String, Integer> tags;
+    private Set<String> activeTags;
 }

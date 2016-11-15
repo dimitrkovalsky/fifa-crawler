@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class AutobidRequest {
 
-  private Long tradeId;
-  private Long playerId;
-  private Integer maxBid;
+    private Long tradeId;
+    private Long playerId;
+    private Integer maxBid;
 }

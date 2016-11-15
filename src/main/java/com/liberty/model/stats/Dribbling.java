@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class Dribbling {
 
-  private int dribbling;
-  private int agility;
-  private int balance;
-  private int reactions;
-  private int ballControl;
+    private int dribbling;
+    private int agility;
+    private int balance;
+    private int reactions;
+    private int ballControl;
 }

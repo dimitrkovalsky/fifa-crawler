@@ -2,7 +2,6 @@ package com.liberty.config;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,34 +20,34 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @EnableScheduling
 @EnableWebSocket
 @EnableMongoRepositories("com.liberty.repositories")
-public class Config extends AbstractMongoConfiguration  {
+public class Config extends AbstractMongoConfiguration {
 
-  public static final int POOL_SIZE = 10;
+    public static final int POOL_SIZE = 10;
 
-  @Override
-  protected String getDatabaseName() {
-    return "fifa17";
-  }
+    @Override
+    protected String getDatabaseName() {
+        return "fifa17";
+    }
 
-  @Override
-  public Mongo mongo() throws Exception {
-    return new MongoClient("127.0.0.1", 27017);
-  }
+    @Override
+    public Mongo mongo() throws Exception {
+        return new MongoClient("127.0.0.1", 27017);
+    }
 
-  @Bean
-  public GridFsTemplate gridFsTemplate() throws Exception {
-    return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
-  }
+    @Bean
+    public GridFsTemplate gridFsTemplate() throws Exception {
+        return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
+    }
 
-  @Override
-  protected String getMappingBasePackage() {
-    return "com.liberty.model";
-  }
+    @Override
+    protected String getMappingBasePackage() {
+        return "com.liberty.model";
+    }
 
-  @Bean
-  public ThreadPoolTaskScheduler taskScheduler() {
-    ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-    scheduler.setPoolSize(POOL_SIZE);
-    return scheduler;
-  }
+    @Bean
+    public ThreadPoolTaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(POOL_SIZE);
+        return scheduler;
+    }
 }

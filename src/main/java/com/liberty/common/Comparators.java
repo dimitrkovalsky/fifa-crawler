@@ -10,20 +10,20 @@ import java.util.Comparator;
  */
 public class Comparators {
 
-  public static Comparator<AuctionInfo> getAuctionInfoComparator() {
-    return (a1, a2) -> {
-      int contract1 = a1.getItemData().getContract();
-      int contract2 = a2.getItemData().getContract();
-      if (contract1 <= 0 && contract2 <= 0) {
-        return 0;
-      }
-      if (contract1 <= 0 && contract2 > 0) {
-        return 1;
-      }
-      if (contract1 > 0 && contract2 <= 0) {
-        return -1;
-      }
-      return a1.getBuyNowPrice().compareTo(a2.getBuyNowPrice());
-    };
-  }
+    public static Comparator<AuctionInfo> getAuctionInfoComparator() {
+        return (a1, a2) -> {
+            int contract1 = a1.getItemData().getContract();
+            int contract2 = a2.getItemData().getContract();
+            if (contract1 <= 0 && contract2 <= 0) {
+                return 0;
+            }
+            if (contract1 <= 0 && contract2 > 0) {
+                return 1;
+            }
+            if (contract1 > 0 && contract2 <= 0) {
+                return -1;
+            }
+            return a1.getBuyNowPrice().compareTo(a2.getBuyNowPrice());
+        };
+    }
 }

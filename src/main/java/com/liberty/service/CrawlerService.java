@@ -10,15 +10,15 @@ import java.util.List;
  */
 public interface CrawlerService {
 
-  void fetchData(Long playerId);
+    void fetchData(Long playerId);
 
-  void saveOthers();
+    void saveOthers();
 
-  void fetchAllPlayers();
+    void fetchAllPlayers();
 
-  void fetchAllTrades();
+    void fetchAllTrades();
 
-  List<PlayerProfile> findProfilesBySquad(Long squadId);
+    List<PlayerProfile> findProfilesBySquad(Long squadId);
 
-  Squad fetchBaseSquadInfo(Long squadId);
+    Squad fetchBaseSquadInfo(Long squadId);
 }

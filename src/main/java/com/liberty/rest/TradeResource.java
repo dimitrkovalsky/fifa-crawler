@@ -7,7 +7,6 @@ import com.liberty.rest.request.SellRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.TradeService;
 import com.liberty.websockets.BuyMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,33 +23,33 @@ import java.util.List;
 @RequestMapping("/api/trade")
 public class TradeResource {
 
-  @Autowired
-  private TradeService tradeService;
+    @Autowired
+    private TradeService tradeService;
 
-  @RequestMapping(method = RequestMethod.GET)
-  public List<GroupedToSell> getUnassigned() {
-    return tradeService.getUnassigned();
-  }
+    @RequestMapping(method = RequestMethod.GET)
+    public List<GroupedToSell> getUnassigned() {
+        return tradeService.getUnassigned();
+    }
 
-  @RequestMapping(path = "/tradepile", method = RequestMethod.GET)
-  public BuyMessage getTradePileSize() {
-    return tradeService.getTradepileInfo();
-  }
+    @RequestMapping(path = "/tradepile", method = RequestMethod.GET)
+    public BuyMessage getTradePileSize() {
+        return tradeService.getTradepileInfo();
+    }
 
-  @RequestMapping(path = "/bid", method = RequestMethod.POST)
-  public BidStatus makeBid(@RequestBody BidRequest bidRequest) {
-    return tradeService.makeBid(bidRequest.getTradeId(), bidRequest.getBid());
-  }
+    @RequestMapping(path = "/bid", method = RequestMethod.POST)
+    public BidStatus makeBid(@RequestBody BidRequest bidRequest) {
+        return tradeService.makeBid(bidRequest.getTradeId(), bidRequest.getBid());
+    }
 
-  @RequestMapping(path = "/autobid", method = RequestMethod.GET)
-  public void autoBid(@RequestBody AutobidRequest bidRequest) {
-    tradeService.addToAutoBid(bidRequest);
-  }
+    @RequestMapping(path = "/autobid", method = RequestMethod.GET)
+    public void autoBid(@RequestBody AutobidRequest bidRequest) {
+        tradeService.addToAutoBid(bidRequest);
+    }
 
-  @RequestMapping(method = RequestMethod.POST)
-  public void sell(@RequestBody SellRequest request) {
-    tradeService.sell(request);
-  }
+    @RequestMapping(method = RequestMethod.POST)
+    public void sell(@RequestBody SellRequest request) {
+        tradeService.sell(request);
+    }
 
 
 }

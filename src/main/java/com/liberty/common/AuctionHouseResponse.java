@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class AuctionHouseResponse {
 
-  private Long id;
-  private String idStr;
+    private Long id;
+    private String idStr;
 }

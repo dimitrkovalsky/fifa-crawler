@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 public class BuyRequest {
 
-  private Long id;
-  private Boolean enabled;
+    private Long id;
+    private Boolean enabled;
 }

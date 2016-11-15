@@ -29,7 +29,8 @@ public class AutoTradingServiceImpl implements AutoTradingService {
     @Autowired
     private MinerAdapter miner;
 
-    private void updateActivePlayers() {
+    @Override
+    public void updateActivePlayers() {
         if (!miner.isAlive()) {
             log.error("Can not update active players. Fifa Miner is broken");
             return;

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Pace {
 
-  private int pace;
-  private int acceleration;
-  private int sprintSpeed;
+    private int pace;
+    private int acceleration;
+    private int sprintSpeed;
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 
-public class Dark implements Serializable{
+public class Dark implements Serializable {
 
     @JsonProperty("small")
     public String small;

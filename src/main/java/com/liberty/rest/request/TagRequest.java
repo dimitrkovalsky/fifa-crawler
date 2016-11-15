@@ -1,8 +1,8 @@
 package com.liberty.rest.request;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * User: Dimitr
@@ -12,9 +12,9 @@ import lombok.Data;
 @Data
 public class TagRequest {
 
-  @NotNull
-  private Long playerId;
+    @NotNull
+    private Long playerId;
 
-  @NotNull
-  private String tag;
+    @NotNull
+    private String tag;
 }

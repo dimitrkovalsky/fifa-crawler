@@ -1,7 +1,6 @@
 package com.liberty.websockets;
 
 import com.liberty.common.MessageType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,13 +12,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class BuyMessage extends BaseMessage {
 
-  private Integer unassigned;
-  private Integer canSell;
-  private Integer credits;
-  private Integer purchasesRemained;
+    private Integer unassigned;
+    private Integer canSell;
+    private Integer credits;
+    private Integer purchasesRemained;
 
-  @Override
-  public String getMessageType() {
-    return MessageType.BOUGHT_PLAYER;
-  }
+    @Override
+    public String getMessageType() {
+        return MessageType.BOUGHT_PLAYER;
+    }
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class AutobuyRequest {
 
-  private Boolean enabled;
-  private Boolean robotEnabled;
-  private Integer purchases;
+    private Boolean enabled;
+    private Boolean robotEnabled;
+    private Integer purchases;
 }

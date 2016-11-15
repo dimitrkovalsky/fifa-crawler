@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface PlayerProfileService {
 
-  List<PlayerProfile> searchByPhrase(String phrase);
+    List<PlayerProfile> searchByPhrase(String phrase);
 
-  PlayerProfile findOne(Long id);
+    PlayerProfile findOne(Long id);
 
-  List<PlayerProfile> getAll(List<Long> ids);
+    List<PlayerProfile> getAll(List<Long> ids);
 }

@@ -10,13 +10,13 @@ import com.liberty.rest.request.BuySinglePlayerRequest;
  */
 public interface SquadBuilderService {
 
-  FullSquad fetchPricesForSquad(Long squadId);
+    FullSquad fetchPricesForSquad(Long squadId);
 
-  FullSquad updateSquad(Long squadId);
+    FullSquad updateSquad(Long squadId);
 
-  void buySquad(Long squadId);
+    void buySquad(Long squadId);
 
-  boolean buyPlayer(BuySinglePlayerRequest request);
+    boolean buyPlayer(BuySinglePlayerRequest request);
 
-  void buyAllPlayers(BuyAllPlayersRequest request);
+    void buyAllPlayers(BuyAllPlayersRequest request);
 }

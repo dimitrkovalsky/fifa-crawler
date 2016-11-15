@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 public class AuthResponse {
 
-  private String protocol;
-  private String ipPort;
-  private String serverTime;
-  private String lastOnlineTime;
-  private String sid;
+    private String protocol;
+    private String ipPort;
+    private String serverTime;
+    private String lastOnlineTime;
+    private String sid;
 }

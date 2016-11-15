@@ -5,5 +5,5 @@ package com.liberty.common;
  * @since 16.05.2016.
  */
 public enum Platform {
-  PC, PS, XBOX
+    PC, PS, XBOX
 }

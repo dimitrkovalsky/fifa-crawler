@@ -1,10 +1,9 @@
 package com.liberty.model;
 
 import com.liberty.common.PriceHelper;
+import lombok.Data;
 
 import java.util.List;
-
-import lombok.Data;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -13,10 +12,10 @@ import lombok.Data;
 @Data
 public class FullSquad {
 
-  private Long squadId;
-  private PriceHelper.HistoryPoint price;
-  private List<SquadPlayer> players;
-  private String date;
-  private String squadGroup;
-  private String squadName;
+    private Long squadId;
+    private PriceHelper.HistoryPoint price;
+    private List<SquadPlayer> players;
+    private String date;
+    private String squadGroup;
+    private String squadName;
 }

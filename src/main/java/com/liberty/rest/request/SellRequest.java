@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class SellRequest {
 
-  private Long itemId;
-  private Long tradeId;
-  private Long playerId;
-  private Integer startPrice;
-  private Integer buyNow;
+    private Long itemId;
+    private Long tradeId;
+    private Long playerId;
+    private Integer startPrice;
+    private Integer buyNow;
 }

@@ -9,15 +9,15 @@ import lombok.Data;
 @Data
 public class FifaError {
 
-  private String reason;
-  private String message;
-  private Integer code;
-  private String debug;
-  private String string;
+    private String reason;
+    private String message;
+    private Integer code;
+    private String debug;
+    private String string;
 
 
-  public interface ErrorCode {
-    int SESSION_EXPIRED = 401;
-    int SESSION_FAILED = 461;
-  }
+    public interface ErrorCode {
+        int SESSION_EXPIRED = 401;
+        int SESSION_FAILED = 461;
+    }
 }
