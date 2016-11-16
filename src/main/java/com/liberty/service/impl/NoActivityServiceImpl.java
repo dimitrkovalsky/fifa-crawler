@@ -12,9 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -130,5 +128,19 @@ public class NoActivityServiceImpl implements NoActivityService {
         pendingUpdate.addAll(ids);
         this.onPriceUpdated = onComplete;
     }
+
+    @Override
+    public void shouldUpdate(Set<Long> toUpdate) {
+        if (CollectionUtils.isEmpty(pendingUpdate)) {
+            pendingUpdate = new LinkedList<>();
+        }
+        Set<Long> set = new HashSet<>();
+        set.addAll(toUpdate);
+        set.addAll(pendingUpdate);
+
+        pendingUpdate = new LinkedList<>(set);
+        updateInProgress = true;
+    }
+
 
 }

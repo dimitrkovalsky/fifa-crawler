@@ -6,4 +6,6 @@ package com.liberty.service;
  */
 public interface AutoTradingService {
     void updateActivePlayers();
+
+    void checkUpdates();
 }

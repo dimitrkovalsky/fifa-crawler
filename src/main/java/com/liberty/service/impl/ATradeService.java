@@ -9,7 +9,6 @@ import com.liberty.service.TransactionService;
 import com.liberty.websockets.LogController;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -104,9 +103,6 @@ public abstract class ATradeService {
 
     protected void onFailed() {
         logController.error("Previously failed");
-        Toolkit.getDefaultToolkit().beep();
-        Toolkit.getDefaultToolkit().beep();
-        Toolkit.getDefaultToolkit().beep();
     }
 
     protected List<AuctionInfo> foundMinList(TradeStatus tradeStatus) {

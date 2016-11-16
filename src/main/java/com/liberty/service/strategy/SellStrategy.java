@@ -12,4 +12,6 @@ public interface SellStrategy {
     boolean shouldSell(ItemData itemData, PlayerTradeStatus playerTradeStatus);
 
     SellRequest defineBid(ItemData itemData, PlayerTradeStatus tradeStatus);
+
+    boolean isPriceDistributionActual(Long id);
 }

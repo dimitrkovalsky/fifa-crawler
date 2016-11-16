@@ -1,8 +1,10 @@
 package com.liberty.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.liberty.common.PriceStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -47,6 +49,8 @@ public class PlayerTradeStatus {
 
     private Integer sellBuyNowPrice;
 
+    @Getter
+    @JsonIgnore
     private LocalDateTime innerDate;
 
     private String lastUpdate;

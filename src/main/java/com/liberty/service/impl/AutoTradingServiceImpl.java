@@ -1,5 +1,9 @@
 package com.liberty.service.impl;
 
+import com.fifaminer.client.dto.SellBuyNowStrategy;
+import com.fifaminer.client.dto.SettingConfigurationTO;
+import com.fifaminer.client.dto.SettingTO;
+import com.liberty.common.DelayHelper;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.service.AutoTradingService;
 import com.liberty.service.NoActivityService;
@@ -42,7 +46,7 @@ public class AutoTradingServiceImpl implements AutoTradingService {
             return;
         }
         if (priceValid) {
-            List<PlayerTradeStatus> toActivate = miner.getActivePlayers();
+            List<PlayerTradeStatus> toActivate = miner.getPlayersToBuy();
             log.info("Trying to activate " + toActivate.size() + " players");
 
             tradeService.disableAll();
@@ -56,9 +60,23 @@ public class AutoTradingServiceImpl implements AutoTradingService {
 
     }
 
+    public void changeStrategy() {
+        SettingConfigurationTO configuration = new SettingConfigurationTO(SettingTO.MAX_BUY_PRICE_STRATEGY,
+                SellBuyNowStrategy.FORECASTED_MEDIAN);
+        miner.changeStrategy(configuration);
+    }
 
+    @Override
     public void checkUpdates() {
-        List<Long> ids = miner.shouldUpdatePrices();
+        int wait = 0;
+        while (!miner.isAlive()) {
+            DelayHelper.waitStrict(1000);
+            wait++;
+            if (wait >= 300)
+                return;
+        }
+
+        List<Long> ids = miner.getPlayersForUpdate();
         if (!noActivityService.isUpdateInProgress()) {
             noActivityService.shouldUpdate(ids, () -> {
                 priceValid = true;

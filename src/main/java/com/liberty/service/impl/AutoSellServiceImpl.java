@@ -61,6 +61,10 @@ public class AutoSellServiceImpl implements AutoSellService {
             if (shouldSell(itemData, tradeStatus)) {
                 SellRequest sellRequest = getSellRequest(itemData, tradeStatus);
                 tradeService.sell(sellRequest);
+                canSell--;
+            }
+            if (canSell <= 0) {
+                return;
             }
         }
     }
@@ -74,7 +78,8 @@ public class AutoSellServiceImpl implements AutoSellService {
     }
 
     private boolean shouldSell(ItemData itemData, PlayerTradeStatus tradeStatus) {
-        return tradeStatus.isAutoSellEnabled() && sellStrategy.shouldSell(itemData, tradeStatus);
+//        return tradeStatus.isAutoSellEnabled() && sellStrategy.shouldSell(itemData, tradeStatus);
+        return sellStrategy.shouldSell(itemData, tradeStatus);
     }
 
 

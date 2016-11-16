@@ -72,6 +72,7 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
+    @Deprecated
     public void findMinPriceAll() {
         List<PlayerTradeStatus> all = tradeRepository.findAll();
 //    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
@@ -106,6 +107,7 @@ public class PriceServiceImpl implements PriceService {
             all = beforeFilter;
         }
         working = true;
+        all.sort((o1, o2) -> -o1.getInnerDate().compareTo(o2.getInnerDate()));
         Collections.shuffle(all);
 
         final int[] counter = {0};

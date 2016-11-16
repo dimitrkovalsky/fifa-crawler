@@ -1,6 +1,7 @@
 package com.liberty.service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -14,4 +15,6 @@ public interface NoActivityService {
 
 
     boolean isUpdateInProgress();
+
+    void shouldUpdate(Set<Long> toUpdate);
 }

@@ -5,7 +5,6 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.ItemData;
 import com.liberty.rest.request.SellRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-@Primary
+//@Primary
 public class ManualSellStrategy implements SellStrategy {
 
     private static final int LOW_PROFIT_THRESHOLD = 100;
@@ -45,5 +44,10 @@ public class ManualSellStrategy implements SellStrategy {
         request.setStartPrice(tradeStatus.getSellStartPrice());
         request.setBuyNow(tradeStatus.getSellBuyNowPrice());
         return request;
+    }
+
+    @Override
+    public boolean isPriceDistributionActual(Long id) {
+        return true;
     }
 }

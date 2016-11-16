@@ -2,6 +2,7 @@ package com.liberty.service.impl;
 
 import com.liberty.common.AuctionHouseResponse;
 import com.liberty.common.BidState;
+import com.liberty.common.PriceHelper;
 import com.liberty.common.TradeState;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
@@ -10,9 +11,13 @@ import com.liberty.model.market.GroupedToSell;
 import com.liberty.model.market.ItemData;
 import com.liberty.model.market.Watchlist;
 import com.liberty.rest.request.SellRequest;
+import com.liberty.service.NoActivityService;
 import com.liberty.service.PlayerProfileService;
 import com.liberty.service.TradeService;
+import com.liberty.service.adapters.MinerAdapter;
+import com.liberty.service.strategy.SellStrategy;
 import com.liberty.websockets.BuyMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +29,24 @@ import java.util.stream.Collectors;
  * @since 21.06.2016.
  */
 @Component
+@Slf4j
 public abstract class ASellService extends ATradeService implements TradeService {
 
     public static final int TRADEPILE_SIZE = 70;
 
     @Autowired
     protected PlayerProfileService playerProfileService;
+
+    @Autowired
+    private MinerAdapter miner;
+
+    @Autowired
+    private SellStrategy sellStrategy;
+
+    @Autowired
+    protected NoActivityService noActivityService;
+
+    private boolean enabledMiner = false;
 
     @Override
     public int getTradePileSize() {
@@ -45,11 +62,44 @@ public abstract class ASellService extends ATradeService implements TradeService
 //      sellAll(byState.get(TradeState.INACTIVE));
 //    }
         if (byState.containsKey(TradeState.EXPIRED)) {
-            logRelistItems(byState.get(TradeState.EXPIRED));
-            requestService.relistAll();
+            relist(byState.get(TradeState.EXPIRED));
+
         }
         return tradePile.size();
     }
+
+    private void relist(List<AuctionInfo> auctionInfos) {
+        if (enabledMiner && miner.isAlive()) {
+            minerRelist(auctionInfos);
+        }
+        requestService.relistAll();
+        logRelistItems(auctionInfos);
+    }
+
+    private void minerRelist(List<AuctionInfo> auctionInfos) {
+        int count = 0;
+        Set<Long> toUpdate = new HashSet<>();
+        for (AuctionInfo auctionInfo : auctionInfos) {
+            ItemData itemData = auctionInfo.getItemData();
+            PlayerTradeStatus status = tradeRepository.findOne(itemData.getAssetId());
+            if (!sellStrategy.isPriceDistributionActual(status.getId())) {
+                toUpdate.add(status.getId());
+            } else if (sellStrategy.shouldSell(itemData, status)) {
+                SellRequest request = sellStrategy.defineBid(itemData, status);
+                int from = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getStartPrice());
+                int to = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getBuyNow());
+                logController.info("Trying to relist item " + status.getName() + " . Profit from " + from + " to " + to);
+                sell(request);
+                count++;
+            } else {
+                log.info("[Miner] decided do not sell player: " + itemData.getName());
+            }
+        }
+        if(!toUpdate.isEmpty())
+            noActivityService.shouldUpdate(toUpdate);
+        log.info("Miner relisted " + count + " / " + auctionInfos.size() + " players...");
+    }
+
 
     private void logRelistItems(List<AuctionInfo> auctionInfos) {
         auctionInfos.forEach(a -> {

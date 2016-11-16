@@ -4,8 +4,10 @@ import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.ItemData;
 import com.liberty.rest.request.SellRequest;
 import com.liberty.service.adapters.MinerAdapter;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @since 14.11.2016.
  */
 @Component
-//@Primary
+@Primary
 public class AutomaticSellStrategy implements SellStrategy {
 
     @Autowired
@@ -21,6 +23,7 @@ public class AutomaticSellStrategy implements SellStrategy {
 
     @Override
     public boolean shouldSell(ItemData itemData, PlayerTradeStatus playerTradeStatus) {
+        if (!minerAdapter.isAlive()) return false;
         return minerAdapter.shouldSellPlayer(itemData.getId(), itemData.getLastSalePrice());
     }
 
@@ -36,7 +39,13 @@ public class AutomaticSellStrategy implements SellStrategy {
         return request;
     }
 
+    @Override
+    public boolean isPriceDistributionActual(Long id) {
+        return minerAdapter.isPriceDistributionActual(id);
+    }
+
     @Data
+    @AllArgsConstructor
     public static class MinerBid {
         private int sellStartPrice;
         private int sellBuyNowPrice;

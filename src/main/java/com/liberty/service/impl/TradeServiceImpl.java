@@ -93,20 +93,12 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     @Override
     public boolean isActive() {
-        return autoBuyEnabled && !failed;
+        return autoBuyEnabled;
     }
 
     @Override
     public void checkMarket() {
-        if (!autoBuyEnabled || failed) {
-            logController.info("Auto Buy Disabled...");
-            return;
-        }
-        if (purchases >= maxPurchaseAmount) {
-            logController.info(
-                    "MAX purchase amount is : " + maxPurchaseAmount + " currently bought " + purchases);
-            return;
-        }
+        if (isStopped()) return;
         List<PlayerTradeStatus> players = tradeRepository.findAll().stream()
                 .filter(filterPlayersToAutoBuy())
                 .collect(Collectors.toList());
@@ -123,14 +115,14 @@ public class TradeServiceImpl extends ASellService implements TradeService,
                 return;
             }
             boolean success = checkMarket(p);
-            if (!success) {
-                failed = false;
-                break;
-            }
+//            if (!success) {
+//                failed = false;
+//                break;
+//            }
             logController.info("Total purchases : " + purchases);
             if (purchases >= maxPurchaseAmount) {
                 logController.info("Limit of purchases : " + purchases);
-                failed = true;
+                //    failed = true;
                 onFailed();
                 return;
             }
@@ -138,11 +130,24 @@ public class TradeServiceImpl extends ASellService implements TradeService,
         }
     }
 
+    private boolean isStopped() {
+        if (!autoBuyEnabled) {
+            logController.info("Auto Buy Disabled...");
+            return true;
+        }
+        if (purchases >= maxPurchaseAmount) {
+            logController.info(
+                    "MAX purchase amount is : " + maxPurchaseAmount + " currently bought " + purchases);
+            return true;
+        }
+        return false;
+    }
+
     private Predicate<PlayerTradeStatus> filterPlayersToAutoBuy() {
         return p -> {
-            if (!activeTags.isEmpty()) {
-                return p.isEnabled() && !CollectionUtils.intersection(p.getTags(), activeTags).isEmpty();
-            }
+//            if (!activeTags.isEmpty()) {
+//                return p.isEnabled() && !CollectionUtils.intersection(p.getTags(), activeTags).isEmpty();
+//            }
             return p.isEnabled();
         };
     }
