@@ -47,6 +47,10 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
 
     public Integer getFirsBound(long playerId) {
         PlayerStatistic statistic = statisticRepository.findOne(playerId);
+        if (statistic == null)
+            statistic = new PlayerStatistic();
+        statistic.setId(playerId);
+        statisticRepository.save(statistic);
         if (statistic.getPrices().isEmpty()) {
             return getDefaultPrice(statistic);
         }
