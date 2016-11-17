@@ -36,7 +36,7 @@ public class NoActivityTask {
     @Autowired
     private PriceService priceService;
 
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     @Autowired
     private LogController logController;

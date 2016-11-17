@@ -50,6 +50,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     @Autowired
     private ConfigService configService;
+    private boolean working = false;
 
     private void init() {
         activeTags = configService.getMarketConfig().getActiveTags();
@@ -93,12 +94,13 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     @Override
     public boolean isActive() {
-        return autoBuyEnabled;
+        return working;
     }
 
     @Override
     public void checkMarket() {
         if (isStopped()) return;
+        working = true;
         List<PlayerTradeStatus> players = tradeRepository.findAll().stream()
                 .filter(filterPlayersToAutoBuy())
                 .collect(Collectors.toList());
@@ -106,12 +108,14 @@ public class TradeServiceImpl extends ASellService implements TradeService,
         logController.info("Monitor : " + players.size() + " players" + ". Rate => " + requestService.getRequestRate());
         if (isEmpty(players)) {
             logController.info("Nothing to buy. Player trade is empty");
+            working = false;
             return;
         }
         for (PlayerTradeStatus p : players) {
             logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice() + ". Rate => " +
                     requestService.getRequestRate());
             if (!autoBuyEnabled) {
+                working = false;
                 return;
             }
             boolean success = checkMarket(p);
@@ -124,10 +128,12 @@ public class TradeServiceImpl extends ASellService implements TradeService,
                 logController.info("Limit of purchases : " + purchases);
                 //    failed = true;
                 onFailed();
+                working = false;
                 return;
             }
             sleep();
         }
+        working = false;
     }
 
     private boolean isStopped() {

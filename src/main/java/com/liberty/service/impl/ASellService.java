@@ -1,9 +1,6 @@
 package com.liberty.service.impl;
 
-import com.liberty.common.AuctionHouseResponse;
-import com.liberty.common.BidState;
-import com.liberty.common.PriceHelper;
-import com.liberty.common.TradeState;
+import com.liberty.common.*;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.AuctionInfo;
@@ -90,12 +87,13 @@ public abstract class ASellService extends ATradeService implements TradeService
                 int to = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getBuyNow());
                 logController.info("Trying to relist item " + status.getName() + " . Profit from " + from + " to " + to);
                 sell(request);
+                DelayHelper.wait(1000, 200);
                 count++;
             } else {
                 log.info("[Miner] decided do not sell player: " + itemData.getName());
             }
         }
-        if(!toUpdate.isEmpty())
+        if (!toUpdate.isEmpty())
             noActivityService.shouldUpdate(toUpdate);
         log.info("Miner relisted " + count + " / " + auctionInfos.size() + " players...");
     }

@@ -4,7 +4,6 @@ import com.liberty.service.AutoSellService;
 import com.liberty.websockets.LogController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +20,7 @@ public class AutoSellTask {
     @Autowired
     private LogController logController;
 
-    @Scheduled(fixedRate = 200_000, initialDelay = 200_000)
+   // @Scheduled(fixedRate = 200_000, initialDelay = 200_000)
     public void check() {
         log.info("Trying to sell unassigned players");
         autoSellService.trySell();
