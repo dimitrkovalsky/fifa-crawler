@@ -4,7 +4,6 @@ import com.liberty.service.TradeService;
 import com.liberty.websockets.LogController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +20,7 @@ public class MarketTask {
     @Autowired
     private LogController logController;
 
-    @Scheduled(fixedRate = 200_000)
+   // @Scheduled(fixedRate = 200_000)
     public void monitor() {
         // fillDatabase();
         logController.info("Trying to check market");

@@ -6,6 +6,7 @@ import com.fifaminer.client.dto.OrderingTypeTO;
 import com.fifaminer.client.dto.PlayerPriceTO;
 import com.fifaminer.client.dto.SettingConfigurationTO;
 import com.fifaminer.client.impl.FifaMinerClientBuilder;
+import com.liberty.common.BoundHelper;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -82,8 +83,9 @@ public class MinerAdapter {
     }
 
     public AutomaticSellStrategy.MinerBid defineBid(Long playerId, Integer lastSalePrice) {
-        Integer sellBuyNowPrice = client.getSellBuyNowPrice(playerId);
+//        Integer sellBuyNowPrice = client.getSellBuyNowPrice(playerId);
         Integer sellStartPrice = client.getSellStartPrice(playerId);
+        Integer sellBuyNowPrice = BoundHelper.defineNextBid(client.getSellBuyNowPrice(playerId));
         return new AutomaticSellStrategy.MinerBid(sellStartPrice, sellBuyNowPrice);
     }
 

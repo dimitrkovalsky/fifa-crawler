@@ -43,7 +43,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     @Autowired
     protected NoActivityService noActivityService;
 
-    private boolean enabledMiner = true;
+    private boolean enabledMiner = false;
 
     @Override
     public int getTradePileSize() {
