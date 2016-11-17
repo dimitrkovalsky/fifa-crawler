@@ -59,4 +59,8 @@ public interface RequestService {
     void updateTokens(String sessionId, String phishingToken, List<TokenUpdateRequest.Cookie> cookies);
 
     int getRequestRate();
+
+    String getRateString();
+
+    long getRequestRatePerDay();
 }

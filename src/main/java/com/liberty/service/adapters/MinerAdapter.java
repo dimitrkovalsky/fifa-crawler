@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class MinerAdapter {
     public static final int MINER_PORT = 3333;
     public static final int MIN_REWARD = 100;
+    public static final int PLAYERS_FOR_AUTO_BUY = 25;
     private FifaMinerClient client;
 
     @Autowired
@@ -40,18 +41,23 @@ public class MinerAdapter {
     }
 
     public boolean isAlive() {
-        return client.isHealthy();
+//        return client.isHealthy();
+        return true;
     }
 
     public List<Long> getPlayersForUpdate() {
-        return client.findPlayersByTransactionsAnalyse(Duration.TODAY, OrderingTypeTO.MIN_RELISTS, 10);
+        return client.findPlayersByTransactionsAnalyse(Duration.LAST_2_DAYS, OrderingTypeTO.MIN_RELISTS, PLAYERS_FOR_AUTO_BUY)
+                .stream()
+                .filter(id -> !client.isPriceDistributionActual(id))
+                .collect(Collectors.toList());
     }
 
     public List<PlayerTradeStatus> getPlayersToBuy() {
         long now = System.currentTimeMillis();
         long yesterday = now - 1000 * 60 * 60 * 24;
 
-        List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.TODAY, OrderingTypeTO.MIN_RELISTS, 10);
+        List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.TODAY, OrderingTypeTO.MIN_RELISTS,
+                PLAYERS_FOR_AUTO_BUY);
 
         return ids.stream().map(id -> {
             PlayerPriceTO toBuy = client.getPricesSummary(id);
@@ -72,12 +78,12 @@ public class MinerAdapter {
     }
 
     public boolean isPriceDistributionActual(Long playerId) {
-        return false;
+        return client.isPriceDistributionActual(playerId);
     }
 
-    public AutomaticSellStrategy.MinerBid defineBid(Long id, Integer lastSalePrice) {
-        Integer sellBuyNowPrice = client.getSellBuyNowPrice(id);
-        Integer sellStartPrice = client.getSellStartPrice(id);
+    public AutomaticSellStrategy.MinerBid defineBid(Long playerId, Integer lastSalePrice) {
+        Integer sellBuyNowPrice = client.getSellBuyNowPrice(playerId);
+        Integer sellStartPrice = client.getSellStartPrice(playerId);
         return new AutomaticSellStrategy.MinerBid(sellStartPrice, sellBuyNowPrice);
     }
 

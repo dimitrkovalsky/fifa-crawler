@@ -81,7 +81,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
             logController.error("Can not find player for " + id);
             return;
         }
-
+        status.setEnabled(true);
         status.setMaxPrice(maxPrice);
         status.addTag(tag);
         tradeRepository.save(status);
@@ -105,15 +105,15 @@ public class TradeServiceImpl extends ASellService implements TradeService,
                 .filter(filterPlayersToAutoBuy())
                 .collect(Collectors.toList());
         Collections.shuffle(players, new Random(System.currentTimeMillis()));
-        logController.info("Monitor : " + players.size() + " players" + ". Rate => " + requestService.getRequestRate());
+        logController.info("Monitor : " + players.size() + " players" + ". " + requestService.getRateString());
         if (isEmpty(players)) {
             logController.info("Nothing to buy. Player trade is empty");
             working = false;
             return;
         }
         for (PlayerTradeStatus p : players) {
-            logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice() + ". Rate => " +
-                    requestService.getRequestRate());
+            logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice() + ". " +
+                    requestService.getRateString());
             if (!autoBuyEnabled) {
                 working = false;
                 return;
@@ -202,7 +202,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
         }
         boolean success = requestService.buy(list.get(0));
         if (success) {
-            logController.info("Success bought player for " + playerName + ". Rate => " + requestService.getRequestRate());
+            logController.info("Success bought player for " + playerName + ". " + requestService.getRateString());
         } else {
             logController.error("Can not buy player for " + playerName);
         }

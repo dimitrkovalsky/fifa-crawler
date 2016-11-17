@@ -32,13 +32,13 @@ public class LogController {
 
 
     public void info(String toLog) {
-        log.info(toLog + ". Rate => " + requestService.getRequestRate());
+        log.info(toLog + ". " + requestService.getRateString());
         send(new LogMessage(toLog, LogLevel.INFO));
     }
 
 
     public void error(String toLog) {
-        log.error(toLog, ". Rate => " + requestService.getRequestRate());
+        log.error(toLog, ". " + requestService.getRateString());
         send(new LogMessage(toLog, LogLevel.ERROR));
     }
 

@@ -43,7 +43,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     @Autowired
     protected NoActivityService noActivityService;
 
-    private boolean enabledMiner = false;
+    private boolean enabledMiner = true;
 
     @Override
     public int getTradePileSize() {
@@ -90,7 +90,8 @@ public abstract class ASellService extends ATradeService implements TradeService
                 DelayHelper.wait(1000, 200);
                 count++;
             } else {
-                log.info("[Miner] decided do not sell player: " + itemData.getName());
+                log.info("[Miner] decided do not sell player: " +
+                        playerProfileService.findOne(auctionInfo.getItemData().getAssetId()).getName());
             }
         }
         if (!toUpdate.isEmpty())

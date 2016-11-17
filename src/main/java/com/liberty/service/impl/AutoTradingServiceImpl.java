@@ -38,6 +38,7 @@ public class AutoTradingServiceImpl implements AutoTradingService {
     private NoActivityService noActivityService;
 
     private boolean priceValid = false;
+    private boolean updateRequested = false;
 
     @Override
     public void updateActivePlayers() {
@@ -55,6 +56,8 @@ public class AutoTradingServiceImpl implements AutoTradingService {
                 log.info("Activated " + tradeStatus.getName() + " for buy now " + tradeStatus.getMaxPrice());
             }
         } else {
+            if (!updateRequested)
+                checkUpdates();
             log.info("Can not perform active players update. Prices is too old.");
         }
 
@@ -80,7 +83,10 @@ public class AutoTradingServiceImpl implements AutoTradingService {
         if (!noActivityService.isUpdateInProgress()) {
             noActivityService.shouldUpdate(ids, () -> {
                 priceValid = true;
+                updateRequested = false;
             });
+            updateRequested = true;
+            log.info("[AutoTradingService] Placed to price update " + ids.size() + " players");
         }
     }
 

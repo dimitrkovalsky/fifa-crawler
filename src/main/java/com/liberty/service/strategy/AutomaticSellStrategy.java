@@ -24,12 +24,12 @@ public class AutomaticSellStrategy implements SellStrategy {
     @Override
     public boolean shouldSell(ItemData itemData, PlayerTradeStatus playerTradeStatus) {
         if (!minerAdapter.isAlive()) return false;
-        return minerAdapter.shouldSellPlayer(itemData.getId(), itemData.getLastSalePrice());
+        return minerAdapter.shouldSellPlayer(itemData.getAssetId(), itemData.getLastSalePrice());
     }
 
     @Override
     public SellRequest defineBid(ItemData itemData, PlayerTradeStatus tradeStatus) {
-        MinerBid minerBid = minerAdapter.defineBid(itemData.getId(), itemData.getLastSalePrice());
+        MinerBid minerBid = minerAdapter.defineBid(itemData.getAssetId(), itemData.getLastSalePrice());
         SellRequest request = new SellRequest();
         request.setPlayerId(tradeStatus.getId());
         request.setItemId(itemData.getId());

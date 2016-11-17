@@ -26,6 +26,7 @@ public class NoActivityServiceImpl implements NoActivityService {
     public static final String[] tags = {"custom", "medium", "cheap"};
     private int currentTagIndex = 0;
     public static final int TO_UPDATE_PLAYERS_AMOUNT = 5;
+    public static final int TO_UPDATE_PENDING_QUEUE = 15;
     public static final int REQUEST_PER_MINUTE = 30;
     private int currentSkip = 0;
     private boolean completed = false;
@@ -76,7 +77,7 @@ public class NoActivityServiceImpl implements NoActivityService {
             DelayHelper.wait(2000, 100);
         }
         log.info("[NoActivityServiceImpl] Successfully updated players from [ " + tag + "] skip : " + currentSkip
-                + ". Rate => " + requestService.getRequestRate());
+                + ". " + requestService.getRateString());
 
     }
 
@@ -104,17 +105,24 @@ public class NoActivityServiceImpl implements NoActivityService {
         log.info("Trying to update from pending queue : " + pendingUpdate.size());
         Long playerId = pendingUpdate.poll();
         int iteration = 0;
-        while (playerId != null && iteration < TO_UPDATE_PLAYERS_AMOUNT) {
+        while (playerId != null && iteration < TO_UPDATE_PENDING_QUEUE) {
             priceService.findMinPrice(playerId);
             iteration++;
+            DelayHelper.wait(2000, 100);
+            if (iteration % 5 == 0) {
+                DelayHelper.wait(10000, 200);
+            }
+
             if (requestService.getRequestRate() >= REQUEST_PER_MINUTE) {
                 break;
             }
-            DelayHelper.wait(2000, 100);
+            if (iteration < TO_UPDATE_PENDING_QUEUE) {
+                playerId = pendingUpdate.poll();
+            }
         }
 
-        log.info("[NoActivityServiceImpl] Successfully updated " + iteration + " players from pendingQueue .Rate = > "
-                + requestService.getRequestRate());
+        log.info("[NoActivityServiceImpl] Successfully updated " + iteration + " players from pendingQueue. "
+                + requestService.getRateString() + " queue size : " + pendingUpdate.size());
         if (pendingUpdate.isEmpty()) {
             updateInProgress = false;
             onPriceUpdated.run();

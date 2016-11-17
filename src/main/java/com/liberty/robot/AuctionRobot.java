@@ -44,7 +44,7 @@ public class AuctionRobot {
     private static final int WIN_ITEMS_LIMIT = 20;
     private static final int MAX_EXPIRATION_TIME = 300;
     private int wonItems;
-    private boolean disabled = false;
+    private boolean disabled = true;
 
     @Autowired
     private TradeService tradeService;

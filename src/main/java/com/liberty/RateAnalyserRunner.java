@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmytro_Kovalskyi.
@@ -21,12 +23,17 @@ public class RateAnalyserRunner {
     public static void main(String[] args) throws IOException {
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         RequestRateRepository repository = context.getBean(RequestRateRepository.class);
-        LocalDateTime failTime = LocalDateTime.of(2016, 11, 17, 1, 38, 8, 538);
-        LocalDateTime from = failTime.minus(24, ChronoUnit.HOURS);
 
-        List<RequestRate> rates = repository.findAllByTimestampBetween(toMillis(from), toMillis(failTime));
-        long rate = getOverallRate(rates);
-        System.out.println("RATE => " + rate);
+        Map<Integer, Long> map = new HashMap<>();
+        for (int i = 1; i <= 24; i++) {
+            LocalDateTime failTime = LocalDateTime.of(2016, 11, 17, 1, 38, 8, 538);
+            LocalDateTime from = failTime.minus(i, ChronoUnit.HOURS);
+
+            List<RequestRate> rates = repository.findAllByTimestampBetween(toMillis(from), toMillis(failTime));
+            long rate = getOverallRate(rates);
+            map.put(i, rate);
+        }
+        map.forEach((k, v) -> System.out.println(k + " : " + v));
         System.exit(0);
     }
 

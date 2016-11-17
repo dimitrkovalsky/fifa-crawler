@@ -19,6 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +39,8 @@ public class RequestServiceImpl implements RequestService {
 
     private volatile FifaCrawlerState currentState = TOKEN_NULL;
 
+    private static long REQUEST_PER_DAY_LIMIT = 9500;
+
     @Autowired
     private LogController logController;
 
@@ -43,6 +48,8 @@ public class RequestServiceImpl implements RequestService {
     private RequestRateRepository requestRateRepository;
 
     private FifaRequests fifaRequests = new FifaRequests(this::onError, this::onStatusChange);
+
+    private long ratePerDay = 0;
 
     private void onError(String msg) {
         logController.error(msg);
@@ -68,6 +75,7 @@ public class RequestServiceImpl implements RequestService {
         requestRate.setRequestPerMinute(rate);
         requestRate.setTimestamp(System.currentTimeMillis());
         requestRateRepository.save(requestRate);
+        ratePerDay = computeRequestPerDay();
     }
 
     @Scheduled(fixedDelay = 2_000, initialDelay = 2_000)
@@ -83,6 +91,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private <T> T execute(Supplier<T> function) {
+        if (rateLimitExceeded())
+            return null;
         waitReady();
         currentState = WORKING;
         T result = function.get();
@@ -92,6 +102,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private void execute(Runnable function) {
+        if (rateLimitExceeded())
+            return;
         waitReady();
         currentState = WORKING;
         function.run();
@@ -108,6 +120,14 @@ public class RequestServiceImpl implements RequestService {
                 System.err.println("FAILED thread : " + Thread.currentThread().getName());
             }
         }
+    }
+
+    private boolean rateLimitExceeded() {
+//        if (ratePerDay >= REQUEST_PER_DAY_LIMIT) {
+//            logController.error("RATE LIMIT EXCEEDED ==> " + requestCount);
+//            return true;
+//        }
+        return false;
     }
 
     @Override
@@ -191,7 +211,22 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public void removeFromTargets(Long tradeId) {
         execute(() -> fifaRequests.removeFromTargets(tradeId));
+    }
 
+    private long computeRequestPerDay() {
+        LocalDateTime failTime = LocalDateTime.now();
+        LocalDateTime from = failTime.minus(24, ChronoUnit.HOURS);
+
+        List<RequestRate> rates = requestRateRepository.findAllByTimestampBetween(toMillis(from), toMillis(failTime));
+        return getOverallRate(rates);
+    }
+
+    private long getOverallRate(List<RequestRate> rates) {
+        return rates.stream().mapToInt(RequestRate::getRequestPerMinute).sum();
+    }
+
+    private long toMillis(LocalDateTime from) {
+        return from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     @Override
@@ -245,6 +280,16 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public int getRequestRate() {
         return rate;
+    }
+
+    @Override
+    public String getRateString() {
+        return "Rate : " + getRequestRate() + ". Day : " + ratePerDay;
+    }
+
+    @Override
+    public long getRequestRatePerDay() {
+        return ratePerDay;
     }
 
 }
