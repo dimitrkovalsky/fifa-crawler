@@ -6,7 +6,6 @@ import com.fifaminer.client.dto.OrderingTypeTO;
 import com.fifaminer.client.dto.PlayerPriceTO;
 import com.fifaminer.client.dto.SettingConfigurationTO;
 import com.fifaminer.client.impl.FifaMinerClientBuilder;
-import com.liberty.common.BoundHelper;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -42,8 +41,8 @@ public class MinerAdapter {
     }
 
     public boolean isAlive() {
-//        return client.isHealthy();
         return true;
+//        return client.isHealthy();
     }
 
     public List<Long> getPlayersForUpdate() {
@@ -54,10 +53,7 @@ public class MinerAdapter {
     }
 
     public List<PlayerTradeStatus> getPlayersToBuy() {
-        long now = System.currentTimeMillis();
-        long yesterday = now - 1000 * 60 * 60 * 24;
-
-        List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.TODAY, OrderingTypeTO.MIN_RELISTS,
+        List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.LAST_7_DAYS, OrderingTypeTO.MAX_SELLS,
                 PLAYERS_FOR_AUTO_BUY);
 
         return ids.stream().map(id -> {
@@ -83,9 +79,9 @@ public class MinerAdapter {
     }
 
     public AutomaticSellStrategy.MinerBid defineBid(Long playerId, Integer lastSalePrice) {
-//        Integer sellBuyNowPrice = client.getSellBuyNowPrice(playerId);
+        Integer sellBuyNowPrice = client.getSellBuyNowPrice(playerId);
         Integer sellStartPrice = client.getSellStartPrice(playerId);
-        Integer sellBuyNowPrice = BoundHelper.defineNextBid(client.getSellBuyNowPrice(playerId));
+//        Integer sellBuyNowPrice = BoundHelper.defineNextBid(client.getSellBuyNowPrice(playerId));
         return new AutomaticSellStrategy.MinerBid(sellStartPrice, sellBuyNowPrice);
     }
 

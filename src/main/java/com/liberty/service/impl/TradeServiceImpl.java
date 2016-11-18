@@ -99,7 +99,8 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     @Override
     public void checkMarket() {
-        if (isStopped()) return;
+        if (isStopped())
+            return;
         working = true;
         List<PlayerTradeStatus> players = tradeRepository.findAll().stream()
                 .filter(filterPlayersToAutoBuy())
