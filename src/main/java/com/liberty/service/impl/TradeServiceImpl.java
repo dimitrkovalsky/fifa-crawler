@@ -1,5 +1,6 @@
 package com.liberty.service.impl;
 
+import com.liberty.listeners.ParameterUpdateListener;
 import com.liberty.model.*;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
@@ -8,10 +9,12 @@ import com.liberty.repositories.PlayerStatisticRepository;
 import com.liberty.rest.request.AutobidRequest;
 import com.liberty.rest.request.AutobuyRequest;
 import com.liberty.rest.request.BuyRequest;
+import com.liberty.rest.request.ParameterUpdateRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.ConfigService;
 import com.liberty.service.StatisticService;
 import com.liberty.service.TradeService;
+import com.liberty.service.UserParameterService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -29,12 +32,12 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
  */
 @Service
 public class TradeServiceImpl extends ASellService implements TradeService,
-        ApplicationListener<ContextRefreshedEvent> {
+        ApplicationListener<ContextRefreshedEvent>, ParameterUpdateListener {
 
     public static final int STATISTIC_PLAYER_COLLECTION_AMOUNT = 15;
     public static final int ITERATION_LIMIT = 30;
 
-    private boolean autoBuyEnabled = true;
+    private boolean autoBuyEnabled;
 
     // TODO: add rest to change active tag
     private Set<String> activeTags = new HashSet<>();
@@ -50,10 +53,18 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     @Autowired
     private ConfigService configService;
+
+    @Autowired
+    private UserParameterService parameterService;
+
     private boolean working = false;
 
     private void init() {
         activeTags = configService.getMarketConfig().getActiveTags();
+        UserParameters userParameters = parameterService.getUserParameters();
+        autoBuyEnabled = userParameters.isAutoBuyEnabled();
+        autoSellRelistMinerEnabled = userParameters.isAutoSellRelistMinerEnabled();
+        parameterService.subscribe(this);
     }
 
     @Override
@@ -99,6 +110,8 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     @Override
     public void checkMarket() {
+        if (working)
+            return;
         if (isStopped())
             return;
         working = true;
@@ -119,15 +132,13 @@ public class TradeServiceImpl extends ASellService implements TradeService,
                 working = false;
                 return;
             }
+            PlayerProfile profile = profileRepository.findOne(p.getId());
+            if (p.getMaxPrice() < profile.getPriceLimits().getPc().getMinPrice())
+                continue;
             boolean success = checkMarket(p);
-//            if (!success) {
-//                failed = false;
-//                break;
-//            }
             logController.info("Total purchases : " + purchases);
             if (purchases >= maxPurchaseAmount) {
                 logController.info("Limit of purchases : " + purchases);
-                //    failed = true;
                 onFailed();
                 working = false;
                 return;
@@ -162,6 +173,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
     private boolean checkMarket(PlayerTradeStatus playerTradeStatus) {
         try {
             sleep();
+
             Optional<TradeStatus> maybe = requestService.searchPlayer(playerTradeStatus.getId(),
                     playerTradeStatus.getMaxPrice(), 0);
             if (!maybe.isPresent()) {
@@ -234,6 +246,9 @@ public class TradeServiceImpl extends ASellService implements TradeService,
             return;
         }
         this.autoBuyEnabled = request.getEnabled();
+        UserParameters userParameters = parameterService.getUserParameters();
+        userParameters.setAutoBuyEnabled(autoBuyEnabled);
+        parameterService.saveParameters(userParameters);
         if (autoBuyEnabled) {
             purchases = 0;
             failed = false;
@@ -393,5 +408,14 @@ public class TradeServiceImpl extends ASellService implements TradeService,
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         init();
+    }
+
+    @Override
+    public void onParameterUpdate(ParameterUpdateRequest request) {
+        if (request.getAutoBuyEnabled() != null)
+            autoBuyEnabled = request.getAutoBuyEnabled();
+
+        if (request.getAutoSellRelistMinerEnabled() != null)
+            autoSellRelistMinerEnabled = request.getAutoSellRelistMinerEnabled();
     }
 }

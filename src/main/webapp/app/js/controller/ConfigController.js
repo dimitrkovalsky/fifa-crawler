@@ -1,5 +1,5 @@
-fifaApp.controller('ConfigController', function ($rootScope, $scope, ConfigResource, ActivateTag,
-    DeactivateTag, PriceUpdate) {
+fifaApp.controller('ConfigController', function ($rootScope, $scope, ConfigResource, ActivateTag, Parameters,
+                                                 DeactivateTag, PriceUpdate) {
     $scope.tagDistribution = {};
     $scope.activeTags = [];
 
@@ -8,27 +8,39 @@ fifaApp.controller('ConfigController', function ($rootScope, $scope, ConfigResou
         $scope.activeTags = result.activeTags;
     };
 
-    $scope.isActiveTag = function(tag) {
-       return $scope.activeTags.indexOf(tag) >= 0
+    $scope.isActiveTag = function (tag) {
+        return $scope.activeTags.indexOf(tag) >= 0
     };
 
-    $scope.enableTag = function(tag) {
-        ActivateTag.save({string: tag}, $scope.loadTags, $rootScope.onError);
+    $scope.enableTag = function (tag) {
+        ActivateTag.save({string: tag}, $scope.loadParams, $rootScope.onError);
     };
 
-    $scope.disableTag = function(tag) {
-        DeactivateTag.save({string: tag}, $scope.loadTags, $rootScope.onError);
+    $scope.disableTag = function (tag) {
+        DeactivateTag.save({string: tag}, $scope.loadParams, $rootScope.onError);
     };
 
-    $scope.loadTags = function() {
+    $scope.onParamsLoaded = function (result) {
+        $scope.params = result;
+    };
+
+    $scope.saveParams = function () {
+        Parameters.save($scope.params, function () {
+            Parameters.get({}, $scope.onParamsLoaded, $rootScope.onError);
+        }, $rootScope.onError);
+    };
+
+    $scope.loadParams = function () {
         ConfigResource.get({}, $scope.onLoaded, $rootScope.onError);
+        Parameters.get({}, $scope.onParamsLoaded, $rootScope.onError);
         $rootScope.updateStats();
     };
 
-    $scope.updatePrices = function() {
-        PriceUpdate.save({}, function(){}, $rootScope.onError);
+    $scope.updatePrices = function () {
+        PriceUpdate.save({}, function () {
+        }, $rootScope.onError);
     };
 
-    $scope.loadTags();
+    $scope.loadParams();
 
 });

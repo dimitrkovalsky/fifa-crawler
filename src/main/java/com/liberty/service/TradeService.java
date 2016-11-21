@@ -53,6 +53,8 @@ public interface TradeService {
 
     void sell(SellRequest request);
 
+    void sellAuto(SellRequest request);
+
     BuyMessage getTradepileInfo();
 
     Watchlist getWatchlist();

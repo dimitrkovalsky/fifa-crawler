@@ -1,5 +1,5 @@
 var fifaApp = angular.module('fifaApp', ['ngResource', 'ui.router', 'ui.bootstrap',
-    'fifa-directives', 'ngTable']);
+    'fifa-directives', 'ngTable', 'ui.toggle']);
 
 fifaApp.factory('Monitoring', function ($resource) {
     return $resource('/api/monitoring/:id');
@@ -118,6 +118,10 @@ fifaApp.factory('DeactivateTag', function ($resource) {
 
 fifaApp.factory('PriceUpdate', function ($resource) {
     return $resource('/api/config/update');
+});
+
+fifaApp.factory('Parameters', function ($resource) {
+    return $resource('/api/config/parameters');
 });
 
 

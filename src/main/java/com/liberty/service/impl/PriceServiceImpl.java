@@ -74,6 +74,8 @@ public class PriceServiceImpl implements PriceService {
     @Override
     @Deprecated
     public void findMinPriceAll() {
+        if (working)
+            return;
         List<PlayerTradeStatus> all = tradeRepository.findAll();
 //    Collections.sort(all, Comparator.comparingLong(PlayerTradeStatus::getMaxPrice));
         // Could be null max price
@@ -99,6 +101,8 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public void updatePriceDistribution(boolean enabled) {
+        if (working)
+            return;
         List<PlayerTradeStatus> beforeFilter = tradeRepository.findAll();
         List<PlayerTradeStatus> all;
         if (enabled) {

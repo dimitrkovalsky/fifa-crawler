@@ -1,21 +1,26 @@
 package com.liberty.robot;
 
 import com.liberty.common.*;
+import com.liberty.listeners.ParameterUpdateListener;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.TradeInfo;
+import com.liberty.model.UserParameters;
 import com.liberty.model.market.AuctionInfo;
 import com.liberty.model.market.TradeStatus;
 import com.liberty.model.market.Watchlist;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
 import com.liberty.rest.request.MarketSearchRequest;
+import com.liberty.rest.request.ParameterUpdateRequest;
 import com.liberty.rest.response.BidStatus;
 import com.liberty.service.SearchService;
 import com.liberty.service.TradeService;
 import com.liberty.service.TransactionService;
+import com.liberty.service.UserParameterService;
 import com.liberty.websockets.LogController;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -36,7 +41,7 @@ import static com.liberty.common.DateHelper.getDurationString;
  */
 @Component
 @Slf4j
-public class AuctionRobot {
+public class AuctionRobot implements InitializingBean, ParameterUpdateListener {
 
     private static final int PAGES_TO_SEARCH = 50;
 
@@ -45,6 +50,9 @@ public class AuctionRobot {
     private static final int MAX_EXPIRATION_TIME = 300;
     private int wonItems;
     private boolean disabled = true;
+
+    @Autowired
+    private UserParameterService parameterService;
 
     @Autowired
     private TradeService tradeService;
@@ -288,10 +296,24 @@ public class AuctionRobot {
         return disabled;
     }
 
-
     public void setEnabled(Boolean enabled) {
-        if (enabled != null) {
-            disabled = !enabled;
-        }
+        if (enabled == null)
+            return;
+        UserParameters userParameters = parameterService.getUserParameters();
+        userParameters.setRobotEnabled(enabled);
+        parameterService.saveParameters(userParameters);
+        disabled = !enabled;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        disabled = !parameterService.getUserParameters().isRobotEnabled();
+        parameterService.subscribe(this);
+    }
+
+    @Override
+    public void onParameterUpdate(ParameterUpdateRequest request) {
+        if (request.getRobotEnabled() != null)
+            disabled = !request.getRobotEnabled();
     }
 }
