@@ -21,4 +21,14 @@ public class UserParameters {
     private boolean autoSellRelistMinerEnabled;
     private boolean autoTradeEnabled;
     private boolean autoTradeOnlyActivePlayer;
+
+    public void disableAll() {
+        robotEnabled = false;
+        autoBuyEnabled = false;
+        autoSellEnabled = false;
+        noActivityEnabled = false;
+        autoSellRelistMinerEnabled = false;
+        autoTradeEnabled = false;
+        autoTradeOnlyActivePlayer = false;
+    }
 }

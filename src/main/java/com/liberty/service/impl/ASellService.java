@@ -44,6 +44,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     protected NoActivityService noActivityService;
 
     protected boolean autoSellRelistMinerEnabled;
+    private volatile boolean inRelist = false;
 
     @Override
     public int getTradePileSize() {
@@ -66,11 +67,15 @@ public abstract class ASellService extends ATradeService implements TradeService
     }
 
     private void relist(List<AuctionInfo> auctionInfos) {
+        if(inRelist)
+            return;
+        inRelist = true;
         if (autoSellRelistMinerEnabled && miner.isAlive()) {
             minerRelist(auctionInfos);
         }
         requestService.relistAll();
         logRelistItems(auctionInfos);
+        inRelist = false;
     }
 
     private void minerRelist(List<AuctionInfo> auctionInfos) {
@@ -88,7 +93,7 @@ public abstract class ASellService extends ATradeService implements TradeService
                 logController.info("Trying to relist item " + status.getName() + " for start price "
                         + request.getStartPrice() + " . Profit from " + from + " to " + to);
                 relistItem(request);
-                DelayHelper.wait(2500, 200);
+                DelayHelper.wait(5000, 200);
                 count++;
             } else {
                 log.info("[Miner] decided do not sell player: " +

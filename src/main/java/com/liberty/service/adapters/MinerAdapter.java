@@ -74,8 +74,7 @@ public class MinerAdapter {
     }
 
     public boolean shouldSellPlayer(Long playerId, Integer boughtFor) {
-//        return true;
-        return PriceHelper.calculateProfit(boughtFor, client.getSellBuyNowPrice(playerId)) > 0;
+        return PriceHelper.calculateProfit(boughtFor, client.getSellStartPrice(playerId)) > 0;
     }
 
     public boolean isPriceDistributionActual(Long playerId) {

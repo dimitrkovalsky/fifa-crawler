@@ -1,6 +1,7 @@
 package com.liberty.service;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -8,6 +9,8 @@ import java.util.Set;
  * @since 26.10.2016.
  */
 public interface NoActivityService {
+
+    Queue<Long> getPendingQueue();
 
     void updatePlayerPrices();
 

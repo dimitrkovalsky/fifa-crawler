@@ -55,6 +55,11 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
     private boolean enabled;
 
     @Override
+    public Queue<Long> getPendingQueue(){
+        return pendingUpdate;
+    }
+
+    @Override
     public void updatePlayerPrices() {
         if (!enabled) {
             log.info("No activity service is disabled");
