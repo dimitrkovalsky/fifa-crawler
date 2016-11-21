@@ -16,6 +16,8 @@ public interface ClassificationService {
 
     void lbNotRar();
 
+    void mostTrading();
+
     void update();
 
     void bestRBLB();

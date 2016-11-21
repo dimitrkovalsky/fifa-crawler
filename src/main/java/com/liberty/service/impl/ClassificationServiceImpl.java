@@ -5,6 +5,7 @@ import com.liberty.model.PlayerInfo;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.processors.pojo.Attributes;
+import com.liberty.repositories.ClubRepository;
 import com.liberty.repositories.LeagueRepository;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.repositories.PlayerTradeStatusRepository;
@@ -14,10 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +38,9 @@ public class ClassificationServiceImpl implements ClassificationService {
 
     @Autowired
     private PlayerTradeStatusRepository tradeStatusRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
 
     @Override
     public void bestPremierLeague() {
@@ -107,6 +109,34 @@ public class ClassificationServiceImpl implements ClassificationService {
 
         logFound(profiles, true, "LB");
         addTagWithPrice(profiles, "LB", 350);
+    }
+
+    @Override
+    public void mostTrading() {
+        Map<Long, Integer> clubs = new HashMap<>();
+        AtomicInteger total = new AtomicInteger(0);
+        List<PlayerTradeStatus> all = tradeStatusRepository.findAll();
+        all.forEach(status -> {
+            int boughtAmount = status.getBoughtAmount();
+            total.addAndGet(boughtAmount);
+
+            PlayerProfile one = profileRepository.findOne(status.getId());
+            if (one != null && one.getClubId() != null) {
+                Long clubId = one.getClubId();
+
+                if (clubs.containsKey(clubId)) {
+                    clubs.put(clubId, clubs.get(clubId) + boughtAmount);
+                } else {
+                    clubs.put(clubId, boughtAmount);
+                }
+            }
+        });
+
+        clubs.entrySet().stream()
+                .sorted((k1, k2) -> k1.getValue().compareTo(k2.getValue()))
+                .forEach(k -> System.out.println(clubRepository.findOne(k.getKey()).getAbbrName() + ": " + k.getValue()));
+
+        System.out.println("Total : " + total.get());
     }
 
     @Override
