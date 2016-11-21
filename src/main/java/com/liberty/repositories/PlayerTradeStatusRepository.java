@@ -16,4 +16,6 @@ public interface PlayerTradeStatusRepository extends
 
     @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
     List<PlayerTradeStatus> findByName(String phrase);
+
+    List<PlayerTradeStatus> findAllByEnabled(boolean enabled);
 }

@@ -6,6 +6,7 @@ import com.fifaminer.client.dto.OrderingTypeTO;
 import com.fifaminer.client.dto.PlayerPriceTO;
 import com.fifaminer.client.dto.SettingConfigurationTO;
 import com.fifaminer.client.impl.FifaMinerClientBuilder;
+import com.liberty.common.PriceHelper;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -41,8 +42,8 @@ public class MinerAdapter {
     }
 
     public boolean isAlive() {
-        return true;
-//        return client.isHealthy();
+        //      return true;
+        return client.isHealthy();
     }
 
     public List<Long> getPlayersForUpdate() {
@@ -56,22 +57,25 @@ public class MinerAdapter {
         List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.LAST_7_DAYS, OrderingTypeTO.MAX_SELLS,
                 PLAYERS_FOR_AUTO_BUY);
 
-        return ids.stream().map(id -> {
-            PlayerPriceTO toBuy = client.getPricesSummary(id);
-            PlayerProfile profile = profileRepository.findOne(toBuy.getPlayerId());
-            PlayerTradeStatus status = new PlayerTradeStatus();
-            status.setId(toBuy.getPlayerId());
-            status.setName(profile.getName());
-            status.setBuyPriceStrategy(toBuy.getMaxBuyPriceStrategy());
-            status.setSellPriceStrategy(toBuy.getSellStartPriceStrategy());
-            status.setMaxPrice(toBuy.getMaxBuyPrice());
-            status.setSellStartPrice(toBuy.getSellStartPrice());
-            return status;
-        }).collect(Collectors.toList());
+        return ids.stream().map(this::getPricesToBuy).collect(Collectors.toList());
+    }
+
+    public PlayerTradeStatus getPricesToBuy(Long id) {
+        PlayerPriceTO toBuy = client.getPricesSummary(id);
+        PlayerProfile profile = profileRepository.findOne(toBuy.getPlayerId());
+        PlayerTradeStatus status = new PlayerTradeStatus();
+        status.setId(toBuy.getPlayerId());
+        status.setName(profile.getName());
+        status.setBuyPriceStrategy(toBuy.getMaxBuyPriceStrategy());
+        status.setSellPriceStrategy(toBuy.getSellStartPriceStrategy());
+        status.setMaxPrice(toBuy.getMaxBuyPrice());
+        status.setSellStartPrice(toBuy.getSellStartPrice());
+        return status;
     }
 
     public boolean shouldSellPlayer(Long playerId, Integer boughtFor) {
-        return client.getSellBuyNowPrice(playerId) > (boughtFor + MIN_REWARD);
+//        return true;
+        return PriceHelper.calculateProfit(boughtFor, client.getSellBuyNowPrice(playerId)) > 0;
     }
 
     public boolean isPriceDistributionActual(Long playerId) {

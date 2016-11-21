@@ -43,7 +43,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     @Autowired
     protected NoActivityService noActivityService;
 
-    private boolean enabledMiner = false;
+    protected boolean autoSellRelistMinerEnabled;
 
     @Override
     public int getTradePileSize() {
@@ -66,7 +66,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     }
 
     private void relist(List<AuctionInfo> auctionInfos) {
-        if (enabledMiner && miner.isAlive()) {
+        if (autoSellRelistMinerEnabled && miner.isAlive()) {
             minerRelist(auctionInfos);
         }
         requestService.relistAll();
@@ -85,17 +85,20 @@ public abstract class ASellService extends ATradeService implements TradeService
                 SellRequest request = sellStrategy.defineBid(itemData, status);
                 int from = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getStartPrice());
                 int to = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getBuyNow());
-                logController.info("Trying to relist item " + status.getName() + " . Profit from " + from + " to " + to);
-                sell(request);
-                DelayHelper.wait(1000, 200);
+                logController.info("Trying to relist item " + status.getName() + " for start price "
+                        + request.getStartPrice() + " . Profit from " + from + " to " + to);
+                relistItem(request);
+                DelayHelper.wait(2500, 200);
                 count++;
             } else {
                 log.info("[Miner] decided do not sell player: " +
                         playerProfileService.findOne(auctionInfo.getItemData().getAssetId()).getName());
             }
         }
-        if (!toUpdate.isEmpty())
+        if (!toUpdate.isEmpty()) {
             noActivityService.shouldUpdate(toUpdate);
+            log.info("ASellService asked to update prices for : " + toUpdate.size());
+        }
         log.info("Miner relisted " + count + " / " + auctionInfos.size() + " players...");
     }
 
@@ -204,6 +207,44 @@ public abstract class ASellService extends ATradeService implements TradeService
                 } catch (Exception e) {
                     System.out.println("Can not find player : " + request.getPlayerId());
                 }
+            }
+        }
+    }
+
+    @Override
+    public synchronized void sellAuto(SellRequest request) {
+        boolean itemResult;
+        if (request.getTradeId() == null) {
+            itemResult = requestService.item(request.getItemId());
+        } else {
+            itemResult = requestService.item(request.getItemId(), request.getTradeId());
+        }
+
+        if (itemResult) {
+            Optional<AuctionHouseResponse> auctionResult = requestService
+                    .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
+            if (auctionResult.isPresent()) {
+                try {
+                    PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
+                    logController.info("Success placed to market : " + player.getName() + " startPrice: " +
+                            request.getStartPrice() + " buyNow: " + request.getBuyNow());
+                } catch (Exception e) {
+                    System.out.println("Can not find player : " + request.getPlayerId());
+                }
+            }
+        }
+    }
+
+    public void relistItem(SellRequest request) {
+        Optional<AuctionHouseResponse> auctionResult = requestService
+                .auctionHouse(request.getItemId(), request.getStartPrice(), request.getBuyNow());
+        if (auctionResult.isPresent()) {
+            try {
+                PlayerTradeStatus player = tradeRepository.findOne(request.getPlayerId());
+                logController.info("Success relisted item : " + player.getName() + " startPrice: " +
+                        request.getStartPrice() + " buyNow: " + request.getBuyNow());
+            } catch (Exception e) {
+                System.out.println("Can not find player : " + request.getPlayerId());
             }
         }
     }

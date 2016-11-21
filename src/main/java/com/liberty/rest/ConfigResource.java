@@ -1,10 +1,13 @@
 package com.liberty.rest;
 
+import com.liberty.model.UserParameters;
 import com.liberty.rest.request.NewTagRequest;
+import com.liberty.rest.request.ParameterUpdateRequest;
 import com.liberty.rest.request.StringRequest;
 import com.liberty.rest.response.ConfigResponse;
 import com.liberty.service.ConfigService;
 import com.liberty.service.TagService;
+import com.liberty.service.UserParameterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +31,9 @@ public class ConfigResource {
     private ConfigService configService;
 
     @Autowired
+    private UserParameterService parameterService;
+
+    @Autowired
     private TagService tagService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -35,6 +41,16 @@ public class ConfigResource {
         Map<String, Integer> tagDistribution = configService.getTagDistribution();
         Set<String> activeTags = configService.getActiveTags();
         return new ConfigResponse(tagDistribution, activeTags);
+    }
+
+    @RequestMapping(path = "/parameters", method = RequestMethod.GET)
+    public UserParameters getParameters() {
+        return parameterService.getUserParameters();
+    }
+
+    @RequestMapping(path = "/parameters", method = RequestMethod.POST)
+    public void setParameters(@RequestBody ParameterUpdateRequest request) {
+        parameterService.updateParameters(request);
     }
 
     @RequestMapping(path = "/activate", method = RequestMethod.POST)

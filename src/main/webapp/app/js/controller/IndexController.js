@@ -11,7 +11,7 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         }, $rootScope.onError);
     };
 
-    $rootScope.loadTags = function () {
+    $rootScope.loadParams = function () {
         Tags.query({}, function (result) {
             $rootScope.tags = [];
             angular.forEach(result, function (value, key) {
@@ -150,5 +150,5 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
     $rootScope.updateStats();
     $rootScope.updateTradepile();
     $rootScope.loadLeagues();
-    $rootScope.loadTags();
+    $rootScope.loadParams();
 });

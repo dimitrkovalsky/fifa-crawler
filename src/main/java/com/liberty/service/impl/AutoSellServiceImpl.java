@@ -1,20 +1,27 @@
 package com.liberty.service.impl;
 
 import com.liberty.common.PriceHelper;
+import com.liberty.listeners.ParameterUpdateListener;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.market.ItemData;
 import com.liberty.repositories.PlayerTradeStatusRepository;
+import com.liberty.rest.request.ParameterUpdateRequest;
 import com.liberty.rest.request.SellRequest;
 import com.liberty.service.AutoSellService;
+import com.liberty.service.NoActivityService;
 import com.liberty.service.TradeService;
+import com.liberty.service.UserParameterService;
 import com.liberty.service.strategy.SellStrategy;
 import com.liberty.websockets.LogController;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -27,7 +34,7 @@ import static java.util.function.UnaryOperator.identity;
  */
 @Service
 @Slf4j
-public class AutoSellServiceImpl implements AutoSellService {
+public class AutoSellServiceImpl implements AutoSellService, InitializingBean, ParameterUpdateListener {
 
     @Autowired
     private TradeService tradeService;
@@ -39,10 +46,22 @@ public class AutoSellServiceImpl implements AutoSellService {
     private SellStrategy sellStrategy;
 
     @Autowired
+    private UserParameterService parameterService;
+
+    @Autowired
+    private NoActivityService noActivityService;
+
+    @Autowired
     private LogController logController;
+
+    private boolean autoSellEnabled;
 
     @Override
     public void trySell() {
+        if (!autoSellEnabled) {
+            log.info("Auto Sell disabled");
+            return;
+        }
         List<ItemData> unassigned = tradeService.getAllUnassigned();
         log.info("Found " + unassigned.size() + " unassigned players");
         if (unassigned.isEmpty()) {
@@ -56,16 +75,34 @@ public class AutoSellServiceImpl implements AutoSellService {
         }
         List<Long> ids = unassigned.stream().map(ItemData::getAssetId).collect(Collectors.toList());
         Map<Long, PlayerTradeStatus> players = getTradeMap(ids);
+        Set<Long> toUpdate = new HashSet<>();
         for (ItemData itemData : unassigned) {
             PlayerTradeStatus tradeStatus = players.get(itemData.getAssetId());
+            if (!sellStrategy.isPriceDistributionActual(itemData.getAssetId())) {
+                continue;
+            }
+
             if (shouldSell(itemData, tradeStatus)) {
+                if (!autoSellEnabled) {
+                    log.info("Auto sell disabled");
+                    return;
+                }
                 SellRequest sellRequest = getSellRequest(itemData, tradeStatus);
-                tradeService.sell(sellRequest);
+                tradeService.sellAuto(sellRequest);
                 canSell--;
             }
             if (canSell <= 0) {
-                return;
+                break;
             }
+        }
+        toUpdate.addAll(unassigned.stream()
+                .filter(itemData -> !sellStrategy.isPriceDistributionActual(itemData.getAssetId()))
+                .map(ItemData::getAssetId)
+                .collect(Collectors.toList()));
+
+        if (!toUpdate.isEmpty()) {
+            noActivityService.shouldUpdate(toUpdate);
+            log.info("AutoSellService asked to update prices for " + toUpdate.size() + " players");
         }
     }
 
@@ -88,4 +125,15 @@ public class AutoSellServiceImpl implements AutoSellService {
                 .collect(Collectors.toMap(PlayerTradeStatus::getId, identity()));
     }
 
+    @Override
+    public void onParameterUpdate(ParameterUpdateRequest request) {
+        if (request.getAutoSellEnabled() != null)
+            autoSellEnabled = request.getAutoSellEnabled();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.autoSellEnabled = parameterService.getUserParameters().isAutoSellEnabled();
+        parameterService.subscribe(this);
+    }
 }

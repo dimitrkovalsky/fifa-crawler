@@ -1,14 +1,14 @@
 package com.liberty.service.impl;
 
 import com.liberty.common.DelayHelper;
+import com.liberty.listeners.ParameterUpdateListener;
 import com.liberty.model.PlayerInfo;
-import com.liberty.service.NoActivityService;
-import com.liberty.service.PriceService;
-import com.liberty.service.RequestService;
-import com.liberty.service.TagService;
+import com.liberty.rest.request.ParameterUpdateRequest;
+import com.liberty.service.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class NoActivityServiceImpl implements NoActivityService {
+public class NoActivityServiceImpl implements NoActivityService, InitializingBean, ParameterUpdateListener {
 
     public static final String[] tags = {"custom", "medium", "cheap"};
     private int currentTagIndex = 0;
@@ -44,13 +44,23 @@ public class NoActivityServiceImpl implements NoActivityService {
 
     private Runnable onPriceUpdated;
 
+    @Autowired
+    private UserParameterService parameterService;
+
     @Getter
     private boolean updateInProgress;
 
     private Queue<Long> pendingUpdate;
 
+    private boolean enabled;
+
     @Override
     public void updatePlayerPrices() {
+        if (!enabled) {
+            log.info("No activity service is disabled");
+            return;
+
+        }
         if (!CollectionUtils.isEmpty(pendingUpdate)) {
             updatePending();
             return;
@@ -125,7 +135,8 @@ public class NoActivityServiceImpl implements NoActivityService {
                 + requestService.getRateString() + " queue size : " + pendingUpdate.size());
         if (pendingUpdate.isEmpty()) {
             updateInProgress = false;
-            onPriceUpdated.run();
+            if (onPriceUpdated != null)
+                onPriceUpdated.run();
         }
     }
 
@@ -150,5 +161,15 @@ public class NoActivityServiceImpl implements NoActivityService {
         updateInProgress = true;
     }
 
+    @Override
+    public void onParameterUpdate(ParameterUpdateRequest request) {
+        if (request.getNoActivityEnabled() != null) {
+            enabled = request.getNoActivityEnabled();
+        }
+    }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.enabled = parameterService.getUserParameters().isNoActivityEnabled();
+    }
 }

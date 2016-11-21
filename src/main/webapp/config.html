@@ -2,7 +2,30 @@
     <h1>Tags</h1>
 </div>
 <div class="container">
-     <button class="btn btn-info" ng-click="updatePrices()">Update Prices</button>
+    Auto Buy :
+    <toggle ng-model="params.autoBuyEnabled" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+
+    Auto Sell :
+    <toggle ng-model="params.autoSellEnabled" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+    Relist Miner :
+    <toggle ng-model="params.autoSellRelistMinerEnabled" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+    No activity :
+    <toggle ng-model="params.noActivityEnabled" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+    Auto Trade :
+    <toggle ng-model="params.autoTradeEnabled" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+    Auto Only Active :
+    <toggle ng-model="params.autoTradeOnlyActivePlayer" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+    Robot :
+    <toggle ng-model="params.robotEnabled" ng-change="saveParams()" onstyle="btn-success"
+            offstyle="btn-danger"></toggle>
+
+    <button class="btn btn-info" ng-click="updatePrices()">Update Prices</button>
     <table class="table">
         <thead>
         <tr>
