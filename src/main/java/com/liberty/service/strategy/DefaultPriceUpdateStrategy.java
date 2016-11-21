@@ -92,6 +92,7 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
         Set<AuctionInfo> toStatistic = new HashSet<>();
         PlayerProfile profile = profileRepository.findOne(playerId);
         int maxPrice = profile.getPriceLimits().getPc().getMaxPrice();  // TODO: platform dependent
+        boolean isHighBound = false;
         while (!isCompleted(toStatistic.size(), highBound, maxPrice)) {
             iteration++;
             logController.info("Trying to find " + tradeStatus.getName() + " less than " + highBound);
@@ -102,6 +103,10 @@ public class DefaultPriceUpdateStrategy implements PriceUpdateStrategy {
             logController.info("Found " + toStatistic.size() + " players");
             DelayHelper.wait(500, 20);
             highBound = BoundHelper.getHigherBound(0, highBound);
+            if (highBound > maxPrice && !isHighBound) {
+                highBound = maxPrice;
+                isHighBound = true;
+            }
 
             if (iteration >= ITERATION_LIMIT) {
                 logController.info("Exceeded iteration limit");

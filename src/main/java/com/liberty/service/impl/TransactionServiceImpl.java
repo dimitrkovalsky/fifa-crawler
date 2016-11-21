@@ -25,7 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction.TransactionRecord record = new Transaction.TransactionRecord(itemId, amount,
                 System.currentTimeMillis(), TransactionType.BOUGHT_CARD);
         record.setTradeId(tradeId);
-        logUniqueOperation(playerId, record);
+        logOperation(playerId, record);
     }
 
     @Override
