@@ -5,6 +5,7 @@ import com.fifaminer.client.dto.Duration;
 import com.fifaminer.client.dto.OrderingTypeTO;
 import com.fifaminer.client.dto.PlayerPriceTO;
 import com.fifaminer.client.dto.SettingConfigurationTO;
+import com.fifaminer.client.dto.strategy.MaxBuyStrategy;
 import com.fifaminer.client.impl.FifaMinerClientBuilder;
 import com.liberty.common.PriceHelper;
 import com.liberty.model.PlayerProfile;
@@ -39,10 +40,12 @@ public class MinerAdapter {
                 .withServerUrl("localhost")
                 .withPort(MINER_PORT)
                 .build();
+        if (isAlive()) {
+            client.enableMaxBuyPriceStrategy(MaxBuyStrategy.REDUCE_15_FROM_CURRENT_MIN);
+        }
     }
 
     public boolean isAlive() {
-        //      return true;
         return client.isHealthy();
     }
 
@@ -89,6 +92,5 @@ public class MinerAdapter {
     }
 
     public void changeStrategy(SettingConfigurationTO configuration) {
-        client.updateSetting(configuration);
     }
 }
