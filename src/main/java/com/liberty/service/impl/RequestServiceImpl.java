@@ -60,10 +60,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private int requestCount;
+    private int searchRequestCount;
 
     private int rate = 0;
+    private int searchRate = 0;
     private int arrayIndex = 0;
     private int[] rateArray = new int[30];
+    private int[] searchRateArray = new int[30];
 
     private void logRequest() {
         requestCount++;
@@ -73,6 +76,7 @@ public class RequestServiceImpl implements RequestService {
     private void resetRequestCount() {
         RequestRate requestRate = new RequestRate();
         requestRate.setRequestPerMinute(rate);
+        requestRate.setSearchRequestPerMinute(searchRate);
         requestRate.setTimestamp(System.currentTimeMillis());
         requestRateRepository.save(requestRate);
         ratePerDay = computeRequestPerDay();
@@ -81,13 +85,16 @@ public class RequestServiceImpl implements RequestService {
     @Scheduled(fixedDelay = 2_000, initialDelay = 2_000)
     private void recordRequestCount() {
         rateArray[arrayIndex] = requestCount;
+        searchRateArray[arrayIndex] = searchRequestCount;
         arrayIndex++;
         if (arrayIndex >= 30) {
             arrayIndex = 0;
         }
         rate = Arrays.stream(rateArray).sum();
+        searchRate = Arrays.stream(searchRateArray).sum();
         logController.sendRate(rate);
         requestCount = 0;
+        searchRequestCount = 0;
     }
 
     private <T> T execute(Supplier<T> function) {
@@ -143,7 +150,10 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Optional<TradeStatus> searchPlayer(Long id, Integer maxPrice, int page) {
-        return execute(() -> fifaRequests.searchPlayer(id, maxPrice, page));
+        return execute(() -> {
+            searchRequestCount++;
+            return fifaRequests.searchPlayer(id, maxPrice, page);
+        });
     }
 
     @Override
@@ -284,7 +294,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public String getRateString() {
-        return "Rate : " + getRequestRate() + ". Day : " + ratePerDay;
+        return "Rate : " + getRequestRate() + ". Search : " + searchRate + ". Day : " + ratePerDay;
     }
 
     @Override

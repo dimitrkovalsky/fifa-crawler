@@ -24,17 +24,44 @@ public class RateAnalyserRunner {
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         RequestRateRepository repository = context.getBean(RequestRateRepository.class);
 
+        checkMinutes(repository);
+        System.exit(0);
+    }
+
+    private static void checkMinutes(RequestRateRepository repository) {
+        Map<Integer, Long> map = new HashMap<>();
+        for (int i = 1; i <= 60; i++) {
+            LocalDateTime failTime = LocalDateTime.of(2016, 11, 22, 12, 28, 18, 765);
+            LocalDateTime from = failTime.minus(i, ChronoUnit.MINUTES);
+
+            List<RequestRate> rates = repository.findAllByTimestampBetween(toMillis(from), toMillis(failTime));
+            long rate = getOverallRate(rates);
+            map.put(i, rate);
+        }
+        map.forEach((k, v) -> {
+            if (k - 1 >= 1)
+                System.out.println(k + " : " + v + " => " + (v - map.get(k - 1)));
+            else
+                System.out.println(k + " : " + v + " => " + v);
+        });
+    }
+
+    private static void checkHours(RequestRateRepository repository) {
         Map<Integer, Long> map = new HashMap<>();
         for (int i = 1; i <= 24; i++) {
-            LocalDateTime failTime = LocalDateTime.of(2016, 11, 17, 1, 38, 8, 538);
+            LocalDateTime failTime = LocalDateTime.of(2016, 11, 22, 12, 28, 18, 765);
             LocalDateTime from = failTime.minus(i, ChronoUnit.HOURS);
 
             List<RequestRate> rates = repository.findAllByTimestampBetween(toMillis(from), toMillis(failTime));
             long rate = getOverallRate(rates);
             map.put(i, rate);
         }
-        map.forEach((k, v) -> System.out.println(k + " : " + v));
-        System.exit(0);
+        map.forEach((k, v) -> {
+            if (k - 1 >= 1)
+                System.out.println(k + " : " + v + " => " + (v - map.get(k - 1)));
+            else
+                System.out.println(k + " : " + v + " => " + v);
+        });
     }
 
     private static long getOverallRate(List<RequestRate> rates) {

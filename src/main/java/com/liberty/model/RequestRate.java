@@ -17,4 +17,6 @@ public class RequestRate {
 
     private int requestPerMinute;
 
+    private int searchRequestPerMinute;
+
 }

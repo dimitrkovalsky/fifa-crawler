@@ -31,8 +31,8 @@ abstract class BaseFifaRequests {
     protected volatile String phishingToken = null;
 
     public static final String REFERER =
-            "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=164055";
-    public static final String REQUESTED_WITH = "ShockwaveFlash/23.0.0.185";
+            "https://www.easports.com/iframe/fut17/bundles/futweb/web/flash/FifaUltimateTeam.swf?cl=164315";
+    public static final String REQUESTED_WITH = "ShockwaveFlash/23.0.0.207";
     protected volatile String currentCookies = "";
     protected volatile String authCookies = "";
 
@@ -181,7 +181,7 @@ abstract class BaseFifaRequests {
     }
 
     private String getUserAgent() {
-        return "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 OPR/40.0.2308.81";
+        return "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36 OPR/41.0.2353.56";
     }
 
     protected HttpPost createRequest(String url) {
