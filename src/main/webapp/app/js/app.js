@@ -124,6 +124,14 @@ fifaApp.factory('Parameters', function ($resource) {
     return $resource('/api/config/parameters');
 });
 
+fifaApp.factory('BuyStrategy', function ($resource) {
+    return $resource('/api/config/strategy/buy');
+});
+
+fifaApp.factory('SellStrategy', function ($resource) {
+    return $resource('/api/config/strategy/sell');
+});
+
 
 fifaApp.config(function ($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/market");

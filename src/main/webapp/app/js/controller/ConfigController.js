@@ -1,5 +1,5 @@
 fifaApp.controller('ConfigController', function ($rootScope, $scope, ConfigResource, ActivateTag, Parameters,
-                                                 DeactivateTag, PriceUpdate) {
+                                                 DeactivateTag, PriceUpdate, BuyStrategy, SellStrategy) {
     $scope.tagDistribution = {};
     $scope.activeTags = [];
 
@@ -41,6 +41,16 @@ fifaApp.controller('ConfigController', function ($rootScope, $scope, ConfigResou
         }, $rootScope.onError);
     };
 
+    $scope.loadStrategies = function() {
+        BuyStrategy.query(function(result) {
+            $scope.buyStrategies = result;
+        }, $rootScope.onError);
+        SellStrategy.query(function() {
+            $scope.sellStrategies = result;
+        }, $rootScope.onError);
+    }
+
+    $scope.loadStrategies();
     $scope.loadParams();
 
 });

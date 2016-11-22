@@ -1,10 +1,12 @@
 package com.liberty.rest;
 
+import com.liberty.model.MinerStrategy;
 import com.liberty.model.UserParameters;
 import com.liberty.rest.request.NewTagRequest;
 import com.liberty.rest.request.ParameterUpdateRequest;
 import com.liberty.rest.request.StringRequest;
 import com.liberty.rest.response.ConfigResponse;
+import com.liberty.service.AutoTradingService;
 import com.liberty.service.ConfigService;
 import com.liberty.service.TagService;
 import com.liberty.service.UserParameterService;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,6 +37,9 @@ public class ConfigResource {
     private UserParameterService parameterService;
 
     @Autowired
+    private AutoTradingService autoTradingService;
+
+    @Autowired
     private TagService tagService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -51,6 +57,26 @@ public class ConfigResource {
     @RequestMapping(path = "/parameters", method = RequestMethod.POST)
     public void setParameters(@RequestBody ParameterUpdateRequest request) {
         parameterService.updateParameters(request);
+    }
+
+    @RequestMapping(path = "/strategy/buy", method = RequestMethod.GET)
+    public List<MinerStrategy> getBuyStrategies() {
+        return autoTradingService.getBuyStrategies();
+    }
+
+    @RequestMapping(path = "/strategy/buy", method = RequestMethod.POST)
+    public void activateBuyStrategies(@RequestBody MinerStrategy strategy) {
+        autoTradingService.activateBuyStrategy(strategy.getId());
+    }
+
+    @RequestMapping(path = "/strategy/sell", method = RequestMethod.GET)
+    public List<MinerStrategy> getSellStrategies() {
+        return autoTradingService.getSellStrategies();
+    }
+
+    @RequestMapping(path = "/strategy/sell", method = RequestMethod.POST)
+    public void activateSellStrategies(@RequestBody MinerStrategy strategy) {
+        autoTradingService.activateSellStrategy(strategy.getId());
     }
 
     @RequestMapping(path = "/activate", method = RequestMethod.POST)

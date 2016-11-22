@@ -4,10 +4,11 @@ import com.fifaminer.client.FifaMinerClient;
 import com.fifaminer.client.dto.Duration;
 import com.fifaminer.client.dto.OrderingTypeTO;
 import com.fifaminer.client.dto.PlayerPriceTO;
-import com.fifaminer.client.dto.SettingConfigurationTO;
 import com.fifaminer.client.dto.strategy.MaxBuyStrategy;
+import com.fifaminer.client.dto.strategy.SellStartStrategy;
 import com.fifaminer.client.impl.FifaMinerClientBuilder;
 import com.liberty.common.PriceHelper;
+import com.liberty.model.MinerStrategy;
 import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,8 @@ public class MinerAdapter {
     public static final int MINER_PORT = 3333;
     public static final int MIN_REWARD = 100;
     public static final int PLAYERS_FOR_AUTO_BUY = 25;
+    private MaxBuyStrategy activeBuyStrategy;
+    private SellStartStrategy activeSellStrategy;
     private FifaMinerClient client;
 
     @Autowired
@@ -41,8 +45,18 @@ public class MinerAdapter {
                 .withPort(MINER_PORT)
                 .build();
         if (isAlive()) {
-            client.enableMaxBuyPriceStrategy(MaxBuyStrategy.REDUCE_15_FROM_CURRENT_MIN);
+            enableStrategy(MaxBuyStrategy.REDUCE_15_FROM_CURRENT_MIN);
         }
+    }
+
+    private void enableStrategy(MaxBuyStrategy strategy) {
+        client.enableMaxBuyPriceStrategy(strategy);
+        activeBuyStrategy = strategy;
+    }
+
+    private void enableStrategy(SellStartStrategy strategy) {
+        client.enableSellStartPriceStrategy(strategy);
+        activeSellStrategy = strategy;
     }
 
     public boolean isAlive() {
@@ -91,6 +105,26 @@ public class MinerAdapter {
         return new AutomaticSellStrategy.MinerBid(sellStartPrice, sellBuyNowPrice);
     }
 
-    public void changeStrategy(SettingConfigurationTO configuration) {
+
+    public List<MinerStrategy> getSellStrategies() {
+        return Arrays.stream(SellStartStrategy.values())
+                .map(strategy -> new MinerStrategy(strategy.ordinal(), strategy.getStrategyName(),
+                        strategy == activeSellStrategy))
+                .collect(Collectors.toList());
+    }
+
+    public void activateSellStrategy(Integer id) {
+        enableStrategy(SellStartStrategy.values()[id]);
+    }
+
+    public void activateBuyStrategy(Integer id) {
+        enableStrategy(MaxBuyStrategy.values()[id]);
+    }
+
+    public List<MinerStrategy> getBuyStrategies() {
+        return Arrays.stream(MaxBuyStrategy.values())
+                .map(strategy -> new MinerStrategy(strategy.ordinal(), strategy.getStrategyName(),
+                        strategy == activeBuyStrategy))
+                .collect(Collectors.toList());
     }
 }

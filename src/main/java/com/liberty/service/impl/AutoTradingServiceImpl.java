@@ -1,10 +1,8 @@
 package com.liberty.service.impl;
 
-import com.fifaminer.client.dto.SellBuyNowStrategy;
-import com.fifaminer.client.dto.SettingConfigurationTO;
-import com.fifaminer.client.dto.SettingTO;
 import com.liberty.common.DelayHelper;
 import com.liberty.listeners.ParameterUpdateListener;
+import com.liberty.model.MinerStrategy;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.model.UserParameters;
 import com.liberty.repositories.PlayerTradeStatusRepository;
@@ -114,12 +112,6 @@ public class AutoTradingServiceImpl implements AutoTradingService, InitializingB
         return true;
     }
 
-    public void changeStrategy() {
-        SettingConfigurationTO configuration = new SettingConfigurationTO(SettingTO.MAX_BUY_PRICE_STRATEGY,
-                SellBuyNowStrategy.FORECASTED_MEDIAN);
-        miner.changeStrategy(configuration);
-    }
-
     @Override
     public void checkUpdates() {
         int wait = 0;
@@ -139,6 +131,28 @@ public class AutoTradingServiceImpl implements AutoTradingService, InitializingB
             updateRequested = true;
             log.info("[AutoTradingService] Placed to price update " + ids.size() + " players");
         }
+    }
+
+    @Override
+    public List<MinerStrategy> getBuyStrategies() {
+        return miner.getBuyStrategies();
+    }
+
+    @Override
+    public void activateBuyStrategy(Integer id) {
+        log.info("Trying to activate buy strategy with id : " + id);
+        miner.activateBuyStrategy(id);
+    }
+
+    @Override
+    public void activateSellStrategy(Integer id) {
+        log.info("Trying to activate sell strategy with id : " + id);
+        miner.activateSellStrategy(id);
+    }
+
+    @Override
+    public List<MinerStrategy> getSellStrategies() {
+        return miner.getSellStrategies();
     }
 
     @Override
