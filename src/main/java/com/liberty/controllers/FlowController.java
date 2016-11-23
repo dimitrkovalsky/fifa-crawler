@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 import java.util.Optional;
@@ -21,7 +20,7 @@ import static com.liberty.controllers.State.*;
  * @author Dmytro_Kovalskyi.
  * @since 21.11.2016.
  */
-@Component
+//@Component
 @Slf4j
 public class FlowController implements InitializingBean {
 
@@ -47,7 +46,7 @@ public class FlowController implements InitializingBean {
             noSleepTime++;
         else
             sleepTime++;
-        State nextState = defineNextState();
+        State nextState = defineNextState();  // TODO: check time for transaction
         if (nextState != state) {
             changeState(nextState);
             currentStateMinutes = 0;
@@ -195,9 +194,9 @@ public class FlowController implements InitializingBean {
 
     @Data
     public static class FlowConfig {
-        private int sleepAfterMinutes = 3;
-        private int sleepDurationMinutes = 1;
-        private int noActivityActivateEvery = 15;
+        private int sleepAfterMinutes = 60;
+        private int sleepDurationMinutes = 20;
+        private int noActivityActivateEvery = 20;
 
         public int interruptAutoBuyEvery() {
             return noActivityActivateEvery;
