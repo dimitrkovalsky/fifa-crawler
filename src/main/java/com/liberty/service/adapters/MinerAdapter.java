@@ -64,14 +64,15 @@ public class MinerAdapter {
     }
 
     public List<Long> getPlayersForUpdate() {
-        return client.findPlayersByTransactionsAnalyse(Duration.LAST_2_DAYS, OrderingTypeTO.MIN_RELISTS, PLAYERS_FOR_AUTO_BUY)
+        return client.findPlayersByTransactionsAnalyse(Duration.LAST_2_DAYS, OrderingTypeTO.MIN_RELISTS, "miner",
+                PLAYERS_FOR_AUTO_BUY)
                 .stream()
                 .filter(id -> !client.isPriceDistributionActual(id))
                 .collect(Collectors.toList());
     }
 
     public List<PlayerTradeStatus> getPlayersToBuy() {
-        List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.LAST_7_DAYS, OrderingTypeTO.MAX_SELLS,
+        List<Long> ids = client.findPlayersByTransactionsAnalyse(Duration.LAST_7_DAYS, OrderingTypeTO.MAX_SELLS, "miner",
                 PLAYERS_FOR_AUTO_BUY);
 
         return ids.stream().map(this::getPricesToBuy).collect(Collectors.toList());

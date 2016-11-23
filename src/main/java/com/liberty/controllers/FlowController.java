@@ -3,12 +3,16 @@ package com.liberty.controllers;
 import com.liberty.model.UserParameters;
 import com.liberty.rest.request.ParameterUpdateRequest;
 import com.liberty.service.NoActivityService;
+import com.liberty.service.TradeService;
 import com.liberty.service.UserParameterService;
+import com.liberty.websockets.BuyMessage;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
 import java.util.Optional;
@@ -20,10 +24,13 @@ import static com.liberty.controllers.State.*;
  * @author Dmytro_Kovalskyi.
  * @since 21.11.2016.
  */
-//@Component
+@Component
 @Slf4j
 public class FlowController implements InitializingBean {
 
+    public static final int TRADEPILE_UPDATE = 30;
+    public static final int DEFAULT_PURCHASES = 5;
+    public static final int PENDING_QUEUE_SIZE_THRESHOLD = 20;
     private Optional<UserParameters> lastParameters = Optional.empty();
 
     @Autowired
@@ -32,52 +39,75 @@ public class FlowController implements InitializingBean {
     @Autowired
     private NoActivityService noActivityService;
 
+    @Autowired
+    private TradeService tradeService;
+
     private volatile boolean suspended;
     private FlowConfig config;
     private State state = INITIALIZED;
     private volatile int currentStateMinutes = 0;
     private volatile int noSleepTime = 0;
+    private volatile int workingTime = 0;
     private volatile int sleepTime = 0;
 
     @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
     private void onSchedule() {
         currentStateMinutes++;
+        workingTime++;
+        checkTradepile();
         if (state != SLEEP)
             noSleepTime++;
         else
             sleepTime++;
         State nextState = defineNextState();  // TODO: check time for transaction
         if (nextState != state) {
-            changeState(nextState);
-            currentStateMinutes = 0;
-            state = nextState;
-            log.info("[FlowController] current state : " + state);
+            if (changeState(nextState)) {
+                currentStateMinutes = 0;
+                state = nextState;
+                log.info("[FlowController] current state : " + state);
+            } else {
+                log.info("[FlowController] can not change state to : " + nextState);
+            }
         }
     }
 
-    private void changeState(State nextState) {
+    private void checkTradepile() {
+        if (workingTime % TRADEPILE_UPDATE == 0) {
+            log.info("[FlowController] Trying to update TradePile size");
+            BuyMessage tradepileInfo = tradeService.getTradepileInfo();
+            Integer canSell = tradepileInfo.getCanSell();
+            Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
+            int delta = purchasesRemained - canSell;
+            if (delta > 0) {
+                tradepileInfo.setPurchasesRemained(delta + DEFAULT_PURCHASES);
+                log.info("[FlowController] Updated TradePile size to " + delta + DEFAULT_PURCHASES);
+            }
+        }
+    }
+
+    private boolean changeState(State nextState) {
         log.info("[FlowController] trying to change state from " + state + " to " + nextState);
         switch (nextState) {
             case INITIALIZED:
                 log.error("Can not change state to " + nextState);
-                break;
+                return false;
             case SLEEP:
                 suspendSystem();
                 noSleepTime = 0;
-                break;
+                return true;
             case ON_AUTO_BUY:
                 runAutoBuy();
-                break;
+                return true;
             case ON_NO_ACTIVITY:
-                runNoActivity();
-                break;
+                return runNoActivity();
             case NEED_TRADEPILE_UPDATE:
                 log.error("Can not change state to " + nextState);
-                break;
+                return false;
             case FAIL:
                 log.error("Can not change state to " + nextState);
-                break;
+                return false;
         }
+        return false;
     }
 
     private void runAutoBuy() {
@@ -88,21 +118,42 @@ public class FlowController implements InitializingBean {
         if (shouldSleep())
             return SLEEP;
         if (state == INITIALIZED) {
-            if (isAutoBuyEnabled())
+            if (isAutoBuyEnabled() && !isPendingUpdate())
                 return State.ON_AUTO_BUY;
             else
                 return State.ON_NO_ACTIVITY;
-        } else if (state == ON_AUTO_BUY && currentStateMinutes >= config.interruptAutoBuyEvery()) {
+        } else if (enableNoActivity()) {
             return State.ON_NO_ACTIVITY;
-        } else if (state == ON_NO_ACTIVITY && isPendingUpdate()) {
+        } else if (state == ON_NO_ACTIVITY && !isPendingUpdate()) {
             return State.ON_AUTO_BUY;
         }
         if (state == SLEEP && shouldResume()) {
             resumeSystem();
             return State.ON_AUTO_BUY;
         }
+        if (state == ON_NO_ACTIVITY && tradeService.getMarketInfo().getAutoBuyEnabled()) {
+            disableAutoBuy();
+        }
 
         return state;
+    }
+
+    private void disableAutoBuy() {
+        UserParameters userParameters = parameterService.getUserParameters();
+        userParameters.setAutoBuyEnabled(false);
+        parameterService.updateParameters(ParameterUpdateRequest.fromParameters(userParameters));
+    }
+
+    private boolean enableNoActivity() {
+        if (state == ON_AUTO_BUY && currentStateMinutes >= config.interruptAutoBuyEvery() && isPendingUpdate())
+            return true;
+        Queue<Long> pendingQueue = noActivityService.getPendingQueue();
+        if (state == ON_AUTO_BUY && isPendingUpdate() && !CollectionUtils.isEmpty(pendingQueue) &&
+                pendingQueue.size() >= PENDING_QUEUE_SIZE_THRESHOLD) {
+            log.info("Trying to enable no activity. Pending queue size = " + pendingQueue.size());
+            return true;
+        }
+        return false;
     }
 
     private boolean shouldResume() {
@@ -115,7 +166,7 @@ public class FlowController implements InitializingBean {
 
     @PreDestroy
     private void restoreParameters() {
-        if (!suspended)
+        if (!suspended && state != ON_NO_ACTIVITY)
             return;
         lastParameters.ifPresent(x -> parameterService.updateParameters(ParameterUpdateRequest.fromParameters(x)));
         lastParameters = Optional.empty();
@@ -126,18 +177,18 @@ public class FlowController implements InitializingBean {
         lastParameters = Optional.of(userParameters);
     }
 
-    private void runNoActivity() {
+    private boolean runNoActivity() {
         if (suspended) {
             log.info("[FlowController] can not run NoWork on suspended system");
-            return;
+            return false;
         }
         if (!parameterService.getUserParameters().isNoActivityEnabled()) {
             log.info("[FlowController] NoWork was disabled manually");
-            return;
+            return false;
         }
         if (!isPendingUpdate()) {
             log.info("[FlowController] No players pending for update");
-            return;
+            return false;
         }
 
         backupCurrentParameters();
@@ -145,6 +196,7 @@ public class FlowController implements InitializingBean {
         parameters.disableAll();
         parameters.setNoActivityEnabled(true);
         parameterService.updateParameters(ParameterUpdateRequest.fromParameters(parameters));
+        return true;
 
     }
 
@@ -154,6 +206,7 @@ public class FlowController implements InitializingBean {
             return false;
         return true;
     }
+
 
     private void resumeSystem() {
         log.info("[FlowController] trying to resume system flow...");
@@ -195,8 +248,8 @@ public class FlowController implements InitializingBean {
     @Data
     public static class FlowConfig {
         private int sleepAfterMinutes = 60;
-        private int sleepDurationMinutes = 20;
-        private int noActivityActivateEvery = 20;
+        private int sleepDurationMinutes = 10;
+        private int noActivityActivateEvery = 15;
 
         public int interruptAutoBuyEvery() {
             return noActivityActivateEvery;

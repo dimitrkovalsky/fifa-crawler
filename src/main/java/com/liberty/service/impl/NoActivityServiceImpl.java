@@ -55,7 +55,7 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
     private boolean enabled;
 
     @Override
-    public Queue<Long> getPendingQueue(){
+    public Queue<Long> getPendingQueue() {
         return pendingUpdate;
     }
 
@@ -151,6 +151,7 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
         updateInProgress = true;
         pendingUpdate.addAll(ids);
         this.onPriceUpdated = onComplete;
+        log.info("[NoActivity] Pending queue size = " + pendingUpdate.size());
     }
 
     @Override
@@ -164,6 +165,7 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
 
         pendingUpdate = new LinkedList<>(set);
         updateInProgress = true;
+        log.info("[NoActivity] Pending queue size = " + pendingUpdate.size());
     }
 
     @Override

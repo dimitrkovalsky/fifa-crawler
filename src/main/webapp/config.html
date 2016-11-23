@@ -2,30 +2,41 @@
     <h1>Tags</h1>
 </div>
 <div class="container">
-    Auto Buy :
-    <toggle ng-model="params.autoBuyEnabled" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
+    <div class="col-md-12">
+        Auto Buy :
+        <toggle ng-model="params.autoBuyEnabled" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
 
-    Auto Sell :
-    <toggle ng-model="params.autoSellEnabled" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
-    Relist Miner :
-    <toggle ng-model="params.autoSellRelistMinerEnabled" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
-    No activity :
-    <toggle ng-model="params.noActivityEnabled" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
-    Auto Trade :
-    <toggle ng-model="params.autoTradeEnabled" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
-    Auto Only Active :
-    <toggle ng-model="params.autoTradeOnlyActivePlayer" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
-    Robot :
-    <toggle ng-model="params.robotEnabled" ng-change="saveParams()" onstyle="btn-success"
-            offstyle="btn-danger"></toggle>
+        Auto Sell :
+        <toggle ng-model="params.autoSellEnabled" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
+        Relist Miner :
+        <toggle ng-model="params.autoSellRelistMinerEnabled" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
+        No activity :
+        <toggle ng-model="params.noActivityEnabled" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
+        Auto Trade :
+        <toggle ng-model="params.autoTradeEnabled" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
+        Auto Only Active :
+        <toggle ng-model="params.autoTradeOnlyActivePlayer" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
+        Robot :
+        <toggle ng-model="params.robotEnabled" ng-change="saveParams()" onstyle="btn-success"
+                offstyle="btn-danger"></toggle>
 
-    <button class="btn btn-info" ng-click="updatePrices()">Update Prices</button>
+        <button class="btn btn-info" ng-click="updatePrices()">Update Prices</button>
+    </div>
+    <div>
+        <select ng-model="selectedTag" class="dropdown">
+            <option ng-repeat="tag in getAvailableTags()" value="{{tag}}">{{tag}}
+            </option>
+        </select>
+        <button class="btn btn-default" ng-disabled="selectedTag==''"
+                ng-click="cahngeStrategy()">Add tag
+        </button>
+    </div>
     <table class="table">
         <thead>
         <tr>

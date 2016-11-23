@@ -37,6 +37,8 @@ import static com.liberty.common.FifaCrawlerState.*;
 @Service
 public class RequestServiceImpl implements RequestService {
 
+    public static final int SEARCH_RATE_THRESHOLD = 30;
+    public static final int RATE_THRESHOLD = 50;
     private volatile FifaCrawlerState currentState = TOKEN_NULL;
 
     private static long REQUEST_PER_DAY_LIMIT = 9500;
@@ -101,6 +103,7 @@ public class RequestServiceImpl implements RequestService {
         if (rateLimitExceeded())
             return null;
         waitReady();
+        waitRateDecrease();
         currentState = WORKING;
         T result = function.get();
         logRequest();
@@ -108,10 +111,23 @@ public class RequestServiceImpl implements RequestService {
         return result;
     }
 
+    private void waitRateDecrease() {
+        long delay = 0;
+        while (searchRate > SEARCH_RATE_THRESHOLD || rate > RATE_THRESHOLD) {
+            int wait = 10;
+            DelayHelper.waitStrict(wait);
+            delay += wait;
+            if (delay % 10_000 == 0) {
+                logController.error("Request rate to high. " + getRateString());
+            }
+        }
+    }
+
     private void execute(Runnable function) {
         if (rateLimitExceeded())
             return;
         waitReady();
+        waitRateDecrease();
         currentState = WORKING;
         function.run();
         logRequest();
