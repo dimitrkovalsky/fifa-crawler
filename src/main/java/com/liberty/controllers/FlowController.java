@@ -72,7 +72,7 @@ public class FlowController implements InitializingBean {
     }
 
     private void checkTradepile() {
-        if (workingTime % TRADEPILE_UPDATE == 0) {
+        if (workingTime % TRADEPILE_UPDATE <= 1) {
             log.info("[FlowController] Trying to update TradePile size");
             BuyMessage tradepileInfo = tradeService.getTradepileInfo();
             Integer canSell = tradepileInfo.getCanSell();
@@ -118,10 +118,7 @@ public class FlowController implements InitializingBean {
         if (shouldSleep())
             return SLEEP;
         if (state == INITIALIZED) {
-            if (isAutoBuyEnabled() && !isPendingUpdate())
-                return State.ON_AUTO_BUY;
-            else
-                return State.ON_NO_ACTIVITY;
+            return getStartState();
         } else if (enableNoActivity()) {
             return State.ON_NO_ACTIVITY;
         } else if (state == ON_NO_ACTIVITY && !isPendingUpdate()) {
@@ -129,13 +126,21 @@ public class FlowController implements InitializingBean {
         }
         if (state == SLEEP && shouldResume()) {
             resumeSystem();
-            return State.ON_AUTO_BUY;
+            return getStartState();
         }
         if (state == ON_NO_ACTIVITY && tradeService.getMarketInfo().getAutoBuyEnabled()) {
             disableAutoBuy();
+            log.info("[FlowController] Auto Buy disabled");
         }
 
         return state;
+    }
+
+    private State getStartState() {
+        if (isAutoBuyEnabled() && !isPendingUpdate())
+            return State.ON_AUTO_BUY;
+        else
+            return State.ON_NO_ACTIVITY;
     }
 
     private void disableAutoBuy() {
