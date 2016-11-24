@@ -126,6 +126,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
             return;
         }
         for (PlayerTradeStatus p : players) {
+            p = tradeRepository.findOne(p.getId()); // to have last price
             logController.info("Trying to check " + p.getName() + " max price => " + p.getMaxPrice() + ". " +
                     requestService.getRateString());
             if (!autoBuyEnabled) {

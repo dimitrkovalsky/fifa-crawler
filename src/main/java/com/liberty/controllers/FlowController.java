@@ -28,7 +28,7 @@ import static com.liberty.controllers.State.*;
 @Slf4j
 public class FlowController implements InitializingBean {
 
-    public static final int TRADEPILE_UPDATE = 30;
+    public static final int TRADEPILE_UPDATE = 10;
     public static final int DEFAULT_PURCHASES = 5;
     public static final int PENDING_QUEUE_SIZE_THRESHOLD = 20;
     private Optional<UserParameters> lastParameters = Optional.empty();
@@ -72,15 +72,16 @@ public class FlowController implements InitializingBean {
     }
 
     private void checkTradepile() {
-        if (workingTime % TRADEPILE_UPDATE <= 1) {
-            log.info("[FlowController] Trying to update TradePile size");
+        if (workingTime % TRADEPILE_UPDATE == 0) {
             BuyMessage tradepileInfo = tradeService.getTradepileInfo();
             Integer canSell = tradepileInfo.getCanSell();
             Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
             int delta = purchasesRemained - canSell;
-            if (delta > 0) {
-                tradepileInfo.setPurchasesRemained(delta + DEFAULT_PURCHASES);
-                log.info("[FlowController] Updated TradePile size to " + delta + DEFAULT_PURCHASES);
+            if (delta <= 1) {
+                log.info("[FlowController] Trying to update TradePile size");
+                int nextPurchases = -delta + DEFAULT_PURCHASES;
+                tradepileInfo.setPurchasesRemained(nextPurchases);
+                log.info("[FlowController] Updated TradePile size to " + nextPurchases);
             }
         }
     }

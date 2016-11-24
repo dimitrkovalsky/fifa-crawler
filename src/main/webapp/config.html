@@ -28,13 +28,13 @@
 
         <button class="btn btn-info" ng-click="updatePrices()">Update Prices</button>
     </div>
-    <div>
-        <select ng-model="selectedTag" class="dropdown">
-            <option ng-repeat="tag in getAvailableTags()" value="{{tag}}">{{tag}}
+    <div class="col-md-12">
+        <select ng-model="selectedBuyStrategy" class="dropdown">
+            <option ng-repeat="str in buyStrategies" value="{{str.id}}">{{str.name}}
             </option>
         </select>
-        <button class="btn btn-default" ng-disabled="selectedTag==''"
-                ng-click="cahngeStrategy()">Add tag
+        <button class="btn btn-default"
+                ng-click="changeStrategy()">Change
         </button>
     </div>
     <table class="table">

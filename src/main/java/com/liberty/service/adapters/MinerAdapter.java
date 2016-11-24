@@ -13,6 +13,7 @@ import com.liberty.model.PlayerProfile;
 import com.liberty.model.PlayerTradeStatus;
 import com.liberty.repositories.PlayerProfileRepository;
 import com.liberty.service.strategy.AutomaticSellStrategy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
  * @since 14.11.2016.
  */
 @Component
+@Slf4j
 public class MinerAdapter {
     public static final int MINER_PORT = 3333;
     public static final int MIN_REWARD = 100;
@@ -52,11 +54,13 @@ public class MinerAdapter {
     private void enableStrategy(MaxBuyStrategy strategy) {
         client.enableMaxBuyPriceStrategy(strategy);
         activeBuyStrategy = strategy;
+        log.info("Activated buy strategy : " + activeBuyStrategy.name());
     }
 
     private void enableStrategy(SellStartStrategy strategy) {
         client.enableSellStartPriceStrategy(strategy);
         activeSellStrategy = strategy;
+        log.info("Activated sell strategy : " + activeSellStrategy.name());
     }
 
     public boolean isAlive() {

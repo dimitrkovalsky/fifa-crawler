@@ -44,11 +44,24 @@ fifaApp.controller('ConfigController', function ($rootScope, $scope, ConfigResou
     $scope.loadStrategies = function() {
         BuyStrategy.query(function(result) {
             $scope.buyStrategies = result;
+            angular.forEach($scope.buyStrategies, function(value, key) {
+                if(value.active)
+                    $scope.selectedBuyStrategy = value.id.toString();
+            });
+
         }, $rootScope.onError);
         SellStrategy.query(function() {
             $scope.sellStrategies = result;
+            angular.forEach($scope.sellStrategies, function(value, key) {
+                if(value.active)
+                    $scope.selectedSellStrategy = value.id.toString();
+            });
         }, $rootScope.onError);
-    }
+    };
+
+    $scope.changeStrategy = function() {
+        BuyStrategy.save({id:$scope.selectedBuyStrategy}, $scope.loadStrategies, $rootScope.onError);
+    };
 
     $scope.loadStrategies();
     $scope.loadParams();

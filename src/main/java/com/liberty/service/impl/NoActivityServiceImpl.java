@@ -68,8 +68,12 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
         }
         if (!CollectionUtils.isEmpty(pendingUpdate)) {
             updatePending();
-            return;
         }
+        //backroundUpdate();
+
+    }
+
+    private void backroundUpdate() {
         String tag = tags[currentTagIndex];
         if (checkCompleted(tag)) return;
 
@@ -93,7 +97,6 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
         }
         log.info("[NoActivityServiceImpl] Successfully updated players from [ " + tag + "] skip : " + currentSkip
                 + ". " + requestService.getRateString());
-
     }
 
     private boolean checkCompleted(String tag) {
@@ -178,5 +181,6 @@ public class NoActivityServiceImpl implements NoActivityService, InitializingBea
     @Override
     public void afterPropertiesSet() throws Exception {
         this.enabled = parameterService.getUserParameters().isNoActivityEnabled();
+        parameterService.subscribe(this);
     }
 }
