@@ -35,7 +35,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     protected PlayerProfileService playerProfileService;
 
     @Autowired
-    private MinerAdapter miner;
+    protected MinerAdapter miner;
 
     @Autowired
     private SellStrategy sellStrategy;

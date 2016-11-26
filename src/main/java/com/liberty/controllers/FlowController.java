@@ -29,7 +29,7 @@ import static com.liberty.controllers.State.*;
 public class FlowController implements InitializingBean {
 
     public static final int TRADEPILE_UPDATE = 10;
-    public static final int DEFAULT_PURCHASES = 5;
+    public static final int DEFAULT_PURCHASES = 10;
     public static final int PENDING_QUEUE_SIZE_THRESHOLD = 20;
     private Optional<UserParameters> lastParameters = Optional.empty();
 
@@ -54,7 +54,7 @@ public class FlowController implements InitializingBean {
     private void onSchedule() {
         currentStateMinutes++;
         workingTime++;
-        checkTradepile();
+          checkTradepile();
         if (state != SLEEP)
             noSleepTime++;
         else
@@ -77,10 +77,10 @@ public class FlowController implements InitializingBean {
             Integer canSell = tradepileInfo.getCanSell();
             Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
             int delta = purchasesRemained - canSell;
-            if (delta <= 1) {
+            if (purchasesRemained <= 0 && purchasesRemained != 70) {
                 log.info("[FlowController] Trying to update TradePile size");
                 int nextPurchases = -delta + DEFAULT_PURCHASES;
-                tradepileInfo.setPurchasesRemained(nextPurchases);
+                tradeService.updatePurchaseRemained(nextPurchases);
                 log.info("[FlowController] Updated TradePile size to " + nextPurchases);
             }
         }
@@ -199,7 +199,8 @@ public class FlowController implements InitializingBean {
 
         backupCurrentParameters();
         UserParameters parameters = new UserParameters();
-        parameters.disableAll();
+        parameters.setAutoBuyEnabled(false);
+        parameters.setRobotEnabled(false);
         parameters.setNoActivityEnabled(true);
         parameterService.updateParameters(ParameterUpdateRequest.fromParameters(parameters));
         return true;

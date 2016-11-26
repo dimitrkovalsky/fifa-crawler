@@ -5,13 +5,12 @@ import com.liberty.websockets.LogController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Dmytro_Kovalskyi.
  * @since 19.05.2016.
  */
-@Component
+//@Component
 @Slf4j
 public class MarketTask {
 

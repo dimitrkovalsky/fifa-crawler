@@ -19,6 +19,8 @@ import java.util.Set;
  */
 public interface TradeService {
 
+    void updatePurchaseRemained(int maxPurchases);
+
     void removeAllPlayers();
 
     int getTradePileSize();

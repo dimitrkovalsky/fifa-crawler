@@ -59,6 +59,12 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 
     private boolean working = false;
 
+    @Override
+    public void updatePurchaseRemained(int maxPurchases) {
+        this.purchases = 0;
+        this.maxPurchaseAmount = maxPurchases;
+    }
+
     private void init() {
         activeTags = configService.getMarketConfig().getActiveTags();
         UserParameters userParameters = parameterService.getUserParameters();
@@ -167,7 +173,7 @@ public class TradeServiceImpl extends ASellService implements TradeService,
 //            if (!activeTags.isEmpty()) {
 //                return p.isEnabled() && !CollectionUtils.intersection(p.getTags(), activeTags).isEmpty();
 //            }
-            return p.isEnabled();
+            return p.isEnabled() && miner.isPriceDistributionActual(p.getId());
         };
     }
 
