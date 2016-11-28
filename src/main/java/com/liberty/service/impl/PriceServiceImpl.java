@@ -111,7 +111,14 @@ public class PriceServiceImpl implements PriceService {
             all = beforeFilter;
         }
         working = true;
-        all.sort((o1, o2) -> -o1.getInnerDate().compareTo(o2.getInnerDate()));
+        all.sort((o1, o2) -> {
+            if (o1 == null || o1.getInnerDate() == null)
+                return 1;
+            if (o2 == null || o2.getInnerDate() == null)
+                return -1;
+
+            return -o1.getInnerDate().compareTo(o2.getInnerDate());
+        });
         Collections.shuffle(all);
 
         final int[] counter = {0};
