@@ -54,12 +54,12 @@ public class FlowController implements InitializingBean {
     private void onSchedule() {
         currentStateMinutes++;
         workingTime++;
-          checkTradepile();
+        checkTradepile();
         if (state != SLEEP)
             noSleepTime++;
         else
             sleepTime++;
-        State nextState = defineNextState();  // TODO: check time for transaction
+        State nextState = defineNextState();
         if (nextState != state) {
             if (changeState(nextState)) {
                 currentStateMinutes = 0;

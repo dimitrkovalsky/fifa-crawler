@@ -61,6 +61,10 @@ fifaApp.factory('Trade', function ($resource) {
     return $resource('/api/trade/');
 });
 
+fifaApp.factory('MinerSell', function ($resource) {
+    return $resource('/api/miner/sell/price/:playerId');
+});
+
 fifaApp.factory('Tradepile', function ($resource) {
     return $resource('/api/trade/tradepile');
 });

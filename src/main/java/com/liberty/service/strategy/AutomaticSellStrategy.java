@@ -29,7 +29,7 @@ public class AutomaticSellStrategy implements SellStrategy {
 
     @Override
     public SellRequest defineBid(ItemData itemData, PlayerTradeStatus tradeStatus) {
-        MinerBid minerBid = minerAdapter.defineBid(itemData.getAssetId(), itemData.getLastSalePrice());
+        MinerBid minerBid = minerAdapter.defineSellBid(itemData.getAssetId(), itemData.getLastSalePrice());
         SellRequest request = new SellRequest();
         request.setPlayerId(tradeStatus.getId());
         request.setItemId(itemData.getId());

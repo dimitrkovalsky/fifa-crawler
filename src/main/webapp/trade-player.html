@@ -1,6 +1,6 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    google.charts.load('current', {'packages': ['corechart', 'bar', 'line'],  'language': 'uk'});
+    google.charts.load('current', {'packages': ['corechart', 'bar', 'line'], 'language': 'uk'});
     google.charts.setOnLoadCallback(draw);
 </script>
 
@@ -22,6 +22,12 @@
 
     <div class="col-md-6">
         <span>Last update : <strong>{{playerPrice.date}}</strong> </span>
+        <div>Valid <strong ng-class="{greenBold:miner.priceDistributionValid, redBold:!miner.priceDistributionValid}">
+            {{miner.priceDistributionValid}}</strong>
+        </div>
+        <div>Sell Start Price : <strong>{{miner.bid.sellStartPrice}}</strong></div>
+        <div>Sell Buy Now Price : <strong>{{miner.bid.sellBuyNowPrice}}</strong></div>
+
     </div>
 </div>
 <div class="container">

@@ -1,5 +1,5 @@
 fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $scope, $stateParams, Trade, MinPrice,
-                                                      PlayerAutoBuy) {
+                                                      PlayerAutoBuy, MinerSell) {
     angular.extend(this, $controller('PlayerController', {
         $scope: $scope,
         $rootScope: $rootScope,
@@ -65,7 +65,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
             startPrice: $scope.sellPrice.sellStartPrice,
             buyNow: $scope.sellPrice.sellBuyNowPrice
         };
-        if(tradeId){
+        if (tradeId) {
             data.tradeId = tradeId;
         }
         Trade.save(data, $scope.updateSell, $rootScope.onError);
@@ -74,7 +74,7 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
     $scope.sellAll = function () {
         for (var index in $scope.toSell) {
             if ($scope.toSell[index].id) {
-                 $scope.sell($scope.toSell[index].id, $scope.toSell[index].tradeId);
+                $scope.sell($scope.toSell[index].id, $scope.toSell[index].tradeId);
             }
         }
     };
@@ -86,14 +86,20 @@ fifaApp.controller('TradePlayerController', function ($controller, $rootScope, $
         MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
     };
 
-    $scope.calculateProfit = function(trade, sellPrice) {
+    $scope.calculateProfit = function (trade, sellPrice) {
         var diff = sellPrice - trade.lastSalePrice;
         return Math.floor(diff - sellPrice * 0.05);
     };
 
 
+    $scope.getMinerInfo = function () {
+        MinerSell.get({playerId: $scope.id}, function (response) {
+            $scope.miner = response;
+        }, $rootScope.onError)
+    };
     $scope.filterPlayers($scope.id);
 
     $scope.getPlayerInfo();
+    $scope.getMinerInfo();
     MinPrice.get({id: $scope.id}, $scope.onStatsLoaded, $rootScope.onError);
 });

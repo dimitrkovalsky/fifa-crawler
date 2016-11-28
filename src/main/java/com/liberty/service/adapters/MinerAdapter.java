@@ -103,10 +103,13 @@ public class MinerAdapter {
         return client.isPriceDistributionActual(playerId);
     }
 
-    public AutomaticSellStrategy.MinerBid defineBid(Long playerId, Integer lastSalePrice) {
+    public AutomaticSellStrategy.MinerBid defineSellBid(Long playerId, Integer lastSalePrice) {
+        return defineSellBid(playerId);
+    }
+
+    public AutomaticSellStrategy.MinerBid defineSellBid(Long playerId) {
         Integer sellBuyNowPrice = client.getSellBuyNowPrice(playerId);
         Integer sellStartPrice = client.getSellStartPrice(playerId);
-//        Integer sellBuyNowPrice = BoundHelper.defineNextBid(client.getSellBuyNowPrice(playerId));
         return new AutomaticSellStrategy.MinerBid(sellStartPrice, sellBuyNowPrice);
     }
 
