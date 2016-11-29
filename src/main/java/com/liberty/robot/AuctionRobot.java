@@ -77,7 +77,7 @@ public class AuctionRobot implements InitializingBean, ParameterUpdateListener {
     @Scheduled(fixedRate = 100_000)
     public void findBids() {
         if (disabled) {
-            logController.info("Auction Robot disabled");
+//            logController.info("Auction Robot disabled");
             return;
         }
         log.debug("Robot trying to find applicable bids");
