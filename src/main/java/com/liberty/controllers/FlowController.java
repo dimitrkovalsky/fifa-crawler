@@ -49,6 +49,7 @@ public class FlowController implements InitializingBean {
     private volatile int noSleepTime = 0;
     private volatile int workingTime = 0;
     private volatile int sleepTime = 0;
+    private State previousState;
 
     @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
     private void onSchedule() {
@@ -63,6 +64,7 @@ public class FlowController implements InitializingBean {
         if (nextState != state) {
             if (changeState(nextState)) {
                 currentStateMinutes = 0;
+                previousState = state;
                 state = nextState;
                 log.info("[FlowController] current state : " + state);
             } else {
@@ -77,7 +79,7 @@ public class FlowController implements InitializingBean {
             Integer canSell = tradepileInfo.getCanSell();
             Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
             int delta = purchasesRemained - canSell;
-            if (purchasesRemained <= 0 && purchasesRemained != 70) {
+            if (purchasesRemained <= 0 && purchasesRemained != 70 && delta <= 0) {
                 log.info("[FlowController] Trying to update TradePile size");
                 int nextPurchases = -delta + DEFAULT_PURCHASES;
                 tradeService.updatePurchaseRemained(nextPurchases);
@@ -127,7 +129,7 @@ public class FlowController implements InitializingBean {
         }
         if (state == SLEEP && shouldResume()) {
             resumeSystem();
-            return getStartState();
+            return previousState;
         }
         if (state == ON_NO_ACTIVITY && tradeService.getMarketInfo().getAutoBuyEnabled()) {
             disableAutoBuy();
@@ -138,7 +140,7 @@ public class FlowController implements InitializingBean {
     }
 
     private State getStartState() {
-        if (isAutoBuyEnabled() && !isPendingUpdate())
+        if (!isPendingUpdate())
             return State.ON_AUTO_BUY;
         else
             return State.ON_NO_ACTIVITY;
@@ -151,7 +153,7 @@ public class FlowController implements InitializingBean {
     }
 
     private boolean enableNoActivity() {
-        if (state == ON_AUTO_BUY && currentStateMinutes >= config.interruptAutoBuyEvery() && isPendingUpdate())
+        if (state == ON_AUTO_BUY && currentStateMinutes >= config.interruptAutoBuyEvery())
             return true;
         Queue<Long> pendingQueue = noActivityService.getPendingQueue();
         if (state == ON_AUTO_BUY && isPendingUpdate() && !CollectionUtils.isEmpty(pendingQueue) &&
@@ -192,10 +194,10 @@ public class FlowController implements InitializingBean {
             log.info("[FlowController] NoWork was disabled manually");
             return false;
         }
-        if (!isPendingUpdate()) {
-            log.info("[FlowController] No players pending for update");
-            return false;
-        }
+//        if (!isPendingUpdate()) {
+//            log.info("[FlowController] No players pending for update");
+//            return false;
+//        }
 
         backupCurrentParameters();
         UserParameters parameters = new UserParameters();

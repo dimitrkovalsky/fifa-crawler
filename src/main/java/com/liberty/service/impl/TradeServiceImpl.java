@@ -18,6 +18,7 @@ import com.liberty.service.UserParameterService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ import static org.apache.commons.collections.CollectionUtils.isEmpty;
  * User: Dimitr Date: 03.06.2016 Time: 20:11
  */
 @Service
+@Primary
 public class TradeServiceImpl extends ASellService implements TradeService,
         ApplicationListener<ContextRefreshedEvent>, ParameterUpdateListener {
 

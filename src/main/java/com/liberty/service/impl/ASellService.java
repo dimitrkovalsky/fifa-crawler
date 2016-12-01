@@ -67,7 +67,7 @@ public abstract class ASellService extends ATradeService implements TradeService
     }
 
     private void relist(List<AuctionInfo> auctionInfos) {
-        if(inRelist)
+        if (inRelist)
             return;
         inRelist = true;
         if (autoSellRelistMinerEnabled && miner.isAlive()) {
@@ -84,6 +84,8 @@ public abstract class ASellService extends ATradeService implements TradeService
         for (AuctionInfo auctionInfo : auctionInfos) {
             ItemData itemData = auctionInfo.getItemData();
             PlayerTradeStatus status = tradeRepository.findOne(itemData.getAssetId());
+            if (status == null)
+                continue;
             if (!sellStrategy.isPriceDistributionActual(status.getId())) {
                 toUpdate.add(status.getId());
             } else if (sellStrategy.shouldSell(itemData, status)) {

@@ -136,7 +136,7 @@ public class AuctionRobot implements InitializingBean, ParameterUpdateListener {
     @Scheduled(fixedRate = 10_000)
     public void checkWatchlist() {
         if (disabled) {
-            log.info("Auction Robot disabled");
+         //   log.info("Auction Robot disabled");
             return;
         }
         log.debug("Trying to run robot trade");
