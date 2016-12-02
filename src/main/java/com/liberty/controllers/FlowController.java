@@ -118,6 +118,10 @@ public class FlowController implements InitializingBean {
     }
 
     private State defineNextState() {
+        if (state == SLEEP && shouldResume()) {
+            resumeSystem();
+            return previousState;
+        }
         if (shouldSleep())
             return SLEEP;
         if (state == INITIALIZED) {
@@ -126,10 +130,6 @@ public class FlowController implements InitializingBean {
             return State.ON_NO_ACTIVITY;
         } else if (state == ON_NO_ACTIVITY && !isPendingUpdate()) {
             return State.ON_AUTO_BUY;
-        }
-        if (state == SLEEP && shouldResume()) {
-            resumeSystem();
-            return previousState;
         }
         if (state == ON_NO_ACTIVITY && tradeService.getMarketInfo().getAutoBuyEnabled()) {
             disableAutoBuy();
