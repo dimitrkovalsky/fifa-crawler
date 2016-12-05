@@ -19,7 +19,9 @@ import static com.sun.corba.se.impl.activation.ServerMain.logError;
 @Slf4j
 public class RequestResultProcessor {
 
+    public static final int ERROR_TRESHOULD = 15;
     private Supplier<Boolean> onSessionUpdate;
+    private int errorCount;
 
     public RequestResultProcessor(Supplier<Boolean> onSessionUpdate) {
         this.onSessionUpdate = onSessionUpdate;
@@ -101,6 +103,13 @@ public class RequestResultProcessor {
                 }
             } else {
                 log.error("FIFA ERROR : " + fifaError);
+                if (fifaError.getCode() == 500) {
+                    errorCount++;
+                    if (errorCount > ERROR_TRESHOULD) {
+                        log.error("Exceeded error amount: " + errorCount);
+                        System.exit(1);
+                    }
+                }
                 return FifaRequestStatus.FAILED;
             }
         } catch (Exception ignored) {

@@ -79,7 +79,7 @@ public class FlowController implements InitializingBean {
             Integer canSell = tradepileInfo.getCanSell();
             Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
             int delta = purchasesRemained - canSell;
-            if (purchasesRemained <= 0 && purchasesRemained != 70 && delta <= 0) {
+            if (purchasesRemained <= 0  && delta <= 0) {
                 log.info("[FlowController] Trying to update TradePile size");
                 int nextPurchases = -delta + DEFAULT_PURCHASES;
                 tradeService.updatePurchaseRemained(nextPurchases);
@@ -174,8 +174,8 @@ public class FlowController implements InitializingBean {
 
     @PreDestroy     // TODO: check disabled autobuy
     private void restoreParameters() {
-        if (!suspended && state != ON_NO_ACTIVITY)
-            return;
+//        if (!suspended && state != ON_NO_ACTIVITY)
+//            return;
 
         lastParameters.ifPresent(x -> parameterService.updateParameters(ParameterUpdateRequest.fromParameters(x)));
         lastParameters = Optional.empty();
@@ -222,6 +222,8 @@ public class FlowController implements InitializingBean {
         log.info("[FlowController] trying to resume system flow...");
         restoreParameters();
         suspended = false;
+        sleepTime = 0;
+        workingTime = 0;
         log.info("[FlowController] system flow resumed...");
     }
 
@@ -229,6 +231,10 @@ public class FlowController implements InitializingBean {
         if (suspended)
             return;
         log.info("[FlowController] trying to suspend system flow...");
+        if (state == ON_NO_ACTIVITY) {
+            lastParameters.ifPresent(x -> parameterService.updateParameters(ParameterUpdateRequest.fromParameters(x)));
+            lastParameters = Optional.empty();
+        }
         backupCurrentParameters();
         UserParameters parameters = new UserParameters();
         parameters.disableAll();

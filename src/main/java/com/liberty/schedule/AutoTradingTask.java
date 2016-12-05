@@ -21,7 +21,7 @@ public class AutoTradingTask {
     @Autowired
     private LogController logController;
 
-    @Scheduled(fixedRate = 200_000)
+    @Scheduled(fixedRate = 200_000, initialDelay = 100_000)
     public void check() {
         log.info("Trying to update players for buy");
         autoTradingService.updateActivePlayers();
