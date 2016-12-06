@@ -79,7 +79,7 @@ public class FlowController implements InitializingBean {
             Integer canSell = tradepileInfo.getCanSell();
             Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
             int delta = purchasesRemained - canSell;
-            if (purchasesRemained <= 0  && delta <= 0) {
+            if (purchasesRemained <= 0 && delta <= 0) {
                 log.info("[FlowController] Trying to update TradePile size");
                 int nextPurchases = -delta + DEFAULT_PURCHASES;
                 tradeService.updatePurchaseRemained(nextPurchases);
@@ -201,7 +201,7 @@ public class FlowController implements InitializingBean {
 //        }
 
         backupCurrentParameters();
-        UserParameters parameters = new UserParameters();
+        UserParameters parameters = parameterService.getUserParameters();
         parameters.setAutoBuyEnabled(false);
         parameters.setRobotEnabled(false);
         parameters.setNoActivityEnabled(true);
