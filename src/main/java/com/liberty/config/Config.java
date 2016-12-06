@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -37,6 +38,11 @@ public class Config extends AbstractMongoConfiguration {
     @Bean
     public GridFsTemplate gridFsTemplate() throws Exception {
         return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
+    }
+
+    @Bean
+    public MongoTemplate mongoTemplate() throws Exception {
+        return new MongoTemplate(mongoDbFactory(), mappingMongoConverter());
     }
 
     @Override

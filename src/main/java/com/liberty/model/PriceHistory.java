@@ -14,7 +14,7 @@ import java.util.Map;
 public class PriceHistory {
 
     @Id
-    private Long playerId;
+    protected Long playerId;
 
-    private Map<Long, Map<Integer, Integer>> history = new HashMap<>();
+    protected Map<Long, Map<Integer, Integer>> history = new HashMap<>();
 }

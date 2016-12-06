@@ -172,11 +172,8 @@ public class FlowController implements InitializingBean {
         return noSleepTime >= config.getSleepAfterMinutes();
     }
 
-    @PreDestroy     // TODO: check disabled autobuy
+    @PreDestroy
     private void restoreParameters() {
-//        if (!suspended && state != ON_NO_ACTIVITY)
-//            return;
-
         lastParameters.ifPresent(x -> parameterService.updateParameters(ParameterUpdateRequest.fromParameters(x)));
         lastParameters = Optional.empty();
     }
