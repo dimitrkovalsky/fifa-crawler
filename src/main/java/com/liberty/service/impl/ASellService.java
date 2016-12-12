@@ -45,6 +45,7 @@ public abstract class ASellService extends ATradeService implements TradeService
 
     protected boolean autoSellRelistMinerEnabled;
     private volatile boolean inRelist = false;
+    private boolean sellLowerPrice = false;
 
     @Override
     public int getTradePileSize() {
@@ -88,7 +89,7 @@ public abstract class ASellService extends ATradeService implements TradeService
                 continue;
             if (!sellStrategy.isPriceDistributionActual(status.getId())) {
                 toUpdate.add(status.getId());
-            } else if (sellStrategy.shouldSell(itemData, status)) {
+            } else if (sellLowerPrice || sellStrategy.shouldSell(itemData, status)) {
                 SellRequest request = sellStrategy.defineBid(itemData, status);
                 int from = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getStartPrice());
                 int to = PriceHelper.calculateProfit(itemData.getLastSalePrice(), request.getBuyNow());
