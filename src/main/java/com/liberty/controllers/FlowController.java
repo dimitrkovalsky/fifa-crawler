@@ -199,9 +199,10 @@ public class FlowController implements InitializingBean {
 
         backupCurrentParameters();
         UserParameters parameters = parameterService.getUserParameters();
-        parameters.setAutoBuyEnabled(false);
-        parameters.setRobotEnabled(false);
+        parameters.disableAll();
         parameters.setNoActivityEnabled(true);
+//        parameters.setAutoBuyEnabled(false);
+//        parameters.setRobotEnabled(false);
         parameterService.updateParameters(ParameterUpdateRequest.fromParameters(parameters));
         return true;
 
