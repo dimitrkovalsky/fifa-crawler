@@ -69,7 +69,7 @@ public class AutoTradingServiceImpl implements AutoTradingService, InitializingB
         Set<Long> toUpdate = new HashSet<>();
         AtomicInteger updated = new AtomicInteger(0);
         tradeStatuses.forEach(s -> {
-            if (miner.isPriceDistributionActual(s.getId())) {
+            if (miner.isPriceDistributionActual(s.getId()) && !isSBC(s)) {
                 PlayerTradeStatus pricesToBuy = miner.getPricesToBuy(s.getId());
                 if (!pricesToBuy.getMaxPrice().equals(s.getMaxPrice())) {
                     tradeService.enablePlayer(pricesToBuy.getId(), pricesToBuy.getMaxPrice(), MINER_TAG);
@@ -84,6 +84,10 @@ public class AutoTradingServiceImpl implements AutoTradingService, InitializingB
             log.info("AutoTradingService asked to update prices for : " + toUpdate.size() + " players");
         }
         log.info("[AutoTradingService] updated prices for " + updated.get() + " players");
+    }
+
+    private boolean isSBC(PlayerTradeStatus status) {
+        return status.getTags().contains("SBC");
     }
 
     private void autoPlayerUpdate() {
