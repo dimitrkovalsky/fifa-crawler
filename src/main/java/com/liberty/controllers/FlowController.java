@@ -77,9 +77,10 @@ public class FlowController implements InitializingBean {
         if (workingTime % TRADEPILE_UPDATE == 0) {
             BuyMessage tradepileInfo = tradeService.getTradepileInfo();
             Integer canSell = tradepileInfo.getCanSell();
+            Integer unassigned = tradepileInfo.getUnassigned();
             Integer purchasesRemained = tradepileInfo.getPurchasesRemained();
-            if (purchasesRemained <= 0 && canSell > 0) {
-                int delta = purchasesRemained - canSell;
+            if (purchasesRemained <= 0 && canSell > 0 && unassigned <= canSell) {
+                int delta = purchasesRemained + unassigned - canSell;
                 int nextPurchases = -delta + DEFAULT_PURCHASES;
                 log.info("[FlowController] Trying to update TradePile. purchasesRemained: " + purchasesRemained +
                         "\t canSell: " + canSell + "\tdelta: " + delta + "\tnextPurchases: " + nextPurchases);
