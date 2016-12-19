@@ -29,7 +29,7 @@ import static com.liberty.controllers.State.*;
 public class FlowController implements InitializingBean {
 
     public static final int TRADEPILE_UPDATE = 10;
-    public static final int DEFAULT_PURCHASES = 10;
+    public static final int DEFAULT_PURCHASES = 5;
     public static final int PENDING_QUEUE_SIZE_THRESHOLD = 20;
     private Optional<UserParameters> lastParameters = Optional.empty();
 
