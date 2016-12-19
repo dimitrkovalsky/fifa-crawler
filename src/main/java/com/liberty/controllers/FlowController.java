@@ -29,7 +29,7 @@ import static com.liberty.controllers.State.*;
 public class FlowController implements InitializingBean {
 
     public static final int TRADEPILE_UPDATE = 10;
-    public static final int DEFAULT_PURCHASES = 10;
+    public static final int DEFAULT_PURCHASES = 5;
     public static final int PENDING_QUEUE_SIZE_THRESHOLD = 20;
     private Optional<UserParameters> lastParameters = Optional.empty();
 
@@ -267,7 +267,7 @@ public class FlowController implements InitializingBean {
     @Data
     public static class FlowConfig {
         private int sleepAfterMinutes = 60;
-        private int sleepDurationMinutes = 10;
+        private int sleepDurationMinutes = 45;
         private int noActivityActivateEvery = 15;
 
         public int interruptAutoBuyEvery() {
