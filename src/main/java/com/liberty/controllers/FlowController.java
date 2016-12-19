@@ -267,7 +267,7 @@ public class FlowController implements InitializingBean {
     @Data
     public static class FlowConfig {
         private int sleepAfterMinutes = 60;
-        private int sleepDurationMinutes = 45;
+        private int sleepDurationMinutes = 10;
         private int noActivityActivateEvery = 15;
 
         public int interruptAutoBuyEvery() {
