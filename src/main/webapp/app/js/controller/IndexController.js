@@ -146,6 +146,10 @@ fifaApp.controller('IndexController', function ($rootScope, $scope, StatisticRes
         return $rootScope.leaguesMap[id].abbrName;
     };
 
+    $rootScope.formatCredits = function(credits) {
+          return credits.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
     $scope.connect();
     $rootScope.updateStats();
     $rootScope.updateTradepile();

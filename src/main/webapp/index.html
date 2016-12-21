@@ -111,7 +111,7 @@
             <li> Processor : <strong>{{stats.enabled}}&nbsp;&nbsp</strong></li>
             <li> Robot : <strong>{{stats.robotEnabled}}</strong></li>
             <br>
-            <li> Credits : <strong style="color:#20b510">{{stats.credits}}&nbsp;&nbsp</strong></li>
+            <li> Credits : <strong style="color:#20b510">{{formatCredits(stats.credits)}}&nbsp;&nbsp</strong></li>
             <li ng-click="updateStats()"> Rate : <strong
                     style="color:#3F51B5; cursor:pointer">{{stats .rate}}</strong></li>
         </ul>
