@@ -10,6 +10,8 @@ public interface ClassificationService {
 
     void bestPhysics();
 
+    void mostRated();
+
     void mostBalanced();
 
     void notRar();

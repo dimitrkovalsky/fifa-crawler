@@ -22,7 +22,7 @@ public class Runner {
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         ClassificationService service = context.getBean(ClassificationService.class);
         CrawlerService crawlerService = context.getBean(CrawlerService.class);
-        service.mostTrading();
+        service.mostRated();
         //  crawlerService.fetchAllPlayers();
 //
 //    service.fetchAllPlayers();

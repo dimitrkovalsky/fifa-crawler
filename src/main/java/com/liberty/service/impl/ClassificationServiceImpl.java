@@ -72,6 +72,26 @@ public class ClassificationServiceImpl implements ClassificationService {
     }
 
     @Override
+    public void mostRated() {
+        List<PlayerProfile> profiles = profileRepository.findAll();
+
+        Set<Long> leagues = new HashSet<>();
+        leagues.add(leagueRepository.findOneByAbbrName("ENG 1").getId());
+        leagues.add(leagueRepository.findOneByAbbrName("GER 1").getId());
+        leagues.add(leagueRepository.findOneByAbbrName("ESP 1").getId());
+        leagues.add(leagueRepository.findOneByAbbrName("ITA 1").getId());
+        leagues.add(leagueRepository.findOneByAbbrName("FRA 1").getId());
+
+        profiles.sort((x1, x2) -> -x1.rating.compareTo(x2.rating));
+        profiles = profiles.stream().filter(x -> !leagues.contains(x.getLeagueId())).collect(Collectors.toList());
+        List<PlayerProfile> best = profiles.stream().limit(100).collect(Collectors.toList());
+
+        //  List<PlayerProfile> shot = filterByStat("SHO", 80, fast);
+        logFound(best, true, "Top 100");
+
+    }
+
+    @Override
     public void mostBalanced() {
         List<PlayerProfile> profiles = profileRepository.findAll();
 
