@@ -48,6 +48,7 @@ public class FlowController implements InitializingBean {
     private volatile int currentStateMinutes = 0;
     private volatile int noSleepTime = 0;
     private volatile int workingTime = 0;
+    private volatile int overallTime = 0;
     private volatile int sleepTime = 0;
     private State previousState;
 
@@ -55,11 +56,14 @@ public class FlowController implements InitializingBean {
     private void onSchedule() {
         currentStateMinutes++;
         workingTime++;
+        overallTime++;
         checkTradepile();
+        checkShutdown();
         if (state != SLEEP)
             noSleepTime++;
         else
             sleepTime++;
+
         State nextState = defineNextState();
         if (nextState != state) {
             if (changeState(nextState)) {
@@ -69,6 +73,18 @@ public class FlowController implements InitializingBean {
                 log.info("[FlowController] current state : " + state);
             } else {
                 log.info("[FlowController] can not change state to : " + nextState);
+            }
+        }
+    }
+
+    private void checkShutdown() {
+        if (config.shutdownAfter != 0) {
+            if (overallTime >= config.shutdownAfter) {
+                log.info("Shutdown system after : " + overallTime + " minutes");
+                System.exit(0);
+            }
+            if (overallTime % 30 == 0) {
+                log.info("System will be shutdown after : " + (config.shutdownAfter - overallTime) + " minutes");
             }
         }
     }
@@ -266,6 +282,7 @@ public class FlowController implements InitializingBean {
         private int sleepAfterMinutes = 60;
         private int sleepDurationMinutes = 10;
         private int noActivityActivateEvery = 15;
+        private int shutdownAfter = 300;
 
         public int interruptAutoBuyEvery() {
             return noActivityActivateEvery;
