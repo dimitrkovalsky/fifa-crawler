@@ -110,6 +110,10 @@ public class RequestResultProcessor {
                         System.exit(1);
                     }
                 }
+                if (fifaError.getCode() == 459) {
+                    log.error("Verification required");
+                    System.exit(1);
+                }
                 return FifaRequestStatus.FAILED;
             }
         } catch (Exception ignored) {

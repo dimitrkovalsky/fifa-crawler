@@ -282,7 +282,7 @@ public class FlowController implements InitializingBean {
         private int sleepAfterMinutes = 60;
         private int sleepDurationMinutes = 10;
         private int noActivityActivateEvery = 15;
-        private int shutdownAfter = 300;
+        private int shutdownAfter = 350;
 
         public int interruptAutoBuyEvery() {
             return noActivityActivateEvery;
