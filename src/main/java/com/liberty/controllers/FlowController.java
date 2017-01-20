@@ -81,6 +81,7 @@ public class FlowController implements InitializingBean {
         if (config.shutdownAfter != 0) {
             if (overallTime >= config.shutdownAfter) {
                 log.info("Shutdown system after : " + overallTime + " minutes");
+                restoreParameters();
                 System.exit(0);
             }
             if (overallTime % 30 == 0) {

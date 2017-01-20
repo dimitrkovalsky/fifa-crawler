@@ -56,6 +56,7 @@ public class ItemData {
     private Long capacity;
     private Object trainingItem;
     private Object loans;
+    private Object resourceGameYear;
 
 
     private Boolean fromTargets;
