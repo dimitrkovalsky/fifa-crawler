@@ -45,7 +45,7 @@ public abstract class ASellService extends ATradeService implements TradeService
 
     protected boolean autoSellRelistMinerEnabled;
     private volatile boolean inRelist = false;
-    private boolean sellLowerPrice = true;
+    private boolean sellLowerPrice = false;
 
     @Override
     public int getTradePileSize() {
