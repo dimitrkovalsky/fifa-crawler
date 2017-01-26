@@ -87,6 +87,9 @@ public abstract class ASellService extends ATradeService implements TradeService
             PlayerTradeStatus status = tradeRepository.findOne(itemData.getAssetId());
             if (status == null)
                 continue;
+            if (itemData.getRareflag() >= 2) {
+                continue;
+            }
             if (!sellStrategy.isPriceDistributionActual(status.getId())) {
                 toUpdate.add(status.getId());
             } else if (sellLowerPrice || sellStrategy.shouldSell(itemData, status)) {
