@@ -7,7 +7,7 @@ public interface FifaExternalEndpoints {
     String GAME_PATH = "/ut/game/fifa17";
     String MAIN_PATH = DOMAIN_EXTERNAL + GAME_PATH;
 
-    String TRADE_LINE_URL = MAIN_PATH + "/tradepile";
+    String TRADE_LINE_URL = MAIN_PATH + "/tradepile?brokeringSku=FFA17WEB";
     String KEEP_ALIVE_URL = "https://www.easports.com/fifa/api/keepalive";
     String SEARCH_URL = DOMAIN_EXTERNAL +
             GAME_PATH + "/transfermarket?start=%s&num=16&type=player&maskedDefId=%s&maxb=%s";

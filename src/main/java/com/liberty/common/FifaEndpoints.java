@@ -5,7 +5,7 @@ public interface FifaEndpoints {
 
     String DOMAIN = "https://utas.s2.fut.ea.com";
     String DOMAIN_EXTERNAL = "https://utas.external.s2.fut.ea.com";
-    String TRADE_LINE_URL = DOMAIN + "/ut/game/fifa17/tradepile";
+    String TRADE_LINE_URL = DOMAIN + "/ut/game/fifa17/tradepile?brokeringSku=FFA17WEB";
     String KEEP_ALIVE_URL = "https://www.easports.com/fifa/api/keepalive";
     String SEARCH_URL = "https://utas.s2.fut.ea" +
             ".com/ut/game/fifa17/transfermarket?start=%s&num=16&type=player&maskedDefId=%s&maxb=%s";
